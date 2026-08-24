@@ -533,13 +533,24 @@
       
       const total = claims.length;
       
-      // Calculate category counts
+      // Calculate category counts for 10 stages
+      const registrasiCount = claims.filter(c => !c.status || c.status === "Registrasi").length;
+      const dokDiterimaCount = claims.filter(c => c.status === "Dokumen Diterima" || c.status === "Diterima").length;
+      const dokTerpendingCount = claims.filter(c => c.status === "Dokumen Terpending" || c.status === "Pending").length;
+      const kalkManfaatCount = claims.filter(c => c.status === "Kalkulasi Manfaat").length;
+      const menVerifCount = claims.filter(c => c.status === "Menunggu Verifikasi" || c.status === "Verifikasi Kancab" || c.status === "Verifikasi Dokumen").length;
+      const terverifikasiCount = claims.filter(c => c.status === "Terverifikasi" || c.status === "Verifikasi Medis Layer 1" || c.status === "Verifikasi Medis Layer 2" || c.status === "Review RS" || c.status === "Dispute RS").length;
+      const menApprCount = claims.filter(c => c.status === "Menunggu Approval" || c.status === "Approval Kabid").length;
+      const spTerbitCount = claims.filter(c => c.status === "SP Terbit" || c.status === "SJP Terbit" || c.status === "SJPP Terbit" || c.status === "SP Restitusi Terbit").length;
+      const prosBayarCount = claims.filter(c => c.status === "Proses Pembayaran" || c.status === "Keuangan").length;
+      const selesaiCount = claims.filter(c => c.status === "Selesai").length;
+
       const ditolakCount = claims.filter(c => c.status === "Ditolak").length;
-      const pendingCount = claims.filter(c => c.status === "Pending").length;
-      const diterimaCount = claims.filter(c => c.status === "Diterima").length;
+      const pendingCount = dokTerpendingCount;
+      const diterimaCount = dokDiterimaCount;
 
       const slaWarning = claims.filter(c => 
-        ["Diterima"].includes(c.status) && 
+        ["Dokumen Diterima", "Diterima"].includes(c.status) && 
         c.sla && (c.sla.status === "mendekati" || c.sla.status === "melewati")
       ).length;
 
@@ -550,11 +561,18 @@
       document.getElementById("stat-pending").innerText = pendingCount;
       document.getElementById("stat-sla-warning").innerText = slaWarning;
       
-      // Ringkasan Status Registrasi - 3 categories
+      // Ringkasan Status Registrasi - 10 categories
       const statusData = [
-        { label: "Diterima", value: diterimaCount, color: "#22C55E" },
-        { label: "Pending", value: pendingCount, color: "#F59E0B" },
-        { label: "Ditolak", value: ditolakCount, color: "#EF4444" }
+        { label: "Registrasi", value: registrasiCount, color: "#64748B" },
+        { label: "Dokumen Diterima", value: dokDiterimaCount, color: "#3B82F6" },
+        { label: "Dokumen Terpending 🟡", value: dokTerpendingCount, color: "#F59E0B" },
+        { label: "Kalkulasi Manfaat", value: kalkManfaatCount, color: "#10B981" },
+        { label: "Menunggu Verifikasi", value: menVerifCount, color: "#6366F1" },
+        { label: "Terverifikasi", value: terverifikasiCount, color: "#8B5CF6" },
+        { label: "Menunggu Approval", value: menApprCount, color: "#EC4899" },
+        { label: "SP Terbit ✅", value: spTerbitCount, color: "#14B8A6" },
+        { label: "Proses Pembayaran", value: prosBayarCount, color: "#F43F5E" },
+        { label: "Selesai", value: selesaiCount, color: "#22C55E" }
       ];
 
       // Monitoring SLA - 3 categories
