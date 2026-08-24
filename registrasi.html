@@ -249,46 +249,10 @@
             </div>
 
             <!-- No Results & Input Manual Handling -->
-            <div id="search-results-empty" class="hidden p-6 border border-dashed border-slate-200 rounded-2xl text-center space-y-3 bg-slate-50/50 mt-6 animate-fade-in">
-              <i class="fas fa-user-slash text-slate-350 text-3xl block"></i>
-              <p class="text-xs font-semibold text-slate-500">Data peserta tidak ditemukan di database kepesertaan.</p>
-              <button type="button" onclick="showManualInputForm()" class="px-4 py-2 border-2 border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-1.5 shadow-sm">
-                <i class="fas fa-keyboard"></i> Input Manual
-              </button>
-            </div>
-
-            <!-- Manual Input Form -->
-            <div id="manual-input-form-container" class="hidden mt-6 p-6 border border-slate-200 rounded-2xl bg-slate-50 space-y-5 animate-fade-in">
-              <div class="border-b border-slate-200 pb-2">
-                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Form Input Manual Kepesertaan (Status: Pending)</h4>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div class="flex flex-col gap-1.5">
-                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Nama Lengkap <span class="text-rose-500">*</span></label>
-                  <input type="text" id="manual-nama" placeholder="Masukkan nama lengkap..." class="w-full bg-white border border-slate-250 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
-                  <span id="error-manual-nama" class="text-rose-500 text-[10px] hidden font-semibold">Nama Lengkap wajib diisi</span>
-                </div>
-                <div class="flex flex-col gap-1.5">
-                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">NIK / NRP / KTPA <span class="text-rose-500">* (Isi Minimal 1)</span></label>
-                  <input type="text" id="manual-identitas" placeholder="Masukkan NIK/NRP/KTPA..." class="w-full bg-white border border-slate-250 rounded-xl px-3 py-2 text-xs font-mono font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
-                  <span id="error-manual-identitas" class="text-rose-500 text-[10px] hidden font-semibold">Harap isi minimal salah satu NIK, NRP, atau KTPA</span>
-                </div>
-                <div class="flex flex-col gap-1.5">
-                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Angkatan <span class="text-rose-500">*</span></label>
-                  <select id="manual-angkatan" class="w-full bg-white border border-slate-250 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
-                    <option value="TNI-AD" selected>TNI-AD</option>
-                    <option value="TNI-AL">TNI-AL</option>
-                    <option value="TNI-AU">TNI-AU</option>
-                    <option value="POLRI">POLRI</option>
-                    <option value="KEMHAN">KEMHAN</option>
-                  </select>
-                </div>
-              </div>
-              <div class="flex justify-end pt-2">
-                <button type="button" onclick="submitManualInput()" class="bg-asabri-blue hover:bg-asabri-blueDark text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-100 flex items-center gap-1.5">
-                  Lanjutkan <i class="fas fa-arrow-right"></i>
-                </button>
-              </div>
+            <div id="search-results-empty" class="hidden p-6 border border-dashed border-rose-200 rounded-2xl text-center space-y-2 bg-rose-50/30 mt-6 animate-fade-in">
+              <i class="fas fa-circle-xmark text-rose-500 text-3xl block"></i>
+              <p class="text-xs font-bold text-rose-650">Data peserta tidak ditemukan.</p>
+              <p class="text-xs text-slate-500">Peserta belum terdaftar di sistem Kepesertaan.<br>Silakan hubungi Divisi Kepesertaan untuk melakukan pendaftaran terlebih dahulu.</p>
             </div>
             
             <div id="participant-lookup-placeholder" class="py-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-2xl">
@@ -908,97 +872,7 @@
       showToast("Data Ditemukan", `Peserta ${p.nama} terverifikasi sebagai peserta ASABRI.`);
     }
 
-    function showManualInputForm() {
-      document.getElementById("search-results-empty").classList.add("hidden");
-      document.getElementById("manual-input-form-container").classList.remove("hidden");
-      
-      document.getElementById("manual-nama").value = "";
-      document.getElementById("manual-identitas").value = "";
-      document.getElementById("manual-angkatan").value = "TNI-AD";
-    }
 
-    function submitManualInput() {
-      const namaEl = document.getElementById("manual-nama");
-      const identitasEl = document.getElementById("manual-identitas");
-      const angkatanEl = document.getElementById("manual-angkatan");
-      
-      const errNama = document.getElementById("error-manual-nama");
-      const errIdentitas = document.getElementById("error-manual-identitas");
-      
-      let isValid = true;
-      
-      if (!namaEl.value.trim()) {
-        namaEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
-        errNama.classList.remove("hidden");
-        isValid = false;
-      } else {
-        namaEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
-        errNama.classList.add("hidden");
-      }
-      
-      if (!identitasEl.value.trim()) {
-        identitasEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
-        errIdentitas.classList.remove("hidden");
-        isValid = false;
-      } else {
-        identitasEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
-        errIdentitas.classList.add("hidden");
-      }
-      
-      if (!isValid) return;
-      
-      const identitasVal = identitasEl.value.trim();
-      const selectedAngkatan = angkatanEl.value;
-
-      currentParticipant = {
-        isManual: true,
-        statusKepesertaan: "Aktif",
-        status_kepesertaan: "Aktif",
-        nama: namaEl.value.trim(),
-        nrp_nip: identitasVal,
-        nik: identitasVal,
-        noPeserta: "PENDING",
-        no_ktpa: "PENDING",
-        pangkat: "Manual",
-        unitKerja: selectedAngkatan,
-        kesatuan: selectedAngkatan,
-        angkatan: selectedAngkatan,
-        pasangan: null,
-        anak: []
-      };
-
-      // Show yellow Status: Pending badges
-      document.getElementById("pending-header-badge").classList.remove("hidden");
-      document.getElementById("pending-step2-badge").classList.remove("hidden");
-
-      // Hide manual input form, show read-only details but populated with manual info
-      document.getElementById("manual-input-form-container").classList.add("hidden");
-      
-      document.getElementById("p-nama").innerText = currentParticipant.nama;
-      document.getElementById("p-nip-nrp").innerText = currentParticipant.nrp_nip;
-      document.getElementById("p-nik").innerText = currentParticipant.nik;
-      document.getElementById("p-no-peserta").innerText = currentParticipant.noPeserta;
-      document.getElementById("p-unit").innerText = currentParticipant.unitKerja;
-      
-      const statusEl = document.getElementById("p-status");
-      statusEl.innerText = "Pending";
-      statusEl.className = "inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-amber-50 border-amber-200 text-amber-700 animate-pulse";
-
-      document.getElementById("spouse-warning-box").classList.add("hidden");
-      document.getElementById("participant-lookup-result").classList.remove("hidden");
-
-      unlockWorkflow();
-      updateJenisKejadianDropdown();
-
-      // Trigger visitor type change default handler
-      document.querySelector('input[name="tipe-pengunjung"][value="Peserta"]').checked = true;
-      handleVisitorTypeChange();
-
-      // Scroll to Step 2
-      document.getElementById("visitor-type-container").scrollIntoView({ behavior: 'smooth' });
-
-      showToast("Status: Pending", "Data kepesertaan didaftarkan secara manual dengan status Pending.", "warning");
-    }
 
     function handleVisitorTypeChange() {
       const selectedType = document.querySelector('input[name="tipe-pengunjung"]:checked').value;
