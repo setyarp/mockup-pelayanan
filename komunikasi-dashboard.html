@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI CRM - Dashboard Utama</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Sidebar Component -->
+  <script src="sidebar.js"></script>
+  <script src="shared.js?v=1.0.1"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar for High Density look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR / HEADER BAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <!-- ASABRI Logo & Branding -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <div class="flex flex-col">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">CUSTOMER RELATION MANAGEMENT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right-side Topbar Controls -->
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide">ROLE : Div. Layanan</span>
+      </div>
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SL</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SL | Staf Layanan Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19950812002</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- SIDEBAR: Navigation Panel -->
+    <div id="sidebar"></div>
+    <script>
+      renderSidebar('komunikasi');
+    </script>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      
+      <!-- BREADCRUMB BAR -->
+      <div class="bg-white border-b border-slate-200 px-8 py-4">
+        <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+          <span>Pelayanan Komunikasi Pelanggan</span>
+          <span class="text-slate-400">/</span>
+          <span class="font-bold text-asabri-blue">Dashboard Utama</span>
+        </div>
+      </div>
+
+      <!-- WORKSPACE PANELS -->
+      <div class="flex-1 overflow-y-auto p-8 space-y-6 bg-slate-50/50">
+
+        <!-- FILTER BAR -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center gap-4 justify-between">
+          <div class="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+            <div class="flex flex-col gap-1 w-full md:w-56">
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Periode Dari</label>
+              <input type="date" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-asabri-blue transition-colors" value="2026-08-01">
+            </div>
+            <div class="flex flex-col gap-1 w-full md:w-56">
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Periode Sampai</label>
+              <input type="date" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-asabri-blue transition-colors" value="2026-08-08">
+            </div>
+          </div>
+          <button class="bg-asabri-blue text-white px-5 py-2.5 rounded-lg text-xs font-bold hover:bg-asabri-blueDark transition-colors w-full md:w-auto flex items-center justify-center gap-2" onclick="applyInteractiveFilter()">
+            <i class="fas fa-filter"></i> Terapkan Filter
+          </button>
+        </div>
+
+        <!-- CHANNEL SUMMARY CARDS (2 KANAL) -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Interaksi per Kanal</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Website ASABRI -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between relative overflow-hidden group hover:border-blue-300 transition-colors">
+              <div class="space-y-1 relative z-10">
+                <span class="bg-blue-50 text-blue-700 border border-blue-100 text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                  <i class="fas fa-globe"></i> Website ASABRI
+                </span>
+                <h3 class="text-4xl font-extrabold text-slate-800 mt-2">412</h3>
+                <p class="text-[10px] text-slate-400 font-medium">Interaksi Masuk</p>
+              </div>
+              <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl relative z-10 shadow-inner">
+                <i class="fas fa-globe"></i>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between relative overflow-hidden group hover:border-slate-400 transition-colors">
+              <div class="space-y-1 relative z-10">
+                <span class="bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                  <i class="fas fa-envelope"></i> Email
+                </span>
+                <h3 class="text-4xl font-extrabold text-slate-800 mt-2">238</h3>
+                <p class="text-[10px] text-slate-400 font-medium">Interaksi Masuk</p>
+              </div>
+              <div class="w-14 h-14 bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center text-2xl relative z-10 shadow-inner">
+                <i class="fas fa-envelope"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STATUS PENANGANAN CARDS (3 STATUS) -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Status Penanganan</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Total Selesai -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between relative overflow-hidden group hover:border-emerald-300 transition-colors">
+              <div class="space-y-1 relative z-10">
+                <span class="text-emerald-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Selesai
+                </span>
+                <h3 class="text-4xl font-extrabold text-slate-800">1,120</h3>
+                <p class="text-[10px] text-slate-400 font-medium">Telah Direspon & Ditutup</p>
+              </div>
+              <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl relative z-10 shadow-inner">
+                <i class="fas fa-check-double"></i>
+              </div>
+            </div>
+
+            <!-- Total Dalam Proses -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between relative overflow-hidden group hover:border-amber-300 transition-colors">
+              <div class="space-y-1 relative z-10">
+                <span class="text-amber-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Dalam Proses
+                </span>
+                <h3 class="text-4xl font-extrabold text-slate-800">224</h3>
+                <p class="text-[10px] text-slate-400 font-medium">Sedang Ditangani Agen</p>
+              </div>
+              <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-2xl relative z-10 shadow-inner">
+                <i class="fas fa-spinner animate-spin"></i>
+              </div>
+            </div>
+
+            <!-- Total Belum Ditangani -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between relative overflow-hidden group hover:border-rose-300 transition-colors">
+              <div class="space-y-1 relative z-10">
+                <span class="text-rose-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Belum Ditangani
+                </span>
+                <h3 class="text-4xl font-extrabold text-slate-800">54</h3>
+                <p class="text-[10px] text-slate-400 font-medium">Menunggu Antrian Respon</p>
+              </div>
+              <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center text-2xl relative z-10 shadow-inner">
+                <i class="fas fa-inbox"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAR CHART GRAPHIC SECTION -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+          <div class="border-b border-slate-100 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800">Grafik Tren Interaksi Komunikasi</h3>
+              <p class="text-[10px] text-slate-400 font-medium mt-0.5">Tren harian berdasarkan total interaksi per kanal masuk</p>
+            </div>
+            <!-- Legend Indicators -->
+            <div class="flex items-center gap-4 text-xs font-bold">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Website ASABRI</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> Email</span>
+            </div>
+          </div>
+          
+                              <!-- Bar Chart Container -->
+          <div class="h-64 w-full flex items-end justify-between gap-2 pt-8 px-2 border-b border-slate-100">
+            <!-- Monday -->
+            <div class="flex flex-col items-center gap-2 flex-1 h-full justify-end">
+              <div class="flex items-end gap-1 h-48 w-full justify-center">
+                <div id="bar-mon-web" class="w-2 md:w-3 bg-blue-500 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 20%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">20</span>
+                </div>
+                <div id="bar-mon-mail" class="w-2 md:w-3 bg-slate-400 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 10%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">10</span>
+                </div>
+              </div>
+              <span class="text-[9px] text-slate-400 font-bold whitespace-nowrap">Sen (03 Agt)</span>
+            </div>
+            <!-- Tuesday -->
+            <div class="flex flex-col items-center gap-2 flex-1 h-full justify-end">
+              <div class="flex items-end gap-1 h-48 w-full justify-center">
+                <div id="bar-tue-web" class="w-2 md:w-3 bg-blue-500 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 25%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">25</span>
+                </div>
+                <div id="bar-tue-mail" class="w-2 md:w-3 bg-slate-400 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 12%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">12</span>
+                </div>
+              </div>
+              <span class="text-[9px] text-slate-400 font-bold">Sel</span>
+            </div>
+            <!-- Wednesday -->
+            <div class="flex flex-col items-center gap-2 flex-1 h-full justify-end">
+              <div class="flex items-end gap-1 h-48 w-full justify-center">
+                <div id="bar-wed-web" class="w-2 md:w-3 bg-blue-500 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 30%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">30</span>
+                </div>
+                <div id="bar-wed-mail" class="w-2 md:w-3 bg-slate-400 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 15%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">15</span>
+                </div>
+              </div>
+              <span class="text-[9px] text-slate-400 font-bold">Rab</span>
+            </div>
+            <!-- Thursday -->
+            <div class="flex flex-col items-center gap-2 flex-1 h-full justify-end">
+              <div class="flex items-end gap-1 h-48 w-full justify-center">
+                <div id="bar-thu-web" class="w-2 md:w-3 bg-blue-500 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 28%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">28</span>
+                </div>
+                <div id="bar-thu-mail" class="w-2 md:w-3 bg-slate-400 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 14%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">14</span>
+                </div>
+              </div>
+              <span class="text-[9px] text-slate-400 font-bold">Kam</span>
+            </div>
+            <!-- Friday -->
+            <div class="flex flex-col items-center gap-2 flex-1 h-full justify-end">
+              <div class="flex items-end gap-1 h-48 w-full justify-center">
+                <div id="bar-fri-web" class="w-2 md:w-3 bg-blue-500 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 35%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">35</span>
+                </div>
+                <div id="bar-fri-mail" class="w-2 md:w-3 bg-slate-400 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 18%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">18</span>
+                </div>
+              </div>
+              <span class="text-[9px] text-slate-400 font-bold">Jum</span>
+            </div>
+            <!-- Saturday -->
+            <div class="flex flex-col items-center gap-2 flex-1 h-full justify-end">
+              <div class="flex items-end gap-1 h-48 w-full justify-center">
+                <div id="bar-sat-web" class="w-2 md:w-3 bg-blue-500 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 48%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">48</span>
+                </div>
+                <div id="bar-sat-mail" class="w-2 md:w-3 bg-slate-400 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 22%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">22</span>
+                </div>
+              </div>
+              <span class="text-[9px] text-slate-400 font-bold">Sab</span>
+            </div>
+            <!-- Sunday -->
+            <div class="flex flex-col items-center gap-2 flex-1 h-full justify-end">
+              <div class="flex items-end gap-1 h-48 w-full justify-center">
+                <div id="bar-sun-web" class="w-2 md:w-3 bg-blue-500 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 60%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">60</span>
+                </div>
+                <div id="bar-sun-mail" class="w-2 md:w-3 bg-slate-400 rounded-t cursor-pointer relative group transition-all duration-500 hover:scale-x-110" style="height: 28%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">28</span>
+                </div>
+              </div>
+              <span class="text-[9px] text-slate-400 font-bold">Min</span>
+            </div>
+            <!-- Today -->
+            <div class="flex flex-col items-center gap-2 flex-1 h-full justify-end">
+              <div class="flex items-end gap-1 h-48 w-full justify-center">
+                <div id="bar-today-web" class="w-2 md:w-3 bg-blue-500 rounded-t cursor-pointer relative group animate-pulse transition-all duration-500 hover:scale-x-110" style="height: 68%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">68</span>
+                </div>
+                <div id="bar-today-mail" class="w-2 md:w-3 bg-slate-400 rounded-t cursor-pointer relative group animate-pulse transition-all duration-500 hover:scale-x-110" style="height: 32%;">
+                  <span class="absolute -top-6 left-1/2 -translate-y-1 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 z-10 whitespace-nowrap val-label">32</span>
+                </div>
+              </div>
+              <span class="text-[9px] text-slate-500 font-extrabold whitespace-nowrap">Hari Ini (08 Agt)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    const amaData = [
+      { label: "Approved", value: "1,022 (72%)" },
+      { label: "Processing", value: "255 (18%)" },
+      { label: "Pending", value: "85 (6%)" },
+      { label: "Rejected", value: "57 (4%)" }
+    ];
+
+    let currentAmaSeg = -1;
+
+    function showAmaTooltip(index) {
+      const item = amaData[index];
+      const tooltip = document.getElementById("ama-tooltip");
+      document.getElementById("ama-tooltip-label").innerText = item.label;
+      document.getElementById("ama-tooltip-val").innerText = item.value;
+      tooltip.style.opacity = "1";
+      tooltip.style.top = "-40px";
+      tooltip.style.left = "50%";
+      currentAmaSeg = index;
+    }
+
+    function hideAmaTooltip() {
+      document.getElementById("ama-tooltip").style.opacity = "0";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Keep hidden on load, wait for click
+    });
+  </script>
+
+  <script>
+    if (typeof toggleSidebarAccordion === 'undefined') {
+      function toggleSidebarAccordion(menuId, chevId) {
+        const menu = document.getElementById(menuId);
+        const chev = document.getElementById(chevId);
+        if (!menu || !chev) return;
+        if (menu.classList.contains('hidden')) {
+          menu.classList.remove('hidden');
+          chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+        } else {
+          menu.classList.add('hidden');
+          chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+        }
+      }
+    }
+  </script>
+
+  <script>
+    function applyInteractiveFilter() {
+      // Show simple loading effect / animation on bars
+      const barIds = [
+        'bar-mon-web', 'bar-mon-mail',
+        'bar-tue-web', 'bar-tue-mail',
+        'bar-wed-web', 'bar-wed-mail',
+        'bar-thu-web', 'bar-thu-mail',
+        'bar-fri-web', 'bar-fri-mail',
+        'bar-sat-web', 'bar-sat-mail',
+        'bar-sun-web', 'bar-sun-mail',
+        'bar-today-web', 'bar-today-mail'
+      ];
+      
+      barIds.forEach(id => {
+        const bar = document.getElementById(id);
+        if (bar) {
+          // Generate new random values
+          const newVal = Math.floor(Math.random() * 85) + 10;
+          bar.style.height = newVal + '%';
+          
+          const label = bar.querySelector('.val-label');
+          if (label) {
+            label.innerText = newVal;
+          }
+        }
+      });
+      
+      // Also randomize KPI counters for cards to feel interactive
+      const kpiCards = document.querySelectorAll('h3.text-4xl');
+      if (kpiCards.length >= 5) {
+        kpiCards[0].innerText = Math.floor(Math.random() * 200) + 200; // Web
+        kpiCards[1].innerText = Math.floor(Math.random() * 100) + 100; // Email
+        kpiCards[2].innerText = Math.floor(Math.random() * 800) + 800; // Selesai
+        kpiCards[3].innerText = Math.floor(Math.random() * 150) + 100; // Proses
+        kpiCards[4].innerText = Math.floor(Math.random() * 40) + 20;   // Belum
+      }
+    }
+  </script>
+</body>
+</html>

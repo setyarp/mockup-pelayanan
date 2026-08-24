@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI YANDU NG - Proses Klaim</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR / HEADER BAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md flex-shrink-0">
+    <div class="flex items-center gap-5">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right-side Topbar Controls -->
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide">ROLE : Staf KANCAB</span>
+      </div>
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- SIDEBAR: Navigation Panel -->
+    <aside id="sidebar-nav" class="w-80 bg-asabri-softBlue border-r border-slate-200 flex flex-col flex-shrink-0 transition-all duration-300">
+      <div class="p-5 border-b border-slate-200 bg-white/50">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Menu Layanan</h2>
+      </div>
+
+      <!-- Accordion Navigation List -->
+      <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+        <!-- 1. Dashboard -->
+        <a href="index.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-chart-pie text-base text-asabri-blue"></i>
+            <span>1. Dashboard</span>
+          </div>
+        </a>
+
+        <!-- 2. Pelayanan Registrasi Peserta Klaim -->
+        <a href="registrasi.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-pen-to-square text-base text-asabri-blue"></i>
+            <span>2. Pelayanan Registrasi Klaim Peserta</span>
+          </div>
+        </a>
+
+        <!-- 3. Data Peserta -->
+        <a href="data-peserta.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-search text-base text-asabri-blue"></i>
+            <span>3. Data Peserta</span>
+          </div>
+        </a>
+
+        <!-- 4. Riwayat Transaksi Klaim -->
+        <a href="riwayat.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-clock-rotate-left text-base text-asabri-blue"></i>
+            <span>4. Riwayat Transaksi Klaim</span>
+          </div>
+        </a>
+
+        <!-- 5. Pelayanan Klaim -->
+        <a href="kejadian.html" class="flex w-full bg-asabri-blue text-white rounded-xl p-3.5 shadow-md flex items-center justify-between font-semibold text-xs border border-asabri-blueDark/10 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-file-invoice text-base text-asabri-gold"></i>
+            <span>5. Pelayanan Klaim</span>
+          </div>
+        </a>
+
+                <!-- 6. Perawatan JKK -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-perawatan','chevron-perawatan')" class="w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-hand-holding-medical text-base text-asabri-blue"></i>
+              <span>6. Perawatan JKK</span>
+            </div>
+            <i id="chevron-perawatan" class="fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-perawatan" class="hidden pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="perawatan-kejadian.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-notes-medical w-4 text-slate-400"></i>
+              <span>Laporan Kejadian</span>
+            </a>
+            <a href="perawatan-klaim.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-file-medical w-4 text-slate-400"></i>
+              <span>Pengajuan Klaim</span>
+            </a>
+            <a href="perawatan-verifikasi.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-user-shield w-4 text-slate-400"></i>
+              <span>Verifikasi Klaim</span>
+            </a>
+          </div>
+        </div>
+
+<!-- 7. Pelayanan Komunikasi Pelanggan -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-kominfo','chevron-kominfo')" class="w-full w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-comments text-base text-asabri-blue"></i>
+              <span>7. Pelayanan Komunikasi Pelanggan</span>
+            </div>
+            <i id="chevron-kominfo" class="fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-kominfo" class="hidden pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="komunikasi-dashboard.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-gauge w-4 text-slate-400"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="komunikasi-riwayat.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-clock-rotate-left w-4 text-slate-400"></i>
+              <span>Riwayat Interaksi</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-slate-250 bg-slate-100 text-[10px] text-slate-400 font-mono text-center">
+        ASABRI YANDU NG v1.2.0
+      </div>
+    </aside>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      
+      <!-- BREADCRUMB BAR -->
+      <div class="bg-white border-b border-slate-200 px-8 py-3 flex-shrink-0 flex items-center justify-between">
+        <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+          <span>Pelayanan Registrasi Klaim Peserta</span>
+          <span class="text-slate-400">/</span>
+          <span>Proses Berkas</span>
+          <span class="text-slate-400">/</span>
+          <span class="font-bold text-asabri-blue" id="breadcrumb-manfaat">Proses Klaim</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="index.html" class="text-xs text-asabri-blue font-bold hover:underline flex items-center gap-1"><i class="fas fa-arrow-left text-[10px]"></i> Kembali ke Dashboard</a>
+        </div>
+      </div>
+
+      <!-- NO-DATA WARNING BANNER (Hidden by default) -->
+      <div id="no-data-warning" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center bg-slate-50">
+        <div class="w-16 h-16 rounded-full bg-amber-50 border border-amber-250 flex items-center justify-center text-amber-500 text-2xl mb-4 animate-bounce">
+          <i class="fas fa-triangle-exclamation"></i>
+        </div>
+        <h4 class="font-bold text-slate-800 text-sm">Tidak Ada Data Registrasi Aktif</h4>
+        <p class="text-slate-500 text-xs mt-1 max-w-md">Harap lakukan registrasi pengajuan terlebih dahulu atau buka antrean klaim dari menu Riwayat/Dashboard Utama.</p>
+        <a href="registrasi.html" class="mt-4 bg-asabri-blue text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-asabri-blueDark transition-all">Daftarkan Klaim Baru</a>
+      </div>
+
+      <!-- MAIN PAGE GRID FLOW -->
+      <div id="main-content-flow" class="flex-1 flex flex-col overflow-hidden">
+        
+        <!-- STICKY HEADER SUMMARY BAR -->
+        <div class="bg-white border-b border-slate-200 px-8 py-4 shadow-sm flex flex-wrap items-center justify-between gap-4 sticky-header">
+          <div class="flex items-center gap-6">
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">NO. AGENDA / REGISTRASI</span>
+              <span class="text-base font-extrabold text-slate-800 mt-1 block font-mono" id="ringkasan-noreg">REG-2026-07-0000</span>
+            </div>
+            <div class="h-8 w-px bg-slate-200"></div>
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">PESERTA / NIP-NRP</span>
+              <span class="text-sm font-extrabold text-slate-800 mt-1 block" id="ringkasan-peserta">Loading...</span>
+            </div>
+            <div class="h-8 w-px bg-slate-200"></div>
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">PROGRAM / MANFAAT KLAIM</span>
+              <span class="text-sm font-extrabold text-asabri-blue mt-1 block"><span id="ringkasan-jenis">-</span> &bull; <span id="ringkasan-manfaat">-</span></span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-5">
+            <!-- SLA Timer -->
+            <div class="flex flex-col items-end">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">SLA DURASI PROSES</span>
+              <div class="flex items-center gap-1.5 mt-1 font-mono font-bold text-xs" id="sla-display-container">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="sla-status-indicator"></span>
+                <span class="text-slate-800" id="sla-timer-text">00:00:00</span>
+              </div>
+            </div>
+            <div class="h-8 w-px bg-slate-200"></div>
+            <!-- Status Badge -->
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">STATUS BERKAS</span>
+              <div class="mt-1" id="ringkasan-status-container">
+                <span class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold border border-indigo-200 inline-flex items-center gap-1">
+                  <i class="fas fa-spinner fa-spin text-xs"></i> Dalam Proses
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABS NAV BAR -->
+        <div class="bg-white border-b border-slate-200 px-8 flex-shrink-0 overflow-x-auto">
+          <div class="flex gap-6">
+            <button onclick="switchTab('tab-peserta')" id="btn-tab-peserta" class="py-3 px-1 border-b-2 border-asabri-blue text-xs font-bold text-asabri-blue focus:outline-none transition-all flex items-center gap-1.5">
+              <i class="fas fa-user-shield text-xs"></i> 1. Data Peserta
+            </button>
+            <button onclick="switchTab('tab-pengaju')" id="btn-tab-pengaju" class="py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+              <i class="fas fa-user-edit text-xs"></i> 2. Data Pengaju
+            </button>
+            <button onclick="switchTab('tab-dokumen')" id="btn-tab-dokumen" class="py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+              <i class="fas fa-file-circle-check text-xs"></i> 3. Checklist Dokumen
+            </button>
+            <button onclick="switchTab('tab-pendukung')" id="btn-tab-pendukung" class="py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+              <i class="fas fa-folder-open text-xs"></i> 4. Data Pendukung
+            </button>
+            <button onclick="switchTab('tab-perhitungan')" id="btn-tab-perhitungan" class="py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+              <i class="fas fa-calculator text-xs"></i> 5. Perhitungan Manfaat
+            </button>
+            <button onclick="switchTab('tab-status')" id="btn-tab-status" class="py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+              <i class="fas fa-clock-rotate-left text-xs"></i> 6. Status & Riwayat
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB PANE CONTENT AREA -->
+        <div class="flex-1 overflow-y-auto p-8 space-y-6">
+
+          <!-- TAB 1: DATA PESERTA (READ ONLY) -->
+          <div id="tab-peserta" class="tab-pane space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 max-w-4xl">
+              <div class="border-b border-slate-100 pb-3 mb-5">
+                <h3 class="text-sm font-bold text-slate-800">Informasi Kepesertaan</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Ditarik otomatis dari database ASABRI (Read-Only)</p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-xs font-medium text-slate-600">
+                <div class="flex justify-between py-1.5 border-b border-slate-50">
+                  <span class="text-slate-400">Nama Lengkap</span>
+                  <span class="text-slate-800 font-bold" id="t1-nama">-</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-50">
+                  <span class="text-slate-400">NIP / NRP</span>
+                  <span class="text-slate-800 font-bold font-mono" id="t1-nip-nrp">-</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-50">
+                  <span class="text-slate-400">NIK (KTP)</span>
+                  <span class="text-slate-800 font-bold font-mono" id="t1-nik">-</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-50">
+                  <span class="text-slate-400">No. Kartu ASABRI (KTPA)</span>
+                  <span class="text-slate-800 font-bold font-mono" id="t1-ktpa">-</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-50">
+                  <span class="text-slate-400">Pangkat / Golongan</span>
+                  <span class="text-slate-800 font-bold" id="t1-pangkat">-</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-50">
+                  <span class="text-slate-400">Satuan Kerja / Kesatuan</span>
+                  <span class="text-slate-800 font-bold" id="t1-satker">-</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-50">
+                  <span class="text-slate-400">Gaji Pokok Terakhir</span>
+                  <span class="text-slate-850 font-extrabold text-asabri-blue font-mono" id="t1-gapok">Rp -</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-50">
+                  <span class="text-slate-400">TMT Dinas Aktif</span>
+                  <span class="text-slate-800 font-bold font-mono" id="t1-tmt">-</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-50 md:col-span-2">
+                  <span class="text-slate-400">Status Kepesertaan</span>
+                  <span id="t1-status-badge">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: DATA PENGAJU -->
+          <div id="tab-pengaju" class="tab-pane hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 max-w-4xl">
+              <div class="border-b border-slate-100 pb-3 mb-5 flex justify-between items-center">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-800">Formulir Data Pengaju</h3>
+                  <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Lengkapi data pengaju klaim/ahli waris penerima manfaat</p>
+                </div>
+                <button type="button" onclick="autoFillApplicantYbs()" class="text-[10px] text-asabri-blue font-bold border border-asabri-blue/30 bg-asabri-softBlue hover:bg-asabri-blue hover:text-white px-3 py-1 rounded-lg transition-all">Pre-fill Data Peserta (YBS)</button>
+              </div>
+
+              <form id="form-tab-pengaju" class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Nama Lengkap Pengaju <span class="text-rose-500">*</span></label>
+                  <input type="text" id="f-p-nama" required placeholder="Sesuai KTP / Dokumen Waris" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Hubungan dengan Peserta <span class="text-rose-500">*</span></label>
+                  <select id="f-p-hubungan" required class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700">
+                    <option value="" disabled selected>-- Pilih Hubungan --</option>
+                    <option value="Yang Bersangkutan">Yang Bersangkutan (YBS)</option>
+                    <option value="Istri">Istri</option>
+                    <option value="Suami">Suami</option>
+                    <option value="Anak">Anak</option>
+                    <option value="Orang Tua">Orang Tua</option>
+                    <option value="Wali">Wali</option>
+                    <option value="Lainnya">Lainnya</option>
+                  </select>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">NIK Pengaju <span class="text-rose-500">*</span></label>
+                  <input type="text" id="f-p-nik" maxlength="16" required placeholder="16 Digit NIK" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700 font-mono">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Tanggal Lahir Pengaju <span class="text-rose-500">*</span></label>
+                  <input type="date" id="f-p-tgl-lahir" required class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700 font-mono">
+                </div>
+                <div class="flex flex-col gap-1.5 md:col-span-2">
+                  <label class="font-bold text-slate-500">Alamat Lengkap Pengaju <span class="text-rose-500">*</span></label>
+                  <textarea id="f-p-alamat" required rows="2" placeholder="Nama Jalan, Blok, RT/RW" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700 resize-none"></textarea>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Kelurahan / Desa</label>
+                  <input type="text" id="f-p-kelurahan" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Kecamatan</label>
+                  <input type="text" id="f-p-kecamatan" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Kota / Kabupaten</label>
+                  <input type="text" id="f-p-kota" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Provinsi</label>
+                  <input type="text" id="f-p-provinsi" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">No. Telepon / HP <span class="text-rose-500">*</span></label>
+                  <input type="text" id="f-p-telp" required placeholder="Contoh: 081234567890" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700 font-mono">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Alamat E-mail</label>
+                  <input type="email" id="f-p-email" placeholder="Contoh: pengaju@gmail.com" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700 font-mono">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Mitra Bayar Pensiun / Rekening <span class="text-rose-500">*</span></label>
+                  <select id="f-p-mitra" required class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700">
+                    <option value="" disabled selected>-- Pilih Bank/Mitra --</option>
+                    <option value="Pos Indonesia">PT Pos Indonesia</option>
+                    <option value="BRI">Bank Rakyat Indonesia (BRI)</option>
+                    <option value="BNI">Bank Negara Indonesia (BNI)</option>
+                    <option value="BTPN">Bank BTPN</option>
+                    <option value="Bank Woori Saudara">Bank Woori Saudara</option>
+                    <option value="Bank Bukopin">Bank Bukopin</option>
+                    <option value="BTN">Bank Tabungan Negara (BTN)</option>
+                    <option value="BJB">Bank BJB</option>
+                    <option value="Bank Jateng">Bank Jateng</option>
+                    <option value="Bank Mantap">Bank Mandiri Taspen (Mantap)</option>
+                    <option value="Bank Syariah Indonesia">Bank Syariah Indonesia (BSI)</option>
+                  </select>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-bold text-slate-500">Nomor Rekening Penerima <span class="text-rose-500">*</span></label>
+                  <input type="text" id="f-p-norek" required placeholder="Masukkan nomor rekening aktif" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700 font-mono">
+                </div>
+                <div class="md:col-span-2 border-t border-slate-100 pt-4 flex justify-end">
+                  <button type="button" onclick="saveTabPengaju()" class="bg-asabri-blue hover:bg-asabri-blueDark text-white px-5 py-2 rounded-xl font-bold shadow-md shadow-blue-150 transition-all"><i class="fas fa-floppy-disk mr-1.5"></i> Simpan Data Pengaju</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- TAB 3: CHECKLIST DOKUMEN -->
+          <div id="tab-dokumen" class="tab-pane hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <div class="border-b border-slate-100 pb-3 mb-5">
+                <h3 class="text-sm font-bold text-slate-800">Checklist Kelengkapan Berkas</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Dokumen wajib [W] dan Dokumen kondisional [K] untuk Manfaat ini</p>
+              </div>
+
+              <!-- Document Checklist Table -->
+              <div class="overflow-x-auto border border-slate-150 rounded-xl">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-400 uppercase text-[9px] font-bold tracking-wider">
+                      <th class="py-2.5 px-4 w-12">No</th>
+                      <th class="py-2.5 px-4 w-20">Sifat</th>
+                      <th class="py-2.5 px-4">Nama Dokumen Persyaratan</th>
+                      <th class="py-2.5 px-4 w-72">Status Penerimaan</th>
+                      <th class="py-2.5 px-4 w-40">Scan Lampiran</th>
+                    </tr>
+                  </thead>
+                  <tbody id="checklist-tbody" class="divide-y divide-slate-150 text-xs text-slate-700 font-medium">
+                    <!-- Loaded dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: DATA PENDUKUNG -->
+          <div id="tab-pendukung" class="tab-pane hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 max-w-4xl">
+              <div class="border-b border-slate-100 pb-3 mb-5">
+                <h3 class="text-sm font-bold text-slate-800">Data Pendukung Manfaat</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Formulir isian teknis khusus manfaat klaim</p>
+              </div>
+
+              <form id="form-tab-pendukung" class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                <!-- Dynamically loaded fields -->
+                <div class="col-span-2 text-center text-slate-400 py-6">Loading field pendukung...</div>
+              </form>
+            </div>
+          </div>
+
+          <!-- TAB 5: PERHITUNGAN MANFAAT -->
+          <div id="tab-perhitungan" class="tab-pane hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 max-w-3xl">
+              <div class="border-b border-slate-100 pb-3 mb-5">
+                <h3 class="text-sm font-bold text-slate-800">Kalkulator Perhitungan Manfaat</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Akumulasi santunan, tunjangan, dan potongan wajib</p>
+              </div>
+
+              <!-- Calculation Ledger -->
+              <div class="space-y-4" id="perhitungan-ledger-container">
+                <!-- Loaded dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 6: STATUS & RIWAYAT -->
+          <div id="tab-status" class="tab-pane hidden space-y-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              
+              <!-- Action Panel (Transition status) -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 lg:col-span-2 space-y-5">
+                <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3 flex justify-between items-center">
+                  <span>Tindak Lanjut & Aksi Berkas</span>
+                  <span class="text-[9px] bg-slate-100 text-slate-500 font-bold px-2 py-0.5 rounded border border-slate-200 uppercase">Prosedural</span>
+                </h3>
+
+                <!-- Status control buttons -->
+                <div class="space-y-3">
+                  <label class="font-bold text-xs text-slate-500 block">Catatan / Alasan Tindak Lanjut <span class="text-rose-500">*</span></label>
+                  <textarea id="t6-catatan" rows="3" placeholder="Wajib diisi jika menunda (Pending) atau menolak (Ditolak) berkas..." class="w-full border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue font-semibold text-slate-700 resize-none"></textarea>
+                </div>
+
+                <div class="flex flex-wrap gap-3 pt-3 border-t border-slate-100" id="t6-actions-container">
+                  <!-- Generated based on status -->
+                </div>
+
+                <!-- Print documents section -->
+                <div class="pt-4 border-t border-slate-150 space-y-2">
+                  <span class="font-bold text-xs text-slate-500 block">Cetak Dokumen Keluaran (Output)</span>
+                  <div class="flex flex-wrap gap-2">
+                    <button onclick="printSuratKekurangan()" id="btn-print-kekurangan" class="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+                      <i class="fas fa-file-pdf text-rose-500"></i> Cetak Surat Kekurangan Dokumen
+                    </button>
+                    <button onclick="printKuitansi()" id="btn-print-kuitansi" class="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+                      <i class="fas fa-print text-indigo-500"></i> Cetak Tanda Terima / Kuitansi
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Linked claim (POLA B Ticket Info) -->
+                <div id="t6-linked-container" class="hidden bg-slate-50 rounded-xl p-4 border border-slate-250 flex items-center justify-between text-xs mt-4">
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                      <span class="text-[9px] bg-indigo-100 text-indigo-700 border border-indigo-200 px-1.5 py-0.2 rounded font-bold uppercase">Linked Claim (Pola B)</span>
+                      <strong class="font-mono text-slate-800" id="linked-noreg">-</strong>
+                    </div>
+                    <p class="text-slate-500 leading-snug">Tiket baru: <span class="font-semibold text-slate-700" id="linked-jenis-manfaat">-</span> (Status: <span id="linked-status">-</span>)</p>
+                  </div>
+                  <button onclick="openLinkedClaim()" class="bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold shadow-sm flex items-center gap-1">Buka Klaim Terkait <i class="fas fa-chevron-right text-[10px]"></i></button>
+                </div>
+              </div>
+
+              <!-- Timeline Panel -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+                <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Log Riwayat Berkas</h3>
+                
+                <!-- Graphic Vertical Timeline -->
+                <div class="relative pl-6 border-l border-slate-200 space-y-5 py-2 max-h-96 overflow-y-auto" id="timeline-log-container">
+                  <!-- Dynamically loaded -->
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- PRINT VIEW MODAL DIALOG (HIDDEN BY DEFAULT) -->
+  <div id="print-modal" class="fixed inset-0 bg-slate-900/40 z-50 flex items-center justify-center p-6 hidden animate-fade-in">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-3xl w-full flex flex-col max-h-[85vh]">
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 flex-shrink-0">
+        <h3 class="text-sm font-bold text-slate-800" id="print-modal-title">Pratinjau Surat Pemberitahuan</h3>
+        <button onclick="closePrintModal()" class="text-slate-400 hover:text-slate-600"><i class="fas fa-xmark text-lg"></i></button>
+      </div>
+      <!-- Print Content Box -->
+      <div class="flex-1 overflow-y-auto p-8" id="print-modal-body" style="font-family: 'Times New Roman', Times, serif;">
+        <!-- Injected PDF content -->
+      </div>
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-slate-200 flex justify-end gap-3 bg-slate-50 flex-shrink-0">
+        <button onclick="closePrintModal()" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-600 transition-colors">Tutup</button>
+        <button onclick="triggerPrintDoc()" class="px-5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-100 flex items-center gap-1.5"><i class="fas fa-print"></i> Cetak Surat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared JS layer & Database seed -->
+  <script src="data.js?v=1.0.1"></script>
+  <script src="shared.js?v=1.0.1"></script>
+
+  <!-- Dynamic Process logic script -->
+  <script>
+    // System Variables
+    let activeClaim = null;
+    let requiredDocs = [];
+    let pendukungFields = [];
+    let inputValues = {};
+    let slaInterval = null;
+
+    // SLA Timer
+    function startSlaTimer(startTime, isPending) {
+      if (slaInterval) clearInterval(slaInterval);
+      const timerEl = document.getElementById("sla-timer-text");
+      const indicatorEl = document.getElementById("sla-status-indicator");
+
+      if (isPending) {
+        timerEl.innerText = "FREEZE (DITANGGUHKAN)";
+        timerEl.className = "text-amber-600";
+        indicatorEl.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse";
+        return;
+      }
+
+      timerEl.className = "text-slate-800";
+      indicatorEl.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
+
+      function update() {
+        const diff = new Date().getTime() - startTime;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+        const pad = (n) => n.toString().padStart(2, '0');
+        timerEl.innerText = `${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+      }
+
+      update();
+      slaInterval = setInterval(update, 1000);
+    }
+
+    // Tab Switching
+    function switchTab(tabId) {
+      const panes = document.querySelectorAll(".tab-pane");
+      panes.forEach(pane => {
+        if (pane.id === tabId) pane.classList.remove("hidden");
+        else pane.classList.add("hidden");
+      });
+
+      const buttons = document.querySelectorAll("[id^='btn-tab-']");
+      buttons.forEach(btn => {
+        const idSuffix = btn.id.replace("btn-tab-", "");
+        if ("tab-" + idSuffix === tabId) {
+          btn.className = "py-3 px-1 border-b-2 border-asabri-blue text-xs font-bold text-asabri-blue focus:outline-none transition-all flex items-center gap-1.5";
+        } else {
+          btn.className = "py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5";
+        }
+      });
+    }
+
+    // Auto-fill applicant info from participant
+    function autoFillApplicantYbs() {
+      if (!activeClaim || !activeClaim.participant) return;
+      const p = activeClaim.participant;
+      document.getElementById("f-p-nama").value = p.nama;
+      document.getElementById("f-p-hubungan").value = "Yang Bersangkutan";
+      document.getElementById("f-p-nik").value = p.nik;
+      document.getElementById("f-p-tgl-lahir").value = p.tanggal_lahir || "";
+      document.getElementById("f-p-alamat").value = "Asrama Kodam, RT 01/RW 03";
+      document.getElementById("f-p-kelurahan").value = "Cibeunying";
+      document.getElementById("f-p-kecamatan").value = "Cibeunying Kaler";
+      document.getElementById("f-p-kota").value = p.kesatuan || p.unitKerja || "Bandung";
+      document.getElementById("f-p-provinsi").value = "Jawa Barat";
+      document.getElementById("f-p-telp").value = "081298765432";
+      document.getElementById("f-p-email").value = "ybs_asabri@mail.com";
+      if (p.kantor_bayar) {
+        document.getElementById("f-p-mitra").value = p.kantor_bayar.bank || "";
+        document.getElementById("f-p-norek").value = p.kantor_bayar.no_rekening || "";
+      }
+      showToast("Data Diisi", "Form pengaju telah di-prefill dengan data YBS.");
+    }
+
+    // Save applicant tab info to activeClaim
+    function saveTabPengaju() {
+      if (!activeClaim) return;
+      const val = (id) => document.getElementById(id).value.trim();
+
+      const nama = val("f-p-nama");
+      const hubungan = val("f-p-hubungan");
+      const nik = val("f-p-nik");
+      const tgl = val("f-p-tgl-lahir");
+      const telp = val("f-p-telp");
+      const norek = val("f-p-norek");
+      const bank = val("f-p-mitra");
+
+      if (!nama || !hubungan || !nik || !tgl || !telp || !norek || !bank) {
+        showToast("Pengaju Belum Lengkap", "Mohon isi seluruh kolom wajib (*) pada data pengaju.", "danger");
+        return;
+      }
+
+      if (nik.length !== 16 || isNaN(nik)) {
+        showToast("NIK Tidak Valid", "NIK pengaju harus berupa 16 digit angka.", "danger");
+        return;
+      }
+
+      activeClaim.pengaju = {
+        nama, hubungan, nik, tgl,
+        alamat: val("f-p-alamat"),
+        kelurahan: val("f-p-kelurahan"),
+        kecamatan: val("f-p-kecamatan"),
+        kota: val("f-p-kota"),
+        provinsi: val("f-p-provinsi"),
+        telp,
+        email: val("f-p-email"),
+        mitraBayar: bank,
+        noRekening: norek
+      };
+
+      saveStateToDatabase();
+      addTimelineEntry("Data Pengaju Disimpan", "SK | Staf Kancab", "Informasi data pengaju klaim berhasil diperbarui.");
+      showToast("Pengaju Disimpan", "Data pengaju berhasil diperbarui dan disimpan.");
+      switchTab("tab-dokumen");
+    }
+
+    // Initial Loading
+    document.addEventListener("DOMContentLoaded", () => {
+      loadActiveClaim();
+
+      // Show deferred toast from registration redirect
+      const toastTitle = sessionStorage.getItem("asabri_toast_title");
+      const toastMsg = sessionStorage.getItem("asabri_toast_message");
+      const toastType = sessionStorage.getItem("asabri_toast_type") || "success";
+      if (toastTitle && toastMsg) {
+        setTimeout(() => showToast(toastTitle, toastMsg, toastType), 600);
+        sessionStorage.removeItem("asabri_toast_title");
+        sessionStorage.removeItem("asabri_toast_message");
+        sessionStorage.removeItem("asabri_toast_type");
+      }
+    });
+
+    function loadActiveClaim() {
+      // 1. Try URL parameters first
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryNoreg = urlParams.get('noAgenda') || urlParams.get('detail');
+
+      if (queryNoreg) {
+        const claims = getClaims();
+        const found = claims.find(c => c.noRegistrasi === queryNoreg || c.noReg === queryNoreg);
+        if (found) {
+          // If JKK Perawatan, redirect to klaim-jkk-perawatan.html
+          if (found.jenisKlaim === 'JKK Perawatan' || found.manfaatKlaim === 'Perawatan' || (found.manfaatKlaim && found.manfaatKlaim.includes('Perawatan'))) {
+            window.location.href = `klaim-jkk-perawatan.html?noAgenda=${queryNoreg}`;
+            return;
+          }
+          activeClaim = JSON.parse(JSON.stringify(found)); // deep copy
+        }
+      }
+
+      // 2. Fallback to sessionStorage
+      if (!activeClaim) {
+        const dataStr = sessionStorage.getItem("asabri_temp_claim_data");
+        if (dataStr) {
+          activeClaim = JSON.parse(dataStr);
+          // Persist new claim from sessionStorage into localStorage database
+          const claims = getClaims();
+          const alreadyExists = claims.some(c =>
+            c.noRegistrasi === activeClaim.noRegistrasi ||
+            c.noReg === activeClaim.noRegistrasi
+          );
+          if (!alreadyExists) {
+            claims.unshift(activeClaim);
+            saveClaims(claims);
+          }
+          sessionStorage.removeItem("asabri_temp_claim_data");
+        }
+      }
+
+      if (!activeClaim) {
+        document.getElementById("no-data-warning").classList.remove("hidden");
+        document.getElementById("main-content-flow").classList.add("hidden");
+        return;
+      }
+
+      document.getElementById("no-data-warning").classList.add("hidden");
+      document.getElementById("main-content-flow").classList.remove("hidden");
+
+      // Setup Header summaries
+      document.getElementById("ringkasan-noreg").innerText = activeClaim.noRegistrasi || activeClaim.noReg || "-";
+      document.getElementById("ringkasan-peserta").innerText = `${activeClaim.participant?.nama || '-'} / ${activeClaim.participant?.nrp_nip || activeClaim.participant?.nik || '-'}`;
+      document.getElementById("ringkasan-jenis").innerText = activeClaim.jenisKlaim || "-";
+      document.getElementById("ringkasan-manfaat").innerText = activeClaim.manfaatKlaim || "-";
+      document.getElementById("breadcrumb-manfaat").innerText = `Proses Klaim ${activeClaim.manfaatKlaim || ''}`;
+
+      // Populate Tab 1 (Data Peserta)
+      const p = activeClaim.participant || {};
+      document.getElementById("t1-nama").innerText = p.nama || "-";
+      document.getElementById("t1-nip-nrp").innerText = p.nrp_nip || p.nrp || "-";
+      document.getElementById("t1-nik").innerText = p.nik || "-";
+      document.getElementById("t1-ktpa").innerText = p.noPeserta || p.no_ktpa || "-";
+      document.getElementById("t1-pangkat").innerText = p.pangkat || "-";
+      document.getElementById("t1-satker").innerText = p.unitKerja || p.kesatuan || "-";
+      document.getElementById("t1-gapok").innerText = p.gaji_pokok_terakhir ? formatRupiah(p.gaji_pokok_terakhir) : "Rp -";
+      document.getElementById("t1-tmt").innerText = p.tanggal_lahir || "-"; // fallback to birthdate if tmt blank
+      
+      const st = p.status_kepesertaan || p.statusKepesertaan || "Aktif";
+      const badgeCls = st === "Aktif" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-slate-100 border-slate-200 text-slate-500";
+      document.getElementById("t1-status-badge").className = `inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeCls}`;
+      document.getElementById("t1-status-badge").innerText = st;
+
+      // Populate Tab 2 (Data Pengaju)
+      if (activeClaim.pengaju) {
+        const ap = activeClaim.pengaju;
+        document.getElementById("f-p-nama").value = ap.nama || "";
+        document.getElementById("f-p-hubungan").value = ap.hubungan || "";
+        document.getElementById("f-p-nik").value = ap.nik || "";
+        document.getElementById("f-p-tgl-lahir").value = ap.tgl || "";
+        document.getElementById("f-p-alamat").value = ap.alamat || "";
+        document.getElementById("f-p-kelurahan").value = ap.kelurahan || "";
+        document.getElementById("f-p-kecamatan").value = ap.kecamatan || "";
+        document.getElementById("f-p-kota").value = ap.kota || "";
+        document.getElementById("f-p-provinsi").value = ap.provinsi || "";
+        document.getElementById("f-p-telp").value = ap.telp || "";
+        document.getElementById("f-p-email").value = ap.email || "";
+        document.getElementById("f-p-mitra").value = ap.mitraBayar || "";
+        document.getElementById("f-p-norek").value = ap.noRekening || "";
+      }
+
+      // Check for audit trail & status
+      if (!activeClaim.status) activeClaim.status = "Diterima";
+      if (!activeClaim.auditTrail) {
+        activeClaim.auditTrail = [
+          { tanggal: formatDate(new Date()), user: "SK | Staf Kancab Utama", aksi: "Registrasi Klaim", keterangan: "Registrasi berhasil diproses dan Agenda diterbitkan." }
+        ];
+      }
+
+      // Restore custom input values if saved
+      if (activeClaim.inputValues) {
+        inputValues = activeClaim.inputValues;
+      } else {
+        inputValues = {};
+      }
+
+      // Initialize SLA timer
+      const isPending = activeClaim.status === "Pending";
+      startSlaTimer(activeClaim.slaStart || new Date().getTime(), isPending);
+
+      // Render Dynamic sections
+      initializeDynamicConfiguration();
+      renderStatusAndTimeline();
+      updateSlaStatusBadge();
+    }
+
+    // Dynamic Configurations definitions for M-01 to M-25
+    const BENEFIT_SPECS = {
+      // ════════ JKK ════════
+      "SCDK": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sk_cacat", type: "W", label: "FC Legalisir Keputusan Cacat Panglima TNI / Kapolri" },
+          { id: "dpp_gaji", type: "W", label: "FC Legalisir Rincian Gaji (DPP KU-107)" },
+          { id: "ktp", type: "W", label: "FC e-KTP Pengaju" },
+          { id: "sprin", type: "W", label: "FC Sprin Tugas Operasional" },
+          { id: "kronologis", type: "W", label: "FC Kronologis Kejadian Kesatuan" },
+          { id: "foto_cacat", type: "W", label: "Foto Kondisi Anggota Badan Cacat" }
+        ],
+        fields: [
+          { id: "tgl_kejadian", label: "Tanggal Kejadian Cacat", type: "date", required: true },
+          { id: "no_sprin", label: "Nomor Sprin Tugas", type: "text", required: true },
+          { id: "gol_cacat", label: "Golongan Cacat", type: "select", options: ["Golongan A", "Golongan B", "Golongan C"], required: true },
+          { id: "tingkat_cacat", label: "Tingkat Cacat", type: "select", options: ["Tingkat I", "Tingkat II", "Tingkat III"], required: true },
+          { id: "bagian_tubuh", label: "Bagian Tubuh Cacat", type: "select", options: ["Mata", "Tangan/Kaki", "Organ Dalam", "Tulang Belakang"], required: true },
+          { id: "persen_cacat", label: "Persentase Gangguan Fungsi", type: "select", options: ["10% - Sangat Ringan", "30% - Ringan", "50% - Sedang", "80% - Berat", "100% - Total"], required: true },
+          { id: "orthese", label: "Butuh alat Orthese/Prothese?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" },
+          { id: "orthese_nama", label: "Nama Alat Orthese/Prothese", type: "text", parentCond: "orthese", parentVal: "Ya", required: true },
+          { id: "orthese_harga", label: "Harga Alat Orthese (Rp)", type: "number", parentCond: "orthese", parentVal: "Ya", required: true },
+          { id: "berlanjut_pensiun", label: "Berlanjut ke pensiun cacat?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" },
+          { id: "tmt_pensiun", label: "TMT Pensiun Cacat", type: "date", parentCond: "berlanjut_pensiun", parentVal: "Ya", required: true }
+        ],
+        calc: (inputs, p) => {
+          const gapok = p.gaji_pokok_terakhir || 4000000;
+          let factor = 1.0;
+          if (inputs.gol_cacat === "Golongan A") factor = 1.5;
+          else if (inputs.gol_cacat === "Golongan B") factor = 1.25;
+          
+          let subtotal = gapok * factor * 25; // 25x gapok
+          let components = [{ label: "Santunan JKK SCDK (25x Gaji x Golongan)", val: subtotal }];
+          
+          if (inputs.orthese === "Ya" && inputs.orthese_harga) {
+            components.push({ label: `Biaya Alat Orthese (${inputs.orthese_nama || 'Alat'})`, val: parseFloat(inputs.orthese_harga) });
+          }
+          if (inputs.berlanjut_pensiun === "Ya") {
+            components.push({ label: "THT NTTA (Akumulasi Iuran Pensiun 3,25%)", val: gapok * 12 });
+          }
+          return components;
+        }
+      },
+      "SCDB": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sk_cacat", type: "W", label: "FC Legalisir Keputusan Cacat Dinas Biasa" },
+          { id: "dpp_gaji", type: "W", label: "FC Legalisir Rincian Gaji (DPP KU-107)" },
+          { id: "ktp", type: "W", label: "FC e-KTP Pengaju" },
+          { id: "sprin", type: "W", label: "FC Sprin Tugas" },
+          { id: "kronologis", type: "W", label: "FC Kronologis Kejadian Kesatuan" }
+        ],
+        fields: [
+          { id: "tgl_kejadian", label: "Tanggal Kejadian Cacat", type: "date", required: true },
+          { id: "no_sprin", label: "Nomor Sprin Tugas", type: "text", required: true },
+          { id: "gol_cacat", label: "Golongan Cacat", type: "select", options: ["Golongan A", "Golongan B", "Golongan C"], required: true },
+          { id: "tingkat_cacat", label: "Tingkat Cacat", type: "select", options: ["Tingkat I", "Tingkat II", "Tingkat III"], required: true },
+          { id: "orthese", label: "Butuh alat Orthese/Prothese?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" },
+          { id: "orthese_nama", label: "Nama Alat Orthese/Prothese", type: "text", parentCond: "orthese", parentVal: "Ya", required: true },
+          { id: "orthese_harga", label: "Harga Alat Orthese (Rp)", type: "number", parentCond: "orthese", parentVal: "Ya", required: true },
+          { id: "berlanjut_pensiun", label: "Berlanjut ke pensiun cacat?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          const gapok = p.gaji_pokok_terakhir || 4000000;
+          let factor = 0.8;
+          if (inputs.gol_cacat === "Golongan A") factor = 1.2;
+          else if (inputs.gol_cacat === "Golongan B") factor = 1.0;
+          
+          let subtotal = gapok * factor * 20;
+          let components = [{ label: "Santunan JKK SCDB (20x Gaji x Golongan)", val: subtotal }];
+          
+          if (inputs.orthese === "Ya" && inputs.orthese_harga) {
+            components.push({ label: `Biaya Alat Orthese (${inputs.orthese_nama || 'Alat'})`, val: parseFloat(inputs.orthese_harga) });
+          }
+          return components;
+        }
+      },
+      "SRKK Gugur": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "rhs", type: "W", label: "Asli Riwayat Hidup Singkat (RHS)" },
+          { id: "sk_waris", type: "W", label: "Asli Ket. Ahli Waris disahkan Lurah" },
+          { id: "sk_gugur", type: "W", label: "FC Legalisir Keputusan Gugur dari Panglima TNI" },
+          { id: "sk_awal", type: "W", label: "FC Keputusan Pengangkatan Pertama" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian dari Dukcapil" },
+          { id: "dpp_gaji", type: "W", label: "FC Rincian Gaji Terakhir (KU-107)" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Gugur / Wafat", type: "date", required: true },
+          { id: "tempat_kejadian", label: "Tempat Kejadian", type: "text", required: true },
+          { id: "no_sprin", label: "Nomor Sprin Tugas", type: "text", required: true },
+          { id: "ada_transport", label: "Ada biaya pengangkutan?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" },
+          { id: "transport_jenis", label: "Jenis Angkutan", type: "select", options: ["Darat", "Udara", "Laut"], parentCond: "ada_transport", parentVal: "Ya", required: true },
+          { id: "transport_asal", label: "Dari (Asal)", type: "text", parentCond: "ada_transport", parentVal: "Ya", required: true },
+          { id: "transport_tujuan", label: "Ke (Tujuan)", type: "text", parentCond: "ada_transport", parentVal: "Ya", required: true },
+          { id: "transport_biaya", label: "Biaya Pengangkutan (Rp)", type: "number", parentCond: "ada_transport", parentVal: "Ya", required: true },
+          { id: "jumlah_anak", label: "Jumlah Anak Berhak Beasiswa", type: "select", options: ["0", "1", "2"], required: true, default: "0" },
+          { id: "beasiswa_tpb", label: "Beasiswa dialihkan ke TPB?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          let components = [
+            { label: "SRKK GUGUR (Flat)", val: 450000000 },
+            { label: "Manfaat NTTA (THT Tabungan)", val: (p.gaji_pokok_terakhir || 4000000) * 5 }
+          ];
+
+          if (inputs.ada_transport === "Ya" && inputs.transport_biaya) {
+            let biaya = parseFloat(inputs.transport_biaya);
+            if (biaya > 8500000) {
+              components.push({ label: "Biaya Pengangkutan (ASABRI Maksimal)", val: 8500000 });
+              components.push({ label: `Selisih Biaya Pengangkutan (Tanggungan Ahli Waris)`, val: biaya - 8500000, subVal: true });
+            } else {
+              components.push({ label: "Biaya Pengangkutan (Sesuai Kuitansi)", val: biaya });
+            }
+          }
+
+          if (inputs.jumlah_anak && inputs.jumlah_anak !== "0") {
+            const count = parseInt(inputs.jumlah_anak);
+            const totalBeasiswa = 30000000 * count;
+            if (inputs.beasiswa_tpb === "Ya") {
+              components.push({ label: `Beasiswa JKK (${count} Anak) - Dialihkan ke Taspen Life`, val: totalBeasiswa, tpb: true });
+            } else {
+              components.push({ label: `Beasiswa JKK (${count} Anak)`, val: totalBeasiswa });
+            }
+          }
+          return components;
+        }
+      },
+      "SRKK Tewas": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "rhs", type: "W", label: "Asli Riwayat Hidup Singkat (RHS)" },
+          { id: "sk_waris", type: "W", label: "Asli Ket. Ahli Waris Lurah" },
+          { id: "sk_tewas", type: "W", label: "FC Legalisir Keputusan Tewas" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian Dukcapil" },
+          { id: "dpp_gaji", type: "W", label: "FC Rincian Gaji (KU-107)" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Tewas", type: "date", required: true },
+          { id: "tempat_kejadian", label: "Tempat Kejadian", type: "text", required: true },
+          { id: "ada_transport", label: "Ada biaya pengangkutan?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" },
+          { id: "transport_biaya", label: "Biaya Pengangkutan (Rp)", type: "number", parentCond: "ada_transport", parentVal: "Ya", required: true },
+          { id: "jumlah_anak", label: "Jumlah Anak Berhak Beasiswa", type: "select", options: ["0", "1", "2"], required: true, default: "0" },
+          { id: "beasiswa_tpb", label: "Beasiswa dialihkan ke TPB?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          let components = [
+            { label: "SRKK TEWAS (Flat)", val: 350000000 },
+            { label: "Manfaat NTTA (THT Tabungan)", val: (p.gaji_pokok_terakhir || 4000000) * 5 }
+          ];
+
+          if (inputs.ada_transport === "Ya" && inputs.transport_biaya) {
+            let biaya = parseFloat(inputs.transport_biaya);
+            if (biaya > 8500000) {
+              components.push({ label: "Biaya Pengangkutan (ASABRI Maksimal)", val: 8500000 });
+              components.push({ label: `Selisih Biaya Pengangkutan (Tanggungan Ahli Waris)`, val: biaya - 8500000, subVal: true });
+            } else {
+              components.push({ label: "Biaya Pengangkutan (Sesuai Kuitansi)", val: biaya });
+            }
+          }
+
+          if (inputs.jumlah_anak && inputs.jumlah_anak !== "0") {
+            const count = parseInt(inputs.jumlah_anak);
+            const totalBeasiswa = 30000000 * count;
+            if (inputs.beasiswa_tpb === "Ya") {
+              components.push({ label: `Beasiswa JKK (${count} Anak) - Dialihkan ke Taspen Life`, val: totalBeasiswa, tpb: true });
+            } else {
+              components.push({ label: `Beasiswa JKK (${count} Anak)`, val: totalBeasiswa });
+            }
+          }
+          return components;
+        }
+      },
+      "Biaya Angkut": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "form_angkut", type: "W", label: "Form Biaya Pengangkutan (Tanda Tangan Pengangkut)" },
+          { id: "kuitansi", type: "W", label: "Kuitansi Biaya Pengangkutan Bermaterai" },
+          { id: "laporan_kejadian", type: "W", label: "Asli Surat Lapor Kejadian KK Form A & B" }
+        ],
+        fields: [
+          { id: "transport_jenis", label: "Jenis Angkutan", type: "select", options: ["Darat", "Udara", "Laut"], required: true },
+          { id: "tgl_angkut", label: "Tanggal Pengangkutan", type: "date", required: true },
+          { id: "transport_asal", label: "Dari (Asal)", type: "text", required: true },
+          { id: "transport_tujuan", label: "Ke (Tujuan)", type: "text", required: true },
+          { id: "transport_biaya", label: "Total Biaya Kuitansi (Rp)", type: "number", required: true }
+        ],
+        calc: (inputs, p) => {
+          let biaya = parseFloat(inputs.transport_biaya || 0);
+          if (biaya > 8500000) {
+            return [
+              { label: "Biaya Pengangkutan (ASABRI Maksimal)", val: 8500000 },
+              { label: "Selisih Tanggungan Peserta (Tidak Dibayar)", val: biaya - 8500000, subVal: true }
+            ];
+          }
+          return [{ label: "Biaya Pengangkutan", val: biaya }];
+        }
+      },
+      "Beasiswa JKK": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian dari Dukcapil" },
+          { id: "kk", type: "W", label: "FC Kartu Keluarga" }
+        ],
+        fields: [
+          { id: "jumlah_anak", label: "Jumlah Anak Berhak Beasiswa", type: "select", options: ["1", "2"], required: true, default: "1" },
+          { id: "beasiswa_tpb", label: "Beasiswa dialihkan ke TPB?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          const count = parseInt(inputs.jumlah_anak || 1);
+          const total = 30000000 * count;
+          if (inputs.beasiswa_tpb === "Ya") {
+            return [
+              { label: `Beasiswa JKK (${count} Anak) - Dialihkan ke Taspen Life`, val: total, tpb: true }
+            ];
+          }
+          return [{ label: `Beasiswa JKK (${count} Anak)`, val: total }];
+        }
+      },
+      "Perawatan": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sjp_form", type: "W", label: "Asli Surat Laporan Kejadian (Form A & B)" },
+          { id: "kuitansi_rs", type: "W", label: "Kuitansi Rincian RS Berstempel" },
+          { id: "bill_obat", type: "W", label: "Rincian Biaya Obat & Farmasi" },
+          { id: "reimburse_claim", type: "K", label: "Asli Lampiran D - Surat Pengajuan Reimburse (Wajib jika Reimburse)", active: false }
+        ],
+        fields: [
+          { id: "faskes_nama", label: "Nama Rumah Sakit / Faskes", type: "text", required: true },
+          { id: "tgl_masuk", label: "Tanggal Masuk Faskes", type: "date", required: true },
+          { id: "klaim_via", label: "Metode Pengajuan Klaim", type: "select", options: ["Surat Jaminan Pelayanan (SJP)", "Reimbursement"], required: true },
+          { id: "kamar_ditempati", label: "Kelas Kamar Ditempati", type: "select", options: ["Kelas 3", "Kelas 2", "Kelas 1", "VIP", "VVIP"], required: true },
+          { id: "kamar_hak", label: "Kelas Kamar Hak Peserta", type: "select", options: ["Kelas 3", "Kelas 2", "Kelas 1"], required: true },
+          { id: "naik_permintaan_sendiri", label: "Naik Kamar Atas Permintaan Sendiri?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" },
+          { id: "biaya_rs", label: "Total Tagihan Kamar & Perawatan (Rp)", type: "number", required: true },
+          { id: "biaya_obat", label: "Total Tagihan Obat (Rp)", type: "number", required: true },
+          { id: "orthese", label: "Butuh alat Orthese/Prothese?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" },
+          { id: "orthese_harga", label: "Biaya Alat Orthese (Rp)", type: "number", parentCond: "orthese", parentVal: "Ya", required: true }
+        ],
+        calc: (inputs, p) => {
+          let rs = parseFloat(inputs.biaya_rs || 0);
+          let obat = parseFloat(inputs.biaya_obat || 0);
+          let components = [
+            { label: "Biaya Perawatan RS (At Cost)", val: rs },
+            { label: "Biaya Obat (At Cost)", val: obat }
+          ];
+
+          if (inputs.naik_permintaan_sendiri === "Ya") {
+            let selisih = (rs + obat) * 0.2; // mock 20% surcharge selisih
+            components.push({ label: "Selisih Naik Kelas (Tanggungan Mandiri Peserta)", val: selisih, subVal: true });
+          }
+
+          if (inputs.orthese === "Ya" && inputs.orthese_harga) {
+            components.push({ label: "Biaya Alat Orthese/Prothese", val: parseFloat(inputs.orthese_harga) });
+          }
+          return components;
+        }
+      },
+
+      // ════════ JKm ════════
+      "SKS Perwira/PNS": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "rhs", type: "W", label: "Asli RHS Alm/Almah" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian Dukcapil" },
+          { id: "sk_waris", type: "W", label: "Asli Ket. Ahli Waris disahkan Lurah" },
+          { id: "dpp_gaji", type: "W", label: "FC Rincian Gaji (KU-107)" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Dunia", type: "date", required: true },
+          { id: "penyebab_mati", label: "Penyebab Kematian", type: "text", required: true },
+          { id: "jumlah_anak", label: "Jumlah Anak Berhak Beasiswa", type: "select", options: ["0", "1", "2"], required: true, default: "0" },
+          { id: "beasiswa_tpb", label: "Beasiswa dialihkan ke TPB?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          let gapok = p.gaji_pokok_terakhir || 4000000;
+          let components = [
+            { label: "Santunan Kematian Sekaligus (SKS Perwira/PNS)", val: 30000000 },
+            { label: "Uang Duka Wafat (3x Gaji Pokok)", val: gapok * 3 },
+            { label: "Pengembalian Iuran THT (NTTA)", val: gapok * 4 }
+          ];
+          if (inputs.jumlah_anak && inputs.jumlah_anak !== "0") {
+            const count = parseInt(inputs.jumlah_anak);
+            const total = 15000000 * count;
+            if (inputs.beasiswa_tpb === "Ya") {
+              components.push({ label: `Beasiswa JKm (${count} Anak) - Dialihkan ke Taspen Life`, val: total, tpb: true });
+            } else {
+              components.push({ label: `Beasiswa JKm (${count} Anak)`, val: total });
+            }
+          }
+          return components;
+        }
+      },
+      "SKS Bintara/Tamtama": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "rhs", type: "W", label: "Asli RHS Alm" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian Dukcapil" },
+          { id: "sk_waris", type: "W", label: "Asli Ket. Ahli Waris disahkan Lurah" },
+          { id: "dpp_gaji", type: "W", label: "FC Rincian Gaji (KU-107)" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Dunia", type: "date", required: true },
+          { id: "penyebab_mati", label: "Penyebab Kematian", type: "text", required: true },
+          { id: "jumlah_anak", label: "Jumlah Anak Berhak Beasiswa", type: "select", options: ["0", "1", "2"], required: true, default: "0" },
+          { id: "beasiswa_tpb", label: "Beasiswa dialihkan ke TPB?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          let gapok = p.gaji_pokok_terakhir || 3500000;
+          let components = [
+            { label: "Santunan Kematian Sekaligus (SKS Bintara/Tamtama)", val: 27500000 },
+            { label: "Uang Duka Wafat (3x Gaji Pokok)", val: gapok * 3 },
+            { label: "Pengembalian Iuran THT (NTTA)", val: gapok * 4 }
+          ];
+          if (inputs.jumlah_anak && inputs.jumlah_anak !== "0") {
+            const count = parseInt(inputs.jumlah_anak);
+            const total = 15000000 * count;
+            if (inputs.beasiswa_tpb === "Ya") {
+              components.push({ label: `Beasiswa JKm (${count} Anak) - Dialihkan ke Taspen Life`, val: total, tpb: true });
+            } else {
+              components.push({ label: `Beasiswa JKm (${count} Anak)`, val: total });
+            }
+          }
+          return components;
+        }
+      },
+      "UDW Aktif": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian" },
+          { id: "dpp_gaji", type: "W", label: "FC Rincian Gaji KU-107" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Dunia", type: "date", required: true }
+        ],
+        calc: (inputs, p) => {
+          const gapok = p.gaji_pokok_terakhir || 4000000;
+          return [{ label: "Uang Duka Wafat (UDW) Aktif (3x Gaji Pokok)", val: gapok * 3 }];
+        }
+      },
+      "Biaya Pemakaman JKm": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Dunia", type: "date", required: true }
+        ],
+        calc: (inputs, p) => {
+          return [{ label: "Santunan Biaya Pemakaman JKm", val: 10000000 }];
+        }
+      },
+      "Beasiswa JKm": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian" }
+        ],
+        fields: [
+          { id: "jumlah_anak", label: "Jumlah Anak Berhak Beasiswa", type: "select", options: ["1", "2"], required: true, default: "1" },
+          { id: "beasiswa_tpb", label: "Beasiswa dialihkan ke TPB?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          const count = parseInt(inputs.jumlah_anak || 1);
+          const total = 15000000 * count;
+          if (inputs.beasiswa_tpb === "Ya") {
+            return [{ label: `Beasiswa JKm (${count} Anak) - Dialihkan ke Taspen Life`, val: total, tpb: true }];
+          }
+          return [{ label: `Beasiswa JKm (${count} Anak)`, val: total }];
+        }
+      },
+      "RKNT": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "surat_keterangan", type: "W", label: "Surat Keterangan Tidak Memiliki Pasangan/Anak Terdaftar" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Dunia", type: "date", required: true },
+          { id: "gol_peserta", label: "Golongan Peserta", type: "select", options: ["Perwira / PNS", "Bintara / Tamtama"], required: true }
+        ],
+        calc: (inputs, p) => {
+          let sksVal = inputs.gol_peserta === "Perwira / PNS" ? 30000000 : 27500000;
+          const gapok = p.gaji_pokok_terakhir || 4000000;
+          return [
+            { label: `Santunan SKS (${inputs.gol_peserta || 'Perwira'})`, val: sksVal },
+            { label: "Uang Duka Wafat (3x Gaji Pokok)", val: gapok * 3 },
+            { label: "Pengembalian Iuran Pensiun 4.75% (NTIP)", val: gapok * 8 }
+          ];
+        }
+      },
+
+      // ════════ THT ════════
+      "TA": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sp3r", type: "W", label: "Form SP3R" },
+          { id: "sk_pensiun", type: "W", label: "Asli Salinan Keputusan Pensiun" },
+          { id: "skpp", type: "W", label: "Asli e-SKPP / SKPP KPPN" }
+        ],
+        fields: [
+          { id: "tmt_pensiun", label: "TMT Pensiun", type: "date", required: true },
+          { id: "pindahan_taspen", label: "Peserta pindahan dari TASPEN?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          let gapok = p.gaji_pokok_terakhir || 4000000;
+          return [{ label: "TA (Tabungan Asuransi THT - Akumulasi Iuran 3.25%)", val: gapok * 14.5 }];
+        }
+      },
+      "NTTA": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sk_henti", type: "W", label: "Asli Keputusan Pemberhentian Dinas" },
+          { id: "skpp", type: "W", label: "Asli e-SKPP / SKPP KPPN" }
+        ],
+        fields: [
+          { id: "tgl_berhenti", label: "Tanggal Dinyatakan Berhenti", type: "date", required: true },
+          { id: "alasan_henti", label: "Alasan Pemberhentian", type: "text", required: true },
+          { id: "ada_skorsing", label: "Ada periode gaji skorsing?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" },
+          { id: "skors_gaji", label: "Persentase Gaji Skorsing", type: "select", options: ["100%", "75%", "50%", "0%"], parentCond: "ada_skorsing", parentVal: "Ya", required: true }
+        ],
+        calc: (inputs, p) => {
+          let gapok = p.gaji_pokok_terakhir || 4000000;
+          let factor = 8.0;
+          if (inputs.ada_skorsing === "Ya" && inputs.skors_gaji === "50%") factor = 6.0;
+          return [{ label: "NTTA (Nilai Tunai Tabungan Asuransi)", val: gapok * factor }];
+        }
+      },
+      "SBPI/S": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian Pasangan" },
+          { id: "surat_nikah", type: "W", label: "FC Surat Nikah disahkan Lurah" }
+        ],
+        fields: [
+          { id: "nama_pasangan", label: "Nama Lengkap Istri / Suami", type: "text", required: true },
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Pasangan", type: "date", required: true }
+        ],
+        calc: (inputs, p) => {
+          return [{ label: "Santunan Biaya Pemakaman Istri / Suami (SBPI/S)", val: 4000000 }];
+        }
+      },
+      "SBPA": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian Anak" },
+          { id: "kk", type: "W", label: "FC Kartu Keluarga" }
+        ],
+        fields: [
+          { id: "nama_anak", label: "Nama Lengkap Anak", type: "text", required: true },
+          { id: "tgl_lahir_anak", label: "Tanggal Lahir Anak", type: "date", required: true },
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Anak", type: "date", required: true },
+          { id: "status_kuliah", label: "Anak masih sekolah / kuliah?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          return [{ label: "Santunan Biaya Pemakaman Anak (SBPA)", val: 3000000 }];
+        }
+      },
+
+      // ════════ Pensiun ════════
+      "PP": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sp3r", type: "W", label: "Form SP3R" },
+          { id: "sk_pensiun", type: "W", label: "Asli Keputusan Pensiun KAKANCAB" },
+          { id: "skpp", type: "W", label: "Asli e-SKPP / SKPP Kemenkeu" }
+        ],
+        fields: [
+          { id: "tmt_pensiun", label: "TMT Mulai Pensiun", type: "date", required: true },
+          { id: "gaji_terakhir", label: "Gaji Pokok Terakhir (Rp)", type: "number", required: true },
+          { id: "pindahan_taspen", label: "Pindahan dari TASPEN?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          let gapok = parseFloat(inputs.gaji_terakhir || p.gaji_pokok_terakhir || 4000000);
+          return [
+            { label: "TA (Tabungan Asuransi Sekali Bayar)", val: gapok * 12.5 },
+            { label: "Pensiun Pertama (Berkala per bulan)", val: gapok * 0.75, berkala: true }
+          ];
+        }
+      },
+      "PPI": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sp3r", type: "W", label: "Form SP3R" },
+          { id: "surat_kejandaan", type: "W", label: "Surat Pernyataan Belum Menikah Lagi Lurah" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Pensiunan", type: "date", required: true },
+          { id: "nomor_pensiun", label: "Nomor Pensiun Pensiunan", type: "text", required: true },
+          { id: "status_kawin", label: "Status Pernikahan Kembali", type: "select", options: ["Belum menikah lagi", "Sudah menikah lagi"], required: true }
+        ],
+        calc: (inputs, p) => {
+          if (inputs.status_kawin === "Sudah menikah lagi") {
+            return [{ label: "Tolak: Warakawuri telah kawin kembali (tidak berhak)", val: 0, isReject: true }];
+          }
+          return [
+            { label: "Biaya Pemakaman Pensiunan (BPPP - Sekali Bayar)", val: 5000000 },
+            { label: "Uang Duka Wafat (UDW Pensiun - Sekali Bayar)", val: 12000000 },
+            { label: "Pensiun Warakawuri (Berkala per bulan)", val: 2500000, berkala: true }
+          ];
+        }
+      },
+      "PPA": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sp3r", type: "W", label: "Form SP3R" },
+          { id: "sk_belum_menikah", type: "W", label: "Surat Ket. Belum Menikah & Bekerja disahkan Lurah" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Pensiunan / Warakawuri", type: "date", required: true },
+          { id: "nomor_pensiun", label: "Nomor Pensiun", type: "text", required: true },
+          { id: "usia_anak", label: "Usia Anak Tertua", type: "number", required: true },
+          { id: "anak_status_kawin", label: "Status Pernikahan Anak", type: "radio", options: ["Belum menikah", "Sudah menikah"], required: true, default: "Belum menikah" },
+          { id: "status_kuliah", label: "Anak masih sekolah / kuliah?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          let usia = parseInt(inputs.usia_anak || 0);
+          let kawin = inputs.anak_status_kawin;
+          let kuliah = inputs.status_kuliah;
+          
+          if (kawin === "Sudah menikah" || (usia > 21 && kuliah === "Tidak") || usia > 25) {
+            return [{ label: "Tolak: Anak tidak memenuhi kriteria penerima pensiun", val: 0, isReject: true }];
+          }
+          return [
+            { label: "Biaya Pemakaman (BPA - Sekali Bayar)", val: 3000000 },
+            { label: "Tunjangan Anak Yatim-Piatu (Berkala per bulan)", val: 1800000, berkala: true }
+          ];
+        }
+      },
+      "PPOR": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sp3r", type: "W", label: "Form SP3R" },
+          { id: "sk_pensiun", type: "W", label: "Asli Keputusan Pensiun" },
+          { id: "sk_tidak_waris", type: "W", label: "Surat Keterangan Tidak Meninggalkan Istri/Anak" }
+        ],
+        fields: [
+          { id: "nama_ayah", label: "Nama Lengkap Ayah", type: "text", required: true },
+          { id: "nama_ibu", label: "Nama Lengkap Ibu", type: "text", required: true },
+          { id: "penerima_tunjangan", label: "Penerima Tunjangan Orang Tua", type: "select", options: ["Ayah", "Ibu", "Keduanya"], required: true }
+        ],
+        calc: (inputs, p) => {
+          return [
+            { label: "Biaya Pemakaman Pensiunan (BPPP - Sekali Bayar)", val: 5000000 },
+            { label: "Tunjangan Orang Tua (PPOR - Berkala per bulan)", val: 1500000, berkala: true }
+          ];
+        }
+      },
+      "UDW Pens": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Dunia", type: "date", required: true }
+        ],
+        calc: (inputs, p) => {
+          return [{ label: "Uang Duka Wafat (UDW) Pensiun", val: 12000000 }];
+        }
+      },
+      "UKP": {
+        docs: [
+          { id: "fpp_ukp", type: "W", label: "Form Pengajuan Khusus UKP" },
+          { id: "sp3r", type: "W", label: "Form SP3R" },
+          { id: "sk_pensiun", type: "W", label: "FC Keputusan Pensiun" }
+        ],
+        fields: [
+          { id: "periode_klaim", label: "Bulan Periode UKP", type: "select", options: ["1 Bulan", "2 Bulan", "3 Bulan", "Lainnya"], required: true },
+          { id: "alasan_ukp", label: "Alasan Pengajuan UKP", type: "text", required: true },
+          { id: "nominal_staf", label: "Nilai Selisih Kurang Bayar (Rp)", type: "number", required: true }
+        ],
+        calc: (inputs, p) => {
+          return [{ label: "Uang Kekurangan Pensiun (UKP)", val: parseFloat(inputs.nominal_staf || 0) }];
+        }
+      },
+      "UKP-PK": {
+        docs: [
+          { id: "fpp_ukp", type: "W", label: "Form Pengajuan Khusus UKP" },
+          { id: "sk_pensiun", type: "W", label: "FC Keputusan Pensiun" }
+        ],
+        fields: [
+          { id: "nominal_staf", label: "Nilai Pengembalian Kelebihan Bayar (Rp)", type: "number", required: true }
+        ],
+        calc: (inputs, p) => {
+          return [{ label: "Pengembalian UKP (Kelebihan Bayar)", val: -parseFloat(inputs.nominal_staf || 0) }];
+        }
+      },
+
+      // ════════ Pensiun THT ════════
+      "BPPP": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian" },
+          { id: "sk_pensiun", type: "W", label: "FC Keputusan Pensiun" }
+        ],
+        fields: [
+          { id: "tgl_meninggal", label: "Tanggal Meninggal Pensiunan", type: "date", required: true }
+        ],
+        calc: (inputs, p) => {
+          return [{ label: "Biaya Pemakaman Peserta Pensiun (BPPP)", val: 5000000 }];
+        }
+      },
+      "THT_Pensiun_SBPI/S": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian Pasangan" },
+          { id: "surat_nikah", type: "W", label: "FC Surat Nikah" }
+        ],
+        fields: [
+          { id: "nama_pasangan", label: "Nama Istri / Suami", type: "text", required: true },
+          { id: "tgl_meninggal", label: "Tanggal Meninggal", type: "date", required: true },
+          { id: "tgl_nikah", label: "Tanggal Pernikahan Pasangan", type: "date", required: true },
+          { id: "tmt_pensiun", label: "TMT Pensiun Peserta", type: "date", required: true }
+        ],
+        calc: (inputs, p) => {
+          const tglNikah = new Date(inputs.tgl_nikah);
+          const tmtPensiun = new Date(inputs.tmt_pensiun);
+          if (tglNikah > tmtPensiun) {
+            return [{ label: "Tolak: Pasangan dinikahi setelah pensiun (tidak berhak)", val: 0, isReject: true }];
+          }
+          return [{ label: "SBPI/S Pensiunan (Sekali Bayar)", val: 4000000 }];
+        }
+      },
+      "THT_Pensiun_SBPA": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "akta_mati", type: "W", label: "FC Akta Kematian Anak" },
+          { id: "kk", type: "W", label: "FC Kartu Keluarga" }
+        ],
+        fields: [
+          { id: "nama_anak", label: "Nama Anak", type: "text", required: true },
+          { id: "tgl_lahir_anak", label: "Tanggal Lahir Anak", type: "date", required: true },
+          { id: "tgl_meninggal", label: "Tanggal Meninggal", type: "date", required: true },
+          { id: "tmt_pensiun", label: "TMT Pensiun Peserta", type: "date", required: true }
+        ],
+        calc: (inputs, p) => {
+          const tglLahir = new Date(inputs.tgl_lahir_anak);
+          const tmtPensiun = new Date(inputs.tmt_pensiun);
+          if (tglLahir > tmtPensiun) {
+            return [{ label: "Tolak: Anak lahir setelah pensiun (tidak berhak)", val: 0, isReject: true }];
+          }
+          return [{ label: "SBPA Pensiunan (Sekali Bayar)", val: 3000000 }];
+        }
+      },
+
+      // ════════ Pensiun NTIP ════════
+      "NTIP": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sk_henti", type: "W", label: "Asli Keputusan Pemberhentian" },
+          { id: "skpp", type: "W", label: "Asli SKPP KPPN / e-SKPP" }
+        ],
+        fields: [
+          { id: "tgl_berhenti", label: "Tanggal Pemberhentian", type: "date", required: true },
+          { id: "alasan_henti", label: "Alasan Pemberhentian", type: "text", required: true },
+          { id: "ada_skorsing", label: "Ada periode gaji skorsing?", type: "radio", options: ["Ya", "Tidak"], required: true, default: "Tidak" }
+        ],
+        calc: (inputs, p) => {
+          let gapok = p.gaji_pokok_terakhir || 4000000;
+          return [
+            { label: "NTTA (Nilai Tunai Tabungan Asuransi 3.25%)", val: gapok * 6 },
+            { label: "NTIP (Nilai Tunai Iuran Pensiun 4.75%)", val: gapok * 8 }
+          ];
+        }
+      },
+      "IDP": {
+        docs: [
+          { id: "fpp", type: "W", label: "Form Pengajuan (FPP)" },
+          { id: "sk_henti", type: "W", label: "Asli Keputusan Pemberhentian" },
+          { id: "skpp", type: "W", label: "Asli SKPP KPPN" }
+        ],
+        fields: [
+          { id: "tgl_berhenti", label: "Tanggal Pemberhentian", type: "date", required: true },
+          { id: "alasan_henti", label: "Alasan Pemberhentian", type: "text", required: true }
+        ],
+        calc: (inputs, p) => {
+          let gapok = p.gaji_pokok_terakhir || 4000000;
+          return [
+            { label: "NTTA (Nilai Tunai Tabungan Asuransi Skema PP 67)", val: gapok * 5 },
+            { label: "IDP (Iuran Dana Pensiun Skema Lama PP 67)", val: gapok * 7 }
+          ];
+        }
+      }
+    };
+
+    // Helper map benefit dropdown value to spec keys
+    function getSpecKey(manfaat) {
+      if (manfaat === "SBPI/S" && activeClaim.jenisKlaim === "THT" && activeClaim.pengajuan === "Pensiun") {
+        return "THT_Pensiun_SBPI/S";
+      }
+      if (manfaat === "SBPA" && activeClaim.jenisKlaim === "THT" && activeClaim.pengajuan === "Pensiun") {
+        return "THT_Pensiun_SBPA";
+      }
+      if (manfaat === "UDW Pens") {
+        return "UDW Pens";
+      }
+      return manfaat;
+    }
+
+    // Dynamic configuration loading on activeClaim loads
+    function initializeDynamicConfiguration() {
+      if (!activeClaim) return;
+      
+      const key = getSpecKey(activeClaim.manfaatKlaim);
+      const spec = BENEFIT_SPECS[key] || BENEFIT_SPECS["SCDK"]; // Fallback to SCDK
+
+      requiredDocs = JSON.parse(JSON.stringify(spec.docs));
+      pendukungFields = JSON.parse(JSON.stringify(spec.fields));
+
+      // Build checklist
+      renderDocumentChecklist();
+
+      // Build Data Pendukung Form
+      renderDataPendukungForm();
+
+      // Run initial calculation
+      recalculateManfaat();
+    }
+
+    // Render Checklist
+    function renderDocumentChecklist() {
+      const tbody = document.getElementById("checklist-tbody");
+      if (!tbody) return;
+
+      if (!activeClaim.documentsState) {
+        activeClaim.documentsState = {};
+      }
+
+      // Check conditional additions
+      const isCacatPensiun = inputValues.berlanjut_pensiun === "Ya" && activeClaim.manfaatKlaim === "SCDK";
+      const isOrthese = inputValues.orthese === "Ya" && (activeClaim.manfaatKlaim === "SCDK" || activeClaim.manfaatKlaim === "SCDB" || activeClaim.manfaatKlaim === "Perawatan");
+      const isTransport = inputValues.ada_transport === "Ya" && (activeClaim.manfaatKlaim === "SRKK Gugur" || activeClaim.manfaatKlaim === "SRKK Tewas");
+      const isBeasiswa = inputValues.jumlah_anak && inputValues.jumlah_anak !== "0" && (activeClaim.manfaatKlaim === "SRKK Gugur" || activeClaim.manfaatKlaim === "SRKK Tewas" || activeClaim.manfaatKlaim === "SKS Perwira/PNS" || activeClaim.manfaatKlaim === "SKS Bintara/Tamtama");
+
+      // Dynamic documents modifications (Pola A)
+      let docList = [...requiredDocs];
+
+      if (isOrthese) {
+        docList.push({ id: "doc_orthese", type: "K", label: "Surat Keterangan Dokter Orthese/Prothese" });
+      }
+      if (isCacatPensiun) {
+        docList.push({ id: "doc_pensiun_cacat", type: "K", label: "Asli Salinan Keputusan Pensiun Cacat" });
+        docList.push({ id: "doc_sp3r", type: "K", label: "Form SP3R" });
+        docList.push({ id: "doc_skpp", type: "K", label: "Asli SKPP dari KPPN / e-SKPP" });
+        docList.push({ id: "doc_npwp", type: "K", label: "FC NPWP" });
+        docList.push({ id: "doc_foto", type: "K", label: "Pas Foto 4x6 × 2 lembar (terbaru)" });
+      }
+      if (isTransport) {
+        docList.push({ id: "doc_transport_form", type: "K", label: "Form Biaya Pengangkutan + Kuitansi Bermaterai" });
+      }
+      if (isBeasiswa) {
+        docList.push({ id: "doc_beasiswa_form", type: "K", label: "Asli SKK / Surat Keterangan Sekolah per anak" });
+      }
+
+      tbody.innerHTML = docList.map((doc, idx) => {
+        const stateVal = activeClaim.documentsState[doc.id] || "Kurang"; // default Kurang
+        
+        let selectHtml = `
+          <select onchange="updateDocState('${doc.id}', this.value)" class="border border-slate-200 bg-white rounded-lg px-2 py-1 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+            <option value="Lengkap" ${stateVal === 'Lengkap' ? 'selected' : ''}>Lengkap (Hijau)</option>
+            <option value="Kurang" ${stateVal === 'Kurang' ? 'selected' : ''}>Kurang (Merah)</option>
+            <option value="Tidak Relevan" ${stateVal === 'Tidak Relevan' ? 'selected' : ''}>Tidak Relevan (Abu-abu)</option>
+          </select>
+        `;
+
+        let statusClass = "text-rose-600 bg-rose-50 border-rose-200";
+        if (stateVal === "Lengkap") statusClass = "text-emerald-700 bg-emerald-50 border-emerald-250";
+        else if (stateVal === "Tidak Relevan") statusClass = "text-slate-400 bg-slate-50 border-slate-200";
+
+        let labelBadge = doc.type === "W" 
+          ? `<span class="bg-rose-50 text-rose-700 border border-rose-250 px-1 py-0.2 rounded font-bold text-[8px] mr-1">WAJIB</span>`
+          : `<span class="bg-indigo-50 text-indigo-700 border border-indigo-250 px-1 py-0.2 rounded font-bold text-[8px] mr-1">KONDISIONAL</span>`;
+
+        return `
+          <tr class="hover:bg-slate-50/50 transition-colors">
+            <td class="py-2.5 px-4 font-mono font-bold text-slate-400 text-center">${idx + 1}</td>
+            <td class="py-2.5 px-4 font-mono">${labelBadge}</td>
+            <td class="py-2.5 px-4 font-semibold text-slate-800">${doc.label}</td>
+            <td class="py-2.5 px-4">
+              <div class="flex items-center gap-3">
+                ${selectHtml}
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${statusClass}">${stateVal}</span>
+              </div>
+            </td>
+            <td class="py-2.5 px-4">
+              <div class="flex items-center gap-1.5">
+                <button type="button" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-200 text-[10px] font-bold flex items-center gap-1"><i class="fas fa-upload text-[9px] text-slate-400"></i> Upload</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      // Autocheck if any Wajib doc is missing -> auto set pending logic
+      let hasMissingWajib = false;
+      docList.forEach(doc => {
+        if (doc.type === "W") {
+          const stateVal = activeClaim.documentsState[doc.id] || "Kurang";
+          if (stateVal === "Kurang") {
+            hasMissingWajib = true;
+          }
+        }
+      });
+
+      if (hasMissingWajib && activeClaim.status !== "Pending" && activeClaim.status !== "Ditolak") {
+        activeClaim.status = "Pending";
+        addTimelineEntry("Status Berkas Otomatis PENDING", "Sistem", "Ditemukan dokumen wajib berstatus Kurang. SLA dihentikan.");
+        startSlaTimer(activeClaim.slaStart, true);
+        saveStateToDatabase();
+        renderStatusAndTimeline();
+        updateSlaStatusBadge();
+      }
+    }
+
+    function updateDocState(docId, val) {
+      if (!activeClaim.documentsState) activeClaim.documentsState = {};
+      activeClaim.documentsState[docId] = val;
+      saveStateToDatabase();
+      renderDocumentChecklist();
+    }
+
+    // Render Data Pendukung Form
+    function renderDataPendukungForm() {
+      const form = document.getElementById("form-tab-pendukung");
+      if (!form) return;
+
+      if (pendukungFields.length === 0) {
+        form.innerHTML = `<div class="col-span-2 text-center text-slate-400 py-6">Manfaat ini tidak membutuhkan input data pendukung khusus.</div>`;
+        return;
+      }
+
+      form.innerHTML = pendukungFields.map(f => {
+        // Check visibility based on parents (Pola A)
+        if (f.parentCond) {
+          const pVal = inputValues[f.parentCond] || "Tidak";
+          if (pVal !== f.parentVal) {
+            return ""; // Hide conditional field
+          }
+        }
+
+        let inputHtml = "";
+        const currentVal = inputValues[f.id] || "";
+
+        if (f.type === "date") {
+          inputHtml = `<input type="date" id="pend-${f.id}" onchange="updatePendValue('${f.id}', this.value)" value="${currentVal}" required="${f.required}" class="w-full border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700 font-mono">`;
+        } else if (f.type === "number") {
+          inputHtml = `<input type="number" id="pend-${f.id}" oninput="updatePendValue('${f.id}', this.value)" value="${currentVal}" required="${f.required}" placeholder="Masukkan nominal angka" class="w-full border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700 font-mono">`;
+        } else if (f.type === "select") {
+          inputHtml = `
+            <select id="pend-${f.id}" onchange="updatePendValue('${f.id}', this.value)" required="${f.required}" class="w-full border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700">
+              <option value="" disabled selected>-- Pilih Opsi --</option>
+              ${f.options.map(o => `<option value="${o}" ${currentVal === o ? 'selected' : ''}>${o}</option>`).join("")}
+            </select>
+          `;
+        } else if (f.type === "radio") {
+          const options = f.options || ["Ya", "Tidak"];
+          const checkedVal = currentVal || f.default || "Tidak";
+          inputHtml = `
+            <div class="flex gap-4 py-1.5">
+              ${options.map(o => `
+                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-750">
+                  <input type="radio" name="radio-${f.id}" onchange="updatePendValue('${f.id}', '${o}')" value="${o}" ${checkedVal === o ? 'checked' : ''} class="w-4 h-4 text-asabri-blue border-slate-200">
+                  <span>${o}</span>
+                </label>
+              `).join("")}
+            </div>
+          `;
+        } else { // text
+          inputHtml = `<input type="text" id="pend-${f.id}" oninput="updatePendValue('${f.id}', this.value)" value="${currentVal}" required="${f.required}" placeholder="Lengkapi isian data" class="w-full border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-semibold text-slate-700">`;
+        }
+
+        let labelHtml = `<label class="font-bold text-slate-500 block mb-1">${f.label} ${f.required ? '<span class="text-rose-500">*</span>' : ''}</label>`;
+
+        return `
+          <div class="flex flex-col gap-0.5">
+            ${labelHtml}
+            ${inputHtml}
+          </div>
+        `;
+      }).join("") + `
+        <div class="col-span-2 border-t border-slate-100 pt-4 flex justify-end">
+          <button type="button" onclick="saveTabPendukung()" class="bg-asabri-blue hover:bg-asabri-blueDark text-white px-5 py-2 rounded-xl font-bold shadow-md shadow-blue-150 transition-all"><i class="fas fa-floppy-disk mr-1.5"></i> Simpan Data Pendukung</button>
+        </div>
+      `;
+    }
+
+    function updatePendValue(fieldId, val) {
+      inputValues[fieldId] = val;
+      // Re-render Data Pendukung Form to show/hide conditional children dynamically (Pola A)
+      renderDataPendukungForm();
+      // Re-render Checklist (Pola A dynamically adds documents on change)
+      renderDocumentChecklist();
+      // Live recalculate benefits
+      recalculateManfaat();
+    }
+
+    function saveTabPendukung() {
+      if (!activeClaim) return;
+      activeClaim.inputValues = inputValues;
+      saveStateToDatabase();
+      addTimelineEntry("Data Pendukung Disimpan", "SK | Staf Kancab", "Data pendukung teknis manfaat klaim berhasil diperbarui.");
+      showToast("Data Disimpan", "Data pendukung klaim berhasil diperbarui.");
+      switchTab("tab-perhitungan");
+    }
+
+    // Tab 5: Recalculate Benefits
+    function recalculateManfaat() {
+      if (!activeClaim) return;
+
+      const key = getSpecKey(activeClaim.manfaatKlaim);
+      const spec = BENEFIT_SPECS[key] || BENEFIT_SPECS["SCDK"];
+      const p = activeClaim.participant || {};
+
+      const components = spec.calc(inputValues, p);
+      
+      let sumSekali = 0;
+      let sumBerkala = 0;
+      let rejectText = "";
+
+      let itemsHtml = components.map(c => {
+        if (c.isReject) {
+          rejectText = c.label;
+          return `
+            <div class="flex items-center justify-between py-2 border-b border-rose-100 text-rose-600 font-bold bg-rose-50/50 px-3 rounded-lg">
+              <span><i class="fas fa-circle-xmark mr-1.5"></i>${c.label}</span>
+              <span>—</span>
+            </div>
+          `;
+        }
+
+        let isMinus = c.subVal || c.tpb;
+        let sign = isMinus ? "−" : "+";
+        let signColor = isMinus ? "text-rose-500" : "text-emerald-500";
+        let displayVal = formatRupiah(c.val);
+
+        if (c.berkala) {
+          sumBerkala += c.val;
+          return `
+            <div class="flex items-center justify-between py-2 border-b border-slate-50 font-semibold text-slate-700">
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>${c.label}</span>
+              <span class="font-mono text-indigo-600">${displayVal} / Bulan</span>
+            </div>
+          `;
+        }
+
+        if (c.subVal) {
+          // Tanggungan sendiri / tidak dibayar
+        } else if (c.tpb) {
+          // Dialihkan ke TPB - tidak dibayar tunai
+        } else {
+          sumSekali += c.val;
+        }
+
+        return `
+          <div class="flex items-center justify-between py-2 border-b border-slate-50 font-semibold text-slate-700">
+            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>${c.label}</span>
+            <span class="font-mono"><span class="${signColor}">${sign}</span> ${displayVal}</span>
+          </div>
+        `;
+      }).join("");
+
+      // Subtract debts automatically
+      let pumDebt = 0;
+      let potonganHtml = "";
+      if (activeClaim.jenisKlaim === "THT" || activeClaim.jenisKlaim === "JKK" || activeClaim.jenisKlaim === "JKm") {
+        pumDebt = 2500000; // Mock debt lookup
+        sumSekali -= pumDebt;
+        potonganHtml = `
+          <div class="flex items-center justify-between py-2 border-b border-slate-50 font-semibold text-slate-500">
+            <span class="flex items-center gap-1.5"><i class="fas fa-minus-circle text-rose-400"></i> Potongan Hutang PUM KPR</span>
+            <span class="font-mono text-rose-600">− ${formatRupiah(pumDebt)}</span>
+          </div>
+        `;
+      }
+
+      if (sumSekali < 0) sumSekali = 0;
+
+      const totalNetto = sumSekali;
+
+      let summaryHtml = "";
+      if (rejectText) {
+        summaryHtml = `
+          <div class="p-4 bg-rose-50 border border-rose-250 rounded-2xl flex items-center gap-3 text-rose-700 text-xs">
+            <i class="fas fa-circle-exclamation text-lg animate-pulse"></i>
+            <div>
+              <strong class="font-bold">STATUS TOLAK OTOMATIS:</strong>
+              <p class="mt-0.5 font-semibold">${rejectText}. Silakan tolak berkas ini pada Tab 6.</p>
+            </div>
+          </div>
+        `;
+      } else {
+        let berkalaHtml = sumBerkala > 0 ? `
+          <div class="p-3 bg-indigo-50 border border-indigo-250 rounded-xl flex items-center justify-between font-bold text-xs text-indigo-800">
+            <span>Manfaat Pensiun Berkala</span>
+            <span class="font-mono text-sm">${formatRupiah(sumBerkala)} / Bulan</span>
+          </div>
+        ` : "";
+
+        summaryHtml = `
+          <div class="space-y-3">
+            <div class="p-4 bg-emerald-50 border border-emerald-250 rounded-2xl flex items-center justify-between font-bold text-slate-800">
+              <span class="text-xs font-black uppercase text-slate-500 tracking-wider">TOTAL NETTO DIBAYARKAN (SEKALI BAYAR)</span>
+              <span class="font-mono text-xl text-emerald-700">${formatRupiah(totalNetto)}</span>
+            </div>
+            ${berkalaHtml}
+          </div>
+        `;
+      }
+
+      document.getElementById("perhitungan-ledger-container").innerHTML = `
+        <div class="border border-slate-150 rounded-2xl p-4 bg-slate-50/50 space-y-2">
+          <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Komponen Rincian Manfaat</span>
+          ${itemsHtml}
+          ${potonganHtml}
+        </div>
+        ${summaryHtml}
+      `;
+
+      // Save calculated value
+      activeClaim.totalNetto = totalNetto;
+      activeClaim.totalBerkala = sumBerkala;
+    }
+
+    // Tab 6: Status and timeline
+    function renderStatusAndTimeline() {
+      if (!activeClaim) return;
+
+      // Status badge header
+      const container = document.getElementById("ringkasan-status-container");
+      let icon = "fa-hourglass-half";
+      let statusColor = "bg-amber-50 text-amber-700 border-amber-200";
+      if (activeClaim.status === "Diterima") {
+        statusColor = "bg-emerald-50 text-emerald-700 border-emerald-250";
+        icon = "fa-circle-check";
+      } else if (activeClaim.status === "Ditolak") {
+        statusColor = "bg-rose-50 text-rose-700 border-rose-250";
+        icon = "fa-circle-xmark";
+      } else if (activeClaim.status === "Dalam Proses") {
+        statusColor = "bg-indigo-50 text-indigo-700 border-indigo-250";
+        icon = "fa-spinner fa-spin";
+      } else if (activeClaim.status === "Disetujui") {
+        statusColor = "bg-sky-50 text-sky-700 border-sky-250";
+        icon = "fa-square-check";
+      } else if (activeClaim.status === "Dibayar") {
+        statusColor = "bg-violet-50 text-violet-700 border-violet-250 animate-pulse";
+        icon = "fa-money-bill-transfer";
+      }
+      container.innerHTML = `
+        <span class="${statusColor} px-3 py-1 rounded-full text-xs font-bold border inline-flex items-center gap-1">
+          <i class="fas ${icon} text-xs"></i> ${activeClaim.status}
+        </span>
+      `;
+
+      // Render timeline logs
+      const logContainer = document.getElementById("timeline-log-container");
+      if (logContainer) {
+        logContainer.innerHTML = activeClaim.auditTrail.map((log, idx) => `
+          <div class="relative">
+            <span class="absolute -left-[31px] top-1 w-2.5 h-2.5 rounded-full bg-asabri-blue border-2 border-white shadow-sm"></span>
+            <div class="text-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-800">${log.aksi}</span>
+                <span class="text-[9px] font-mono text-slate-400">${log.tanggal}</span>
+              </div>
+              <p class="text-slate-500 text-[11px] mt-0.5 leading-snug">${log.keterangan}</p>
+              <span class="text-[9px] text-slate-400 font-bold block mt-1"><i class="fas fa-user-circle mr-1"></i>${log.user}</span>
+            </div>
+          </div>
+        `).reverse().join("");
+      }
+
+      // Render action buttons
+      renderActionButtons();
+
+      // Linked claims info (Pola B)
+      const linkedBox = document.getElementById("t6-linked-container");
+      if (activeClaim.linkedClaim) {
+        linkedBox.classList.remove("hidden");
+        document.getElementById("linked-noreg").innerText = activeClaim.linkedClaim.noAgenda || "";
+        document.getElementById("linked-jenis-manfaat").innerText = `${activeClaim.linkedClaim.jenis} - ${activeClaim.linkedClaim.manfaat}`;
+        
+        let stClass = "text-slate-500 font-bold";
+        if (activeClaim.linkedClaim.status === "Approved") stClass = "text-emerald-600 font-bold";
+        document.getElementById("linked-status").className = stClass;
+        document.getElementById("linked-status").innerText = activeClaim.linkedClaim.status || "";
+      } else {
+        linkedBox.classList.add("hidden");
+      }
+    }
+
+    function renderActionButtons() {
+      const container = document.getElementById("t6-actions-container");
+      if (!container) return;
+
+      const st = activeClaim.status;
+      let buttonsHtml = "";
+
+      if (st === "Pending") {
+        buttonsHtml = `
+          <button onclick="changeStatus('Diterima', 'Kelengkapan berkas berhasil diverifikasi dan disetujui staf.')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-100 flex items-center gap-1.5"><i class="fas fa-check"></i> Verifikasi Lengkap</button>
+          <button onclick="changeStatus('Ditolak', 'Ditolak karena kriteria tidak sesuai.')" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-rose-100 flex items-center gap-1.5"><i class="fas fa-ban"></i> Tolak Klaim</button>
+        `;
+      } else if (st === "Diterima") {
+        buttonsHtml = `
+          <button onclick="changeStatus('Dalam Proses', 'Dikirim ke antrian KAKANCAB untuk proses approval.')" class="bg-asabri-blue hover:bg-asabri-blueDark text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-100 flex items-center gap-1.5"><i class="fas fa-paper-plane"></i> Kirim ke KAKANCAB</button>
+          <button onclick="changeStatus('Pending', 'Kekurangan dokumen fisik/koreksi data.')" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-amber-100 flex items-center gap-1.5"><i class="fas fa-pause"></i> Tunda (Pending)</button>
+          <button onclick="changeStatus('Ditolak', 'Ditolak atas pertimbangan kriteria persyaratan.')" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-rose-100 flex items-center gap-1.5"><i class="fas fa-ban"></i> Tolak Klaim</button>
+        `;
+      } else if (st === "Dalam Proses") {
+        buttonsHtml = `
+          <button onclick="changeStatus('Disetujui', 'KAKANCAB memberikan approval berkas. Penerbitan SP.')" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-sky-100 flex items-center gap-1.5"><i class="fas fa-stamp"></i> KAKANCAB: Approve & Terbit SP</button>
+          <button onclick="changeStatus('Diterima', 'KAKANCAB mengembalikan berkas ke staf untuk dilakukan koreksi.')" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-amber-100 flex items-center gap-1.5"><i class="fas fa-rotate-left"></i> KAKANCAB: Kembalikan ke Staf</button>
+        `;
+      } else if (st === "Disetujui") {
+        buttonsHtml = `
+          <button onclick="changeStatus('Dibayar', 'Transfer dana berhasil dikirimkan ke Bank Mitra.')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-indigo-100 flex items-center gap-1.5"><i class="fas fa-money-bill-wave"></i> Proses Pembayaran Mitra</button>
+        `;
+      } else if (st === "Ditolak") {
+        buttonsHtml = `
+          <button onclick="changeStatus('Pending', 'Membuka kembali klaim untuk revisi berkas.')" class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5"><i class="fas fa-folder-open"></i> Buka Kembali (Revisi)</button>
+        `;
+      } else { // Dibayar
+        buttonsHtml = `
+          <div class="text-emerald-700 text-xs font-bold"><i class="fas fa-check-double mr-1.5"></i> Seluruh tahapan proses klaim selesai dan dana telah ditransfer.</div>
+        `;
+      }
+
+      container.innerHTML = buttonsHtml;
+    }
+
+    function changeStatus(newStatus, defaultNotes) {
+      if (!activeClaim) return;
+      const notesEl = document.getElementById("t6-catatan");
+      const catatanText = notesEl.value.trim() || defaultNotes;
+
+      if ((newStatus === "Pending" || newStatus === "Ditolak") && !notesEl.value.trim()) {
+        showToast("Catatan Wajib", "Harap isi alasan/catatan tindak lanjut terlebih dahulu.", "warning");
+        notesEl.focus();
+        return;
+      }
+
+      activeClaim.status = newStatus;
+      activeClaim.catatan = catatanText;
+
+      addTimelineEntry(`Status Diubah ke ${newStatus}`, "SK | Staf Kancab Utama", catatanText);
+      notesEl.value = ""; // clear notes
+
+      // SLA timer adjustments
+      const isPending = newStatus === "Pending";
+      startSlaTimer(activeClaim.slaStart, isPending);
+
+      // POLA B logic: Generate new ticket on Kakancab approval
+      if (newStatus === "Disetujui") {
+        checkAndGenerateLinkedTicket();
+      }
+
+      saveStateToDatabase();
+      renderStatusAndTimeline();
+      updateSlaStatusBadge();
+      showToast("Status Diperbarui", `Berkas klaim kini berstatus: ${newStatus}`);
+    }
+
+    // Pola B Auto-generation
+    function checkAndGenerateLinkedTicket() {
+      if (activeClaim.linkedClaim) return; // already generated
+
+      let generate = false;
+      let ticketJenis = "";
+      let ticketManfaat = "";
+      const manfaat = activeClaim.manfaatKlaim;
+
+      if (manfaat === "SRKK Gugur" || manfaat === "SRKK Tewas") {
+        generate = true;
+        ticketJenis = "Pensiun";
+        ticketManfaat = "PPI"; // Pensiun Warakawuri
+      } else if (manfaat === "SKS Perwira/PNS" || manfaat === "SKS Bintara/Tamtama") {
+        generate = true;
+        ticketJenis = "Pensiun";
+        ticketManfaat = "PPI";
+      } else if (manfaat === "SCDK" && inputValues.berlanjut_pensiun === "Ya") {
+        generate = true;
+        ticketJenis = "Pensiun";
+        ticketManfaat = "PPA"; // Tunjangan Cacat Anak/Yatim
+      } else if (manfaat === "PP") {
+        generate = true;
+        ticketJenis = "Pensiun";
+        ticketManfaat = "PPI";
+      } else if (manfaat === "PPI" && activeClaim.pengaju?.hubungan === "Istri") {
+        generate = true;
+        ticketJenis = "Pensiun";
+        ticketManfaat = "PPA";
+      }
+
+      if (generate) {
+        const claims = getClaims();
+        const nextId = claims.length + 81;
+        const newNoReg = `REG-2025-07-00${nextId}`;
+
+        const newTicket = {
+          noRegistrasi: newNoReg,
+          noReg: newNoReg,
+          participant: activeClaim.participant,
+          sumber: "Sistem Otomatis",
+          jalur: "Online",
+          kantorCabang: activeClaim.kantorCabang || "KC Utama Jakarta",
+          pengajuan: "Pensiun",
+          jenisKlaim: ticketJenis,
+          manfaatKlaim: ticketManfaat,
+          status: "Pending", // Starts as Draft/Pending waiting for process
+          catatan: `Tiket otomatis (Pola B) di-generate dari persetujuan klaim ${manfaat} (${activeClaim.noRegistrasi}).`,
+          slaStart: new Date().getTime(),
+          linkedClaim: {
+            noAgenda: activeClaim.noRegistrasi,
+            jenis: activeClaim.jenisKlaim,
+            manfaat: activeClaim.manfaatKlaim,
+            status: "Approved"
+          },
+          auditTrail: [
+            { tanggal: formatDate(new Date()), user: "Sistem YANDU", aksi: "Tiket Baru Dibuat", keterangan: `Tiket berstatus Draft di-generate otomatis dan di-link dengan klaim induk ${activeClaim.noRegistrasi}.` }
+          ]
+        };
+
+        // Link parent to child too
+        activeClaim.linkedClaim = {
+          noAgenda: newNoReg,
+          jenis: ticketJenis,
+          manfaat: ticketManfaat,
+          status: "Draft"
+        };
+
+        // Push new ticket to DB
+        claims.unshift(newTicket);
+        localStorage.setItem("asabri_claims", JSON.stringify(claims));
+
+        addTimelineEntry("Tiket Lanjutan Di-generate (Pola B)", "Sistem YANDU", `Sistem otomatis membuat tiket baru ${newNoReg} (${ticketJenis} - ${ticketManfaat}) berstatus Draft.`);
+      }
+    }
+
+    function openLinkedClaim() {
+      if (activeClaim.linkedClaim) {
+        window.location.href = `proses-klaim.html?noAgenda=${activeClaim.linkedClaim.noAgenda}`;
+      }
+    }
+
+    // Save current activeClaim state back into DB list
+    function saveStateToDatabase() {
+      if (!activeClaim) return;
+      const claims = getClaims();
+      const idx = claims.findIndex(c => c.noRegistrasi === activeClaim.noRegistrasi || c.noReg === activeClaim.noRegistrasi);
+      if (idx !== -1) {
+        claims[idx] = activeClaim;
+      } else {
+        claims.unshift(activeClaim);
+      }
+      saveClaims(claims);
+    }
+
+    // Add Timeline log helper
+    function addTimelineEntry(action, user, text) {
+      if (!activeClaim.auditTrail) activeClaim.auditTrail = [];
+      const entry = {
+        tanggal: formatDate(new Date()),
+        user: user,
+        aksi: action,
+        keterangan: text
+      };
+      activeClaim.auditTrail.push(entry);
+      saveStateToDatabase();
+      renderStatusAndTimeline();
+    }
+
+    // SLA display updates
+    function updateSlaStatusBadge() {
+      // Synchronize index.html style SLA indications
+    }
+
+    // Print/Modal features
+    function printSuratKekurangan() {
+      const modal = document.getElementById("print-modal");
+      const title = document.getElementById("print-modal-title");
+      const body = document.getElementById("print-modal-body");
+
+      title.innerText = "Surat Pemberitahuan Kekurangan Berkas (SLA Freeze)";
+
+      // Find missing documents
+      const docs = activeClaim.documentsState || {};
+      const specsKey = getSpecKey(activeClaim.manfaatKlaim);
+      const spec = BENEFIT_SPECS[specsKey] || BENEFIT_SPECS["SCDK"];
+      
+      let missingList = [];
+      spec.docs.forEach(doc => {
+        if (doc.type === "W" && docs[doc.id] === "Kurang") {
+          missingList.push(doc.label);
+        }
+      });
+
+      if (missingList.length === 0) {
+        body.innerHTML = `
+          <div class="text-center py-6 text-slate-500 font-sans font-bold">
+            <i class="fas fa-check-circle text-emerald-500 text-3xl mb-2 block"></i>
+            Semua dokumen wajib [W] berstatus Lengkap. Surat kekurangan tidak diperlukan.
+          </div>
+        `;
+      } else {
+        body.innerHTML = `
+          <div class="p-6 bg-white text-black" style="font-family: 'Times New Roman', Times, serif; font-size: 14px; line-height: 1.6;">
+            <div class="text-center font-bold" style="border-bottom: 2px solid black; padding-bottom: 12px; margin-bottom: 20px;">
+              <h2 style="font-size: 18px; margin: 0;">PT ASABRI (PERSERO)</h2>
+              <p style="font-size: 12px; margin: 4px 0 0 0; font-weight: normal;">KANTOR CABANG UTAMA JAKARTA</p>
+              <p style="font-size: 10px; margin: 2px 0 0 0; font-weight: normal; font-style: italic;">Jl. Mayjen Sutoyo No.11, Jakarta Timur</p>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+              <div>Nomor : B/SPKB/2026/07/${activeClaim.noRegistrasi.replace('REG-2025-','')}</div>
+              <div>Jakarta, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+            </div>
+            <div style="margin-bottom: 15px;">
+              Hal : Pemberitahuan Kekurangan Berkas Pengajuan Klaim
+            </div>
+            <div style="margin-bottom: 15px;">
+              Kepada Yth,<br>
+              <strong>Bapak/Ibu ${activeClaim.pengaju?.nama || activeClaim.participant?.nama || '-'}</strong><br>
+              Penerima Manfaat ASABRI<br>
+              Di tempat
+            </div>
+            <p>Dengan hormat,</p>
+            <p>Sehubungan dengan pengajuan klaim manfaat program <strong>${activeClaim.jenisKlaim} - ${activeClaim.manfaatKlaim}</strong> atas nama peserta <strong>${activeClaim.participant?.nama || '-'}</strong> (NIP/NRP: ${activeClaim.participant?.nrp_nip || '-'}), dengan ini kami beritahukan bahwa setelah dilakukan pemeriksaan, berkas Anda dinyatakan <strong>PENDING / BELUM LENGKAP</strong>.</p>
+            <p>Adapun kekurangan dokumen persyaratan wajib yang harus segera dipenuhi adalah sebagai berikut:</p>
+            <ol style="margin-left: 20px; font-weight: bold;">
+              ${missingList.map(item => `<li style="margin-bottom: 4px;">${item}</li>`).join("")}
+            </ol>
+            <p>Mohon agar kekurangan dokumen di atas dapat diserahkan ke Kantor Cabang ASABRI pemroses paling lambat 14 (empat belas) hari kerja setelah diterimanya surat pemberitahuan ini.</p>
+            <p>Demikian kami sampaikan, atas perhatian dan kerja samanya kami ucapkan terima kasih.</p>
+            <div style="margin-top: 40px; text-align: right; width: 300px; margin-left: auto;">
+              <p>Kepala Kantor Cabang Utama,</p>
+              <br><br><br>
+              <p><strong>SK | Staf Kancab Utama</strong><br>NIP. 19930708001</p>
+            </div>
+          </div>
+        `;
+      }
+
+      modal.classList.remove("hidden");
+    }
+
+    function printKuitansi() {
+      const modal = document.getElementById("print-modal");
+      const title = document.getElementById("print-modal-title");
+      const body = document.getElementById("print-modal-body");
+
+      title.innerText = "Tanda Terima & Kuitansi Pembayaran Klaim ASABRI";
+
+      body.innerHTML = `
+        <div class="p-6 bg-white text-black" style="font-family: 'Times New Roman', Times, serif; font-size: 13px; line-height: 1.5;">
+          <div style="text-align: center; border-bottom: 2px dashed black; padding-bottom: 12px; margin-bottom: 15px;">
+            <h2 style="font-size: 16px; margin: 0; font-weight: bold;">PT ASABRI (PERSERO)</h2>
+            <p style="margin: 3px 0 0 0;">TANDA TERIMA PENGAJUAN MANFAAT (KUITANSI)</p>
+          </div>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+            <tr>
+              <td style="width: 150px; padding: 4px 0;">No. Agenda</td>
+              <td style="width: 10px; padding: 4px 0;">:</td>
+              <td style="font-weight: bold; font-family: monospace; padding: 4px 0;">${activeClaim.noRegistrasi}</td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 0;">Nama Peserta</td>
+              <td style="padding: 4px 0;">:</td>
+              <td style="padding: 4px 0;">${activeClaim.participant?.nama || '-'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 0;">NRP / NIP</td>
+              <td style="padding: 4px 0;">:</td>
+              <td style="padding: 4px 0;">${activeClaim.participant?.nrp_nip || '-'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 0;">Jenis Klaim / Manfaat</td>
+              <td style="padding: 4px 0;">:</td>
+              <td style="padding: 4px 0; font-weight: bold;">${activeClaim.jenisKlaim} &bull; ${activeClaim.manfaatKlaim}</td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 0;">Nama Pengaju / Ahli Waris</td>
+              <td style="padding: 4px 0;">:</td>
+              <td style="padding: 4px 0;">${activeClaim.pengaju?.nama || '-'} (${activeClaim.pengaju?.hubungan || 'Peserta'})</td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 0;">No. Telp / HP</td>
+              <td style="padding: 4px 0;">:</td>
+              <td style="padding: 4px 0;">${activeClaim.pengaju?.telp || '-'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 0;">Mitra Bayar / Rekening</td>
+              <td style="padding: 4px 0;">:</td>
+              <td style="padding: 4px 0;">${activeClaim.pengaju?.mitraBayar || '-'} (No: ${activeClaim.pengaju?.noRekening || '-'})</td>
+            </tr>
+          </table>
+
+          <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; font-size: 14px;">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; margin-bottom: 6px;">
+              <span>Total Santunan Bersih (Netto)</span>
+              <span style="font-family: monospace; color: #15803d;">${formatRupiah(activeClaim.totalNetto || 0)}</span>
+            </div>
+            ${activeClaim.totalBerkala > 0 ? `
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #4338ca;">
+              <span>Tunjangan Pensiun Berkala</span>
+              <span style="font-family: monospace;">${formatRupiah(activeClaim.totalBerkala)} / Bulan</span>
+            </div>
+            ` : ''}
+          </div>
+
+          <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+            <div style="text-align: center; width: 200px;">
+              <p>Penerima / Ahli Waris,</p>
+              <br><br><br>
+              <p>( _______________________ )</p>
+            </div>
+            <div style="text-align: center; width: 200px;">
+              <p>Staf Layanan Kancab,</p>
+              <br><br><br>
+              <p><strong>SK | Staf Kancab Utama</strong></p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      modal.classList.remove("hidden");
+    }
+
+    function closePrintModal() {
+      document.getElementById("print-modal").classList.add("hidden");
+    }
+
+    function triggerPrintDoc() {
+      window.print();
+    }
+
+    // Helper functions
+    function formatRupiah(num) {
+      return "Rp " + parseFloat(num).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function formatDate(date) {
+      const now = new Date(date);
+      const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+      const formattedDate = now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear() + " " +
+                            now.getHours().toString().padStart(2, '0') + ":" + 
+                            now.getMinutes().toString().padStart(2, '0');
+      return formattedDate;
+    }
+  </script>
+
+  <script>
+    if (typeof toggleSidebarAccordion === 'undefined') {
+      function toggleSidebarAccordion(menuId, chevId) {
+        const menu = document.getElementById(menuId);
+        const chev = document.getElementById(chevId);
+        if (!menu || !chev) return;
+        if (menu.classList.contains('hidden')) {
+          menu.classList.remove('hidden');
+          chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+        } else {
+          menu.classList.add('hidden');
+          chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Jaminan Perawatan)</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide mr-1">ROLE :</span>
+        <select id="role-switcher" onchange="changeRole()" class="bg-transparent text-white font-semibold text-xs border-0 outline-none cursor-pointer focus:ring-0">
+          <option value="Staf KANCAB" class="text-slate-800" selected>Staf KANCAB</option>
+          <option value="KAKANCAB" class="text-slate-800">KAKANCAB</option>
+        </select>
+      </div>
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+    <aside id="sidebar-nav" class="w-80 bg-asabri-softBlue border-r border-slate-200 flex flex-col flex-shrink-0 transition-all duration-300">
+      <div class="p-5 border-b border-slate-200 bg-white/50">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Menu Layanan</h2>
+      </div>
+      <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+        <a href="index.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-chart-pie text-base text-asabri-blue"></i>
+            <span>1. Dashboard</span>
+          </div>
+        </a>
+        <a href="registrasi.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-pen-to-square text-base text-asabri-blue"></i>
+            <span>2. Pelayanan Registrasi Klaim Peserta</span>
+          </div>
+        </a>
+        <a href="data-peserta.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-search text-base text-asabri-blue"></i>
+            <span>3. Data Peserta</span>
+          </div>
+        </a>
+        <a href="riwayat.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-clock-rotate-left text-base text-asabri-blue"></i>
+            <span>4. Riwayat Transaksi Klaim</span>
+          </div>
+        </a>
+        <a href="kejadian.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-file-invoice text-base text-asabri-blue"></i>
+            <span>5. Pelayanan Klaim</span>
+          </div>
+        </a>
+        <!-- 6. Perawatan JKK Restructured -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-perawatan','chevron-perawatan')" class="w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-hand-holding-medical text-base text-asabri-blue"></i>
+              <span>6. Perawatan JKK</span>
+            </div>
+            <i id="chevron-perawatan" class="fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-perawatan" class="pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="perawatan-jaminan.html" class="relative pl-5 py-1 text-xs font-semibold text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-asabri-blue"></span>
+              <i class="fas fa-notes-medical w-4 text-asabri-blue"></i>
+              <span>Jaminan Perawatan</span>
+            </a>
+            <a href="perawatan-restitusi.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-file-medical w-4 text-slate-400"></i>
+              <span>Restitusi Perawatan</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+      <div class="p-4 border-t border-slate-250 bg-slate-100 text-[10px] text-slate-400 font-mono text-center">ASABRI YANDU NG v1.2.0</div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <div class="bg-white border-b border-slate-200 px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+            <span>Perawatan JKK</span><span class="text-slate-400">/</span><span class="font-bold text-asabri-blue">Jaminan Perawatan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-end justify-between">
+          <div class="flex flex-wrap gap-4 items-center">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Entitas</label>
+              <select id="filter-entitas" onchange="applyFilters()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue text-slate-700 min-w-[150px]">
+                <option value="Semua">Semua</option>
+                <option value="Provider">Provider</option>
+                <option value="Peserta">Peserta</option>
+                <option value="Kesatuan">Kesatuan</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Status</label>
+              <select id="filter-status" onchange="applyFilters()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue text-slate-700 min-w-[150px]">
+                <option value="Semua">Semua</option>
+                <option value="Pengajuan">Pengajuan</option>
+                <option value="Verifikasi Kancab">Verifikasi Kancab</option>
+                <option value="Persetujuan KAKANCAB">Persetujuan KAKANCAB</option>
+                <option value="SJP Terbit">SJP Terbit</option>
+                <option value="SJPP Terbit">SJPP Terbit</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Cari Laporan</label>
+              <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Cari nomor, nama..." class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700 min-w-[200px]">
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openLaporanDrawer()" class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-plus"></i> Tambah Laporan</button>
+            <button onclick="showToast('Integrasi SEPA', 'Menghubungkan layanan antrean SEPA ASABRI...', 'info')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-network-wired"></i> SEPA</button>
+            <button onclick="showToast('Manajemen Jaminan', 'Membuka konsol jaminan...', 'info')" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-shield-halved"></i> Jaminan</button>
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-slate-150 bg-slate-50 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clipboard-list text-asabri-blue"></i>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Daftar Monitoring Jaminan Perawatan JKK</h3>
+            </div>
+            <span class="px-3 py-1 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-full font-bold text-[10px]" id="data-count-badge">0 Data Laporan</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
+              <thead>
+                <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-500 uppercase font-bold text-[9px]">
+                  <th class="py-2.5 px-3">Status</th>
+                  <th class="py-2.5 px-3">Jumlah Klaim</th>
+                  <th class="py-2.5 px-3">Nomor</th>
+                  <th class="py-2.5 px-3">COB</th>
+                  <th class="py-2.5 px-3 font-mono">KTPA</th>
+                  <th class="py-2.5 px-3 font-mono">NRP/NIP</th>
+                  <th class="py-2.5 px-3">Nama</th>
+                  <th class="py-2.5 px-3">Unor</th>
+                  <th class="py-2.5 px-3">Provider</th>
+                  <th class="py-2.5 px-3">Cabang ASABRI</th>
+                  <th class="py-2.5 px-3">Tgl Pengajuan</th>
+                  <th class="py-2.5 px-3">Tgl Kejadian</th>
+                  <th class="py-2.5 px-3">Tgl Rawat</th>
+                  <th class="py-2.5 px-3">Kejadian</th>
+                  <th class="py-2.5 px-3">Propinsi</th>
+                  <th class="py-2.5 px-3">Nomor SEPA</th>
+                  <th class="py-2.5 px-3 font-mono">Tgl SEPA</th>
+                  <th class="py-2.5 px-3">Jaminan</th>
+                  <th class="py-2.5 px-3 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="monitoring-tbody" class="divide-y divide-slate-100 bg-white font-medium text-slate-700"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL DRAWER: Form Laporan Kejadian -->
+  <div id="laporan-modal" class="fixed inset-0 z-[110] flex items-center justify-end hidden bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+    <div class="bg-white h-full w-full max-w-4xl shadow-2xl border-l border-slate-200 flex flex-col transform translate-x-full transition-transform duration-300 overflow-hidden" id="laporan-drawer">
+      <div class="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2"><i class="fas fa-file-invoice text-asabri-blue"></i> Form Laporan Jaminan Perawatan JKK</h3>
+          <span class="text-[10px] text-slate-400 font-semibold" id="laporan-subtitle">Laporan Kejadian JKK</span>
+        </div>
+        <button onclick="closeLaporanDrawer()" class="text-slate-400 hover:text-slate-600 transition-colors"><i class="fas fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- Stepper UI -->
+      <div class="bg-slate-50 border-b border-slate-200 px-6 py-4">
+        <div class="flex items-center justify-between max-w-3xl mx-auto relative">
+          <div class="absolute top-4 left-[10%] right-[10%] h-0.5 bg-slate-200 -z-1">
+            <div class="h-full bg-asabri-blue transition-all duration-500" id="kejadian-stepper-line" style="width: 0%;"></div>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[10px]">
+            <div class="w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1">1</div>
+            <span class="font-bold text-slate-700">Pengajuan</span>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[10px]">
+            <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border-2 border-white shadow mb-1" id="k-step-2">2</div>
+            <span class="font-bold text-slate-500">Verif Kancab</span>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[10px]">
+            <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border-2 border-white shadow mb-1" id="k-step-3">3</div>
+            <span class="font-bold text-slate-500">Persetujuan Kakancab</span>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[10px]">
+            <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border-2 border-white shadow mb-1" id="k-step-4">4</div>
+            <span class="font-bold text-slate-500">SJP/SJPP Terbit</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border-b border-slate-155 flex px-6">
+        <button onclick="switchLaporanTab('tab-laporan-kejadian')" id="btn-tab-laporan-kejadian" class="py-3 px-4 text-xs font-bold border-b-2 border-asabri-blue text-asabri-blue transition-all">Tab 1: Data Kejadian</button>
+        <button onclick="switchLaporanTab('tab-laporan-dokumen')" id="btn-tab-laporan-dokumen" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">Tab 2: Dokumen Persyaratan</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-6 space-y-6">
+        <!-- Tab 1 -->
+        <div id="tab-laporan-kejadian" class="space-y-6 text-xs">
+          <div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 space-y-4">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wide">Data Profil & Kepesertaan (Read-Only / Auto-Fill):</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Provider</label>
+                <input type="text" id="lf-provider" readonly value="RS RSPAD Gatot Soebroto" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Nomor Kejadian</label>
+                <input type="text" id="lf-nomor-kejadian" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-mono font-bold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">NRP / NIP</label>
+                <input type="text" id="lf-nrp" readonly value="311200923211" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">NIK</label>
+                <input type="text" id="lf-nik" readonly value="3273120105910003" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Nama</label>
+                <input type="text" id="lf-nama" readonly value="Ahmad Fauzi" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Telepon</label>
+                <input type="text" id="lf-telepon" readonly value="0812-9831-2918" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">UNOR</label>
+                <input type="text" id="lf-unor" readonly value="TNI-AD" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Kesatuan</label>
+                <input type="text" id="lf-kesatuan" readonly value="Kodam Jaya" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Pangkat</label>
+                <input type="text" id="lf-pangkat" readonly value="Kolonel" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Cabang</label>
+                <input type="text" id="lf-cabang" readonly value="KANCAB JAKARTA" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Kelas Rawat</label>
+                <input type="text" id="lf-kelas" readonly value="Kelas VIP / I" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4" id="laporan-inputs-container">
+            <h4 class="text-xs font-bold text-slate-700 border-b border-slate-150 pb-2"><i class="fas fa-pen-to-square text-asabri-blue mr-1.5"></i>Input Informasi Kejadian (Mandatory):</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Entitas Pelapor <span class="text-rose-500">*</span></label>
+                <select id="lf-entitas-pelapor" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+                  <option value="Provider">Provider</option>
+                  <option value="Peserta">Peserta</option>
+                  <option value="Kesatuan">Kesatuan</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Pelapor <span class="text-rose-500">*</span></label>
+                <input type="text" id="lf-pelapor" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">No Telepon Pelapor <span class="text-rose-500">*</span></label>
+                <input type="text" id="lf-pelapor-telp" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue font-mono">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Tanggal Lapor Kejadian <span class="text-rose-500">*</span></label>
+                <input type="date" id="lf-tgl-lapor" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Jenis Laka Kejadian <span class="text-rose-500">*</span></label>
+                <select id="lf-kejadian" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+                  <option value="Laka Kerja (Kecelakaan di Tempat Kerja)">Laka Kerja (Kecelakaan di Tempat Kerja)</option>
+                  <option value="Laka Kerja (Kecelakaan selain di Tempat Kerja)">Laka Kerja (Kecelakaan selain di Tempat Kerja)</option>
+                  <option value="Laka Kerja + Laka Lantas Tunggal">Laka Kerja + Laka Lantas Tunggal</option>
+                  <option value="Laka Kerja + Laka Lantas Ganda">Laka Kerja + Laka Lantas Ganda</option>
+                  <option value="Penyakit Akibat Kerja">Penyakit Akibat Kerja</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Tanggal Kejadian <span class="text-rose-500">*</span></label>
+                <input type="date" id="lf-tgl-kejadian" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Tanggal Mulai Rawat <span class="text-rose-500">*</span></label>
+                <input type="date" id="lf-tgl-rawat" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">COB Penanggung <span class="text-rose-500">*</span></label>
+                <select id="lf-cob" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+                  <option value="-">-</option>
+                  <option value="Jasa Raharja">Jasa Raharja</option>
+                  <option value="BPJS Kesehatan">BPJS Kesehatan</option>
+                  <option value="Asuransi Lain">Asuransi Lain</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Jenis Layanan <span class="text-rose-500">*</span></label>
+                <select id="lf-layanan" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+                  <option value="Rawat Inap">Rawat Inap</option>
+                  <option value="Rawat Jalan">Rawat Jalan</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Propinsi Kejadian <span class="text-rose-500">*</span></label>
+                <input type="text" id="lf-provinsi" value="DKI Jakarta" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block font-bold text-slate-500 mb-1">Catatan Kejadian (Rich Text) <span class="text-rose-500">*</span></label>
+                <textarea id="lf-catatan" class="w-full p-3 border border-slate-250 focus:border-asabri-blue rounded-xl bg-white resize-none h-20" placeholder="Tuliskan kronologis kejadian secara lengkap..."></textarea>
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block font-bold text-slate-500 mb-1">Diagnosa Awal Kejadian (Rich Text) <span class="text-rose-500">*</span></label>
+                <textarea id="lf-diagnosa" class="w-full p-3 border border-slate-250 focus:border-asabri-blue rounded-xl bg-white resize-none h-20" placeholder="Tuliskan diagnosa awal medis..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Verifikasi 3 Pilar (Role Staf KANCAB) -->
+          <div id="validasi-kelayakan-container" class="bg-white border border-slate-200 rounded-3xl p-5 space-y-4 hidden">
+            <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i class="fas fa-check-double text-emerald-600"></i> Validasi Kelayakan JKK (Staf KANCAB)</h4>
+            <div class="space-y-4 text-xs">
+              <div class="border-b border-slate-100 pb-3 space-y-2">
+                <div class="font-bold text-slate-700">1. Validasi Kepesertaan (KTA aktif?)</div>
+                <div class="flex items-center gap-4">
+                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                    <input type="radio" name="val-kepesertaan" id="val-kep-lolos" value="Lolos" checked class="w-4 h-4 text-asabri-blue">
+                    <span>Lolos</span>
+                  </label>
+                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                    <input type="radio" name="val-kepesertaan" id="val-kep-tidak" value="Tidak Lolos" class="w-4 h-4 text-asabri-blue">
+                    <span>Tidak Lolos</span>
+                  </label>
+                </div>
+                <input type="text" id="val-kepesertaan-catatan" placeholder="Catatan kepesertaan..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 outline-none focus:border-asabri-blue">
+              </div>
+
+              <div class="border-b border-slate-100 pb-3 space-y-2">
+                <div class="font-bold text-slate-700">2. Validasi Legalitas Dinas</div>
+                <div class="flex items-center gap-4">
+                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                    <input type="radio" name="val-legalitas" id="val-leg-lolos" value="Lolos" checked class="w-4 h-4 text-asabri-blue">
+                    <span>Lolos</span>
+                  </label>
+                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                    <input type="radio" name="val-legalitas" id="val-leg-tidak" value="Tidak Lolos" class="w-4 h-4 text-asabri-blue">
+                    <span>Tidak Lolos</span>
+                  </label>
+                </div>
+                <input type="text" id="val-legalitas-catatan" placeholder="Catatan legalitas..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 outline-none focus:border-asabri-blue">
+              </div>
+
+              <div class="border-b border-slate-100 pb-3 space-y-2">
+                <div class="font-bold text-slate-700">3. Validasi Medis (diagnosa sesuai JKK?)</div>
+                <div class="flex items-center gap-4">
+                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                    <input type="radio" name="val-medis" id="val-med-lolos" value="Lolos" checked class="w-4 h-4 text-asabri-blue">
+                    <span>Lolos</span>
+                  </label>
+                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                    <input type="radio" name="val-medis" id="val-med-tidak" value="Tidak Lolos" class="w-4 h-4 text-asabri-blue">
+                    <span>Tidak Lolos</span>
+                  </label>
+                </div>
+                <input type="text" id="val-medis-catatan" placeholder="Catatan medis..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 outline-none focus:border-asabri-blue">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Persetujuan (Role KAKANCAB) -->
+          <div id="kakancab-approval-container" class="bg-indigo-50 border border-indigo-150 rounded-3xl p-5 space-y-4 hidden">
+            <h4 class="text-xs font-bold text-indigo-900 flex items-center gap-1.5"><i class="fas fa-signature"></i> Persetujuan Verifikasi (KAKANCAB)</h4>
+            <div class="space-y-3 text-xs">
+              <div>
+                <span class="block font-bold text-slate-500 uppercase text-[9px] mb-1">Hasil Kelayakan Rekomendasi:</span>
+                <span class="font-extrabold text-sm text-slate-800" id="rekomendasi-lbl">Lolos</span>
+              </div>
+              <div class="space-y-1">
+                <label class="block font-bold text-slate-500">Catatan Persetujuan Kakancab:</label>
+                <textarea id="app-kakancab-catatan" placeholder="Tulis catatan persetujuan..." class="w-full p-2.5 bg-white border border-slate-200 rounded-xl focus:border-asabri-blue outline-none resize-none h-16"></textarea>
+              </div>
+              <div class="flex items-center gap-2" id="kakancab-approval-actions">
+                <!-- setuju/tolak buttons loaded here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Log Riwayat -->
+          <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-3">
+            <h4 class="text-xs font-bold text-slate-800"><i class="fas fa-history text-slate-500"></i> Log Aktivitas Laporan</h4>
+            <div id="lf-logs" class="space-y-1.5 font-mono text-[10px] text-slate-500 max-h-32 overflow-y-auto divide-y divide-slate-100"></div>
+          </div>
+        </div>
+
+        <!-- Tab 2 -->
+        <div id="tab-laporan-dokumen" class="hidden space-y-4">
+          <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-3 text-xs">
+            <div class="flex items-center justify-between p-3.5 border border-slate-100 rounded-xl">
+              <span class="font-bold text-slate-700">1. Kartu Tanda Anggota (KTA) <span class="text-rose-500 font-bold">*</span></span>
+              <input type="file" id="ldoc-1" class="text-slate-500">
+            </div>
+            <div class="flex items-center justify-between p-3.5 border border-slate-100 rounded-xl">
+              <span class="font-bold text-slate-700">2. Laporan Kronologis Awal <span class="text-rose-500 font-bold">*</span></span>
+              <input type="file" id="ldoc-2" class="text-slate-500">
+            </div>
+            <div class="flex items-center justify-between p-3.5 border border-slate-100 rounded-xl">
+              <span class="font-bold text-slate-700">3. Bukti Kronologis dari Kesatuan <span class="text-rose-500 font-bold">*</span></span>
+              <input type="file" id="ldoc-3" class="text-slate-500">
+            </div>
+            <div class="flex items-center justify-between p-3.5 border border-slate-100 rounded-xl">
+              <span class="font-bold text-slate-700">4. Surat Keterangan Rawat Inap <span class="text-rose-500 font-bold">*</span></span>
+              <input type="file" id="ldoc-4" class="text-slate-500">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="px-6 py-4 border-t border-slate-150 bg-slate-50 flex items-center justify-between gap-3" id="drawer-footer-actions"></div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2"></div>
+
+  <script>
+    function toggleSidebarAccordion(menuId, chevId) {
+      const menu = document.getElementById(menuId);
+      const chev = document.getElementById(chevId);
+      if (!menu || !chev) return;
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+      } else {
+        menu.classList.add('hidden');
+        chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+      }
+    }
+
+    function showToast(title, message, type = "success") {
+      const container = document.getElementById("toast-container");
+      if (!container) return;
+      const toast = document.createElement("div");
+      toast.className = "flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xl w-80 animate-fade-in text-xs";
+      let iconColor = "text-emerald-500";
+      let iconClass = "fa-circle-check";
+      if (type === "warning") {
+        iconColor = "text-amber-500";
+        iconClass = "fa-triangle-exclamation";
+      } else if (type === "error") {
+        iconColor = "text-rose-500";
+        iconClass = "fa-circle-xmark";
+      } else if (type === "info") {
+        iconColor = "text-asabri-blue";
+        iconClass = "fa-circle-info";
+      }
+      toast.innerHTML = `
+        <i class="fas ${iconClass} ${iconColor} text-base mt-0.5"></i>
+        <div class="flex-1">
+          <div class="font-bold text-slate-800">${title}</div>
+          <div class="text-slate-500 mt-0.5">${message}</div>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
+          <i class="fas fa-xmark text-[10px]"></i>
+        </button>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 4000);
+    }
+
+    function formatIndoDate(dateStr) {
+      if (!dateStr || dateStr === "-") return '-';
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    // Reports Data with status workflows & SLA dates
+    let reportsData = [
+      {
+        id: 501,
+        status: "Pengajuan",
+        tglPengajuan: new Date(Date.now() - 12 * 3600000).toISOString(), // 12 hours ago (SLA Yellow)
+        jumlahKlaim: 1,
+        nomor: "JKK-PRV/001-ASABRI/08/2026",
+        cob: "BPJS Kesehatan",
+        ktpa: "3273120105910003",
+        nrpNip: "311200923211",
+        nama: "Ahmad Fauzi",
+        unor: "TNI-AD",
+        provider: "RSPAD Gatot Soebroto",
+        cabang: "KANCAB JAKARTA",
+        tglKejadian: "2026-07-25",
+        tglRawat: "2026-07-26",
+        kejadian: "Laka Kerja (Kecelakaan di Tempat Kerja)",
+        provinsi: "DKI Jakarta",
+        sepaNum: "SEPA-98321",
+        sepaDate: "2026-07-26",
+        jaminan: "Ya",
+        source: "Provider",
+        catatanKejadian: "Terpeleset saat dinas pagi di hanggar.",
+        diagnosaKejadian: "Fraktur Tibia",
+        pelapor: "dr. Budianto",
+        logs: ["Laporan diterima — 20/08/2026, 10:00:12"]
+      },
+      {
+        id: 502,
+        status: "Verifikasi Kancab",
+        tglPengajuan: new Date(Date.now() - 36 * 3600000).toISOString(), // 36 hours ago (SLA Red)
+        jumlahKlaim: 1,
+        nomor: "JKK-RMB/002-ASABRI/08/2026",
+        cob: "-",
+        ktpa: "3578140902940004",
+        nrpNip: "3578140902940004",
+        nama: "Kartika Sari",
+        unor: "TNI-AU",
+        provider: "RS Sumber Waras",
+        cabang: "KANCAB BANDUNG",
+        tglKejadian: "2026-07-28",
+        tglRawat: "2026-07-28",
+        kejadian: "Laka Kerja + Laka Lantas Tunggal",
+        provinsi: "Jawa Barat",
+        sepaNum: "SEPA-09238",
+        sepaDate: "2026-07-28",
+        jaminan: "Ya",
+        source: "Peserta",
+        catatanKejadian: "Tabrakan tunggal saat berkendara dinas.",
+        diagnosaKejadian: "Luxatio Humeri",
+        pelapor: "Mayor Laut Suhartono",
+        logs: ["Laporan diterima — 19/08/2026, 11:15:00", "Verifikasi selesai oleh Staf — 19/08/2026, 13:22:15"]
+      },
+      {
+        id: 503,
+        status: "SJP Terbit",
+        tglPengajuan: new Date(Date.now() - 48 * 3600000).toISOString(),
+        jumlahKlaim: 1,
+        nomor: "JKK-KST/003-ASABRI/08/2026",
+        cob: "BPJS Kesehatan",
+        ktpa: "3171092801890001",
+        nrpNip: "3171092801890001",
+        nama: "Wirata Atmaja",
+        unor: "TNI-AD",
+        provider: "RSPAD Gatot Soebroto",
+        cabang: "KANCAB SEMARANG",
+        tglKejadian: "2026-08-03",
+        tglRawat: "2026-08-04",
+        kejadian: "Laka Kerja (Kecelakaan selain di Tempat Kerja)",
+        provinsi: "Jawa Tengah",
+        sepaNum: "SEPA-88412",
+        sepaDate: "2026-08-04",
+        jaminan: "Ya",
+        source: "Kesatuan",
+        catatanKejadian: "Tertimpa tiang rambu saat pengawalan.",
+        diagnosaKejadian: "Fraktur Clavicula",
+        pelapor: "dr. Hendra",
+        sjpNumber: "SJP/SEMARANG/08/2026/0003",
+        logs: ["Laporan diterima — 18/08/2026, 12:00:00", "Verifikasi selesai oleh Staf — 18/08/2026, 13:00:00", "Disetujui oleh KAKANCAB — 18/08/2026, 14:00:00", "SJP diterbitkan — SJP/SEMARANG/08/2026/0003 — 18/08/2026, 14:05:00"]
+      },
+      {
+        id: 504,
+        status: "Persetujuan KAKANCAB",
+        tglPengajuan: new Date(Date.now() - 5 * 3600000).toISOString(), // 5 hours ago
+        jumlahKlaim: 1,
+        nomor: "JKK-PRV/004-ASABRI/08/2026",
+        cob: "-",
+        ktpa: "3374110304620002",
+        nrpNip: "3374110304620002",
+        nama: "Bambang Triyono",
+        unor: "POLRI",
+        provider: "RS Polri Kramat Jati",
+        cabang: "KANCAB JAKARTA",
+        tglKejadian: "2026-08-01",
+        tglRawat: "2026-08-01",
+        kejadian: "Penyakit Akibat Kerja",
+        provinsi: "DKI Jakarta",
+        sepaNum: "SEPA-12345",
+        sepaDate: "2026-08-01",
+        jaminan: "Ya",
+        source: "Provider",
+        catatanKejadian: "Paparan gas berlebih.",
+        diagnosaKejadian: "Pneumokoniosis",
+        pelapor: "Polda Metro",
+        logs: ["Laporan diterima — 20/08/2026, 09:00:00", "Verifikasi selesai oleh Staf — 20/08/2026, 11:30:00"]
+      },
+      {
+        id: 505,
+        status: "SJPP Terbit",
+        tglPengajuan: new Date(Date.now() - 72 * 3600000).toISOString(),
+        jumlahKlaim: 1,
+        nomor: "JKK-PRV/005-ASABRI/08/2026",
+        cob: "-",
+        ktpa: "3273120105910088",
+        nrpNip: "3273120105910088",
+        nama: "Siti Nurhaliza",
+        unor: "KEMHAN",
+        provider: "RS Fatmawati",
+        cabang: "KANCAB JAKARTA",
+        tglKejadian: "2026-08-06",
+        tglRawat: "2026-08-06",
+        kejadian: "Laka Kerja + Laka Lantas Ganda",
+        provinsi: "DKI Jakarta",
+        sepaNum: "SEPA-55421",
+        sepaDate: "2026-08-06",
+        jaminan: "Tidak",
+        source: "Provider",
+        catatanKejadian: "Bukan tugas dinas/surat tugas tidak sah.",
+        diagnosaKejadian: "Luka Robek",
+        pelapor: "RS Fatmawati",
+        sjpNumber: "SJPP/JAKARTA/08/2026/0005",
+        logs: ["Laporan diterima — 17/08/2026, 08:00:00", "Verifikasi selesai oleh Staf — 17/08/2026, 10:00:00", "Disetujui oleh KAKANCAB (Tolak Jaminan) — 17/08/2026, 12:00:00"]
+      }
+    ];
+
+    let currentReportObj = null;
+
+    const mappingKancab = {
+      'DKI Jakarta': 'KANCAB JAKARTA',
+      'Jawa Barat': 'KANCAB BANDUNG',
+      'Jawa Tengah': 'KANCAB SEMARANG',
+      'Jawa Timur': 'KANCAB SURABAYA',
+      'Sumatera Utara': 'KANCAB MEDAN',
+      'Sulawesi Selatan': 'KANCAB MAKASSAR',
+      'Kalimantan Selatan': 'KANCAB BANJARMASIN',
+    };
+
+    function mappingWilayahKancab(propinsi) {
+      return mappingKancab[propinsi] || 'KANCAB PUSAT';
+    }
+
+    function calculateSLA(item) {
+      if (item.status === "SJP Terbit" || item.status === "SJPP Terbit" || item.status === "Selesai") {
+        return { label: "Selesai", bg: "bg-emerald-50 text-emerald-700 border border-emerald-200" };
+      }
+
+      const diffMs = Date.now() - new Date(item.tglPengajuan).getTime();
+      const diffHours = diffMs / 3600000;
+
+      if (diffHours <= 24) {
+        return { label: "≤ 24 Jam", bg: "bg-amber-50 text-amber-700 border border-amber-200" };
+      } else {
+        return { label: "> 24 Jam", bg: "bg-rose-50 text-rose-700 border border-rose-200 font-bold animate-pulse" };
+      }
+    }
+
+    function applyFilters() {
+      const entitas = document.getElementById("filter-entitas").value;
+      const status = document.getElementById("filter-status").value;
+      const search = document.getElementById("filter-search").value.toLowerCase();
+
+      let filtered = reportsData;
+
+      if (entitas !== "Semua") {
+        filtered = filtered.filter(item => item.source === entitas);
+      }
+
+      if (status !== "Semua") {
+        filtered = filtered.filter(item => item.status === status);
+      }
+
+      if (search) {
+        filtered = filtered.filter(item => 
+          item.nomor.toLowerCase().includes(search) ||
+          item.nama.toLowerCase().includes(search) ||
+          item.nrpNip.toLowerCase().includes(search) ||
+          item.provider.toLowerCase().includes(search)
+        );
+      }
+
+      renderTable(filtered);
+    }
+
+    function renderTable(list) {
+      const tbody = document.getElementById("monitoring-tbody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      document.getElementById("data-count-badge").innerText = `${list.length} Data Laporan`;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="20" class="py-8 text-center text-slate-400 italic">Tidak ada data</td></tr>`;
+        return;
+      }
+
+      list.forEach(item => {
+        let badgeClass = "bg-rose-50 text-rose-750 border border-rose-200"; // Pengajuan
+        if (item.status === "Verifikasi Kancab") badgeClass = "bg-amber-50 text-amber-750 border border-amber-200";
+        else if (item.status === "Persetujuan KAKANCAB") badgeClass = "bg-blue-50 text-blue-750 border border-blue-200";
+        else if (item.status === "SJP Terbit") badgeClass = "bg-emerald-50 text-emerald-700 border border-emerald-200";
+        else if (item.status === "SJPP Terbit") badgeClass = "bg-slate-100 text-slate-500 border border-slate-350";
+
+        const sla = calculateSLA(item);
+
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50/50 transition-colors";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full font-bold text-[9px] ${badgeClass}">${item.status}</span></td>
+          <td class="py-2.5 px-3 text-center font-bold text-slate-650">${item.jumlahKlaim}</td>
+          <td class="py-2.5 px-3 font-bold font-mono text-slate-800">${item.nomor}</td>
+          <td class="py-2.5 px-3 text-slate-500">${item.cob}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${item.ktpa}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${item.nrpNip}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-700">${item.nama}</td>
+          <td class="py-2.5 px-3 text-slate-500">${item.unor}</td>
+          <td class="py-2.5 px-3 font-semibold text-slate-700">${item.provider}</td>
+          <td class="py-2.5 px-3 text-indigo-950 font-bold">${item.cabang}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-600">${formatIndoDate(item.tglPengajuan)}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-600">${formatIndoDate(item.tglKejadian)}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-600">${formatIndoDate(item.tglRawat)}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-700 leading-tight">${item.kejadian}</td>
+          <td class="py-2.5 px-3 text-slate-500">${item.provinsi}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-650 font-bold">${item.sepaNum}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.sepaDate)}</td>
+          <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 ${item.jaminan === 'Ya' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'} rounded font-bold text-[9px]">${item.jaminan}</span></td>
+          <td class="py-2.5 px-3 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button onclick="showDetail(${item.id})" class="text-asabri-blue hover:text-asabri-blueDark font-bold" title="Detail / Ubah"><i class="fas fa-edit"></i> Edit</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function changeRole() {
+      if (currentReportObj) {
+        renderDrawerRoleActions();
+      }
+      showToast("Role Berubah", `Menu dipantau sebagai ${document.getElementById("role-switcher").value}`, "info");
+    }
+
+    function updateStepperUI(status) {
+      const line = document.getElementById("kejadian-stepper-line");
+      const steps = [
+        document.getElementById("k-step-2"),
+        document.getElementById("k-step-3"),
+        document.getElementById("k-step-4")
+      ];
+      
+      steps.forEach(s => {
+        s.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border-2 border-white shadow mb-1";
+      });
+
+      if (status === "Pengajuan") {
+        line.style.width = "0%";
+      } else if (status === "Verifikasi Kancab") {
+        line.style.width = "33%";
+        steps[0].className = "w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1";
+      } else if (status === "Persetujuan KAKANCAB") {
+        line.style.width = "66%";
+        steps[0].className = "w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1";
+        steps[1].className = "w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1";
+      } else if (status === "SJP Terbit" || status === "SJPP Terbit") {
+        line.style.width = "100%";
+        steps.forEach(s => {
+          s.className = "w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1";
+        });
+      }
+    }
+
+    function renderDrawerLogs() {
+      const logsEl = document.getElementById("lf-logs");
+      if (!logsEl || !currentReportObj) return;
+      logsEl.innerHTML = (currentReportObj.logs || []).map(l => `<div class="py-1">${l}</div>`).join('');
+    }
+
+    function addLogEntry(msg) {
+      if (!currentReportObj) return;
+      const ts = new Date().toLocaleString('id-ID');
+      currentReportObj.logs = currentReportObj.logs || [];
+      currentReportObj.logs.push(`${msg} — ${ts}`);
+      renderDrawerLogs();
+    }
+
+    function renderDrawerRoleActions() {
+      const role = document.getElementById("role-switcher").value;
+      const valContainer = document.getElementById("validasi-kelayakan-container");
+      const appContainer = document.getElementById("kakancab-approval-container");
+      const approvalBox = document.getElementById("kakancab-approval-actions");
+      const footerActions = document.getElementById("drawer-footer-actions");
+      
+      approvalBox.innerHTML = "";
+      footerActions.innerHTML = `<button type="button" onclick="closeLaporanDrawer()" class="px-5 py-2.5 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs">Tutup</button>`;
+
+      const isFinal = ["SJP Terbit", "SJPP Terbit"].includes(currentReportObj.status);
+      
+      if (isFinal) {
+        const isSjp = currentReportObj.status === "SJP Terbit";
+        footerActions.innerHTML += `
+          <button type="button" onclick="downloadDocument('${isSjp ? 'SJP' : 'SJPP'}')" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md"><i class="fas fa-download mr-1.5"></i> Download ${isSjp ? 'SJP' : 'SJPP'}</button>
+        `;
+        valContainer.classList.remove("hidden");
+        appContainer.classList.add("hidden");
+        // Disable validation inputs
+        document.getElementById("val-kep-lolos").disabled = true;
+        document.getElementById("val-kep-tidak").disabled = true;
+        document.getElementById("val-leg-lolos").disabled = true;
+        document.getElementById("val-leg-tidak").disabled = true;
+        document.getElementById("val-med-lolos").disabled = true;
+        document.getElementById("val-med-tidak").disabled = true;
+        document.getElementById("val-kepesertaan-catatan").disabled = true;
+        document.getElementById("val-legalitas-catatan").disabled = true;
+        document.getElementById("val-medis-catatan").disabled = true;
+        return;
+      }
+
+      // Re-enable validation inputs
+      document.getElementById("val-kep-lolos").disabled = false;
+      document.getElementById("val-kep-tidak").disabled = false;
+      document.getElementById("val-leg-lolos").disabled = false;
+      document.getElementById("val-leg-tidak").disabled = false;
+      document.getElementById("val-med-lolos").disabled = false;
+      document.getElementById("val-med-tidak").disabled = false;
+      document.getElementById("val-kepesertaan-catatan").disabled = false;
+      document.getElementById("val-legalitas-catatan").disabled = false;
+      document.getElementById("val-medis-catatan").disabled = false;
+
+      if (role === "Staf KANCAB") {
+        valContainer.classList.remove("hidden");
+        appContainer.classList.add("hidden");
+        footerActions.innerHTML += `
+          <button type="button" onclick="saveLaporanSubmission()" class="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs">Simpan Draft</button>
+          <button type="button" onclick="submitToKakancab()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-md">Ajukan ke KAKANCAB</button>
+        `;
+      } else if (role === "KAKANCAB") {
+        valContainer.classList.remove("hidden");
+        appContainer.classList.remove("hidden");
+        
+        // Calculate status recommendation based on 3 pillars
+        const v1 = document.querySelector('input[name="val-kepesertaan"]:checked').value;
+        const v2 = document.querySelector('input[name="val-legalitas"]:checked').value;
+        const v3 = document.querySelector('input[name="val-medis"]:checked').value;
+        const semuaLolos = v1 === 'Lolos' && v2 === 'Lolos' && v3 === 'Lolos';
+        document.getElementById("rekomendasi-lbl").innerText = semuaLolos ? "Lolos (Rekomendasi SJP)" : "Ada yang Tidak Lolos (Rekomendasi SJPP)";
+        document.getElementById("rekomendasi-lbl").className = semuaLolos ? "font-extrabold text-sm text-emerald-600" : "font-extrabold text-sm text-rose-600";
+
+        approvalBox.innerHTML = `
+          <button type="button" onclick="kakancabApprovalAction(false)" class="px-4 py-2 bg-rose-600 hover:bg-rose-750 text-white font-bold rounded-xl text-xs shadow-sm"><i class="fas fa-circle-xmark mr-1"></i> Tolak</button>
+          <button type="button" onclick="kakancabApprovalAction(true)" class="px-5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-md"><i class="fas fa-circle-check mr-1"></i> Setujui</button>
+        `;
+      }
+    }
+
+    function submitToKakancab() {
+      if (!currentReportObj) return;
+      currentReportObj.status = "Persetujuan KAKANCAB";
+      addLogEntry("Verifikasi selesai oleh Staf");
+      showToast("Diajukan", "Laporan diajukan ke Kakancab untuk approval akhir.", "success");
+      closeLaporanDrawer();
+      applyFilters();
+    }
+
+    function kakancabApprovalAction(approved) {
+      if (!currentReportObj) return;
+
+      if (!approved) {
+        currentReportObj.status = "Verifikasi Kancab";
+        addLogEntry("Ditolak oleh KAKANCAB (Dikembalikan ke Staf)");
+        showToast("Ditolak", "Berkas dikembalikan ke Staf Kancab.", "warning");
+      } else {
+        const v1 = document.querySelector('input[name="val-kepesertaan"]:checked').value;
+        const v2 = document.querySelector('input[name="val-legalitas"]:checked').value;
+        const v3 = document.querySelector('input[name="val-medis"]:checked').value;
+        const semuaLolos = v1 === 'Lolos' && v2 === 'Lolos' && v3 === 'Lolos';
+
+        const bulan = String(new Date().getMonth() + 1).padStart(2, '0');
+        const tahun = new Date().getFullYear();
+        const randNum = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+        const kancabCode = (currentReportObj.cabang || 'KANCAB JAKARTA').replace('KANCAB ', '');
+
+        if (semuaLolos) {
+          currentReportObj.status = "SJP Terbit";
+          currentReportObj.sjpNumber = `SJP/${kancabCode}/${bulan}/${tahun}/${randNum}`;
+          currentReportObj.jaminan = "Ya";
+          addLogEntry("Disetujui oleh KAKANCAB");
+          addLogEntry(`SJP diterbitkan — ${currentReportObj.sjpNumber}`);
+          showToast("SJP Terbit", `Berkas SJP Diterbitkan: ${currentReportObj.sjpNumber}`, "success");
+        } else {
+          currentReportObj.status = "SJPP Terbit";
+          currentReportObj.sjpNumber = `SJPP/${kancabCode}/${bulan}/${tahun}/${randNum}`;
+          currentReportObj.jaminan = "Tidak";
+          addLogEntry("Disetujui (Ditolak Jaminan) oleh KAKANCAB");
+          addLogEntry(`SJPP diterbitkan (Dialihkan ke BPJS) — ${currentReportObj.sjpNumber}`);
+          showToast("SJPP Terbit", `Berkas SJPP Diterbitkan. Peserta dialihkan ke BPJS: ${currentReportObj.sjpNumber}`, "warning");
+        }
+      }
+      closeLaporanDrawer();
+      applyFilters();
+    }
+
+    function downloadDocument(type) {
+      alert(`[DOWNLOAD DOKUMEN]\nUnduh berkas ${type} resmi.\nNomor Dokumen: ${currentReportObj.sjpNumber}\nBerlaku: 30 Hari sejak diterbitkan.`);
+    }
+
+    function openLaporanDrawer(existingRow = null) {
+      const modal = document.getElementById("laporan-modal");
+      const drawer = document.getElementById("laporan-drawer");
+
+      if (existingRow) {
+        currentReportObj = existingRow;
+        document.getElementById("lf-nomor-kejadian").value = existingRow.nomor;
+        document.getElementById("lf-entitas-pelapor").value = existingRow.source || "Provider";
+        document.getElementById("lf-entitas-pelapor").disabled = true;
+        document.getElementById("lf-pelapor").value = existingRow.pelapor || "Faskes";
+        document.getElementById("lf-pelapor-telp").value = existingRow.telpPelapor || "0812-321-123";
+        document.getElementById("lf-tgl-lapor").value = existingRow.tglPengajuan.split("T")[0];
+        document.getElementById("lf-tgl-kejadian").value = existingRow.tglKejadian;
+        document.getElementById("lf-tgl-rawat").value = existingRow.tglRawat;
+        document.getElementById("lf-kejadian").value = existingRow.kejadian;
+        document.getElementById("lf-cob").value = existingRow.cob || "-";
+        document.getElementById("lf-layanan").value = existingRow.layanan || "Rawat Inap";
+        document.getElementById("lf-provinsi").value = existingRow.provinsi || "DKI Jakarta";
+        document.getElementById("lf-cabang").value = existingRow.cabang || "KANCAB JAKARTA";
+        document.getElementById("lf-catatan").value = existingRow.catatanKejadian || "";
+        document.getElementById("lf-diagnosa").value = existingRow.diagnosaKejadian || "";
+        document.getElementById("laporan-subtitle").innerText = `Ubah Laporan: ${existingRow.nomor}`;
+
+        updateStepperUI(existingRow.status);
+        renderDrawerLogs();
+        renderDrawerRoleActions();
+      } else {
+        document.getElementById("lf-nomor-kejadian").value = "[Otomatis]";
+        document.getElementById("lf-entitas-pelapor").value = "Provider";
+        document.getElementById("lf-entitas-pelapor").disabled = false;
+        document.getElementById("lf-pelapor").value = "";
+        document.getElementById("lf-pelapor-telp").value = "";
+        document.getElementById("lf-tgl-lapor").value = new Date().toISOString().substring(0, 10);
+        document.getElementById("lf-tgl-kejadian").value = "";
+        document.getElementById("lf-tgl-rawat").value = "";
+        document.getElementById("lf-provinsi").value = "DKI Jakarta";
+        document.getElementById("lf-cabang").value = "KANCAB JAKARTA";
+        document.getElementById("lf-catatan").value = "";
+        document.getElementById("lf-diagnosa").value = "";
+        document.getElementById("laporan-subtitle").innerText = "Tambah Laporan Baru";
+
+        currentReportObj = {
+          status: "Pengajuan",
+          tglPengajuan: new Date().toISOString(),
+          logs: ["Laporan diterima — " + new Date().toLocaleString('id-ID')]
+        };
+
+        updateStepperUI("Pengajuan");
+        renderDrawerLogs();
+        renderDrawerRoleActions();
+      }
+
+      modal.classList.remove("hidden");
+      setTimeout(() => { drawer.classList.remove("translate-x-full"); }, 50);
+      switchLaporanTab("tab-laporan-kejadian");
+    }
+
+    function closeLaporanDrawer() {
+      const modal = document.getElementById("laporan-modal");
+      const drawer = document.getElementById("laporan-drawer");
+      drawer.classList.add("translate-x-full");
+      setTimeout(() => { modal.classList.add("hidden"); }, 300);
+      currentReportObj = null;
+    }
+
+    function saveLaporanSubmission() {
+      const pelapor = document.getElementById("lf-pelapor").value;
+      const telp = document.getElementById("lf-pelapor-telp").value;
+      const tglLapor = document.getElementById("lf-tgl-lapor").value;
+      const tglKejadian = document.getElementById("lf-tgl-kejadian").value;
+      const tglRawat = document.getElementById("lf-tgl-rawat").value;
+      const kejadian = document.getElementById("lf-kejadian").value;
+      const catatan = document.getElementById("lf-catatan").value;
+      const diagnosa = document.getElementById("lf-diagnosa").value;
+      const entitasVal = document.getElementById("lf-entitas-pelapor").value;
+      const provVal = document.getElementById("lf-provinsi").value;
+      const cabangVal = mappingWilayahKancab(provVal);
+
+      if (!pelapor || !telp || !tglLapor || !tglKejadian || !tglRawat || !catatan || !diagnosa) {
+        showToast("Lengkapi Form", "Silahkan isi seluruh input mandatory.", "warning");
+        return;
+      }
+
+      let no = document.getElementById("lf-nomor-kejadian").value;
+      if (no === "[Otomatis]") {
+        const bulan = String(new Date().getMonth() + 1).padStart(2, '0');
+        const tahun = new Date().getFullYear();
+        const randNum = String(Math.floor(Math.random() * 999) + 1).padStart(3, '0');
+        
+        let prefix = "PRV";
+        if (entitasVal === "Peserta") prefix = "RMB";
+        else if (entitasVal === "Kesatuan") prefix = "KST";
+
+        no = `JKK-${prefix}/${randNum}-ASABRI/${bulan}/${tahun}`;
+      }
+
+      const existingIndex = reportsData.findIndex(r => r.nomor === no);
+      if (existingIndex !== -1) {
+        reportsData[existingIndex] = {
+          ...reportsData[existingIndex],
+          kejadian,
+          tglKejadian,
+          tglRawat,
+          catatanKejadian: catatan,
+          diagnosaKejadian: diagnosa,
+          pelapor,
+          provinsi: provVal,
+          cabang: cabangVal
+        };
+        showToast("Draft Diubah", "Draft Laporan JKK berhasil diperbarui.", "success");
+      } else {
+        reportsData.push({
+          id: Date.now(),
+          status: "Pengajuan",
+          tglPengajuan: new Date().toISOString(),
+          jumlahKlaim: 1,
+          nomor: no,
+          cob: document.getElementById("lf-cob").value,
+          ktpa: "3273120105910003",
+          nrpNip: "311200923211",
+          nama: "Ahmad Fauzi",
+          unor: "TNI-AD",
+          provider: "RS RSPAD Gatot Soebroto",
+          cabang: cabangVal,
+          tglKejadian,
+          tglRawat,
+          kejadian,
+          provinsi: provVal,
+          sepaNum: "SEPA-" + String(Math.floor(Math.random() * 90000)),
+          sepaDate: tglRawat,
+          jaminan: "Ya",
+          source: entitasVal,
+          sjpNumber: "",
+          catatanKejadian: catatan,
+          diagnosaKejadian: diagnosa,
+          pelapor,
+          logs: ["Laporan diterima — " + new Date().toLocaleString('id-ID')]
+        });
+        showToast("Laporan Disimpan", `Laporan JKK draft disimpan: ${no}`, "success");
+      }
+
+      closeLaporanDrawer();
+      applyFilters();
+    }
+
+    function switchLaporanTab(tabId) {
+      document.getElementById("tab-laporan-kejadian").classList.add("hidden");
+      document.getElementById("tab-laporan-dokumen").classList.add("hidden");
+      const btnIds = ["btn-tab-laporan-kejadian", "btn-tab-laporan-dokumen"];
+      btnIds.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.classList.remove("border-b-2", "border-asabri-blue", "text-asabri-blue");
+          btn.classList.add("border-transparent", "text-slate-400");
+        }
+      });
+      document.getElementById(tabId).classList.remove("hidden");
+      document.getElementById("btn-" + tabId).classList.add("border-b-2", "border-asabri-blue", "text-asabri-blue");
+    }
+
+    function showDetail(id) {
+      const item = reportsData.find(r => r.id === id);
+      if (item) openLaporanDrawer(item);
+    }
+
+    window.onload = function() {
+      applyFilters();
+      
+      document.getElementById("lf-provinsi").addEventListener("input", function() {
+        document.getElementById("lf-cabang").value = mappingWilayahKancab(this.value);
+      });
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI CRM - Riwayat Interaksi</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Sidebar Component -->
+  <script src="sidebar.js"></script>
+  <script src="shared.js?v=1.0.1"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar for High Density look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR / HEADER BAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <!-- ASABRI Logo & Branding -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <div class="flex flex-col">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">CUSTOMER RELATION MANAGEMENT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right-side Topbar Controls -->
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide">ROLE : Div. Layanan</span>
+      </div>
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SL</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SL | Staf Layanan Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19950812002</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- SIDEBAR: Navigation Panel -->
+    <div id="sidebar"></div>
+    <script>
+      renderSidebar('komunikasi');
+    </script>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      
+      <!-- BREADCRUMB BAR -->
+      <div class="bg-white border-b border-slate-200 px-8 py-4">
+        <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+          <span>Pelayanan Komunikasi Pelanggan</span>
+          <span class="text-slate-400">/</span>
+          <span>Manajemen Transaksi</span>
+          <span class="text-slate-400">/</span>
+          <span class="font-bold text-asabri-blue">Riwayat Interaksi</span>
+        </div>
+      </div>
+
+      <!-- WORKSPACE PANELS -->
+      <div class="flex-1 overflow-y-auto p-8 space-y-6 bg-slate-50/50">
+
+        <!-- FILTER AND SEARCH BAR -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row items-end gap-4 justify-between">
+          <div class="flex flex-col md:flex-row items-end gap-4 w-full lg:w-auto">
+            <!-- Filter Kanal -->
+            <div class="flex flex-col gap-1 w-full md:w-48">
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Kanal Interaksi</label>
+              <select id="filter-kanal" onchange="filterData()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-asabri-blue transition-colors">
+                <option value="Semua">Semua Kanal</option>
+                <option value="Website ASABRI">Website ASABRI</option>
+                <option value="Email">Email</option>
+              </select>
+            </div>
+            <!-- Filter Periode (Dari - Sampai) -->
+            <div class="flex flex-col gap-1 w-full md:w-64">
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Periode (Dari - Sampai)</label>
+              <div class="flex items-center gap-2">
+                <input type="date" id="filter-date-from" onchange="filterData()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-[11px] font-semibold text-slate-700 outline-none focus:border-asabri-blue transition-colors">
+                <span class="text-slate-400 text-xs">-</span>
+                <input type="date" id="filter-date-to" onchange="filterData()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-[11px] font-semibold text-slate-700 outline-none focus:border-asabri-blue transition-colors">
+              </div>
+            </div>
+          </div>
+          <!-- Search Box & Reset -->
+          <div class="flex items-center gap-3 w-full lg:w-auto">
+            <div class="flex flex-col gap-1 w-full lg:w-72">
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Pencarian</label>
+              <div class="relative">
+                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                <input type="text" id="search-history" oninput="filterData()" placeholder="Cari by Nama atau NIP/NRP..." class="w-full bg-white border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-asabri-blue transition-colors shadow-inner">
+              </div>
+            </div>
+            <button onclick="resetFilters()" class="bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200 px-4 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 h-[38px] self-end">
+              <i class="fas fa-undo"></i> Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- TABLE SECTION -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800">Daftar Riwayat Interaksi</h3>
+              <p class="text-[10px] text-slate-400 font-medium mt-0.5">Data ditarik dari integrasi Omnichat (Read-Only)</p>
+            </div>
+            
+            <!-- Export Dropdown -->
+            <div class="relative inline-block text-left group">
+              <button class="bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-50 transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fas fa-file-export text-asabri-blue"></i> Export Data <i class="fas fa-chevron-down text-[9px] text-slate-400 ml-1"></i>
+              </button>
+              <!-- Dropdown items -->
+              <div class="absolute right-0 mt-1 w-44 rounded-xl bg-white border border-slate-200 shadow-lg py-1 z-50 hidden group-hover:block hover:block">
+                <a href="#" class="block px-4 py-2 text-xs text-slate-600 hover:bg-slate-50 font-semibold flex items-center gap-2"><i class="fas fa-file-csv text-emerald-500 w-4"></i> Export CSV</a>
+                <a href="#" class="block px-4 py-2 text-xs text-slate-600 hover:bg-slate-50 font-semibold flex items-center gap-2"><i class="fas fa-file-excel text-green-600 w-4"></i> Export Excel (.xlsx)</a>
+                <a href="#" class="block px-4 py-2 text-xs text-slate-600 hover:bg-slate-50 font-semibold flex items-center gap-2"><i class="fas fa-file-pdf text-red-500 w-4"></i> Export PDF</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-slate-50/80">
+                <tr class="border-b border-slate-100 text-slate-400 uppercase text-[10px] font-bold tracking-wider">
+                  <th class="py-3 px-6 whitespace-nowrap">Tanggal</th>
+                  <th class="py-3 px-6">Kanal</th>
+                  <th class="py-3 px-6">Nama Peserta</th>
+                  <th class="py-3 px-6">NIP/NRP</th>
+                  <th class="py-3 px-6">Pertanyaan</th>
+                  <th class="py-3 px-6 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body" class="divide-y divide-slate-100 text-xs text-slate-600">
+                <!-- Row 1 -->
+                <tr class="hover:bg-slate-50/50 transition-colors" data-kanal="Website ASABRI" data-nama="Siti Aminah" data-nip="19750912" data-date="2026-08-08">
+                  <td class="py-3.5 px-6 font-mono text-[11px] whitespace-nowrap">08-Aug-2026 08:45</td>
+                  <td class="py-3.5 px-6">
+                    <span class="bg-blue-50 text-blue-600 border border-blue-100 px-2.5 py-1 rounded-full font-bold text-[9px] inline-flex items-center gap-1"><i class="fas fa-globe"></i> Website ASABRI</span>
+                  </td>
+                  <td class="py-3.5 px-6 font-semibold text-slate-800">Siti Aminah</td>
+                  <td class="py-3.5 px-6 font-mono text-[11px]">19750912</td>
+                  <td class="py-3.5 px-6 font-medium max-w-md truncate" title="Bagaimana cara memperbarui data alamat domisili di akun peserta?">Bagaimana cara memperbarui data alamat domisili di akun peserta?</td>
+                  <td class="py-3.5 px-6 text-right">
+                    <span class="bg-emerald-50 text-emerald-600 border border-emerald-100 px-2.5 py-1 rounded font-bold text-[9px]">Selesai</span>
+                  </td>
+                </tr>
+
+                <!-- Row 2 -->
+                <tr class="hover:bg-slate-50/50 transition-colors" data-kanal="Email" data-nama="Rudi Hermawan" data-nip="19901122" data-date="2026-08-07">
+                  <td class="py-3.5 px-6 font-mono text-[11px] whitespace-nowrap">07-Aug-2026 15:20</td>
+                  <td class="py-3.5 px-6">
+                    <span class="bg-slate-100 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-full font-bold text-[9px] inline-flex items-center gap-1"><i class="fas fa-envelope"></i> Email</span>
+                  </td>
+                  <td class="py-3.5 px-6 font-semibold text-slate-800">Rudi Hermawan</td>
+                  <td class="py-3.5 px-6 font-mono text-[11px]">19901122</td>
+                  <td class="py-3.5 px-6 font-medium max-w-md truncate" title="Mohon kirimkan ulang bukti potong pajak PPh 21 tahun lalu.">Mohon kirimkan ulang bukti potong pajak PPh 21 tahun lalu.</td>
+                  <td class="py-3.5 px-6 text-right">
+                    <span class="bg-rose-50 text-rose-600 border border-rose-100 px-2.5 py-1 rounded font-bold text-[9px]">Belum Ditangani</span>
+                  </td>
+                </tr>
+
+                <!-- Row 3 -->
+                <tr class="hover:bg-slate-50/50 transition-colors" data-kanal="Website ASABRI" data-nama="Agus Wijaya" data-nip="19870514" data-date="2026-08-05">
+                  <td class="py-3.5 px-6 font-mono text-[11px] whitespace-nowrap">05-Aug-2026 14:15</td>
+                  <td class="py-3.5 px-6">
+                    <span class="bg-blue-50 text-blue-600 border border-blue-100 px-2.5 py-1 rounded-full font-bold text-[9px] inline-flex items-center gap-1"><i class="fas fa-globe"></i> Website ASABRI</span>
+                  </td>
+                  <td class="py-3.5 px-6 font-semibold text-slate-800">Agus Wijaya</td>
+                  <td class="py-3.5 px-6 font-mono text-[11px]">19870514</td>
+                  <td class="py-3.5 px-6 font-medium max-w-md truncate" title="Mengapa saldo THT saya di portal tidak muncul nilainya?">Mengapa saldo THT saya di portal tidak muncul nilainya?</td>
+                  <td class="py-3.5 px-6 text-right">
+                    <span class="bg-amber-50 text-amber-600 border border-amber-100 px-2.5 py-1 rounded font-bold text-[9px]">Dalam Proses</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div id="empty-state" class="hidden p-8 flex flex-col items-center justify-center text-center space-y-3 bg-white">
+            <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-2xl">
+              <i class="fas fa-folder-open"></i>
+            </div>
+            <div class="space-y-1">
+              <p class="text-sm font-bold text-slate-700">Tidak ditemukan data riwayat interaksi</p>
+              <p class="text-xs text-slate-400">Silakan sesuaikan filter pencarian atau periode Anda.</p>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex justify-between items-center text-xs">
+            <span class="text-slate-500">Menampilkan <span id="visible-count">3</span> dari <span id="total-count">3</span> data</span>
+            <div class="flex items-center gap-1">
+              <button class="w-7 h-7 rounded bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 flex items-center justify-center disabled:opacity-50" disabled><i class="fas fa-chevron-left text-[10px]"></i></button>
+              <button class="w-7 h-7 rounded bg-asabri-blue text-white font-bold flex items-center justify-center">1</button>
+              <button class="w-7 h-7 rounded bg-white border border-slate-200 text-slate-450 flex items-center justify-center" disabled><i class="fas fa-chevron-right text-[10px]"></i></button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    function filterData() {
+      const q = document.getElementById("search-history").value.toLowerCase().trim();
+      const kanal = document.getElementById("filter-kanal").value;
+      const dateFrom = document.getElementById("filter-date-from").value;
+      const dateTo = document.getElementById("filter-date-to").value;
+      
+      const rows = document.querySelectorAll("#history-table-body tr");
+      let visibleCount = 0;
+      
+      rows.forEach(row => {
+        const rowKanal = row.getAttribute("data-kanal");
+        const rowNama = row.getAttribute("data-nama").toLowerCase();
+        const rowNip = row.getAttribute("data-nip");
+        const rowDate = row.getAttribute("data-date");
+        
+        let matchesSearch = !q || rowNama.includes(q) || rowNip.includes(q);
+        let matchesKanal = (kanal === "Semua") || (rowKanal === kanal);
+        let matchesDate = true;
+        
+        if (dateFrom && rowDate < dateFrom) matchesDate = false;
+        if (dateTo && rowDate > dateTo) matchesDate = false;
+        
+        if (matchesSearch && matchesKanal && matchesDate) {
+          row.style.display = "";
+          visibleCount++;
+        } else {
+          row.style.display = "none";
+        }
+      });
+      
+      const emptyState = document.getElementById("empty-state");
+      if (visibleCount === 0) {
+        emptyState.classList.remove("hidden");
+      } else {
+        emptyState.classList.add("hidden");
+      }
+      
+      document.getElementById("visible-count").innerText = visibleCount;
+    }
+
+    function resetFilters() {
+      document.getElementById("search-history").value = "";
+      document.getElementById("filter-kanal").value = "Semua";
+      document.getElementById("filter-date-from").value = "";
+      document.getElementById("filter-date-to").value = "";
+      filterData();
+    }
+  </script>
+
+  <script>
+    if (typeof toggleSidebarAccordion === 'undefined') {
+      function toggleSidebarAccordion(menuId, chevId) {
+        const menu = document.getElementById(menuId);
+        const chev = document.getElementById(chevId);
+        if (!menu || !chev) return;
+        if (menu.classList.contains('hidden')) {
+          menu.classList.remove('hidden');
+          chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+        } else {
+          menu.classList.add('hidden');
+          chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

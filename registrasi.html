@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Registrasi Pengajuan)</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Sidebar Component -->
+  <script src="sidebar.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar for High Density look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR / HEADER BAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <!-- ASABRI Logo & Branding -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right-side Topbar Controls -->
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide">ROLE : Staf KANCAB</span>
+      </div>
+      
+      <!-- Notification Bell -->
+      <div class="relative group cursor-pointer" id="header-notification-bell">
+        <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-150 relative">
+          <i class="fas fa-bell text-sm"></i>
+          <!-- Badge -->
+          <span id="header-notif-badge" class="absolute -top-1.5 -right-1.5 bg-rose-500 text-white font-extrabold text-[8px] w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-asabri-blue shadow-sm animate-bounce" style="width: 18px; height: 18px; display: none;">0</span>
+        </div>
+        <!-- Tooltip -->
+        <div class="absolute right-0 top-10 bg-slate-900 text-white text-[10px] font-bold px-3 py-2 rounded-lg shadow-xl pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col gap-1.5 w-64 z-50">
+          <div class="flex justify-between items-center border-b border-white/10 pb-1 mb-1">
+            <span class="text-asabri-gold uppercase tracking-wider text-[9px]"><i class="fas fa-triangle-exclamation mr-1"></i>Peringatan SLA</span>
+            <span class="text-[9px] text-white/50" id="header-notif-count">0 Klaim</span>
+          </div>
+          <p class="font-normal text-white/90 leading-tight">Ada klaim aktif yang mendekati (35-60 menit) or telah melewati (60+ menit) batas SLA.</p>
+          <div id="header-notif-details" class="flex flex-col gap-1 mt-1 text-[9px] border-t border-white/5 pt-1"></div>
+        </div>
+      </div>
+
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- SIDEBAR: Navigation Panel (Light Blue Background) -->
+    <div id="sidebar"></div>
+    <script>
+      renderSidebar('registrasi');
+    </script>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      
+      <!-- BREADCRUMB BAR (No more horizontal tabs) -->
+      <div class="bg-white border-b border-slate-200 px-8 py-3 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-1 text-[11px] font-medium">
+          <span class="font-bold text-asabri-blue">Registrasi Pengajuan</span>
+          <span id="pending-header-badge" class="hidden px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-100 border border-amber-300 text-amber-800 animate-pulse ml-2">Status: Pending</span>
+        </div>
+      </div>
+
+      <!-- WORKSPACE PANELS -->
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+
+        <!-- ==========================================
+             PANEL: REGISTRASI KLAIM PESERTA
+             ========================================== -->
+        <section class="space-y-6">
+          
+          <!-- LANGKAH 1 — Pencarian Peserta (Revisi: Multi Filter AS-IS) -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-slate-800">Langkah 1 — Pencarian Data Kepesertaan</h3>
+                <p class="text-[10px] text-slate-400 uppercase mt-0.5 font-bold tracking-wider">Lookup data internal divisi kepesertaan ASABRI</p>
+              </div>
+            </div>
+            
+            <!-- Dynamic Filter Rows -->
+            <div id="filter-rows-container" class="space-y-3 mb-4">
+              <div class="flex flex-col md:flex-row md:items-center gap-3 filter-row">
+                <div class="w-full md:w-1/3">
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Tipe Pencarian</label>
+                  <select onchange="handleFilterTypeChange(this)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700 filter-type">
+                    <option value="ANY" selected>KTPA, NRP/NIP, NOPENS, NAMA</option>
+                    <option value="ANGKATAN">Angkatan</option>
+                    <option value="NIK">NIK</option>
+                  </select>
+                </div>
+                <div class="flex-1 filter-value-container">
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Nilai Pencarian</label>
+                  <input type="text" placeholder="Masukkan kata kunci pencarian..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700 filter-val">
+                </div>
+                <div class="w-full md:w-auto flex items-end pt-5 md:pt-0">
+                  <div class="w-[85px]"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter Actions Buttons -->
+            <div id="filter-actions-container" class="flex flex-wrap items-center gap-3 mb-6">
+              <button type="button" onclick="addFilterRow()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+                <i class="fas fa-plus text-asabri-blue"></i> Filter
+              </button>
+              <button type="button" id="btn-cari" onclick="executeParticipantSearch()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-100 flex items-center gap-1.5">
+                <i class="fas fa-magnifying-glass"></i> Cari
+              </button>
+            </div>
+            
+            <!-- Result Placeholder / Card for Selected Participant -->
+            <div id="participant-lookup-result" class="hidden animate-fade-in space-y-4">
+              <!-- Warning Box (Double Claim Protection) -->
+              <div id="spouse-warning-box" class="hidden p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl flex items-start gap-3 text-xs font-medium">
+                <i class="fas fa-triangle-exclamation text-amber-500 text-sm mt-0.5"></i>
+                <div>
+                  <span class="font-bold">Proteksi Klaim Ganda:</span>
+                  <p id="spouse-warning-text" class="mt-0.5 text-amber-700 font-medium"></p>
+                </div>
+              </div>
+              
+              <!-- Participant Info Card (Read-only) -->
+              <div id="participant-card-readonly" class="bg-slate-50 border border-slate-200 rounded-2xl p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 text-xs">
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">Nama Lengkap</span>
+                  <strong id="p-nama" class="text-slate-800 font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">NIP / NRP</span>
+                  <strong id="p-nip-nrp" class="text-slate-800 font-mono font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">NIK</span>
+                  <strong id="p-nik" class="text-slate-800 font-mono font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">Nomor Peserta</span>
+                  <strong id="p-no-peserta" class="text-slate-800 font-mono font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">Golongan & Satuan Kerja</span>
+                  <strong id="p-unit" class="text-slate-800 font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">Status Kepesertaan</span>
+                  <span id="p-status" class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border mt-0.5">-</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Search Results Table -->
+            <div id="search-results-table-container" class="hidden mt-6 space-y-4">
+              <h4 class="text-xs font-bold text-slate-600 uppercase tracking-wider">Hasil Pencarian Kepesertaan:</h4>
+              <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+                      <th class="p-3">KTPA</th>
+                      <th class="p-3">NRP/NIP</th>
+                      <th class="p-3">Nopens</th>
+                      <th class="p-3">Nama</th>
+                      <th class="p-3">Angkatan</th>
+                      <th class="p-3">NIK</th>
+                      <th class="p-3 text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="search-results-table-body">
+                    <!-- Dynamic search rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- No Results & Input Manual Handling -->
+            <div id="search-results-empty" class="hidden p-6 border border-dashed border-slate-200 rounded-2xl text-center space-y-3 bg-slate-50/50 mt-6 animate-fade-in">
+              <i class="fas fa-user-slash text-slate-350 text-3xl block"></i>
+              <p class="text-xs font-semibold text-slate-500">Data peserta tidak ditemukan di database kepesertaan.</p>
+              <button type="button" onclick="showManualInputForm()" class="px-4 py-2 border-2 border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fas fa-keyboard"></i> Input Manual
+              </button>
+            </div>
+
+            <!-- Manual Input Form -->
+            <div id="manual-input-form-container" class="hidden mt-6 p-6 border border-slate-200 rounded-2xl bg-slate-50 space-y-5 animate-fade-in">
+              <div class="border-b border-slate-200 pb-2">
+                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Form Input Manual Kepesertaan (Status: Pending)</h4>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Nama Lengkap <span class="text-rose-500">*</span></label>
+                  <input type="text" id="manual-nama" placeholder="Masukkan nama lengkap..." class="w-full bg-white border border-slate-250 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
+                  <span id="error-manual-nama" class="text-rose-500 text-[10px] hidden font-semibold">Nama Lengkap wajib diisi</span>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">NIK / NRP / KTPA <span class="text-rose-500">* (Isi Minimal 1)</span></label>
+                  <input type="text" id="manual-identitas" placeholder="Masukkan NIK/NRP/KTPA..." class="w-full bg-white border border-slate-250 rounded-xl px-3 py-2 text-xs font-mono font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
+                  <span id="error-manual-identitas" class="text-rose-500 text-[10px] hidden font-semibold">Harap isi minimal salah satu NIK, NRP, atau KTPA</span>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Angkatan <span class="text-rose-500">*</span></label>
+                  <select id="manual-angkatan" class="w-full bg-white border border-slate-250 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
+                    <option value="TNI-AD" selected>TNI-AD</option>
+                    <option value="TNI-AL">TNI-AL</option>
+                    <option value="TNI-AU">TNI-AU</option>
+                    <option value="POLRI">POLRI</option>
+                    <option value="KEMHAN">KEMHAN</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex justify-end pt-2">
+                <button type="button" onclick="submitManualInput()" class="bg-asabri-blue hover:bg-asabri-blueDark text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-100 flex items-center gap-1.5">
+                  Lanjutkan <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div id="participant-lookup-placeholder" class="py-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-2xl">
+              <i class="fas fa-id-card text-3xl block mb-2 text-slate-300"></i>
+              <span class="text-xs font-semibold">Silakan masukkan filter pencarian untuk melacak data kepesertaan peserta</span>
+            </div>
+          </div>
+
+          <!-- LANGKAH 2: TIPE PENGUNJUNG (BARU) -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 opacity-60 pointer-events-none transition-all duration-200" id="visitor-type-container">
+            <div class="border-b border-slate-100 pb-3 mb-4">
+              <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                <span>Langkah 2 — Tipe Pengunjung</span>
+                <span id="pending-step2-badge" class="hidden px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-100 border border-amber-300 text-amber-800 animate-pulse">Status: Pending</span>
+              </h3>
+              <p class="text-[10px] text-slate-400 uppercase mt-0.5 font-bold tracking-wider">Tentukan hubungan pengunjung dengan klaim yang diajukan</p>
+            </div>
+
+            <!-- Radio Card Selector -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <!-- Peserta Langsung -->
+              <label class="relative flex flex-col p-4 bg-slate-50 border border-asabri-blue bg-blue-50/10 rounded-2xl cursor-pointer hover:bg-slate-100/50 transition-all select-none" id="visitor-peserta-card">
+                <input type="radio" name="tipe-pengunjung" value="Peserta" checked onchange="handleVisitorTypeChange()" class="absolute right-4 top-4 text-asabri-blue focus:ring-asabri-blue">
+                <div class="flex items-center gap-3 mb-2">
+                  <div class="w-8 h-8 rounded-xl bg-asabri-blue/10 text-asabri-blue flex items-center justify-center">
+                    <i class="fas fa-user text-sm"></i>
+                  </div>
+                  <span class="font-bold text-xs text-slate-700">Peserta</span>
+                </div>
+                <p class="text-[11px] text-slate-400 leading-normal">Pengunjung adalah peserta langsung.</p>
+              </label>
+
+              <!-- Keluarga Terdaftar -->
+              <label class="relative flex flex-col p-4 bg-slate-50 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-100/50 transition-all select-none" id="visitor-keluarga-terdaftar-card">
+                <input type="radio" name="tipe-pengunjung" value="Keluarga Terdaftar" onchange="handleVisitorTypeChange()" class="absolute right-4 top-4 text-asabri-blue focus:ring-asabri-blue">
+                <div class="flex items-center gap-3 mb-2">
+                  <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+                    <i class="fas fa-users text-sm"></i>
+                  </div>
+                  <span class="font-bold text-xs text-slate-700">Keluarga Terdaftar</span>
+                </div>
+                <p class="text-[11px] text-slate-400 leading-normal">Pilih salah satu dari tabel anggota keluarga terdaftar.</p>
+              </label>
+
+              <!-- Keluarga / Lain Belum Terdaftar -->
+              <label class="relative flex flex-col p-4 bg-slate-50 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-100/50 transition-all select-none" id="visitor-keluarga-baru-card">
+                <input type="radio" name="tipe-pengunjung" value="Belum Terdaftar" onchange="handleVisitorTypeChange()" class="absolute right-4 top-4 text-asabri-blue focus:ring-asabri-blue">
+                <div class="flex items-center gap-3 mb-2">
+                  <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center">
+                    <i class="fas fa-user-plus text-sm"></i>
+                  </div>
+                  <span class="font-bold text-xs text-slate-700">Keluarga Belum Terdaftar</span>
+                </div>
+                <p class="text-[11px] text-slate-400 leading-normal">Keluarga / Lain-lain belum terdaftar di database.</p>
+              </label>
+            </div>
+
+            <!-- DYNAMIC SUB-SECTIONS -->
+            <!-- keluarga terdaftar table -->
+            <div id="section-keluarga-terdaftar" class="hidden animate-fade-in space-y-3">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Pilih Anggota Keluarga:</span>
+              <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+                      <th class="p-3">Nama</th>
+                      <th class="p-3">Hub. Keluarga</th>
+                      <th class="p-3">Tgl Lahir</th>
+                      <th class="p-3">Tgl Menikah</th>
+                      <th class="p-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="family-table-body">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+              <span id="error-family-select" class="text-rose-500 text-[10px] hidden font-semibold">Harap pilih salah satu anggota keluarga dari tabel</span>
+            </div>
+
+            <!-- keluarga belum terdaftar fields -->
+            <div id="section-keluarga-belum-terdaftar" class="hidden animate-fade-in grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Nama Pengunjung <span class="text-rose-500">*</span></label>
+                <input type="text" id="visitor-name-input" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700" placeholder="Contoh: Nama Ahli Waris">
+                <span id="error-visitor-name" class="text-rose-500 text-[10px] hidden font-semibold">Nama pengunjung wajib diisi</span>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Hubungan Keluarga <span class="text-rose-500">*</span></label>
+                <select id="visitor-relation-select" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
+                  <option value="" disabled selected>-- Pilih Hubungan --</option>
+                  <option value="Istri">Istri</option>
+                  <option value="Suami">Suami</option>
+                  <option value="Anak">Anak</option>
+                  <option value="Ayah">Ayah</option>
+                  <option value="Ibu">Ibu</option>
+                  <option value="Ahli Waris">Ahli Waris</option>
+                  <option value="Wali">Wali</option>
+                  <option value="Kakak/Adik">Kakak/Adik</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+                <span id="error-visitor-relation" class="text-rose-500 text-[10px] hidden font-semibold">Hubungan wajib dipilih</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-end mt-6 border-t border-slate-100 pt-4">
+              <button type="button" onclick="buatKunjungan()" class="px-5 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                <i class="fas fa-check"></i> Buat Kunjungan
+              </button>
+            </div>
+          </div>
+          
+          <!-- LANGKAH 3 — Form Registrasi Klaim (DIREVISI) -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 opacity-60 pointer-events-none transition-all duration-200" id="claim-form-container">
+            <div class="border-b border-slate-100 pb-3 mb-4">
+              <h3 class="text-sm font-bold text-slate-800">Langkah 3 — Formulir Registrasi Klaim</h3>
+              <p class="text-[10px] text-slate-400 uppercase mt-0.5 font-bold tracking-wider">Pilih jenis kejadian untuk pengajuan klaim</p>
+            </div>
+            
+            <form onsubmit="handleClaimSubmission(event)" class="space-y-6" novalidate>
+              <!-- Info lookup error -->
+              <div id="error-participant" class="hidden p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center gap-2 font-medium">
+                <i class="fas fa-circle-exclamation"></i> Harap lakukan pencarian data peserta atau input manual terlebih dahulu.
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <!-- 1. Sumber Pengajuan (Otomatis Kantor Cabang, disabled) -->
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <span>Sumber Pengajuan <span class="text-rose-500">*</span></span>
+                  </label>
+                  <input type="text" id="sumber-pengajuan" value="Kantor Cabang" disabled class="border border-slate-200 bg-slate-100 rounded-xl px-3 py-2 text-xs font-bold text-slate-500 cursor-not-allowed">
+                </div>
+
+                <!-- 2. Kantor Cabang ASABRI (Dropdown, wajib) -->
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kantor Cabang ASABRI <span class="text-rose-500">*</span></label>
+                  <select id="kantor-cabang" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
+                    <option value="" disabled selected>-- Pilih Kantor Cabang --</option>
+                    <option value="Kancab Utama Jakarta">Kancab Utama Jakarta</option>
+                    <option value="Kancab Medan">Kancab Medan</option>
+                    <option value="Kancab Palembang">Kancab Palembang</option>
+                    <option value="Kancab Bandung">Kancab Bandung</option>
+                    <option value="Kancab Semarang">Kancab Semarang</option>
+                    <option value="Kancab Surabaya">Kancab Surabaya</option>
+                    <option value="Kancab Balikpapan">Kancab Balikpapan</option>
+                    <option value="Kancab Makassar">Kancab Makassar</option>
+                    <option value="Kancab Denpasar">Kancab Denpasar</option>
+                    <option value="Kancab Jayapura">Kancab Jayapura</option>
+                  </select>
+                  <span id="error-kancab" class="text-rose-500 text-[10px] hidden font-semibold mt-0.5">Kantor Cabang wajib dipilih</span>
+                </div>
+                
+                <!-- 3. Jenis Kejadian (Dropdown, wajib) -->
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Jenis Kejadian <span class="text-rose-500">*</span></label>
+                  <select id="jenis-kejadian" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
+                    <option value="" disabled selected>-- Silahkan Pilih Kejadian --</option>
+                  </select>
+                  <span id="error-kejadian" class="text-rose-500 text-[10px] hidden font-semibold mt-0.5">Jenis Kejadian wajib dipilih</span>
+                </div>
+              </div>
+              
+              <!-- Footer Action Buttons (LANGKAH 4 — Simpan & Redirect) -->
+              <div class="border-t border-slate-200 pt-5 flex items-center justify-between mt-6">
+                <span class="text-[10px] font-mono text-slate-400"><span class="text-rose-500">*</span> Wajib diisi staf KANCAB</span>
+                <div class="flex gap-3">
+                  <button type="button" onclick="cancelRegistration()" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-600 transition-colors">
+                    Batal
+                  </button>
+                  <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-100 flex items-center gap-1.5">
+                    <i class="fas fa-check"></i> Simpan Registrasi
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+
+
+  <!-- Shared JS Layer -->
+  <script src="data.js?v=1.0.1"></script>
+  <script src="shared.js?v=1.0.1"></script>
+  
+  <script>
+    let currentParticipant = null;
+    let selectedFamilyMember = null;
+
+    const DUMMY_PESERTA = [
+      { ktpa: 'ASB-2024-001234', nrp: '3273120105910003', nopens: '-', nama: 'Ahmad Fauzi', angkatan: 'TNI-AD', nik: '3273120105910003', pangkat: 'Serma', gajiPokok: 3200000, status: 'Aktif' },
+      { ktpa: 'ASB-2024-001235', nrp: '3273120105910088', nopens: '-', nama: 'Siti Nurhaliza', angkatan: 'PNS', nik: '3273120105910088', pangkat: 'Penata Muda', gajiPokok: 2800000, status: 'Aktif' },
+      { ktpa: 'ASB-2015-087211', nrp: '3171092801890001', nopens: '-', nama: 'Wirata Atmaja', angkatan: 'TNI-AD', nik: '3171092801890001', pangkat: 'Mayor Inf', gajiPokok: 4900000, status: 'Aktif' },
+      { ktpa: 'ASB-2018-095431', nrp: '3273120105910011', nopens: '-', nama: 'Bambang Triyono', angkatan: 'TNI-AD', nik: '3273120105910011', pangkat: 'Kapten', gajiPokok: 4200000, status: 'Aktif' },
+      { ktpa: 'ASB-2020-112345', nrp: '3578140902940004', nopens: '-', nama: 'Kartika Sari', angkatan: 'PNS', nik: '3578140902940004', pangkat: 'Penata', gajiPokok: 3500000, status: 'Aktif' },
+      { ktpa: 'ASB-1985-004321', nrp: '3374110304620002', nopens: '-', nama: 'Budi Santoso', angkatan: 'TNI-AD', nik: '3374110304620002', pangkat: 'Kolonel', gajiPokok: 5800000, status: 'Aktif' },
+      { ktpa: 'ASB-2019-078901', nrp: '3273120105910200', nopens: '-', nama: 'Agus Salim', angkatan: 'TNI-AL', nik: '3273120105910200', pangkat: 'Lettu', gajiPokok: 3800000, status: 'Aktif' },
+      { ktpa: 'ASB-2021-034567', nrp: '3273120105910201', nopens: '-', nama: 'Dewi Anggraini', angkatan: 'PNS', nik: '3273120105910201', pangkat: 'Penata Muda Tk.I', gajiPokok: 3100000, status: 'Aktif' },
+      { ktpa: 'ASB-2017-056789', nrp: '3273120105910202', nopens: '-', nama: 'Firman Hidayat', angkatan: 'TNI-AU', nik: '3273120105910202', pangkat: 'Mayor', gajiPokok: 4600000, status: 'Aktif' },
+      { ktpa: 'ASB-2022-089012', nrp: '3273120105910203', nopens: '-', nama: 'Gita Lestari', angkatan: 'POLRI', nik: '3273120105910203', pangkat: 'Brigadir', gajiPokok: 3300000, status: 'Aktif' },
+      { ktpa: 'ASB-2016-023456', nrp: '3273120105910204', nopens: '-', nama: 'Hadi Purnomo', angkatan: 'TNI-AD', nik: '3273120105910204', pangkat: 'Letkol', gajiPokok: 5200000, status: 'Aktif' },
+      { ktpa: 'ASB-2023-067890', nrp: '3273120105910205', nopens: '-', nama: 'Ika Ratnasari', angkatan: 'PNS', nik: '3273120105910205', pangkat: 'Pengatur', gajiPokok: 2600000, status: 'Aktif' },
+      { ktpa: 'ASB-1990-012345', nrp: '3273120105910206', nopens: '2019-045678', nama: 'Jauhari Anwar', angkatan: 'TNI-AD', nik: '3273120105910206', pangkat: 'Brigjen (Purn)', gajiPokok: 6500000, status: 'Pensiun' },
+      { ktpa: 'ASB-1995-034567', nrp: '3273120105910207', nopens: '2020-056789', nama: 'Karmini Slamet', angkatan: 'PNS', nik: '3273120105910207', pangkat: 'Pembina (Purn)', gajiPokok: 5100000, status: 'Pensiun' },
+      { ktpa: 'ASB-2000-056789', nrp: '3273120105910208', nopens: '2022-067890', nama: 'Lukman Hakim', angkatan: 'TNI-AL', nik: '3273120105910208', pangkat: 'Kapten (Purn)', gajiPokok: 4300000, status: 'Pensiun' },
+      { ktpa: 'ASB-2014-078901', nrp: '3273120105910209', nopens: '-', nama: 'Maria Ulfa', angkatan: 'POLRI', nik: '3273120105910209', pangkat: 'Kompol', gajiPokok: 4800000, status: 'Aktif' },
+      { ktpa: 'ASB-2013-090123', nrp: '3273120105910210', nopens: '-', nama: 'Nanang Wijaya', angkatan: 'TNI-AU', nik: '3273120105910210', pangkat: 'Letda', gajiPokok: 3600000, status: 'Aktif' },
+    ];
+
+    const LOCAL_MOCK_PESERTA = DUMMY_PESERTA.map(item => ({
+      noPeserta: item.ktpa,
+      no_ktpa: item.ktpa,
+      nama: item.nama,
+      nrp_nip: item.nrp,
+      nik: item.nik,
+      nopens: item.nopens,
+      angkatan: item.angkatan,
+      pangkat: item.pangkat,
+      gaji_pokok: item.gajiPokok,
+      gajiPokok: item.gajiPokok,
+      statusKepesertaan: item.status,
+      status_kepesertaan: item.status,
+      tanggal_lahir: "1980-05-15",
+      tmt_dinas: "2005-03-01",
+      istri_suami: [{ nama: "Siti Fatimah", tanggal_lahir: "1983-02-10", nik: "3273120105910901" }],
+      anak: [
+        { nama: "Budi Fauzi", tanggal_lahir: "2010-06-20", nik: "3273120105910902" },
+        { nama: "Ayu Fauzi", tanggal_lahir: "2014-11-12", nik: "3273120105910903" }
+      ]
+    }));
+
+    const DAFTAR_KEJADIAN = [
+      "Pensiun",
+      "Berhenti dengan Hak Tunjangan",
+      "Berhenti tanpa Hak Pensiun",
+      "Istri/Suami Meninggal Dunia",
+      "Anak Meninggal Dunia",
+      "Meninggal Dunia dalam Dinas Aktif",
+      "Kecelakaan Kerja — Dirawat",
+      "Kecelakaan Kerja — Meninggal Dunia",
+      "Kecelakaan Kerja — Cacat Tetap Bekerja",
+      "Kecelakaan Kerja — Cacat Pensiun",
+      "Pensiun Sendiri — Meninggal Dunia",
+      "Pensiun Sendiri — Istri/Suami Meninggal Dunia",
+      "Pensiun Sendiri — Anak Meninggal Dunia",
+      "Pensiun Warakawuri — Meninggal Dunia",
+      "Tunjangan Yatim/Piatu/Yatim-Piatu — Meninggal",
+      "Tunjangan Yatim/Piatu/Yatim-Piatu — Dewasa",
+      "Tunjangan Orang Tua — Meninggal"
+    ];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Handle query parameter NIP/NIK lookup
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      const fromParam = urlParams.get('from');
+      if (fromParam === 'data-peserta') {
+        const prefillStr = localStorage.getItem('prefillPeserta');
+        if (prefillStr) {
+          try {
+            const prefill = JSON.parse(prefillStr);
+            currentParticipant = {
+              nama: prefill.nama || '',
+              nrp_nip: prefill.nip || '',
+              nik: prefill.nip || '',
+              noPeserta: prefill.ktpa || '',
+              no_ktpa: prefill.ktpa || '',
+              pangkat: prefill.pangkat || 'Bintara',
+              angkatan: prefill.angkatan || '',
+              unitKerja: prefill.angkatan || '',
+              isManual: false,
+              statusKepesertaan: "Aktif",
+              status_kepesertaan: "Aktif",
+              pasangan: null,
+              anak: []
+            };
+
+            // Populate info card
+            document.getElementById("p-nama").innerText = currentParticipant.nama;
+            document.getElementById("p-nip-nrp").innerText = currentParticipant.nrp_nip || "-";
+            document.getElementById("p-nik").innerText = currentParticipant.nik || "-";
+            document.getElementById("p-no-peserta").innerText = currentParticipant.noPeserta || "-";
+
+            const pangkatVal = currentParticipant.pangkat || "Bintara";
+            const unitVal = currentParticipant.unitKerja || "-";
+            document.getElementById("p-unit").innerText = `${pangkatVal} / ${unitVal}`;
+
+            const statusEl = document.getElementById("p-status");
+            statusEl.innerText = "Aktif";
+            statusEl.className = "inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-emerald-50 border-emerald-200 text-emerald-700";
+
+            document.getElementById("spouse-warning-box").classList.add("hidden");
+            document.getElementById("pending-header-badge").classList.add("hidden");
+            document.getElementById("pending-step2-badge").classList.add("hidden");
+
+            document.getElementById("search-results-table-container").classList.add("hidden");
+            document.getElementById("participant-lookup-result").classList.remove("hidden");
+
+            // Sembunyikan form filter pencarian, tombol pencarian, dan teks placeholder pencarian
+            document.getElementById("filter-rows-container").classList.add("hidden");
+            document.getElementById("filter-actions-container").classList.add("hidden");
+            document.getElementById("participant-lookup-placeholder").classList.add("hidden");
+
+            unlockWorkflow();
+            updateJenisKejadianDropdown();
+
+            // Select visitor type "Peserta"
+            const pesInput = document.querySelector('input[name="tipe-pengunjung"][value="Peserta"]');
+            if (pesInput) {
+              pesInput.checked = true;
+            }
+            handleVisitorTypeChange();
+
+            // Scroll to Step 2
+            setTimeout(() => {
+              const visitorTypeContainer = document.getElementById("visitor-type-container");
+              if (visitorTypeContainer) {
+                visitorTypeContainer.scrollIntoView({ behavior: 'smooth' });
+              }
+            }, 100);
+          } catch (e) {
+            console.error("Prefill error:", e);
+          }
+          localStorage.removeItem('prefillPeserta');
+          return;
+        }
+      }
+
+      const queryNip = urlParams.get('nip') || urlParams.get('nik');
+      if (queryNip) {
+        const firstInput = document.querySelector("#filter-rows-container .filter-val");
+        if (firstInput) {
+          firstInput.value = queryNip;
+          executeParticipantSearch();
+        }
+      }
+    });
+
+    function unlockWorkflow() {
+      const visitorContainer = document.getElementById("visitor-type-container");
+      visitorContainer.classList.remove("opacity-60", "pointer-events-none");
+    }
+
+    function lockWorkflow() {
+      const visitorContainer = document.getElementById("visitor-type-container");
+      const claimContainer = document.getElementById("claim-form-container");
+      
+      visitorContainer.classList.add("opacity-60", "pointer-events-none");
+      claimContainer.classList.add("opacity-60", "pointer-events-none");
+    }
+
+    function updateJenisKejadianDropdown() {
+      const select = document.getElementById("jenis-kejadian");
+      if (!select) return;
+      
+      select.innerHTML = '<option value="" disabled selected>-- Silahkan Pilih Kejadian --</option>';
+      
+      if (!currentParticipant) return;
+      
+      DAFTAR_KEJADIAN.forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item;
+        opt.innerText = item;
+        select.appendChild(opt);
+      });
+    }
+
+    function handleManualStatusChange() {
+      if (currentParticipant && currentParticipant.isManual) {
+        currentParticipant.statusKepesertaan = document.getElementById("p-status-manual").value;
+        currentParticipant.status_kepesertaan = currentParticipant.statusKepesertaan;
+        updateJenisKejadianDropdown();
+      }
+    }
+
+    function handleFilterTypeChange(selectEl) {
+      const row = selectEl.closest('.filter-row');
+      if (!row) return;
+      const valueContainer = row.querySelector('.filter-value-container');
+      if (!valueContainer) return;
+
+      const type = selectEl.value;
+      if (type === 'ANGKATAN') {
+        valueContainer.innerHTML = `
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Nilai Pencarian</label>
+          <select class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700 filter-val">
+            <option value="Semua" selected>Semua</option>
+            <option value="TNI-AD">TNI-AD</option>
+            <option value="TNI-AL">TNI-AL</option>
+            <option value="TNI-AU">TNI-AU</option>
+            <option value="POLRI">POLRI</option>
+            <option value="KEMHAN">KEMHAN</option>
+          </select>
+        `;
+      } else {
+        valueContainer.innerHTML = `
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Nilai Pencarian</label>
+          <input type="text" placeholder="Masukkan kata kunci pencarian..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700 filter-val">
+        `;
+      }
+    }
+
+    function addFilterRow() {
+      const container = document.getElementById('filter-rows-container');
+      if (!container) return;
+      const newRow = document.createElement('div');
+      newRow.className = 'flex flex-col md:flex-row md:items-center gap-3 filter-row animate-fade-in mt-3';
+      newRow.innerHTML = `
+        <div class="w-full md:w-1/3">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Tipe Pencarian</label>
+          <select onchange="handleFilterTypeChange(this)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700 filter-type">
+            <option value="ANY" selected>KTPA, NRP/NIP, NOPENS, NAMA</option>
+            <option value="ANGKATAN">Angkatan</option>
+            <option value="NIK">NIK</option>
+          </select>
+        </div>
+        <div class="flex-1 filter-value-container">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Nilai Pencarian</label>
+          <input type="text" placeholder="Masukkan kata kunci pencarian..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700 filter-val">
+        </div>
+        <div class="w-full md:w-auto flex items-end pt-5 md:pt-0">
+          <button type="button" onclick="removeFilterRow(this)" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 rounded-xl text-xs font-bold transition-all flex items-center gap-1 shadow-sm w-[85px] justify-center">
+            <i class="fas fa-minus"></i> Filter
+          </button>
+        </div>
+      `;
+      container.appendChild(newRow);
+    }
+
+    function removeFilterRow(btn) {
+      const row = btn.closest('.filter-row');
+      if (row) row.remove();
+    }
+
+    function matchAngkatan(participant, filterVal) {
+      if (filterVal === "Semua") return true;
+      const val = filterVal.toLowerCase();
+      const angkatan = (participant.angkatan || "").toLowerCase();
+      const kesatuan = (participant.kesatuan || "").toLowerCase();
+      const unitKerja = (participant.unitKerja || "").toLowerCase();
+      const pangkat = (participant.pangkat || "").toLowerCase();
+
+      if (val === "tni-ad") {
+        return angkatan.includes("ad") || angkatan.includes("darat") || kesatuan.includes("darat") || kesatuan.includes("ad") || unitKerja.includes("darat") || unitKerja.includes("ad") || pangkat.includes("mayor") || pangkat.includes("letkol") || pangkat.includes("serda") || pangkat.includes("peltu") || pangkat.includes("serma");
+      }
+      if (val === "tni-al") {
+        return angkatan.includes("al") || angkatan.includes("laut") || kesatuan.includes("laut") || kesatuan.includes("al") || unitKerja.includes("laut") || unitKerja.includes("al");
+      }
+      if (val === "tni-au") {
+        return angkatan.includes("au") || angkatan.includes("udara") || kesatuan.includes("udara") || kesatuan.includes("au") || unitKerja.includes("udara") || unitKerja.includes("au");
+      }
+      if (val === "polri") {
+        return angkatan.includes("polri") || kesatuan.includes("polri") || unitKerja.includes("polri") || kesatuan.includes("polda") || unitKerja.includes("polda") || pangkat.includes("akp") || pangkat.includes("bripka");
+      }
+      if (val === "kemhan") {
+        return angkatan.includes("kemhan") || kesatuan.includes("kemhan") || unitKerja.includes("kemhan") || angkatan.includes("kementerian pertahanan") || kesatuan.includes("kementerian pertahanan") || unitKerja.includes("kementerian pertahanan");
+      }
+      return false;
+    }
+
+    async function executeParticipantSearch() {
+      const btnCari = document.getElementById('btn-cari');
+      if (btnCari) {
+        btnCari.disabled = true;
+        btnCari.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Mencari...`;
+      }
+
+      // Reset states
+      document.getElementById("participant-lookup-result").classList.add("hidden");
+      document.getElementById("search-results-table-container").classList.add("hidden");
+      document.getElementById("search-results-empty").classList.add("hidden");
+      document.getElementById("manual-input-form-container").classList.add("hidden");
+      document.getElementById("participant-lookup-placeholder").classList.add("hidden");
+      lockWorkflow();
+
+      // Retrieve all filters
+      const rows = document.querySelectorAll('#filter-rows-container .filter-row');
+      const filters = [];
+      rows.forEach(row => {
+        const typeSelect = row.querySelector('.filter-type');
+        const valInput = row.querySelector('.filter-val');
+        if (typeSelect && valInput) {
+          filters.push({
+            type: typeSelect.value,
+            value: valInput.value.trim()
+          });
+        }
+      });
+
+      // Simulate network request
+      await new Promise(resolve => setTimeout(resolve, 600));
+
+      if (btnCari) {
+        btnCari.disabled = false;
+        btnCari.innerHTML = `<i class="fas fa-magnifying-glass"></i> Cari`;
+      }
+
+      // Perform matching logic
+      const matches = LOCAL_MOCK_PESERTA.filter(p => {
+        return filters.every(f => {
+          if (!f.value) return true; // empty filter matches everything
+          const filterValLower = f.value.toLowerCase();
+          
+          if (f.type === 'ANY') {
+            const nama = (p.nama || "").toLowerCase();
+            const nrp = (p.nrp_nip || p.nrp || "").toLowerCase();
+            const ktpa = (p.no_ktpa || p.noPeserta || "").toLowerCase();
+            const nopens = (p.nopens || "").toLowerCase();
+            return nama.includes(filterValLower) || nrp.includes(filterValLower) || ktpa.includes(filterValLower) || nopens.includes(filterValLower);
+          } else if (f.type === 'NIK') {
+            const nik = (p.nik || "").toLowerCase();
+            return nik.includes(filterValLower);
+          } else if (f.type === 'ANGKATAN') {
+            return matchAngkatan(p, f.value);
+          }
+          return true;
+        });
+      });
+
+      if (matches.length > 0) {
+        window.lastSearchResults = matches;
+        renderSearchResultsTable(matches);
+      } else {
+        document.getElementById("search-results-empty").classList.remove("hidden");
+        showToast("Data Tidak Ditemukan", "Pencarian tidak mengembalikan hasil.", "danger");
+      }
+    }
+
+    function renderSearchResultsTable(results) {
+      const tbody = document.getElementById("search-results-table-body");
+      tbody.innerHTML = "";
+      results.forEach((p, idx) => {
+        const tr = document.createElement("tr");
+        tr.className = "border-b border-slate-150 hover:bg-slate-50 transition-colors";
+        
+        let angDisplay = p.angkatan;
+        if (!angDisplay) {
+          if (p.kesatuan && p.kesatuan.includes("Polri")) angDisplay = "POLRI";
+          else if (p.pangkat && p.pangkat.includes("PNS")) angDisplay = "PNS";
+          else angDisplay = "TNI-AD";
+        }
+        
+        tr.innerHTML = `
+          <td class="p-3 font-mono font-bold text-slate-700">${p.no_ktpa || p.noPeserta || "-"}</td>
+          <td class="p-3 font-mono text-slate-650">${p.nrp_nip || p.nrp || "-"}</td>
+          <td class="p-3 font-mono text-slate-650">${p.nopens || "-"}</td>
+          <td class="p-3 font-bold text-slate-800">${p.nama}</td>
+          <td class="p-3 text-slate-650">${angDisplay}</td>
+          <td class="p-3 font-mono text-slate-600">${p.nik || "-"}</td>
+          <td class="p-3 text-center">
+            <button type="button" onclick="selectParticipantByIndex(${idx})" class="px-3.5 py-1.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-sm">
+              Pilih
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById("search-results-table-container").classList.remove("hidden");
+    }
+
+    function selectParticipantByIndex(index) {
+      const p = window.lastSearchResults[index];
+      if (!p) return;
+      
+      currentParticipant = p;
+      currentParticipant.isManual = false;
+
+      // Populate info card
+      document.getElementById("p-nama").innerText = p.nama;
+      document.getElementById("p-nip-nrp").innerText = p.nrp_nip || p.nrp || "-";
+      document.getElementById("p-nik").innerText = p.nik;
+      document.getElementById("p-no-peserta").innerText = p.noPeserta || p.no_ktpa || "-";
+      
+      const pangkatVal = p.pangkat || "Bintara";
+      const unitVal = p.unitKerja || p.kesatuan || "-";
+      document.getElementById("p-unit").innerText = `${pangkatVal} / ${unitVal}`;
+      
+      // Status Badge Style
+      const statusEl = document.getElementById("p-status");
+      const statusVal = p.statusKepesertaan || p.status_kepesertaan || "Aktif";
+      statusEl.innerText = statusVal;
+      if (statusVal === "Aktif") {
+        statusEl.className = "inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-emerald-50 border-emerald-200 text-emerald-700";
+      } else {
+        statusEl.className = "inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-slate-100 border-slate-200 text-slate-500";
+      }
+
+      // Spouse double claim warning
+      const warningBox = document.getElementById("spouse-warning-box");
+      if (p.pasangan && p.pasangan.jugaPesertaASABRI) {
+        document.getElementById("spouse-warning-text").innerText = `Perhatian: Pasangan peserta (${p.pasangan.nama}) juga terdaftar sebagai peserta ASABRI aktif (NIK: ${p.pasangan.nik}). Pastikan tidak terjadi klaim ganda atas nama pasangan.`;
+        warningBox.classList.remove("hidden");
+      } else {
+        warningBox.classList.add("hidden");
+      }
+
+      // Hide pending badges
+      document.getElementById("pending-header-badge").classList.add("hidden");
+      document.getElementById("pending-step2-badge").classList.add("hidden");
+
+      // Hide search table, show read-only card
+      document.getElementById("search-results-table-container").classList.add("hidden");
+      document.getElementById("participant-lookup-result").classList.remove("hidden");
+
+      unlockWorkflow();
+      updateJenisKejadianDropdown();
+
+      // Trigger visitor type change default handler
+      document.querySelector('input[name="tipe-pengunjung"][value="Peserta"]').checked = true;
+      handleVisitorTypeChange();
+
+      showToast("Data Ditemukan", `Peserta ${p.nama} terverifikasi sebagai peserta ASABRI.`);
+    }
+
+    function showManualInputForm() {
+      document.getElementById("search-results-empty").classList.add("hidden");
+      document.getElementById("manual-input-form-container").classList.remove("hidden");
+      
+      document.getElementById("manual-nama").value = "";
+      document.getElementById("manual-identitas").value = "";
+      document.getElementById("manual-angkatan").value = "TNI-AD";
+    }
+
+    function submitManualInput() {
+      const namaEl = document.getElementById("manual-nama");
+      const identitasEl = document.getElementById("manual-identitas");
+      const angkatanEl = document.getElementById("manual-angkatan");
+      
+      const errNama = document.getElementById("error-manual-nama");
+      const errIdentitas = document.getElementById("error-manual-identitas");
+      
+      let isValid = true;
+      
+      if (!namaEl.value.trim()) {
+        namaEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+        errNama.classList.remove("hidden");
+        isValid = false;
+      } else {
+        namaEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+        errNama.classList.add("hidden");
+      }
+      
+      if (!identitasEl.value.trim()) {
+        identitasEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+        errIdentitas.classList.remove("hidden");
+        isValid = false;
+      } else {
+        identitasEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+        errIdentitas.classList.add("hidden");
+      }
+      
+      if (!isValid) return;
+      
+      const identitasVal = identitasEl.value.trim();
+      const selectedAngkatan = angkatanEl.value;
+
+      currentParticipant = {
+        isManual: true,
+        statusKepesertaan: "Aktif",
+        status_kepesertaan: "Aktif",
+        nama: namaEl.value.trim(),
+        nrp_nip: identitasVal,
+        nik: identitasVal,
+        noPeserta: "PENDING",
+        no_ktpa: "PENDING",
+        pangkat: "Manual",
+        unitKerja: selectedAngkatan,
+        kesatuan: selectedAngkatan,
+        angkatan: selectedAngkatan,
+        pasangan: null,
+        anak: []
+      };
+
+      // Show yellow Status: Pending badges
+      document.getElementById("pending-header-badge").classList.remove("hidden");
+      document.getElementById("pending-step2-badge").classList.remove("hidden");
+
+      // Hide manual input form, show read-only details but populated with manual info
+      document.getElementById("manual-input-form-container").classList.add("hidden");
+      
+      document.getElementById("p-nama").innerText = currentParticipant.nama;
+      document.getElementById("p-nip-nrp").innerText = currentParticipant.nrp_nip;
+      document.getElementById("p-nik").innerText = currentParticipant.nik;
+      document.getElementById("p-no-peserta").innerText = currentParticipant.noPeserta;
+      document.getElementById("p-unit").innerText = currentParticipant.unitKerja;
+      
+      const statusEl = document.getElementById("p-status");
+      statusEl.innerText = "Pending";
+      statusEl.className = "inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-amber-50 border-amber-200 text-amber-700 animate-pulse";
+
+      document.getElementById("spouse-warning-box").classList.add("hidden");
+      document.getElementById("participant-lookup-result").classList.remove("hidden");
+
+      unlockWorkflow();
+      updateJenisKejadianDropdown();
+
+      // Trigger visitor type change default handler
+      document.querySelector('input[name="tipe-pengunjung"][value="Peserta"]').checked = true;
+      handleVisitorTypeChange();
+
+      // Scroll to Step 2
+      document.getElementById("visitor-type-container").scrollIntoView({ behavior: 'smooth' });
+
+      showToast("Status: Pending", "Data kepesertaan didaftarkan secara manual dengan status Pending.", "warning");
+    }
+
+    function handleVisitorTypeChange() {
+      const selectedType = document.querySelector('input[name="tipe-pengunjung"]:checked').value;
+      
+      const cards = {
+        "Peserta": "visitor-peserta-card",
+        "Keluarga Terdaftar": "visitor-keluarga-terdaftar-card",
+        "Belum Terdaftar": "visitor-keluarga-baru-card"
+      };
+      
+      Object.keys(cards).forEach(key => {
+        const cardEl = document.getElementById(cards[key]);
+        if (cardEl) {
+          if (key === selectedType) {
+            cardEl.classList.add("border-asabri-blue", "bg-blue-50/10");
+            cardEl.classList.remove("border-slate-200");
+          } else {
+            cardEl.classList.remove("border-asabri-blue", "bg-blue-50/10");
+            cardEl.classList.add("border-slate-200");
+          }
+        }
+      });
+
+      const secTerdaftar = document.getElementById("section-keluarga-terdaftar");
+      const secBelumTerdaftar = document.getElementById("section-keluarga-belum-terdaftar");
+
+      secTerdaftar.classList.add("hidden");
+      secBelumTerdaftar.classList.add("hidden");
+      
+      // Clear validation errors
+      document.getElementById("error-family-select").classList.add("hidden");
+      document.getElementById("error-visitor-name").classList.add("hidden");
+      document.getElementById("error-visitor-relation").classList.add("hidden");
+
+      if (selectedType === "Keluarga Terdaftar") {
+        secTerdaftar.classList.remove("hidden");
+        populateFamilyTable();
+      } else if (selectedType === "Belum Terdaftar") {
+        secBelumTerdaftar.classList.remove("hidden");
+      }
+    }
+
+    function populateFamilyTable() {
+      const tbody = document.getElementById("family-table-body");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+      selectedFamilyMember = null;
+      
+      if (!currentParticipant) return;
+      
+      const familyList = [];
+      
+      // Pasangan
+      if (currentParticipant.pasangan) {
+        const p = currentParticipant.pasangan;
+        const hub = currentParticipant.jenis_kelamin === "L" ? "Istri" : (currentParticipant.jenis_kelamin === "P" ? "Suami" : "Suami/Istri");
+        familyList.push({
+          nama: p.nama,
+          hubungan: hub,
+          tglLahir: p.tanggal_lahir || "-",
+          tglMenikah: p.tanggal_menikah || "-",
+          status: "Terdaftar"
+        });
+      }
+      
+      // Anak
+      if (currentParticipant.anak && Array.isArray(currentParticipant.anak)) {
+        currentParticipant.anak.forEach(a => {
+          let birthDate = "-";
+          if (a.usia) {
+            const year = 2026 - a.usia;
+            birthDate = `${year}-01-01`;
+          }
+          familyList.push({
+            nama: a.nama,
+            hubungan: "Anak",
+            tglLahir: birthDate,
+            tglMenikah: "-",
+            status: "Terdaftar"
+          });
+        });
+      }
+      
+      if (familyList.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="p-4 text-center text-slate-400 italic">Tidak ada data anggota keluarga terdaftar.</td>
+          </tr>
+        `;
+        return;
+      }
+      
+      familyList.forEach((member, index) => {
+        const tr = document.createElement("tr");
+        tr.className = "border-b border-slate-100 hover:bg-slate-50/80 cursor-pointer transition-colors";
+        tr.onclick = () => selectFamilyRow(tr, member);
+        
+        tr.innerHTML = `
+          <td class="p-3 font-semibold text-slate-700">${member.nama}</td>
+          <td class="p-3 text-slate-600">${member.hubungan}</td>
+          <td class="p-3 text-slate-500 font-mono">${member.tglLahir}</td>
+          <td class="p-3 text-slate-500 font-mono">${member.tglMenikah}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-150">${member.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function selectFamilyRow(rowEl, member) {
+      const rows = document.querySelectorAll("#family-table-body tr");
+      rows.forEach(r => r.classList.remove("bg-blue-50/50", "border-l-4", "border-l-asabri-blue"));
+      
+      rowEl.classList.add("bg-blue-50/50", "border-l-4", "border-l-asabri-blue");
+      selectedFamilyMember = member;
+      
+      document.getElementById("error-family-select").classList.add("hidden");
+    }
+
+    function cancelRegistration() {
+      if (confirm("Apakah Anda yakin ingin membatalkan registrasi ini? Seluruh data form akan direset.")) {
+        currentParticipant = null;
+        selectedFamilyMember = null;
+        window.lastSearchResults = null;
+
+        const container = document.getElementById('filter-rows-container');
+        if (container) {
+          container.innerHTML = `
+            <div class="flex flex-col md:flex-row md:items-center gap-3 filter-row">
+              <div class="w-full md:w-1/3">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Tipe Pencarian</label>
+                <select onchange="handleFilterTypeChange(this)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700 filter-type">
+                  <option value="ANY" selected>KTPA, NRP/NIP, NOPENS, NAMA</option>
+                  <option value="ANGKATAN">Angkatan</option>
+                  <option value="NIK">NIK</option>
+                </select>
+              </div>
+              <div class="flex-1 filter-value-container">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Nilai Pencarian</label>
+                <input type="text" placeholder="Masukkan kata kunci pencarian..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700 filter-val">
+              </div>
+              <div class="w-full md:w-auto flex items-end pt-5 md:pt-0">
+                <div class="w-[85px]"></div>
+              </div>
+            </div>
+          `;
+        }
+
+        document.getElementById("participant-lookup-result").classList.add("hidden");
+        document.getElementById("search-results-table-container").classList.add("hidden");
+        document.getElementById("search-results-empty").classList.add("hidden");
+        document.getElementById("manual-input-form-container").classList.add("hidden");
+        document.getElementById("participant-lookup-placeholder").classList.remove("hidden");
+        
+        document.getElementById("pending-header-badge").classList.add("hidden");
+        document.getElementById("pending-step2-badge").classList.add("hidden");
+
+        lockWorkflow();
+        
+        document.getElementById("manual-nama").value = "";
+        document.getElementById("manual-identitas").value = "";
+        document.getElementById("manual-angkatan").value = "TNI-AD";
+        
+        const errors = ["error-participant", "error-family-select", "error-visitor-name", "error-visitor-relation", "error-kancab", "error-kejadian", "error-manual-nama", "error-manual-identitas"];
+        errors.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.add("hidden");
+        });
+        
+        const inputs = ["manual-nama", "manual-identitas", "visitor-name-input", "visitor-relation-select", "kantor-cabang", "jenis-kejadian"];
+        inputs.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+        });
+
+        document.querySelector("form").reset();
+      }
+    }
+
+    function validateForm() {
+      let isValid = true;
+
+      const errPart = document.getElementById("error-participant");
+      if (!currentParticipant) {
+        errPart.classList.remove("hidden");
+        isValid = false;
+      } else {
+        errPart.classList.add("hidden");
+      }
+
+      // 2. Visitor type validation
+      const selectedType = document.querySelector('input[name="tipe-pengunjung"]:checked').value;
+      if (selectedType === "Keluarga Terdaftar") {
+        const errFam = document.getElementById("error-family-select");
+        if (!selectedFamilyMember) {
+          errFam.classList.remove("hidden");
+          isValid = false;
+        } else {
+          errFam.classList.add("hidden");
+        }
+      } else if (selectedType === "Belum Terdaftar") {
+        const nameEl = document.getElementById("visitor-name-input");
+        const relEl = document.getElementById("visitor-relation-select");
+        const errName = document.getElementById("error-visitor-name");
+        const errRel = document.getElementById("error-visitor-relation");
+
+        if (!nameEl.value.trim()) {
+          nameEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+          errName.classList.remove("hidden");
+          isValid = false;
+        } else {
+          nameEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+          errName.classList.add("hidden");
+        }
+
+        if (!relEl.value) {
+          relEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+          errRel.classList.remove("hidden");
+          isValid = false;
+        } else {
+          relEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+          errRel.classList.add("hidden");
+        }
+      }
+
+      // 3. Kantor Cabang validation
+      const kancabEl = document.getElementById("kantor-cabang");
+      const errKancab = document.getElementById("error-kancab");
+      if (!kancabEl.value) {
+        kancabEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+        errKancab.classList.remove("hidden");
+        isValid = false;
+      } else {
+        kancabEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+        errKancab.classList.add("hidden");
+      }
+
+      // 4. Jenis Kejadian validation
+      const kejadianEl = document.getElementById("jenis-kejadian");
+      const errKejadian = document.getElementById("error-kejadian");
+      if (!kejadianEl.value) {
+        kejadianEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+        errKejadian.classList.remove("hidden");
+        isValid = false;
+      } else {
+        kejadianEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+        errKejadian.classList.add("hidden");
+      }
+
+      return isValid;
+    }
+
+    // Submit handler
+    function handleClaimSubmission(e) {
+      e.preventDefault();
+      
+      if (!validateForm()) {
+        showToast("Form Belum Lengkap", "Harap periksa kembali field yang wajib diisi.", "danger");
+        return;
+      }
+
+      const jenisKejadian = document.getElementById("jenis-kejadian").value;
+      const selectedType = document.querySelector('input[name="tipe-pengunjung"]:checked').value;
+
+      let visitorData = { jenis: selectedType };
+      if (selectedType === "Peserta") {
+        visitorData.nama = currentParticipant.nama;
+        visitorData.hubungan = "Diri Sendiri";
+      } else if (selectedType === "Keluarga Terdaftar") {
+        visitorData.nama = selectedFamilyMember.nama;
+        visitorData.hubungan = selectedFamilyMember.hubungan;
+      } else {
+        visitorData.nama = document.getElementById("visitor-name-input").value.trim();
+        visitorData.hubungan = document.getElementById("visitor-relation-select").value;
+      }
+
+      // Generate registration code
+      const currentYear = new Date().getFullYear();
+      const claims = getClaims();
+      const nextId = claims.length + 80;
+      const regNo = `REG-${currentYear}-000${nextId}`;
+
+      // Assemble state data to save
+      const registrationState = {
+        noAgenda: regNo,
+        peserta: currentParticipant,
+        tipePengunjung: visitorData,
+        sumberPengajuan: "Kantor Cabang",
+        kantorCabang: document.getElementById("kantor-cabang").value,
+        jenisKejadian: jenisKejadian,
+        status: currentParticipant.isManual ? "Pending" : "Diterima",
+        timestamp: new Date().toISOString()
+      };
+
+      // Save to localStorage with key 'registrasiKlaim'
+      localStorage.setItem("registrasiKlaim", JSON.stringify(registrationState));
+
+      // Set toast notifications for redirected page
+      sessionStorage.setItem("asabri_toast_title", "Registrasi Berhasil");
+      sessionStorage.setItem("asabri_toast_message", `Registrasi berhasil disimpan dengan Nomor Agenda: ${regNo}`);
+      sessionStorage.setItem("asabri_toast_type", "success");
+
+      // Redirect to kejadian.html with noAgenda query param
+      window.location.href = `kejadian.html?noAgenda=${regNo}`;
+    }
+
+    function buatKunjungan() {
+      if (!currentParticipant) {
+        showToast("Error", "Harap cari dan pilih data peserta terlebih dahulu di Langkah 1.", "danger");
+        return;
+      }
+
+      // Validate Visitor type selection in Langkah 2
+      const selectedType = document.querySelector('input[name="tipe-pengunjung"]:checked').value;
+      if (selectedType === "Keluarga Terdaftar") {
+        const errFam = document.getElementById("error-family-select");
+        if (!selectedFamilyMember) {
+          errFam.classList.remove("hidden");
+          return;
+        } else {
+          errFam.classList.add("hidden");
+        }
+      } else if (selectedType === "Belum Terdaftar") {
+        const nameEl = document.getElementById("visitor-name-input");
+        const relEl = document.getElementById("visitor-relation-select");
+        const errName = document.getElementById("error-visitor-name");
+        const errRel = document.getElementById("error-visitor-relation");
+
+        let isValid = true;
+        if (!nameEl.value.trim()) {
+          nameEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+          errName.classList.remove("hidden");
+          isValid = false;
+        } else {
+          nameEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+          errName.classList.add("hidden");
+        }
+
+        if (!relEl.value) {
+          relEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+          errRel.classList.remove("hidden");
+          isValid = false;
+        } else {
+          relEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+          errRel.classList.add("hidden");
+        }
+        if (!isValid) return;
+      }
+
+      // Check missing fields in currentParticipant profile
+      // Data dummy peserta dianggap sudah ada nomor telepon (default to a mock phone if not exists, so Telepon section is always blue)
+      if (!currentParticipant.no_telp) {
+        currentParticipant.no_telp = "021-8091108";
+      }
+      
+      const missingAlamat = !currentParticipant.alamat || !currentParticipant.rt || !currentParticipant.rw || 
+                            !currentParticipant.kelurahan || !currentParticipant.kecamatan || 
+                            !currentParticipant.kota || !currentParticipant.provinsi || !currentParticipant.kode_pos;
+
+      // Telepon is considered already exists (so missingTelepon = false)
+      const missingTelepon = false;
+
+      const missingProfil = !currentParticipant.identitas_diri || !currentParticipant.no_identitas || 
+                            !currentParticipant.pdw || !currentParticipant.satker_awal || !currentParticipant.satker_akhir;
+
+      if (missingAlamat || missingTelepon || missingProfil) {
+        openValidationModal(missingTelepon, missingProfil, missingAlamat);
+      } else {
+        proceedToStep3();
+      }
+    }
+
+    function openValidationModal(missingTelepon, missingProfil, missingAlamat) {
+      const modal = document.getElementById("validation-modal");
+      if (!modal) return;
+
+      // Populate Data Pengunjung (read-only)
+      const selectedType = document.querySelector('input[name="tipe-pengunjung"]:checked').value;
+      let visitorName = currentParticipant.nama;
+      if (selectedType === "Keluarga Terdaftar" && selectedFamilyMember) {
+        visitorName = selectedFamilyMember.nama;
+      } else if (selectedType === "Belum Terdaftar") {
+        visitorName = document.getElementById("visitor-name-input").value.trim();
+      }
+      document.getElementById("mv-nama").value = visitorName;
+
+      // Populate other fields from currentParticipant
+      document.getElementById("mv-telp").value = currentParticipant.no_telp || "";
+      document.getElementById("mv-hp").value = currentParticipant.no_hp || "-";
+      document.getElementById("mv-identitas-tipe").value = currentParticipant.identitas_diri || "";
+      document.getElementById("mv-identitas-no").value = currentParticipant.no_identitas || "";
+      document.getElementById("mv-pdw").value = currentParticipant.pdw || "";
+      document.getElementById("mv-satker-awal").value = currentParticipant.satker_awal || "";
+      document.getElementById("mv-satker-akhir").value = currentParticipant.satker_akhir || "";
+      document.getElementById("mv-alamat").value = currentParticipant.alamat || "";
+      document.getElementById("mv-rt").value = currentParticipant.rt || "";
+      document.getElementById("mv-rw").value = currentParticipant.rw || "";
+      document.getElementById("mv-kelurahan").value = currentParticipant.kelurahan || "";
+      document.getElementById("mv-kecamatan").value = currentParticipant.kecamatan || "";
+      document.getElementById("mv-kota").value = currentParticipant.kota || "";
+      document.getElementById("mv-provinsi").value = currentParticipant.provinsi || "";
+      document.getElementById("mv-kodepos").value = currentParticipant.kode_pos || "";
+
+      // Headers coloring logic
+      const hTelepon = document.getElementById("header-mod-telepon");
+      const hProfil = document.getElementById("header-mod-profil");
+      const hAlamat = document.getElementById("header-mod-alamat");
+
+      if (hTelepon) {
+        hTelepon.className = `w-full ${missingTelepon ? 'bg-rose-600' : 'bg-asabri-blue'} text-white px-4 py-3 flex items-center justify-between font-bold text-left focus:outline-none`;
+      }
+      if (hProfil) {
+        hProfil.className = `w-full ${missingProfil ? 'bg-rose-600' : 'bg-asabri-blue'} text-white px-4 py-3 flex items-center justify-between font-bold text-left focus:outline-none`;
+      }
+      if (hAlamat) {
+        hAlamat.className = `w-full ${missingAlamat ? 'bg-rose-600' : 'bg-asabri-blue'} text-white px-4 py-3 flex items-center justify-between font-bold text-left focus:outline-none`;
+      }
+
+      // Show modal
+      modal.classList.remove("hidden");
+      setTimeout(() => {
+        modal.classList.remove("opacity-0");
+        modal.querySelector("div").classList.remove("scale-95");
+      }, 50);
+    }
+
+    function closeValidationModal(forceProceed = true) {
+      const modal = document.getElementById("validation-modal");
+      if (!modal) return;
+      
+      modal.classList.add("opacity-0");
+      modal.querySelector("div").classList.add("scale-95");
+      setTimeout(() => {
+        modal.classList.add("hidden");
+        if (forceProceed) {
+          proceedToStep3();
+        }
+      }, 300);
+    }
+
+    function saveValidationData() {
+      if (!currentParticipant) return;
+
+      // Save input values to currentParticipant memory
+      currentParticipant.no_telp = document.getElementById("mv-telp").value;
+      currentParticipant.no_hp = document.getElementById("mv-hp").value;
+      currentParticipant.identitas_diri = document.getElementById("mv-identitas-tipe").value;
+      currentParticipant.no_identitas = document.getElementById("mv-identitas-no").value;
+      currentParticipant.pdw = document.getElementById("mv-pdw").value;
+      currentParticipant.satker_awal = document.getElementById("mv-satker-awal").value;
+      currentParticipant.satker_akhir = document.getElementById("mv-satker-akhir").value;
+      currentParticipant.alamat = document.getElementById("mv-alamat").value;
+      currentParticipant.rt = document.getElementById("mv-rt").value;
+      currentParticipant.rw = document.getElementById("mv-rw").value;
+      currentParticipant.kelurahan = document.getElementById("mv-kelurahan").value;
+      currentParticipant.kecamatan = document.getElementById("mv-kecamatan").value;
+      currentParticipant.kota = document.getElementById("mv-kota").value;
+      currentParticipant.provinsi = document.getElementById("mv-provinsi").value;
+      currentParticipant.kode_pos = document.getElementById("mv-kodepos").value;
+
+      showToast("Data Disimpan", "Kelengkapan data profil berhasil diperbarui.", "success");
+      
+      closeValidationModal(true);
+    }
+
+    function proceedToStep3() {
+      const claimForm = document.getElementById("claim-form-container");
+      if (claimForm) {
+        claimForm.classList.remove("opacity-60", "pointer-events-none");
+        claimForm.scrollIntoView({ behavior: 'smooth' });
+        showToast("Kunjungan Dibuat", "Silahkan lengkapi registrasi klaim di Langkah 3.", "success");
+      }
+    }
+
+    function toggleModalAccordion(id) {
+      const panel = document.getElementById(id);
+      if (!panel) return;
+      if (panel.classList.contains("hidden")) {
+        panel.classList.remove("hidden");
+      } else {
+        panel.classList.add("hidden");
+      }
+    }
+
+
+  </script>
+
+  <script>
+    if (typeof toggleSidebarAccordion === 'undefined') {
+      function toggleSidebarAccordion(menuId, chevId) {
+        const menu = document.getElementById(menuId);
+        const chev = document.getElementById(chevId);
+        if (!menu || !chev) return;
+        if (menu.classList.contains('hidden')) {
+          menu.classList.remove('hidden');
+          chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+        } else {
+          menu.classList.add('hidden');
+          chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+        }
+      }
+    }
+  </script>
+
+  <!-- Modal Validasi Profil -->
+  <div id="validation-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-3xl border border-slate-200 w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300">
+      
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <i class="fas fa-user-gear text-asabri-blue"></i> Data Profil yang Harus diisi
+        </h3>
+        <button type="button" onclick="closeValidationModal(true)" class="text-slate-400 hover:text-slate-600 text-base">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Scrollable Accordion Content -->
+      <div class="flex-1 overflow-y-auto p-6 space-y-4 text-xs">
+        
+        <!-- Accordion 1: Data Pengunjung -->
+        <div class="border border-slate-200 rounded-2xl overflow-hidden">
+          <button type="button" onclick="toggleModalAccordion('mod-pengunjung')" class="w-full bg-asabri-blue text-white px-4 py-3 flex items-center justify-between font-bold text-left focus:outline-none">
+            <span>1. Data Pengunjung</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div id="mod-pengunjung" class="p-4 bg-slate-50 space-y-3">
+            <div>
+              <label class="block font-bold text-slate-600 mb-1">NAMA PENGUNJUNG</label>
+              <input type="text" id="mv-nama" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-500 outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion 2: Data Telepon -->
+        <div class="border border-slate-200 rounded-2xl overflow-hidden">
+          <button type="button" id="header-mod-telepon" onclick="toggleModalAccordion('mod-telepon')" class="w-full bg-asabri-blue text-white px-4 py-3 flex items-center justify-between font-bold text-left focus:outline-none">
+            <span>2. Data Telepon</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div id="mod-telepon" class="p-4 bg-slate-50 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-bold text-slate-600 mb-1">Nomor Telepon</label>
+              <input type="text" id="mv-telp" placeholder="Masukkan nomor telepon..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-600 mb-1">Nomor Handphone</label>
+              <input type="text" id="mv-hp" value="-" placeholder="Masukkan nomor HP..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue font-mono">
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion 3: Profil -->
+        <div class="border border-slate-200 rounded-2xl overflow-hidden">
+          <button type="button" id="header-mod-profil" onclick="toggleModalAccordion('mod-profil')" class="w-full bg-asabri-blue text-white px-4 py-3 flex items-center justify-between font-bold text-left focus:outline-none">
+            <span>3. Profil</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div id="mod-profil" class="p-4 bg-slate-50 space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Identitas Diri</label>
+                <select id="mv-identitas-tipe" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+                  <option value="">-- Pilih Type --</option>
+                  <option value="KTP">KTP</option>
+                  <option value="SIM">SIM</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Nomor Identitas</label>
+                <input type="text" id="mv-identitas-no" placeholder="Masukkan nomor identitas..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue font-mono">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">PDW</label>
+                <input type="text" id="mv-pdw" placeholder="PDW..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">SATKER AWAL</label>
+                <input type="text" id="mv-satker-awal" placeholder="Satker Awal..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">SATKER AKHIR</label>
+                <input type="text" id="mv-satker-akhir" placeholder="Satker Akhir..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion 4: Data Alamat -->
+        <div class="border border-slate-200 rounded-2xl overflow-hidden">
+          <button type="button" id="header-mod-alamat" onclick="toggleModalAccordion('mod-alamat')" class="w-full bg-asabri-blue text-white px-4 py-3 flex items-center justify-between font-bold text-left focus:outline-none">
+            <span>4. Data Alamat</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div id="mod-alamat" class="p-4 bg-slate-50 space-y-4">
+            <div>
+              <label class="block font-bold text-slate-600 mb-1">Alamat</label>
+              <input type="text" id="mv-alamat" placeholder="Masukkan alamat lengkap..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">RT</label>
+                <input type="text" id="mv-rt" placeholder="RT" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue font-mono">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">RW</label>
+                <input type="text" id="mv-rw" placeholder="RW" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue font-mono">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Desa / Kelurahan</label>
+                <input type="text" id="mv-kelurahan" placeholder="Kelurahan..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Kecamatan</label>
+                <input type="text" id="mv-kecamatan" placeholder="Kecamatan..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Kota / Kabupaten</label>
+                <input type="text" id="mv-kota" placeholder="Kota/Kab..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Provinsi</label>
+                <input type="text" id="mv-provinsi" placeholder="Provinsi..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Kode Pos</label>
+                <input type="text" id="mv-kodepos" placeholder="Kode Pos..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue font-mono">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-slate-50">
+        <button type="button" onclick="closeValidationModal(true)" class="px-5 py-2 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded-xl transition-all text-xs focus:outline-none">
+          Close
+        </button>
+        <button type="button" onclick="saveValidationData()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl transition-all text-xs shadow-md focus:outline-none">
+          Simpan
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

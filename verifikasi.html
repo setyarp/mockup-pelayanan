@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Pencarian Peserta)</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar for High Density look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR / HEADER BAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <!-- ASABRI Logo & Branding -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right-side Topbar Controls -->
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide">ROLE : Staf KANCAB</span>
+      </div>
+      
+      <!-- Notification Bell -->
+      <div class="relative group cursor-pointer" id="header-notification-bell">
+        <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-150 relative">
+          <i class="fas fa-bell text-sm"></i>
+          <!-- Badge -->
+          <span id="header-notif-badge" class="absolute -top-1.5 -right-1.5 bg-rose-500 text-white font-extrabold text-[8px] w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-asabri-blue shadow-sm animate-bounce" style="width: 18px; height: 18px; display: none;">0</span>
+        </div>
+        <!-- Tooltip -->
+        <div class="absolute right-0 top-10 bg-slate-900 text-white text-[10px] font-bold px-3 py-2 rounded-lg shadow-xl pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col gap-1.5 w-64 z-50">
+          <div class="flex justify-between items-center border-b border-white/10 pb-1 mb-1">
+            <span class="text-asabri-gold uppercase tracking-wider text-[9px]"><i class="fas fa-triangle-exclamation mr-1"></i>Peringatan SLA</span>
+            <span class="text-[9px] text-white/50" id="header-notif-count">0 Klaim</span>
+          </div>
+          <p class="font-normal text-white/90 leading-tight">Ada klaim aktif yang mendekati (35-60 menit) atau telah melewati (60+ menit) batas SLA.</p>
+          <div id="header-notif-details" class="flex flex-col gap-1 mt-1 text-[9px] border-t border-white/5 pt-1"></div>
+        </div>
+      </div>
+
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- SIDEBAR: Navigation Panel -->
+    <aside id="sidebar-nav" class="w-80 bg-asabri-softBlue border-r border-slate-200 flex flex-col flex-shrink-0 transition-all duration-300">
+      <div class="p-5 border-b border-slate-200 bg-white/50">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Menu Layanan</h2>
+      </div>
+
+      <!-- Accordion Navigation List -->
+      <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+        <!-- 1. Dashboard -->
+        <a href="index.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-chart-pie text-base text-asabri-blue"></i>
+            <span>1. Dashboard</span>
+          </div>
+        </a>
+
+        <!-- 2. Pelayanan Registrasi Peserta Klaim -->
+        <a href="registrasi.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-pen-to-square text-base text-asabri-blue"></i>
+            <span>2. Pelayanan Registrasi Klaim Peserta</span>
+          </div>
+        </a>
+
+        <!-- 3. Data Peserta -->
+        <a href="data-peserta.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-search text-base text-asabri-blue"></i>
+            <span>3. Data Peserta</span>
+          </div>
+        </a>
+
+        <!-- 4. Riwayat Transaksi Klaim -->
+        <a href="riwayat.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-clock-rotate-left text-base text-asabri-blue"></i>
+            <span>4. Riwayat Transaksi Klaim</span>
+          </div>
+        </a>
+
+        <!-- 5. Pelayanan Klaim -->
+        <a href="kejadian.html" class="flex w-full bg-asabri-blue text-white rounded-xl p-3.5 shadow-md flex items-center justify-between font-semibold text-xs border border-asabri-blueDark/10 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-file-invoice text-base text-asabri-gold"></i>
+            <span>5. Pelayanan Klaim</span>
+          </div>
+        </a>
+
+                <!-- 6. Perawatan JKK -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-perawatan','chevron-perawatan')" class="w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-hand-holding-medical text-base text-asabri-blue"></i>
+              <span>6. Perawatan JKK</span>
+            </div>
+            <i id="chevron-perawatan" class="fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-perawatan" class="hidden pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="perawatan-kejadian.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-notes-medical w-4 text-slate-400"></i>
+              <span>Laporan Kejadian</span>
+            </a>
+            <a href="perawatan-klaim.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-file-medical w-4 text-slate-400"></i>
+              <span>Pengajuan Klaim</span>
+            </a>
+            <a href="perawatan-verifikasi.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-user-shield w-4 text-slate-400"></i>
+              <span>Verifikasi Klaim</span>
+            </a>
+          </div>
+        </div>
+
+<!-- 7. Pelayanan Komunikasi Pelanggan -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-kominfo','chevron-kominfo')" class="w-full w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-comments text-base text-asabri-blue"></i>
+              <span>7. Pelayanan Komunikasi Pelanggan</span>
+            </div>
+            <i id="chevron-kominfo" class="fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-kominfo" class="hidden pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="komunikasi-dashboard.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-gauge w-4 text-slate-400"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="komunikasi-riwayat.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-clock-rotate-left w-4 text-slate-400"></i>
+              <span>Riwayat Interaksi</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-slate-250 bg-slate-100 text-[10px] text-slate-400 font-mono text-center">
+        ASABRI YANDU NG v1.2.0
+      </div>
+    </aside>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      
+      <!-- BREADCRUMB BAR -->
+      <div class="bg-white border-b border-slate-200 px-8 py-4">
+        <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+          <span>Pelayanan Registrasi Klaim Peserta</span>
+          <span class="text-slate-400">/</span>
+          <span class="font-bold text-asabri-blue">Pencarian Peserta</span>
+        </div>
+      </div>
+
+      <!-- WORKSPACE PANELS -->
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+
+      <!-- WORKSPACE PANELS -->
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+
+        <!-- ==========================================
+             PANEL: PENCARIAN PESERTA
+             ========================================== -->
+        <section class="space-y-6">
+          
+          <!-- Input Pencarian -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4">Pencarian Data Kepesertaan (100% Read-Only)</h3>
+            <div class="flex gap-3 max-w-md">
+              <input type="text" id="search-nip-input" placeholder="Masukkan NIP/NRP Peserta..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 font-mono font-bold text-slate-700">
+              <button onclick="performSearch()" class="bg-asabri-blue hover:bg-asabri-blueDark text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-100 flex items-center gap-1.5">
+                <i class="fas fa-magnifying-glass"></i> Cari
+              </button>
+            </div>
+          </div>
+
+          <!-- Hasil Pencarian -->
+          <div id="search-results-container" class="hidden space-y-6 animate-fade-in">
+            
+            <!-- Warning Box (Double Claim Protection) -->
+            <div id="spouse-warning-box" class="hidden p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl flex items-start gap-3 text-xs font-medium shadow-sm">
+              <i class="fas fa-triangle-exclamation text-amber-500 text-sm mt-0.5 animate-pulse"></i>
+              <div>
+                <span class="font-bold">Proteksi Klaim Ganda:</span>
+                <p id="spouse-warning-text" class="mt-0.5 text-amber-700 font-medium"></p>
+              </div>
+            </div>
+
+            <!-- Profile Card -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                <h4 class="text-xs font-extrabold uppercase tracking-wider text-asabri-blue flex items-center gap-2">
+                  <i class="fas fa-user-shield text-sm text-asabri-gold"></i> Profil Peserta
+                </h4>
+                <button onclick="registerNewClaim()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-100 flex items-center gap-1.5">
+                  <i class="fas fa-pen-to-square"></i> Daftarkan Klaim Baru
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs text-slate-600">
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">Nama Lengkap</span>
+                  <strong id="p-nama" class="text-slate-800 font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">NIK</span>
+                  <strong id="p-nik" class="text-slate-800 font-mono font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">Nomor Peserta ASABRI</span>
+                  <strong id="p-no-peserta" class="text-slate-800 font-mono font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">Pangkat / Golongan</span>
+                  <strong id="p-pangkat" class="text-slate-800 font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">Unit / Satuan Kerja</span>
+                  <strong id="p-unit" class="text-slate-800 font-bold block text-sm">-</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-1">Status Kepesertaan</span>
+                  <span id="p-status" class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border mt-0.5">-</span>
+                </div>
+              </div>
+
+              <!-- Pasangan Info Section -->
+              <div class="border-t border-slate-100 pt-5 mt-5">
+                <h5 class="font-bold text-slate-700 text-xs mb-3 flex items-center gap-1.5">
+                  <i class="fas fa-users-viewfinder text-slate-400"></i> Informasi Pasangan Terdaftar
+                </h5>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs bg-slate-50 border border-slate-100 rounded-xl p-4">
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Nama Pasangan</span>
+                    <strong id="p-spouse-nama" class="text-slate-700 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">NIK Pasangan</span>
+                    <strong id="p-spouse-nik" class="text-slate-700 font-mono font-bold block">-</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Riwayat Klaim Tabel -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+              <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-800">Riwayat Pengajuan Klaim</h3>
+                <span class="text-[9px] bg-slate-100 text-slate-500 border border-slate-200 px-2 py-0.5 rounded font-mono font-bold" id="claim-count-text">0 Klaim Ditemukan</span>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="border-b border-slate-200 text-slate-400 uppercase text-[9px] font-bold tracking-wider bg-slate-50/30">
+                      <th class="py-3 px-6">No. Registrasi</th>
+                      <th class="py-3 px-6">Jenis Klaim</th>
+                      <th class="py-3 px-6">Sumber</th>
+                      <th class="py-3 px-6">Tanggal Registrasi</th>
+                      <th class="py-3 px-6">Status</th>
+                      <th class="py-3 px-6">Kantor Cabang</th>
+                    </tr>
+                  </thead>
+                  <tbody id="history-table-body" class="divide-y divide-slate-100 text-slate-600">
+                    <!-- Injected dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Empty State / Placeholder -->
+          <div id="search-placeholder" class="py-16 text-center text-slate-400 border border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
+            <i class="fas fa-search-user text-4xl block mb-3 text-slate-350"></i>
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide">Pencarian Data Kepesertaan</h4>
+            <p class="text-[10px] text-slate-400 mt-1 max-w-[280px] mx-auto leading-relaxed">Silakan masukkan NIP/NRP peserta untuk memuat profil dan log riwayat klaim.</p>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-white border-l-4 border-emerald-500 rounded-xl shadow-xl px-5 py-4 flex items-center gap-4 z-50 transform translate-y-24 opacity-0 transition-all duration-300">
+    <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm flex-shrink-0">
+      <i class="fas fa-check"></i>
+    </div>
+    <div class="text-xs">
+      <h5 class="font-bold text-slate-800" id="toast-title">Notifikasi</h5>
+      <p class="text-slate-500 mt-0.5" id="toast-message">Data berhasil diproses.</p>
+    </div>
+    <div class="h-6 w-px bg-slate-200"></div>
+    <button onclick="hideToast()" class="text-slate-400 hover:text-slate-600"><i class="fas fa-xmark"></i></button>
+  </div>
+
+  <!-- Shared JS Layer -->
+  <script src="data.js?v=1.0.1"></script>
+  <script src="shared.js?v=1.0.1"></script>
+  
+  <script>
+    let currentParticipant = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Auto-search if parameter nik or nip is passed
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryNik = urlParams.get('nik') || urlParams.get('nip');
+      if (queryNik) {
+        document.getElementById("search-nip-input").value = queryNik;
+        performSearch();
+      }
+    });
+
+    function performSearch() {
+      const searchInput = document.getElementById("search-nip-input").value.trim();
+      
+      if (!searchInput) {
+        showToast("Form Tidak Lengkap", "Harap masukkan NIP/NRP peserta terlebih dahulu.");
+        return;
+      }
+
+      // Find in MOCK_PESERTA
+      const p = MOCK_PESERTA.find(item => item.nrp_nip === searchInput || item.nik === searchInput);
+      const resultsContainer = document.getElementById("search-results-container");
+      const placeholder = document.getElementById("search-placeholder");
+
+      if (p) {
+        currentParticipant = p;
+        
+        // Populate profile card
+        document.getElementById("p-nama").innerText = p.nama;
+        document.getElementById("p-nik").innerText = p.nik;
+        document.getElementById("p-no-peserta").innerText = p.noPeserta;
+        document.getElementById("p-pangkat").innerText = p.pangkat;
+        document.getElementById("p-unit").innerText = p.unitKerja;
+
+        // Status Badge Style
+        const statusEl = document.getElementById("p-status");
+        statusEl.innerText = p.statusKepesertaan;
+        if (p.statusKepesertaan === "Aktif") {
+          statusEl.className = "inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-emerald-50 border-emerald-200 text-emerald-700 mt-0.5";
+        } else {
+          statusEl.className = "inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-slate-100 border-slate-200 text-slate-500 mt-0.5";
+        }
+
+        // Spouse info
+        if (p.pasangan) {
+          document.getElementById("p-spouse-nama").innerText = p.pasangan.nama;
+          document.getElementById("p-spouse-nik").innerText = p.pasangan.nik;
+          
+          const warningBox = document.getElementById("spouse-warning-box");
+          if (p.pasangan.jugaPesertaASABRI) {
+            document.getElementById("spouse-warning-text").innerText = `Perhatian: Pasangan peserta (${p.pasangan.nama}) juga terdaftar sebagai peserta ASABRI aktif (NIK: ${p.pasangan.nik}). Pastikan tidak terjadi klaim ganda atas nama pasangan.`;
+            warningBox.classList.remove("hidden");
+          } else {
+            warningBox.classList.add("hidden");
+          }
+        } else {
+          document.getElementById("p-spouse-nama").innerText = "- Tidak ada pasangan terdaftar -";
+          document.getElementById("p-spouse-nik").innerText = "-";
+          document.getElementById("spouse-warning-box").classList.add("hidden");
+        }
+
+        // Render past claims history table
+        renderHistoryTable(p.nik);
+
+        resultsContainer.classList.remove("hidden");
+        placeholder.classList.add("hidden");
+        showToast("Pencarian Berhasil", `Data untuk ${p.nama} berhasil ditampilkan.`);
+      } else {
+        currentParticipant = null;
+        resultsContainer.classList.add("hidden");
+        placeholder.classList.remove("hidden");
+        showToast("Data Tidak Ditemukan", "NIP/NRP tidak ditemukan dalam database kepesertaan ASABRI.");
+      }
+    }
+
+    function renderHistoryTable(nik) {
+      const claims = getClaims();
+      // Filter claims related to this NIK
+      const history = claims.filter(c => c.nik === nik);
+      const tbody = document.getElementById("history-table-body");
+      
+      document.getElementById("claim-count-text").innerText = `${history.length} Klaim Ditemukan`;
+
+      if (history.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-8 text-center text-slate-400 font-semibold bg-slate-50/10">
+              Belum ada riwayat pengajuan klaim untuk NIK ini.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = history.map(c => {
+        let statusBadge = "";
+        if (c.status === "Registrasi") {
+          statusBadge = `<span class="bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full text-[9px] font-bold border border-blue-200">Registrasi</span>`;
+        } else if (c.status === "Diproses") {
+          statusBadge = `<span class="bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full text-[9px] font-bold border border-indigo-200">Diproses</span>`;
+        } else if (c.status === "Pending") {
+          statusBadge = `<span class="bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full text-[9px] font-bold border border-amber-200">Pending</span>`;
+        } else if (c.status === "Diterima" || c.status === "Selesai") {
+          statusBadge = `<span class="bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full text-[9px] font-bold border border-emerald-200">${c.status}</span>`;
+        } else if (c.status === "Ditolak") {
+          statusBadge = `<span class="bg-rose-50 text-rose-700 px-2.5 py-0.5 rounded-full text-[9px] font-bold border border-rose-200">Ditolak</span>`;
+        }
+
+        return `
+          <tr class="hover:bg-slate-50/50 transition-colors border-b border-slate-100">
+            <td class="py-3 px-6 font-mono font-bold text-slate-800">${c.noRegistrasi}</td>
+            <td class="py-3 px-6"><span class="bg-slate-100 text-slate-700 border border-slate-200 rounded px-1.5 py-0.5 font-bold font-mono text-[9px]">${c.jenisKlaim}</span></td>
+            <td class="py-3 px-6"><span class="text-slate-500 font-medium"><i class="fas fa-share-nodes text-[10px] text-slate-400 mr-1"></i>${c.sumber}</span></td>
+            <td class="py-3 px-6 font-mono text-slate-500 text-[10px]">${c.tanggalRegistrasi}</td>
+            <td class="py-3 px-6">${statusBadge}</td>
+            <td class="py-3 px-6 text-slate-500 font-semibold">${c.kantorCabang}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function registerNewClaim() {
+      if (currentParticipant) {
+        window.location.href = `registrasi.html?nik=${currentParticipant.nik}`;
+      }
+    }
+  </script>
+
+  <script>
+    if (typeof toggleSidebarAccordion === 'undefined') {
+      function toggleSidebarAccordion(menuId, chevId) {
+        const menu = document.getElementById(menuId);
+        const chev = document.getElementById(chevId);
+        if (!menu || !chev) return;
+        if (menu.classList.contains('hidden')) {
+          menu.classList.remove('hidden');
+          chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+        } else {
+          menu.classList.add('hidden');
+          chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

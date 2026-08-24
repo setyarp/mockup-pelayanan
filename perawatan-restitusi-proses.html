@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Proses Restitusi)</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Sidebar Component -->
+  <script src="sidebar.js"></script>
+  <script src="shared.js?v=1.0.1"></script>
+  <!-- jsPDF & Document Generator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="document-generator.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide mr-1">ROLE :</span>
+        <select id="role-switcher" onchange="changeRole()" class="bg-transparent text-white font-semibold text-xs border-0 outline-none cursor-pointer focus:ring-0">
+          <option value="Staf KANCAB" class="text-slate-800" selected>Staf KANCAB</option>
+          <option value="Verifikator Medis" class="text-slate-800">Verifikator Medis</option>
+          <option value="KAKANCAB" class="text-slate-800">KAKANCAB</option>
+          <option value="Kabid/Kadiv Layanan" class="text-slate-800">Kabid/Kadiv Layanan</option>
+        </select>
+      </div>
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+    <div id="sidebar"></div>
+    <script>
+      renderSidebar('perawatan');
+    </script>
+
+    <!-- CONTENT -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <div class="bg-white border-b border-slate-200 px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+            <span>Perawatan JKK</span><span class="text-slate-400">/</span><span>Restitusi Perawatan</span><span class="text-slate-400">/</span><span class="font-bold text-asabri-blue">Proses Restitusi</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+        <!-- FILTER & ACTION BUTTONS -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4">
+          <div class="flex flex-wrap gap-4 items-end justify-between">
+            <div class="flex flex-wrap gap-4 items-center">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Status</label>
+                <select id="filter-status" onchange="applyFilters()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue text-slate-700 min-w-[200px]">
+                  <option value="Semua">Semua</option>
+                  <option value="Verifikasi Dokumen">Verifikasi Dokumen</option>
+                  <option value="Dokumen Terpending">Dokumen Terpending</option>
+                  <option value="Verifikasi Medis Layer 1">Verifikasi Medis Layer 1</option>
+                  <option value="Dispute RS">Dispute RS</option>
+                  <option value="Verifikasi Layer 2">Verifikasi Layer 2</option>
+                  <option value="Approval Kabid">Approval Kabid</option>
+                  <option value="SP Restitusi Terbit">SP Restitusi Terbit</option>
+                  <option value="Keuangan">Keuangan</option>
+                  <option value="Selesai">Selesai</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Ditolak">Ditolak</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Entitas</label>
+                <select id="filter-entitas" onchange="applyFilters()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue text-slate-700 min-w-[150px]">
+                  <option value="Semua">Semua</option>
+                  <option value="Provider">Provider</option>
+                  <option value="Peserta">Peserta</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="applyFilters()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-xs transition-colors">Filter</button>
+              <button id="btn-verif-dok" onclick="processVerifyDokumen()" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Verifikasi Dokumen</button>
+              <button id="btn-verif-medis-1" onclick="processVerifyMedis(1)" class="px-3 py-2 bg-orange-500 hover:bg-orange-650 text-white font-bold rounded-lg text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Verifikasi Medis L1</button>
+              <button id="btn-verif-medis-2" onclick="processVerifyMedis(2)" class="px-3 py-2 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-lg text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-bold">Verifikasi L2</button>
+              <button id="btn-appr-kabid" onclick="processApprovalKabid()" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Persetujuan Kabid</button>
+              <button id="btn-batal" onclick="batalProses()" class="px-3 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg text-xs transition-colors">Batal</button>
+              <button onclick="window.location.reload()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-xs transition-colors"><i class="fas fa-sync"></i> Refresh</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLE MONITORING -->
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-slate-150 bg-slate-50 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-spinner text-asabri-blue"></i>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Monitoring Proses Restitusi JKK</h3>
+            </div>
+            <span class="px-3 py-1 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-full font-bold text-[10px]" id="data-count-badge">0 Proses</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
+              <thead>
+                <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-500 uppercase font-bold text-[9px]">
+                  <th class="py-2.5 px-3 text-center">📎</th>
+                  <th class="py-2.5 px-3 text-center">F</th>
+                  <th class="py-2.5 px-3">Status</th>
+                  <th class="py-2.5 px-3">Jenis Klaim</th>
+                  <th class="py-2.5 px-3">Nomor Klaim</th>
+                  <th class="py-2.5 px-3 font-mono">KTPA</th>
+                  <th class="py-2.5 px-3 font-mono">NRP/NIP</th>
+                  <th class="py-2.5 px-3">Nama</th>
+                  <th class="py-2.5 px-3">Pangkat</th>
+                  <th class="py-2.5 px-3">Unor</th>
+                  <th class="py-2.5 px-3">Faskes</th>
+                  <th class="py-2.5 px-3 font-mono">Tgl Pengajuan</th>
+                  <th class="py-2.5 px-3 font-mono">Tgl Kejadian</th>
+                  <th class="py-2.5 px-3">Audit Verifikasi</th>
+                  <th class="py-2.5 px-3">Audit Persetujuan</th>
+                  <th class="py-2.5 px-3">Info Pending</th>
+                  <th class="py-2.5 px-3">Kejadian</th>
+                  <th class="py-2.5 px-3">Propinsi</th>
+                  <th class="py-2.5 px-3">No Restitusi</th>
+                </tr>
+              </thead>
+              <tbody id="monitoring-tbody" class="divide-y divide-slate-100 font-medium text-slate-700">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DETAIL RESTITUSI SECTION (SLIDE-OVER DRAWER MODAL) -->
+        <div id="detail-modal" class="fixed inset-0 z-[110] flex items-center justify-end hidden bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+          <div id="detail-section" class="bg-white h-full w-full max-w-4xl shadow-2xl border-l border-slate-200 flex flex-col transform translate-x-full transition-transform duration-300 overflow-hidden p-6 space-y-6 overflow-y-auto">
+          <div class="flex items-center justify-between border-b border-slate-150 pb-4">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800" id="detail-title">Detail Pengajuan Restitusi</h3>
+              <p class="text-[10px] text-slate-400 font-mono mt-0.5" id="detail-subtitle">Nomor Klaim: KLM-...</p>
+            </div>
+            <button onclick="hideDetail()" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times text-lg"></i></button>
+          </div>
+
+          <!-- STEPPER 7 TAHAP -->
+          <div class="py-4">
+            <div class="flex items-center justify-between">
+              <!-- Step 1 -->
+              <div class="flex flex-col items-center flex-1 relative" id="step-1">
+                <div class="w-8 h-8 rounded-full bg-asabri-blue text-white flex items-center justify-center font-bold text-xs z-10">1</div>
+                <div class="text-[9px] font-bold text-slate-700 mt-2 text-center">Pengajuan</div>
+                <div class="absolute top-4 left-1/2 w-full h-1 bg-slate-250 -z-0"></div>
+              </div>
+              <!-- Step 2 -->
+              <div class="flex flex-col items-center flex-1 relative" id="step-2">
+                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs z-10">2</div>
+                <div class="text-[9px] font-bold text-slate-500 mt-2 text-center leading-tight">Verifikasi Dokumen (Kancab)</div>
+                <div class="absolute top-4 left-1/2 w-full h-1 bg-slate-250 -z-0"></div>
+              </div>
+              <!-- Step 3 -->
+              <div class="flex flex-col items-center flex-1 relative" id="step-3">
+                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs z-10">3</div>
+                <div class="text-[9px] font-bold text-slate-500 mt-2 text-center leading-tight">Verifikasi Medis L1</div>
+                <div class="absolute top-4 left-1/2 w-full h-1 bg-slate-250 -z-0"></div>
+              </div>
+              <!-- Step 4 -->
+              <div class="flex flex-col items-center flex-1 relative" id="step-4">
+                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs z-10">4</div>
+                <div class="text-[9px] font-bold text-slate-500 mt-2 text-center leading-tight">Review RS</div>
+                <div class="absolute top-4 left-1/2 w-full h-1 bg-slate-250 -z-0"></div>
+              </div>
+              <!-- Step 5 -->
+              <div class="flex flex-col items-center flex-1 relative" id="step-5">
+                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs z-10">5</div>
+                <div class="text-[9px] font-bold text-slate-500 mt-2 text-center leading-tight">Verifikasi L2</div>
+                <div class="absolute top-4 left-1/2 w-full h-1 bg-slate-250 -z-0"></div>
+              </div>
+              <!-- Step 6 -->
+              <div class="flex flex-col items-center flex-1 relative" id="step-6">
+                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs z-10">6</div>
+                <div class="text-[9px] font-bold text-slate-500 mt-2 text-center leading-tight">Approval Kabid / SP Terbit</div>
+                <div class="absolute top-4 left-1/2 w-full h-1 bg-slate-250 -z-0"></div>
+              </div>
+              <!-- Step 7 -->
+              <div class="flex flex-col items-center flex-1 relative" id="step-7">
+                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs z-10">7</div>
+                <div class="text-[9px] font-bold text-slate-500 mt-2 text-center leading-tight">Keuangan / Pembayaran</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FORM DETAIL — 3 TAB -->
+          <div class="border-b border-slate-200">
+            <nav class="flex gap-4">
+              <button onclick="switchTab('tab-data-klaim')" id="btn-tab-data-klaim" class="py-3 px-4 text-xs font-bold border-b-2 border-asabri-blue text-asabri-blue transition-all">Tab 1 — Data Klaim</button>
+              <button onclick="switchTab('tab-verif-kwitansi')" id="btn-tab-verif-kwitansi" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">Tab 2 — Verifikasi Kwitansi</button>
+              <button onclick="switchTab('tab-dokumen')" id="btn-tab-dokumen" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">Tab 3 — Dokumen</button>
+            </nav>
+          </div>
+
+          <!-- TAB CONTENT -->
+          <div class="space-y-6">
+            
+            <!-- TAB 1: DATA KLAIM -->
+            <div id="tab-data-klaim" class="space-y-6 text-xs">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-5 rounded-2xl border border-slate-150">
+                <div class="space-y-2">
+                  <h4 class="text-xs font-bold text-asabri-blue border-b border-slate-200 pb-1 mb-2">Informasi Kejadian</h4>
+                  <div><span class="font-bold text-slate-500">Nomor Kejadian:</span> <span id="dt-no-kejadian" class="font-mono font-semibold"></span></div>
+                  <div><span class="font-bold text-slate-500">Nama Lengkap:</span> <span id="dt-nama" class="font-semibold"></span></div>
+                  <div><span class="font-bold text-slate-500">NRP / NIP:</span> <span id="dt-nrp" class="font-mono"></span></div>
+                  <div><span class="font-bold text-slate-500">Pangkat:</span> <span id="dt-pangkat"></span></div>
+                  <div><span class="font-bold text-slate-500">Unit Organisasi (Unor):</span> <span id="dt-unor"></span></div>
+                  <div><span class="font-bold text-slate-500">Tanggal Kejadian:</span> <span id="dt-tgl-kejadian"></span></div>
+                  <div><span class="font-bold text-slate-500">Lokasi / Provinsi:</span> <span id="dt-provinsi"></span></div>
+                  <div><span class="font-bold text-slate-500">Detail Kejadian:</span> <span id="dt-kejadian" class="font-semibold text-slate-700"></span></div>
+                </div>
+                <div class="space-y-2">
+                  <h4 class="text-xs font-bold text-asabri-blue border-b border-slate-200 pb-1 mb-2">Informasi Pembayaran & Rekening</h4>
+                  <div><span class="font-bold text-slate-500">Faskes / Provider Pengaju:</span> <span id="dt-faskes" class="font-semibold"></span></div>
+                  <div><span class="font-bold text-slate-500">Rekening Tujuan Restitusi:</span> <span id="dt-rekening" class="font-semibold font-mono text-emerald-700"></span></div>
+                  <div><span class="font-bold text-slate-500">Total Pengajuan Klaim:</span> <span id="dt-total-klaim" class="font-bold text-rose-600"></span></div>
+                  <div><span class="font-bold text-slate-500">Koordinasi Benefit (COB):</span> <span id="dt-cob-label" class="font-bold text-indigo-700"></span></div>
+                </div>
+              </div>
+
+              <!-- COB SECTION -->
+              <div id="cob-section" class="bg-indigo-50 border border-indigo-150 p-5 rounded-2xl space-y-3">
+                <h4 class="text-xs font-bold text-indigo-900 flex items-center gap-2"><i class="fas fa-handshake"></i> Koordinasi Benefit (COB)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                  <div>
+                    <label class="text-[10px] font-bold text-indigo-500 block uppercase">Penjamin Lain</label>
+                    <span id="cob-penjamin" class="font-bold text-slate-700">Jasa Raharja</span>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-indigo-500 block uppercase">Plafon JR</label>
+                    <span class="font-bold text-slate-700">Rp 20.000.000</span>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-indigo-500 block uppercase">Ditanggung JR</label>
+                    <span id="cob-ditanggung" class="font-bold text-indigo-700">Rp 20.000.000</span>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-indigo-500 block uppercase">Selisih ASABRI (Auto-Kalkulasi)</label>
+                    <span id="cob-selisih-asabri" class="font-extrabold text-indigo-900 text-sm">Rp 5.000.000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 2: VERIFIKASI KWITANSI -->
+            <div id="tab-verif-kwitansi" class="hidden space-y-6">
+              
+              <!-- SECTION 1 — TABEL KWITANSI -->
+              <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-150 flex items-center justify-between">
+                  <h4 class="text-xs font-bold text-slate-700 uppercase">Tabel Rincian Kwitansi Restitusi</h4>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left border-collapse text-[11px]">
+                    <thead>
+                      <tr class="bg-slate-100 text-slate-500 font-bold uppercase text-[9px] border-b border-slate-200">
+                        <th class="py-2.5 px-3">F</th>
+                        <th class="py-2.5 px-3">Jenis Layanan</th>
+                        <th class="py-2.5 px-3">Keterangan Biaya</th>
+                        <th class="py-2.5 px-3">Kwitansi (Tgl, No)</th>
+                        <th class="py-2.5 px-3">Info Perawatan</th>
+                        <th class="py-2.5 px-3">Diajukan</th>
+                        <th class="py-2.5 px-3">Disetujui</th>
+                        <th class="py-2.5 px-3">Selisih</th>
+                        <th class="py-2.5 px-3">Status</th>
+                        <th class="py-2.5 px-3">Catatan</th>
+                        <th class="py-2.5 px-3 text-center">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="kwitansi-tbody" class="divide-y divide-slate-100 font-medium text-slate-700">
+                      <!-- Rendered dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- SECTION 2 — DOKUMEN KWITANSI -->
+              <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
+                <h4 class="text-xs font-bold text-slate-700 uppercase border-b border-slate-150 pb-2">Review Dokumen Kwitansi Fisik</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                    <span class="text-xs font-bold text-slate-700">1. Kwitansi RS</span>
+                    <div class="flex items-center gap-2">
+                      <button onclick="previewDoc('Kwitansi RS')" class="px-2.5 py-1 bg-asabri-blue text-white rounded font-bold text-[9px]">Preview</button>
+                      <input type="checkbox" checked class="w-4 h-4 text-asabri-blue rounded">
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                    <span class="text-xs font-bold text-slate-700">2. Rincian Obat & Alkes</span>
+                    <div class="flex items-center gap-2">
+                      <button onclick="previewDoc('Rincian Obat & Alkes')" class="px-2.5 py-1 bg-asabri-blue text-white rounded font-bold text-[9px]">Preview</button>
+                      <input type="checkbox" checked class="w-4 h-4 text-asabri-blue rounded">
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                    <span class="text-xs font-bold text-slate-700">3. Rincian Tindakan</span>
+                    <div class="flex items-center gap-2">
+                      <button onclick="previewDoc('Rincian Tindakan')" class="px-2.5 py-1 bg-asabri-blue text-white rounded font-bold text-[9px]">Preview</button>
+                      <input type="checkbox" checked class="w-4 h-4 text-asabri-blue rounded">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 3 & 4: ANALISA KLAIM & REVIEW RS -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Analisa Klaim Selisih Bayar -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
+                  <h4 class="text-xs font-bold text-slate-800 flex items-center gap-2 border-b border-slate-200 pb-2"><i class="fas fa-calculator text-asabri-blue"></i> Analisa Klaim Selisih Bayar</h4>
+                  <div class="space-y-2 text-xs font-semibold">
+                    <div class="flex justify-between"><span>Total Diajukan:</span> <span id="analisa-diajukan" class="text-rose-600">Rp 0</span></div>
+                    <div class="flex justify-between"><span>Total Disetujui:</span> <span id="analisa-disetujui" class="text-emerald-700">Rp 0</span></div>
+                    <div class="flex justify-between border-t border-slate-200 pt-2 font-bold text-slate-700"><span>Selisih:</span> <span id="analisa-selisih" class="text-amber-700">Rp 0</span></div>
+                  </div>
+                  <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Item Tidak Dijamin</label>
+                    <div id="item-tidak-dijamin-list" class="space-y-1.5">
+                      <!-- Rendered dynamically -->
+                    </div>
+                    <button id="btn-tambah-item-uncovered" onclick="tambahItemTidakDijamin()" class="mt-2 text-[10px] font-bold text-asabri-blue hover:text-asabri-blueDark flex items-center gap-1"><i class="fas fa-plus"></i> Tambah item tidak dijamin</button>
+                  </div>
+                  <div class="flex gap-2 w-full">
+                    <button type="button" id="btn-preview-analisa" onclick="previewAnalisaDoc()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all">
+                      <i class="fas fa-eye text-[10px]"></i> Preview
+                    </button>
+                    <button type="button" id="btn-generate-analisa" onclick="generateAnalisaDoc()" class="flex-1 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all">
+                      <i class="fas fa-download text-[10px]"></i> Download PDF
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Review RS Section -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-sm">
+                  <h4 class="text-xs font-bold text-slate-800 flex items-center gap-2 border-b border-slate-150 pb-2"><i class="fas fa-hospital text-asabri-blue"></i> Review Analisa Klaim oleh RS</h4>
+                  <div class="space-y-3">
+                    <div class="flex flex-col gap-2">
+                      <label class="flex items-center gap-2.5 text-xs text-slate-700 cursor-pointer">
+                        <input type="radio" name="review-rs-decision" value="Setuju" id="rs-agree" onchange="toggleRSReviewMode()" checked class="w-4 h-4 text-asabri-blue">
+                        <span>Setuju -> lanjut ke Layer 2</span>
+                      </label>
+                      <label class="flex items-center gap-2.5 text-xs text-slate-700 cursor-pointer">
+                        <input type="radio" name="review-rs-decision" value="Dispute" id="rs-dispute" onchange="toggleRSReviewMode()" class="w-4 h-4 text-rose-600">
+                        <span class="font-semibold text-rose-600">Dispute -> RS tambah data baru</span>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="text-[10px] font-bold text-slate-400 block mb-1">Catatan RS</label>
+                      <textarea id="catatan-rs" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs outline-none focus:border-asabri-blue" placeholder="Masukkan catatan atau tanggapan dari Rumah Sakit..."></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 5 — KOMUNIKASI 2 ARAH -->
+              <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+                <h4 class="text-xs font-bold text-slate-800 flex items-center gap-2 border-b border-slate-150 pb-2"><i class="fas fa-comments text-asabri-blue"></i> Timeline Komunikasi ASABRI & RS</h4>
+                <div id="chat-timeline" class="space-y-3 max-h-60 overflow-y-auto p-2 bg-slate-50 border border-slate-150 rounded-xl">
+                  <!-- Chat messages will render here -->
+                </div>
+                <div class="flex gap-2">
+                  <input type="text" id="chat-message-input" placeholder="Ketik balasan untuk Rumah Sakit..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                  <button onclick="sendChatMessage()" class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs transition-colors">Kirim</button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- TAB 3: DOKUMEN -->
+            <div id="tab-dokumen" class="hidden space-y-4">
+              <h4 class="text-xs font-bold text-slate-700 uppercase border-b border-slate-150 pb-2">Dokumen Kelengkapan Persyaratan Restitusi</h4>
+              <div class="grid grid-cols-1 gap-3">
+                <div class="flex items-center justify-between p-3.5 bg-white border border-slate-200 rounded-xl shadow-sm">
+                  <div class="flex items-center gap-3">
+                    <i class="far fa-file-pdf text-rose-500 text-lg"></i>
+                    <span class="text-xs font-bold text-slate-700">1. Rincian Biaya Perawatan</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <button onclick="previewDoc('Rincian Biaya Perawatan')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold text-[10px]">Preview</button>
+                    <input type="checkbox" checked class="doc-verify-checkbox w-4 h-4 text-asabri-blue rounded" onchange="runDocVerificationCheck()">
+                  </div>
+                </div>
+                <div class="flex items-center justify-between p-3.5 bg-white border border-slate-200 rounded-xl shadow-sm">
+                  <div class="flex items-center gap-3">
+                    <i class="far fa-file-pdf text-rose-500 text-lg"></i>
+                    <span class="text-xs font-bold text-slate-700">2. Resume Medis</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <button onclick="previewDoc('Resume Medis')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold text-[10px]">Preview</button>
+                    <input type="checkbox" checked class="doc-verify-checkbox w-4 h-4 text-asabri-blue rounded" onchange="runDocVerificationCheck()">
+                  </div>
+                </div>
+                <div class="flex items-center justify-between p-3.5 bg-white border border-slate-200 rounded-xl shadow-sm">
+                  <div class="flex items-center gap-3">
+                    <i class="far fa-file-pdf text-rose-500 text-lg"></i>
+                    <span class="text-xs font-bold text-slate-700">3. Surat Tagihan</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <button onclick="previewDoc('Surat Tagihan')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold text-[10px]">Preview</button>
+                    <input type="checkbox" checked class="doc-verify-checkbox w-4 h-4 text-asabri-blue rounded" onchange="runDocVerificationCheck()">
+                  </div>
+                </div>
+                <div class="flex items-center justify-between p-3.5 bg-white border border-slate-200 rounded-xl shadow-sm">
+                  <div class="flex items-center gap-3">
+                    <i class="far fa-file-pdf text-rose-500 text-lg"></i>
+                    <span class="text-xs font-bold text-slate-700">4. Penunjang Medis (Laboratorium, Rontgen, dll)</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <button onclick="previewDoc('Penunjang Medis')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold text-[10px]">Preview</button>
+                    <input type="checkbox" checked class="doc-verify-checkbox w-4 h-4 text-asabri-blue rounded" onchange="runDocVerificationCheck()">
+                  </div>
+                </div>
+                <div class="flex items-center justify-between p-3.5 bg-white border border-slate-200 rounded-xl shadow-sm">
+                  <div class="flex items-center gap-3">
+                    <i class="far fa-file-image text-indigo-500 text-lg"></i>
+                    <span class="text-xs font-bold text-slate-700">5. Fotokopi Buku Tabungan</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <button onclick="previewDoc('Fotokopi Buku Tabungan')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold text-[10px]">Preview</button>
+                    <input type="checkbox" checked class="doc-verify-checkbox w-4 h-4 text-asabri-blue rounded" onchange="runDocVerificationCheck()">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Catatan Pending Box -->
+              <div id="pending-notes-container" class="mt-4 space-y-1.5 pt-3 border-t border-slate-150">
+                <label class="block text-xs font-bold text-slate-650">Catatan Pending:</label>
+                <textarea id="pending-notes-input" placeholder="Masukkan dokumen yang kurang..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700" rows="2"></textarea>
+                <span class="text-[10px] text-slate-400 font-medium">(wajib diisi jika ada dokumen ❌)</span>
+              </div>
+
+              <!-- Action Buttons inside Tab 3 -->
+              <div class="flex items-center justify-end gap-2 mt-4 pt-3 border-t border-slate-150">
+                <button type="button" id="btn-pending-doc" onclick="processPendingDoc()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs shadow transition-all disabled:opacity-50 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed">Pending</button>
+                <button type="button" id="btn-teruskan-doc" onclick="processForwardDoc()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow transition-all disabled:opacity-50 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed">Teruskan</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- SP RESTITUSI SECTION (GENERATED AUTOMATICALLY WHEN SP RESTITUSI TERBIT) -->
+          <div id="sp-restitusi-section" class="hidden bg-emerald-50 border border-emerald-150 p-5 rounded-2xl space-y-4">
+            <h4 class="text-xs font-bold text-emerald-950 flex items-center gap-2"><i class="fas fa-file-signature"></i> Surat Perintah (SP) Restitusi Terbit</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-medium">
+              <div><span class="text-slate-500 block text-[9px] uppercase">Nomor SP Restitusi</span> <span id="sp-nomor" class="font-mono font-bold text-slate-800"></span></div>
+              <div><span class="text-slate-500 block text-[9px] uppercase">Nominal Pembayaran</span> <span id="sp-nominal" class="font-extrabold text-emerald-700 text-sm"></span></div>
+              <div><span class="text-slate-500 block text-[9px] uppercase">Rekening Penerima</span> <span id="sp-rekening" class="font-mono font-bold text-slate-800"></span></div>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="previewSPRestitusiDoc()" class="px-4 py-2 bg-white border border-emerald-300 text-emerald-850 font-bold rounded-xl text-xs flex items-center gap-2 transition-all">
+                <i class="fas fa-eye"></i> Preview
+              </button>
+              <button onclick="downloadSPRestitusi()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center gap-2 transition-all">
+                <i class="fas fa-download"></i> Download SP Restitusi
+              </button>
+            </div>
+          </div>
+
+          <!-- REKAP RESTITUSI SECTION -->
+          <div id="rekap-restitusi-section" class="hidden space-y-4 mt-4">
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+              <div class="bg-slate-800 px-5 py-3.5 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-clipboard-list text-white text-sm"></i>
+                  <span class="text-white font-bold text-xs uppercase tracking-wider">📋 Rekap Restitusi</span>
+                </div>
+                <span id="rekap-status-badge" class="px-2.5 py-1 rounded-full text-[10px] font-bold"></span>
+              </div>
+              
+              <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                <!-- Data Penerima & SP -->
+                <div class="space-y-4 border-r border-slate-100 pr-0 md:pr-6">
+                  <div>
+                    <span class="text-slate-400 font-bold uppercase text-[9px] block mb-2">Informasi Surat Perintah</span>
+                    <div class="space-y-2">
+                      <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                        <span class="text-slate-500 font-medium">No. SP Restitusi</span>
+                        <strong id="rekap-no-sp" class="font-mono text-slate-850"></strong>
+                      </div>
+                      <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                        <span class="text-slate-500 font-medium">Tanggal Terbit</span>
+                        <span id="rekap-tgl-terbit" class="font-bold text-slate-700"></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span class="text-slate-400 font-bold uppercase text-[9px] block mb-2">Data Penerima</span>
+                    <div class="space-y-2">
+                      <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                        <span class="text-slate-500 font-medium">RS / Provider</span>
+                        <strong id="rekap-rs" class="text-slate-800 text-right"></strong>
+                      </div>
+                      <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                        <span class="text-slate-500 font-medium">Bank</span>
+                        <span id="rekap-bank" class="font-bold text-slate-700"></span>
+                      </div>
+                      <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                        <span class="text-slate-500 font-medium">No. Rekening</span>
+                        <span id="rekap-norek" class="font-mono font-bold text-slate-800"></span>
+                      </div>
+                      <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                        <span class="text-slate-500 font-medium">Atas Nama</span>
+                        <span id="rekap-an" class="font-bold text-slate-700 text-right"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Rincian Pembayaran & Status -->
+                <div class="space-y-4">
+                  <div>
+                    <span class="text-slate-400 font-bold uppercase text-[9px] block mb-2">Rincian Pembayaran</span>
+                    <div class="space-y-2">
+                      <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                        <span class="text-slate-500 font-medium">Total Diajukan</span>
+                        <span id="rekap-diajukan" class="font-mono font-bold text-slate-700"></span>
+                      </div>
+                      <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                        <span class="text-slate-500 font-medium">Total Disetujui</span>
+                        <strong id="rekap-disetujui" class="font-mono text-emerald-700"></strong>
+                      </div>
+                      <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                        <span class="text-slate-500 font-medium">Selisih</span>
+                        <strong id="rekap-selisih" class="font-mono text-rose-600"></strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bg-slate-50 p-4 rounded-xl border border-slate-150 space-y-1">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Status Pembayaran</span>
+                    <div class="flex items-center gap-2">
+                      <span id="rekap-status-dot" class="w-2.5 h-2.5 rounded-full inline-block"></span>
+                      <strong id="rekap-status-text" class="text-slate-850 font-bold text-xs"></strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="bg-slate-50 border-t border-slate-150 px-5 py-4 flex gap-2.5 flex-wrap">
+                <button onclick="downloadRekapRestitusiDoc()" class="px-4 py-2 bg-slate-800 hover:bg-slate-750 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-sm">
+                  <i class="fas fa-download"></i> Download Rekap PDF
+                </button>
+                <button onclick="previewSPRestitusiDoc()" class="px-4 py-2 bg-white border border-slate-350 text-slate-700 hover:bg-slate-100 font-bold rounded-xl text-xs flex items-center gap-1.5 transition-all">
+                  <i class="fas fa-eye"></i> Preview SP Restitusi
+                </button>
+                <button onclick="downloadSPRestitusi()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-750 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-sm">
+                  <i class="fas fa-file-download"></i> Download SP Restitusi
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL VERIFIKASI ITEM -->
+  <div id="modal-verifikasi" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[300] flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl p-6 space-y-5 animate-fade-in">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h4 class="font-bold text-slate-800 text-sm">Form Verifikasi Kwitansi Item</h4>
+        <button onclick="closeVerifikasiModal()" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase">Jenis Layanan</label>
+          <div id="modal-jenis-layanan" class="font-bold text-slate-700 mt-0.5"></div>
+        </div>
+        <!-- LIMIT CHECK DISPLAY -->
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 space-y-1.5" id="modal-limit-box">
+          <div class="flex justify-between text-slate-650 font-medium"><span>Plafon Limit:</span> <span id="modal-limit-plafon"></span></div>
+          <div class="flex justify-between text-slate-650 font-medium"><span>Sisa Limit:</span> <span id="modal-limit-sisa" class="font-bold text-indigo-750"></span></div>
+          <div id="modal-limit-warning" class="hidden text-rose-600 font-bold flex items-center gap-1 mt-1">
+            <i class="fas fa-exclamation-triangle"></i> Sisa limit tidak mencukupi! Nominal dibatasi.
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase">Nominal Diajukan</label>
+          <div id="modal-nominal-diajukan" class="font-bold text-rose-650 mt-0.5"></div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Nominal Disetujui</label>
+          <input type="number" id="input-disetujui" oninput="calculateSelisihModal()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold outline-none focus:border-asabri-blue">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase">Selisih Bayar</label>
+          <div id="modal-selisih" class="font-extrabold text-amber-700 mt-0.5">Rp 0</div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Alasan Selisih / Catatan</label>
+          <input type="text" id="input-alasan" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs outline-none focus:border-asabri-blue" placeholder="Tulis alasan jika disetujui sebagian/ditolak...">
+        </div>
+      </div>
+      <div class="flex gap-2 pt-2">
+        <button onclick="saveVerifikasiItem(false)" class="flex-1 py-2.5 bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 font-bold rounded-xl text-xs transition-colors">Tolak</button>
+        <button onclick="saveVerifikasiItem(true)" class="flex-1 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs transition-colors">Setujui</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2"></div>
+
+  <script>
+    // System Config & Role Switching
+    if (!localStorage.getItem('currentRole')) {
+      localStorage.setItem('currentRole', 'Staf KANCAB');
+    }
+    const roleSwitcher = document.getElementById("role-switcher");
+    roleSwitcher.value = localStorage.getItem('currentRole');
+
+    function toggleSidebarAccordion(menuId, chevId) {
+      const menu = document.getElementById(menuId);
+      const chev = document.getElementById(chevId);
+      if (!menu || !chev) return;
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+      } else {
+        menu.classList.add('hidden');
+        chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+      }
+    }
+
+    function changeRole() {
+      const currentRole = roleSwitcher.value;
+      localStorage.setItem('currentRole', currentRole);
+      showToast("Role Diubah", `Role saat ini diset sebagai ${currentRole}`, "info");
+      updateRoleButtons();
+    }
+
+    function showToast(title, message, type = "success") {
+      const container = document.getElementById("toast-container");
+      if (!container) return;
+      const toast = document.createElement("div");
+      toast.className = "flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xl w-80 animate-fade-in text-xs";
+      let iconColor = "text-emerald-500";
+      let iconClass = "fa-circle-check";
+      if (type === "warning") {
+        iconColor = "text-amber-500";
+        iconClass = "fa-triangle-exclamation";
+      } else if (type === "info") {
+        iconColor = "text-asabri-blue";
+        iconClass = "fa-circle-info";
+      }
+      toast.innerHTML = `
+        <i class="fas ${iconClass} ${iconColor} text-base mt-0.5"></i>
+        <div class="flex-1">
+          <div class="font-bold text-slate-800">${title}</div>
+          <div class="text-slate-500 mt-0.5">${message}</div>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
+          <i class="fas fa-xmark text-[10px]"></i>
+        </button>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 4000);
+    }
+
+    function formatRupiah(value) {
+      if (value === Infinity) return "Unlimited";
+      return "Rp " + new Intl.NumberFormat('id-ID').format(value);
+    }
+
+    function formatIndoDate(dateStr) {
+      if (!dateStr || dateStr === "-") return '-';
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    // Limit Config
+    const limitJenisLayanan = {
+      'Rawat Inap': Infinity,
+      'Rawat Jalan': Infinity,
+      'Biaya Angkut Darat': 2000000,
+      'Biaya Angkut Laut': 2500000,
+      'Biaya Angkut Udara': 4000000,
+      'Protese/Ortese': 5000000,
+      'Rehabilitasi Medis': 2600000,
+      'Penggantian Gigi Tiruan': 3000000
+    };
+
+    // Chat dummy logs per claim ID
+    const initialChats = {
+      3: [
+        { sender: "ASABRI", time: "20/08/2026 10:00", text: "Analisa klaim dikirim. Selisih Rp 50rb karena vitamin tidak dijamin." },
+        { sender: "RS", time: "20/08/2026 11:00", text: "Dispute: melampirkan resep dokter untuk vitamin tersebut." },
+        { sender: "ASABRI", time: "20/08/2026 14:00", text: "Dokumen diterima, klaim disetujui." }
+      ]
+    };
+
+    // Kwitansi Dummy Items
+    const kwitansiItemsData = {
+      1: [
+        { id: 101, f: "📄", jenis: "Rawat Inap", ket: "Kamar Perawatan Kelas I (5 Hari)", tglKwitansi: "2026-08-09", noKwitansi: "KW-9982", masuk: "2026-08-04", keluar: "2026-08-09", diajukan: 7500000, disetujui: 7500000, status: "Setuju", catatan: "-" },
+        { id: 102, f: "📄", jenis: "Biaya Angkut Darat", ket: "Ambulance RSPAD", tglKwitansi: "2026-08-04", noKwitansi: "KW-9911", masuk: "-", keluar: "-", diajukan: 1500000, disetujui: 1500000, status: "Setuju", catatan: "-" }
+      ],
+      2: [
+        { id: 201, f: "📄", jenis: "Rawat Inap", ket: "Rawat Inap ICU & Tindakan Bedah", tglKwitansi: "2026-08-11", noKwitansi: "KW-1212", masuk: "2026-08-08", keluar: "2026-08-11", diajukan: 8500000, disetujui: 0, status: "Verifikasi", catatan: "-" }
+      ],
+      3: [
+        { id: 301, f: "📄", jenis: "Rehabilitasi Medis", ket: "Fisioterapi Pasca Operasi (5 Sesi)", tglKwitansi: "2026-08-14", noKwitansi: "KW-5541", masuk: "-", keluar: "-", diajukan: 3000000, disetujui: 2600000, status: "Dispute RS", catatan: "Vitamin pendukung fisioterapi Rp 400.000 tidak dijamin" }
+      ],
+      4: [
+        { id: 401, f: "📄", jenis: "Rawat Inap", ket: "Perawatan Intensif Stroke", tglKwitansi: "2026-08-17", noKwitansi: "KW-8080", masuk: "2026-08-10", keluar: "2026-08-17", diajukan: 32000000, disetujui: 32000000, status: "Setuju", catatan: "-" }
+      ],
+      5: [
+        { id: 501, f: "📄", jenis: "Rawat Jalan", ket: "Pemeriksaan IGD & Dokter Spesialis", tglKwitansi: "2026-08-18", noKwitansi: "KW-3341", masuk: "-", keluar: "-", diajukan: 4500000, disetujui: 4500000, status: "Setuju", catatan: "-" }
+      ]
+    };
+
+    // Uncovered items lists per claim
+    const uncoveredItems = {
+      3: ["Vitamin B Kompleks (Rp 400.000)"]
+    };
+
+    // Restitusi Master Data
+    let processData = [
+      { id: 1, status: "Verifikasi Dokumen", jenisKlaim: "Restitusi Perawatan JKK", nomorKlaim: "KLM-RES-2026-0001", nomorKejadian: "KJD/KNC-JKT/08/2026/001", ktpa: "3273120105910003", nrpNip: "311200923211", nama: "Suhardi Prasetyo", pangkat: "SERTU", unor: "TNI-AD (KODAM JAYA)", faskes: "RSPAD Gatot Soebroto", tglPengajuan: "2026-08-10", tglKejadian: "2026-08-09", auditVerifikasi: { user: "-", tanggal: "-" }, auditPersetujuan: { user: "-", tanggal: "-" }, infoPending: { tanggal: "-", user: "-", catatan: "-" }, kejadian: "Kecelakaan lalu lintas ganda saat berangkat dinas", provinsi: "DKI Jakarta", noRestitusi: "-", entitas: "Peserta", penjaminLain: "Jasa Raharja", totalKlaim: 25000000, rekeningRS: "Mandiri 1234567890 a/n RSPAD Gatot Soebroto" },
+      { id: 2, status: "Verifikasi Medis Layer 1", jenisKlaim: "Restitusi Perawatan JKK", nomorKlaim: "KLM-RES-2026-0002", nomorKejadian: "KJD/KNC-BDG/08/2026/002", ktpa: "3578140902940004", nrpNip: "3578140902940004", nama: "Retno Wulandari", pangkat: "SERDA", unor: "TNI-AU (LANUD HUSEIN S.)", faskes: "RS Salamun Bandung", tglPengajuan: "2026-08-12", tglKejadian: "2026-08-11", auditVerifikasi: { user: "Staf Kancab Utama", tanggal: "13/08/2026 09:30" }, auditPersetujuan: { user: "-", tanggal: "-" }, infoPending: { tanggal: "-", user: "-", catatan: "-" }, kejadian: "Luka robek dan patah tulang akibat kecelakaan kerja di hanggar", provinsi: "Jawa Barat", noRestitusi: "-", entitas: "Provider", penjaminLain: "-", totalKlaim: 8500000, rekeningRS: "BRI 9876543210 a/n RS Salamun" },
+      { id: 3, status: "Dispute RS", jenisKlaim: "Restitusi Perawatan JKK", nomorKlaim: "KLM-RES-2026-0003", nomorKejadian: "KJD/KNC-SMG/08/2026/003", ktpa: "3171092801890001", nrpNip: "3171092801890001", nama: "Dwi Cahyono", pangkat: "BRIPDA", unor: "POLRI (POLDA JATENG)", faskes: "RS Bhayangkara Semarang", tglPengajuan: "2026-08-15", tglKejadian: "2026-08-14", auditVerifikasi: { user: "Staf Kancab Utama", tanggal: "16/08/2026 10:15" }, auditPersetujuan: { user: "-", tanggal: "-" }, infoPending: { tanggal: "-", user: "-", catatan: "-" }, kejadian: "Terjatuh saat melakukan patroli keamanan wilayah", provinsi: "Jawa Tengah", noRestitusi: "-", entitas: "Peserta", penjaminLain: "-", totalKlaim: 12000000, rekeningRS: "BNI 5544332211 a/n RS Bhayangkara Semarang" },
+      { id: 4, status: "Approval Kabid", jenisKlaim: "Restitusi Perawatan JKK", nomorKlaim: "KLM-RES-2026-0004", nomorKejadian: "KJD/KNC-JKT/08/2026/004", ktpa: "3374110304620002", nrpNip: "3374110304620002", nama: "Budi Santoso", pangkat: "Penata III/c", unor: "KEMHAN (Pusdatin)", faskes: "RS Pusat Otak Nasional", tglPengajuan: "2026-08-18", tglKejadian: "2026-08-17", auditVerifikasi: { user: "Staf Kancab Utama", tanggal: "18/08/2026 14:00" }, auditPersetujuan: { user: "Verifikator Medis Utama", tanggal: "19/08/2026 11:20" }, auditPersetujuan: { user: "-", tanggal: "-" }, infoPending: { tanggal: "-", user: "-", catatan: "-" }, kejadian: "Stroke mendadak akibat kelelahan kerja ekstrem saat bertugas", provinsi: "DKI Jakarta", noRestitusi: "-", entitas: "Provider", penjaminLain: "-", totalKlaim: 32000000, rekeningRS: "DKI 6655443322 a/n RS Pusat Otak Nasional" },
+      { id: 5, status: "SP Restitusi Terbit", jenisKlaim: "Restitusi Perawatan JKK", nomorKlaim: "KLM-RES-2026-0005", nomorKejadian: "KJD/KNC-JKT/08/2026/005", ktpa: "3273120105910088", nrpNip: "3273120105910088", nama: "Eka Wijaya", pangkat: "KOPDA", unor: "TNI-AL (MABESAL)", faskes: "RSAL Mintohardjo", tglPengajuan: "2026-08-19", tglKejadian: "2026-08-18", auditVerifikasi: { user: "Staf Kancab Utama", tanggal: "19/08/2026 09:00" }, auditPersetujuan: { user: "Verifikator Medis Utama", tanggal: "19/08/2026 16:30" }, infoPending: { tanggal: "-", user: "-", catatan: "-" }, kejadian: "Kecelakaan saat latihan simulasi penyelamatan laut", provinsi: "DKI Jakarta", noRestitusi: "RES/KNC-JKT/08/2026/0005", entitas: "Peserta", penjaminLain: "-", totalKlaim: 4500000, rekeningRS: "Mandiri 1122334455 a/n RSAL Mintohardjo" }
+    ];
+
+    let currentOpenId = null;
+    let selectedKwitansiId = null;
+
+    // COB Logics
+    function hitungCOB(totalKlaim, penjaminLain) {
+      if (penjaminLain === 'Jasa Raharja') {
+        const plafonJR = 20000000;
+        const ditanggungJR = Math.min(totalKlaim, plafonJR);
+        const selisihASABRI = totalKlaim - ditanggungJR;
+        return { ditanggungJR, selisihASABRI };
+      }
+      return { ditanggungJR: 0, selisihASABRI: totalKlaim };
+    }
+
+    // Limit checking
+    function cekSisaLimit(jenisLayanan, nominalDiajukan, claimId) {
+      // Sum up disetujui items of this jenis on the current claim
+      const kwitansiList = kwitansiItemsData[claimId] || [];
+      const sudahDisetujui = kwitansiList
+        .filter(item => item.jenis === jenisLayanan && item.id !== selectedKwitansiId)
+        .reduce((sum, item) => sum + (item.disetujui || 0), 0);
+
+      const limit = limitJenisLayanan[jenisLayanan];
+      const sisaLimit = limit - sudahDisetujui;
+
+      return sisaLimit;
+    }
+
+    function applyFilters() {
+      const status = document.getElementById("filter-status").value;
+      const entitas = document.getElementById("filter-entitas").value;
+
+      let filtered = processData;
+
+      if (status !== "Semua") {
+        filtered = filtered.filter(item => item.status === status);
+      }
+      if (entitas !== "Semua") {
+        filtered = filtered.filter(item => item.entitas === entitas);
+      }
+
+      renderTable(filtered);
+    }
+
+    function getBadgeClass(status) {
+      switch (status) {
+        case "Verifikasi Dokumen": return "bg-amber-50 text-amber-700 border border-amber-200";
+        case "Verifikasi Medis Layer 1": return "bg-orange-50 text-orange-650 border border-orange-200";
+        case "Dispute RS": return "bg-pink-50 text-pink-700 border border-pink-200";
+        case "Verifikasi Layer 2": return "bg-sky-50 text-sky-700 border border-sky-200";
+        case "Approval Kabid": return "bg-blue-50 text-blue-700 border border-blue-200";
+        case "SP Restitusi Terbit": return "bg-emerald-50 text-emerald-700 border border-emerald-250";
+        case "Keuangan": return "bg-purple-50 text-purple-700 border border-purple-250";
+        case "Selesai": return "bg-green-100 text-green-800 border border-green-300";
+        case "Pending": return "bg-slate-100 text-slate-500 border border-slate-300";
+        case "Ditolak": return "bg-rose-900 text-rose-100 border border-rose-800";
+        default: return "bg-slate-100 text-slate-650";
+      }
+    }
+
+    function renderTable(list) {
+      const tbody = document.getElementById("monitoring-tbody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      document.getElementById("data-count-badge").innerText = `${list.length} Proses`;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="19" class="py-8 text-center text-slate-400 italic">Tidak ada data proses restitusi</td></tr>`;
+        return;
+      }
+
+      list.forEach(item => {
+        const badge = getBadgeClass(item.status);
+        const tr = document.createElement("tr");
+        tr.className = `hover:bg-slate-50/50 transition-colors cursor-pointer ${currentOpenId === item.id ? 'bg-indigo-50/40' : ''}`;
+        tr.onclick = (e) => {
+          if (e.target.tagName !== "BUTTON" && e.target.tagName !== "INPUT") {
+            openDetail(item.id);
+          }
+        };
+
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 text-center"><i class="fas fa-paperclip text-slate-400"></i></td>
+          <td class="py-2.5 px-3 text-center"><button class="px-2 py-0.5 bg-asabri-blue text-white rounded text-[9px] hover:bg-asabri-blueDark" onclick="openDetail(${item.id})">Lihat</button></td>
+          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full font-bold text-[9px] ${badge}">${item.status}</span></td>
+          <td class="py-2.5 px-3 font-semibold">${item.jenisKlaim}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-asabri-blue">${item.nomorKlaim}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${item.ktpa}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${item.nrpNip}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-700">${item.nama}</td>
+          <td class="py-2.5 px-3 text-slate-500">${item.pangkat}</td>
+          <td class="py-2.5 px-3 text-slate-500">${item.unor}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-700">${item.faskes}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.tglPengajuan)}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.tglKejadian)}</td>
+          <td class="py-2.5 px-3 text-slate-600 font-medium">${item.auditVerifikasi.user} (${item.auditVerifikasi.tanggal})</td>
+          <td class="py-2.5 px-3 text-slate-600 font-medium">${item.auditPersetujuan.user} (${item.auditPersetujuan.tanggal})</td>
+          <td class="py-2.5 px-3 text-slate-600 font-medium">${item.infoPending.catatan !== "-" ? `${item.infoPending.catatan} (${item.infoPending.user})` : "-"}</td>
+          <td class="py-2.5 px-3 text-slate-700 font-bold leading-tight">${item.kejadian}</td>
+          <td class="py-2.5 px-3 text-slate-500">${item.provinsi}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-slate-650">${item.noRestitusi}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Stepper styling mapper
+    function updateStepper(status) {
+      const steps = [
+        { id: 1, label: "Pengajuan" },
+        { id: 2, label: "Verifikasi Dokumen" },
+        { id: 3, label: "Verifikasi Medis Layer 1" },
+        { id: 4, label: "Review RS" },
+        { id: 5, label: "Verifikasi Layer 2" },
+        { id: 6, label: "Approval Kabid" },
+        { id: 7, label: "Keuangan" }
+      ];
+
+      let activeStepIndex = 1;
+      let isPendingState = false;
+      if (status === "Verifikasi Dokumen") activeStepIndex = 2;
+      else if (status === "Dokumen Terpending") {
+        activeStepIndex = 2;
+        isPendingState = true;
+      }
+      else if (status === "Verifikasi Medis Layer 1") activeStepIndex = 3;
+      else if (status === "Dispute RS") activeStepIndex = 4;
+      else if (status === "Verifikasi Layer 2") activeStepIndex = 5;
+      else if (status === "Approval Kabid") activeStepIndex = 6;
+      else if (status === "SP Restitusi Terbit" || status === "Keuangan") activeStepIndex = 7;
+      else if (status === "Selesai") activeStepIndex = 7;
+
+      for (let i = 1; i <= 7; i++) {
+        const stepEl = document.getElementById(`step-${i}`);
+        const bubble = stepEl.querySelector("div");
+        const label = stepEl.querySelector("div:nth-child(2)");
+        const bar = stepEl.querySelector(".absolute");
+
+        if (i < activeStepIndex) {
+          bubble.className = "w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs z-10 shadow-md";
+          label.className = "text-[9px] font-bold text-emerald-700 mt-2 text-center";
+          if (bar) bar.className = "absolute top-4 left-1/2 w-full h-1 bg-emerald-500 -z-0";
+        } else if (i === activeStepIndex) {
+          if (isPendingState) {
+            bubble.className = "w-8 h-8 rounded-full bg-amber-400 text-white flex items-center justify-center font-bold text-xs z-10 shadow-lg scale-110 animate-pulse";
+            label.className = "text-[9px] font-extrabold text-amber-500 mt-2 text-center";
+          } else {
+            bubble.className = "w-8 h-8 rounded-full bg-asabri-blue text-white flex items-center justify-center font-bold text-xs z-10 shadow-lg scale-110";
+            label.className = "text-[9px] font-extrabold text-asabri-blue mt-2 text-center";
+          }
+          if (bar) bar.className = "absolute top-4 left-1/2 w-full h-1 bg-slate-250 -z-0";
+        } else {
+          bubble.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs z-10";
+          label.className = "text-[9px] font-bold text-slate-400 mt-2 text-center";
+          if (bar) bar.className = "absolute top-4 left-1/2 w-full h-1 bg-slate-250 -z-0";
+        }
+      }
+    }
+
+    function openDetail(id) {
+      currentOpenId = id;
+      const claim = processData.find(item => item.id === id);
+      if (!claim) return;
+
+      const modal = document.getElementById("detail-modal");
+      const drawer = document.getElementById("detail-section");
+
+      // Reset checkboxes to checked and populate pending notes
+      const checkboxes = document.querySelectorAll('#tab-dokumen .doc-verify-checkbox');
+      checkboxes.forEach(cb => cb.checked = true);
+      const noteInput = document.getElementById("pending-notes-input");
+      if (noteInput) {
+        noteInput.value = claim.catatanPending || "";
+      }
+      setTimeout(runDocVerificationCheck, 50);
+
+      modal.classList.remove("hidden");
+      setTimeout(() => {
+        drawer.classList.remove("translate-x-full");
+      }, 50);
+
+      document.getElementById("detail-title").innerText = `Detail Restitusi: ${claim.nama}`;
+      document.getElementById("detail-subtitle").innerText = `Nomor Klaim: ${claim.nomorKlaim} | Nomor Kejadian: ${claim.nomorKejadian}`;
+
+      // Tab 1 details
+      document.getElementById("dt-no-kejadian").innerText = claim.nomorKejadian;
+      document.getElementById("dt-nama").innerText = claim.nama;
+      document.getElementById("dt-nrp").innerText = claim.nrpNip;
+      document.getElementById("dt-pangkat").innerText = claim.pangkat;
+      document.getElementById("dt-unor").innerText = claim.unor;
+      document.getElementById("dt-tgl-kejadian").innerText = formatIndoDate(claim.tglKejadian);
+      document.getElementById("dt-provinsi").innerText = claim.provinsi;
+      document.getElementById("dt-kejadian").innerText = claim.kejadian;
+      document.getElementById("dt-faskes").innerText = claim.faskes;
+      document.getElementById("dt-rekening").innerText = claim.rekeningRS;
+      document.getElementById("dt-total-klaim").innerText = formatRupiah(claim.totalKlaim);
+      document.getElementById("dt-cob-label").innerText = claim.penjaminLain;
+
+      // COB block calculation
+      const cobSec = document.getElementById("cob-section");
+      if (claim.penjaminLain !== "-") {
+        cobSec.classList.remove("hidden");
+        document.getElementById("cob-penjamin").innerText = claim.penjaminLain;
+        const cobRes = hitungCOB(claim.totalKlaim, claim.penjaminLain);
+        document.getElementById("cob-ditanggung").innerText = formatRupiah(cobRes.ditanggungJR);
+        document.getElementById("cob-selisih-asabri").innerText = formatRupiah(cobRes.selisihASABRI);
+      } else {
+        cobSec.classList.add("hidden");
+      }
+
+      // Render Tab 2 Kwitansi
+      renderKwitansiTable(id);
+
+      // Render Uncovered Items list
+      renderUncoveredItems(id);
+
+      // Render Review RS radios
+      if (claim.status === "Dispute RS") {
+        document.getElementById("rs-dispute").checked = true;
+        document.getElementById("catatan-rs").value = "RS melampirkan resep penunjang fisioterapi.";
+      } else {
+        document.getElementById("rs-agree").checked = true;
+        document.getElementById("catatan-rs").value = "";
+      }
+
+      // Render Chat Timeline
+      renderChatTimeline(id);
+
+      // SP Restitusi Section
+      const spSection = document.getElementById("sp-restitusi-section");
+      const rekapSection = document.getElementById("rekap-restitusi-section");
+      
+      const showRekap = claim.status === "SP Restitusi Terbit" || claim.status === "Keuangan" || claim.status === "Selesai";
+      
+      if (claim.status === "SP Restitusi Terbit" || claim.status === "Selesai" || claim.status === "Keuangan") {
+        spSection.classList.remove("hidden");
+        const month = new Date().getMonth() + 1;
+        const year = new Date().getFullYear();
+        const branchCode = claim.nomorKejadian.includes("JKT") ? "KNC-JKT" : "KNC-BDG";
+        const computedSPNum = claim.noRestitusi !== "-" ? claim.noRestitusi : `RES/${branchCode}/${String(month).padStart(2,'0')}/${year}/0189`;
+        
+        document.getElementById("sp-nomor").innerText = computedSPNum;
+        
+        // Sum approved items
+        const kwitansiList = kwitansiItemsData[id] || [];
+        const totalDiajukan = kwitansiList.reduce((sum, item) => sum + (item.diajukan || 0), 0);
+        const totalApproved = kwitansiList.reduce((sum, item) => sum + (item.disetujui || 0), 0);
+        const totalSelisih = totalDiajukan - totalApproved;
+        
+        document.getElementById("sp-nominal").innerText = formatRupiah(totalApproved);
+        document.getElementById("sp-rekening").innerText = claim.rekeningRS;
+
+        // Render Rekap Restitusi
+        if (rekapSection) {
+          rekapSection.classList.remove("hidden");
+          
+          // Populate fields
+          document.getElementById("rekap-no-sp").innerText = computedSPNum;
+          document.getElementById("rekap-tgl-terbit").innerText = formatIndoDate(new Date());
+          document.getElementById("rekap-rs").innerText = claim.faskes;
+          
+          // Parse bank, norek, an from rekeningRS
+          // Format sample: "Mandiri 1234567890 a/n RSPAD Gatot Soebroto"
+          let bankName = "Mandiri";
+          let norek = "1234567890";
+          let an = claim.faskes;
+          if (claim.rekeningRS) {
+            const parts = claim.rekeningRS.split(" a/n ");
+            if (parts.length > 1) an = parts[1];
+            const leftParts = parts[0].split(" ");
+            if (leftParts.length > 0) bankName = leftParts[0];
+            if (leftParts.length > 1) norek = leftParts.slice(1).join(" ");
+          }
+          
+          document.getElementById("rekap-bank").innerText = bankName;
+          document.getElementById("rekap-norek").innerText = norek;
+          document.getElementById("rekap-an").innerText = an;
+          
+          document.getElementById("rekap-diajukan").innerText = formatRupiah(totalDiajukan);
+          document.getElementById("rekap-disetujui").innerText = formatRupiah(totalApproved);
+          document.getElementById("rekap-selisih").innerText = formatRupiah(totalSelisih);
+          
+          // Status Pembayaran & badges mapping
+          const badgeEl = document.getElementById("rekap-status-badge");
+          const dotEl = document.getElementById("rekap-status-dot");
+          const textEl = document.getElementById("rekap-status-text");
+          
+          if (claim.status === "SP Restitusi Terbit") {
+            badgeEl.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1.5";
+            dotEl.className = "w-2.5 h-2.5 rounded-full bg-amber-500 inline-block";
+            textEl.innerText = "Menunggu Keuangan 🟡";
+          } else if (claim.status === "Keuangan") {
+            badgeEl.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-300 flex items-center gap-1.5";
+            dotEl.className = "w-2.5 h-2.5 rounded-full bg-blue-500 inline-block";
+            textEl.innerText = "Sedang Diproses 🔵";
+          } else if (claim.status === "Selesai") {
+            badgeEl.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1.5";
+            dotEl.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block";
+            textEl.innerText = "Selesai Dibayar 🟢";
+          }
+        }
+      } else {
+        spSection.classList.add("hidden");
+        if (rekapSection) rekapSection.classList.add("hidden");
+      }
+
+      // Stepper
+      updateStepper(claim.status);
+
+      // Switch to Tab 1 by default
+      switchTab('tab-data-klaim');
+
+      // Update button activation states
+      updateRoleButtons();
+
+      // Highlight selected row in table
+      renderTable(processData);
+    }
+
+    function hideDetail() {
+      const modal = document.getElementById("detail-modal");
+      const drawer = document.getElementById("detail-section");
+      drawer.classList.add("translate-x-full");
+      setTimeout(() => {
+        modal.classList.add("hidden");
+      }, 300);
+      currentOpenId = null;
+      renderTable(processData);
+    }
+
+    function switchTab(tabId) {
+      const tabs = ['tab-data-klaim', 'tab-verif-kwitansi', 'tab-dokumen'];
+      tabs.forEach(t => {
+        document.getElementById(t).classList.add("hidden");
+        document.getElementById(`btn-${t}`).className = "py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all";
+      });
+
+      document.getElementById(tabId).classList.remove("hidden");
+      document.getElementById(`btn-${tabId}`).className = "py-3 px-4 text-xs font-bold border-b-2 border-asabri-blue text-asabri-blue transition-all";
+    }
+
+    // Role-based button restriction logic
+    function updateRoleButtons() {
+      const currentRole = localStorage.getItem('currentRole') || 'Staf KANCAB';
+      
+      const btnVerifDok = document.getElementById("btn-verif-dok");
+      const btnVerifMedis1 = document.getElementById("btn-verif-medis-1");
+      const btnVerifMedis2 = document.getElementById("btn-verif-medis-2");
+      const btnApprKabid = document.getElementById("btn-appr-kabid");
+      const btnGenerateAnalisa = document.getElementById("btn-generate-analisa");
+
+      // Reset
+      btnVerifDok.disabled = true;
+      btnVerifMedis1.disabled = true;
+      btnVerifMedis2.disabled = true;
+      btnApprKabid.disabled = true;
+      if (btnGenerateAnalisa) btnGenerateAnalisa.disabled = true;
+
+      // Enable based on role
+      if (currentRole === 'Staf KANCAB') {
+        btnVerifDok.disabled = false;
+      } else if (currentRole === 'Verifikator Medis') {
+        btnVerifMedis1.disabled = false;
+        btnVerifMedis2.disabled = false;
+        if (btnGenerateAnalisa) btnGenerateAnalisa.disabled = false;
+      } else if (currentRole === 'Kabid/Kadiv Layanan') {
+        btnApprKabid.disabled = false;
+    }
+
+    function runDocVerificationCheck() {
+      const checkboxes = document.querySelectorAll('#tab-dokumen .doc-verify-checkbox');
+      const allChecked = checkboxes.length > 0 && Array.from(checkboxes).every(cb => cb.checked);
+      
+      const btnPending = document.getElementById('btn-pending-doc');
+      const btnTeruskan = document.getElementById('btn-teruskan-doc');
+      
+      if (btnPending && btnTeruskan) {
+        if (allChecked) {
+          btnTeruskan.disabled = false;
+          btnTeruskan.classList.remove('opacity-50', 'cursor-not-allowed');
+          btnPending.disabled = true;
+          btnPending.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+          btnTeruskan.disabled = true;
+          btnTeruskan.classList.add('opacity-50', 'cursor-not-allowed');
+          btnPending.disabled = false;
+          btnPending.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+      }
+    }
+
+    function processPendingDoc() {
+      if (!currentOpenId) return;
+      const noteInput = document.getElementById("pending-notes-input");
+      const note = noteInput ? noteInput.value.trim() : "";
+      if (!note) {
+        alert("Catatan Pending wajib diisi untuk melakukan pending dokumen!");
+        if (noteInput) noteInput.focus();
+        return;
+      }
+      
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (claim) {
+        claim.status = "Dokumen Terpending";
+        claim.catatanPending = note;
+        if (!claim.logs) claim.logs = [];
+        claim.logs.push(`Dokumen Terpending oleh Staf KANCAB: ${note} — ` + new Date().toLocaleString('id-ID'));
+        showToast("Dokumen Terpending", "Status diubah ke Dokumen Terpending.", "warning");
+        hideDetail();
+        renderTable(processData);
+        if (typeof updateHeaderNotifications === "function") updateHeaderNotifications();
+      }
+    }
+
+    function processForwardDoc() {
+      if (!currentOpenId) return;
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (claim) {
+        claim.status = "Verifikasi Medis Layer 1";
+        if (!claim.logs) claim.logs = [];
+        claim.logs.push(`Verifikasi Dokumen selesai oleh Staf KANCAB — ` + new Date().toLocaleString('id-ID'));
+        showToast("Verifikasi Dokumen", "Dokumen terverifikasi, diteruskan ke Verifikasi Medis L1.", "success");
+        hideDetail();
+        renderTable(processData);
+        if (typeof updateHeaderNotifications === "function") updateHeaderNotifications();
+      }
+    }
+
+    // Verify Action: Staf KANCAB Verifikasi Dokumen
+    function processVerifyDokumen() {
+      if (!currentOpenId) {
+        showToast("Error", "Pilih data restitusi terlebih dahulu dari tabel.", "warning");
+        return;
+      }
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (claim.status !== "Verifikasi Dokumen") {
+        showToast("Peringatan", "Status saat ini bukan Verifikasi Dokumen.", "warning");
+        return;
+      }
+
+      claim.status = "Verifikasi Medis Layer 1";
+      claim.auditVerifikasi = { user: "Staf Kancab Utama", tanggal: new Date().toLocaleDateString('id-ID') + " " + new Date().toLocaleTimeString('id-ID').slice(0, 5) };
+      showToast("Verifikasi Sukses", "Dokumen berhasil diverifikasi, diteruskan ke Verifikator Medis.", "success");
+      openDetail(currentOpenId);
+    }
+
+    // Verify Action: Verifikator Medis Layer 1 / 2
+    function processVerifyMedis(layer) {
+      if (!currentOpenId) {
+        showToast("Error", "Pilih data restitusi terlebih dahulu.", "warning");
+        return;
+      }
+      const claim = processData.find(item => item.id === currentOpenId);
+      
+      if (layer === 1) {
+        if (claim.status !== "Verifikasi Medis Layer 1" && claim.status !== "Dispute RS") {
+          showToast("Peringatan", "Klaim tidak dalam tahap Verifikasi Medis L1 / Dispute RS.", "warning");
+          return;
+        }
+        claim.status = "Verifikasi Layer 2";
+        showToast("Verifikasi L1 Berhasil", "Klaim medis berhasil diverifikasi, diteruskan ke Verifikasi Layer 2.", "success");
+      } else if (layer === 2) {
+        if (claim.status !== "Verifikasi Layer 2") {
+          showToast("Peringatan", "Klaim tidak dalam tahap Verifikasi L2.", "warning");
+          return;
+        }
+        claim.status = "Approval Kabid";
+        showToast("Verifikasi L2 Berhasil", "Diteruskan ke Kabid/Kadiv Layanan untuk persetujuan akhir.", "success");
+      }
+      openDetail(currentOpenId);
+    }
+
+    // Verify Action: Kabid/Kadiv Approval SP Restitusi
+    function processApprovalKabid() {
+      if (!currentOpenId) {
+        showToast("Error", "Pilih data restitusi terlebih dahulu.", "warning");
+        return;
+      }
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (claim.status !== "Approval Kabid") {
+        showToast("Peringatan", "Status klaim saat ini bukan Approval Kabid.", "warning");
+        return;
+      }
+
+      const branchCode = claim.nomorKejadian.includes("JKT") ? "KNC-JKT" : "KNC-BDG";
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      
+      claim.status = "SP Restitusi Terbit";
+      claim.noRestitusi = `RES/${branchCode}/${String(month).padStart(2,'0')}/${year}/0189`;
+      claim.auditPersetujuan = { user: "Kabid Layanan Utama", tanggal: new Date().toLocaleDateString('id-ID') + " " + new Date().toLocaleTimeString('id-ID').slice(0, 5) };
+      
+      showToast("Persetujuan Berhasil", "SP Restitusi diterbitkan secara otomatis.", "success");
+      openDetail(currentOpenId);
+    }
+
+    function batalProses() {
+      if (!currentOpenId) {
+        showToast("Error", "Pilih data restitusi terlebih dahulu.", "warning");
+        return;
+      }
+      const reason = prompt("Masukkan alasan pembatalan/penolakan (Wajib):");
+      if (reason === null) return;
+      if (!reason.trim()) {
+        alert('Silakan isi alasan terlebih dahulu.');
+        return;
+      }
+      const claim = processData.find(item => item.id === currentOpenId);
+      claim.status = "Pending";
+      claim.infoPending = { tanggal: new Date().toLocaleDateString('id-ID'), user: "Staf Kancab", catatan: reason };
+      if (!claim.logs) claim.logs = [];
+      claim.logs.push(`Dibatalkan oleh Operator — Alasan: ${reason} — ` + new Date().toLocaleString('id-ID'));
+      showToast("Proses Dibatalkan", "Status klaim diubah menjadi Pending.", "warning");
+      openDetail(currentOpenId);
+    }
+
+    // Kwitansi Table Render
+    function renderKwitansiTable(claimId) {
+      const tbody = document.getElementById("kwitansi-tbody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      const items = kwitansiItemsData[claimId] || [];
+      if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" class="py-4 text-center text-slate-400 italic">Tidak ada kwitansi terlampir</td></tr>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const selisih = item.diajukan - item.disetujui;
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50/50 border-b border-slate-100";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 text-center">${item.f}</td>
+          <td class="py-2.5 px-3 font-bold text-asabri-blue">${item.jenis}</td>
+          <td class="py-2.5 px-3">${item.ket}</td>
+          <td class="py-2.5 px-3 font-mono">No: ${item.noKwitansi}<br>Tgl: ${formatIndoDate(item.tglKwitansi)}</td>
+          <td class="py-2.5 px-3 font-mono">In: ${formatIndoDate(item.masuk)}<br>Out: ${formatIndoDate(item.keluar)}</td>
+          <td class="py-2.5 px-3 font-bold text-rose-600">${formatRupiah(item.diajukan)}</td>
+          <td class="py-2.5 px-3 font-bold text-emerald-700">${formatRupiah(item.disetujui)}</td>
+          <td class="py-2.5 px-3 font-bold text-amber-700">${formatRupiah(selisih)}</td>
+          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded font-bold text-[9px] bg-slate-100 text-slate-650 border border-slate-200">${item.status}</span></td>
+          <td class="py-2.5 px-3 text-slate-500">${item.catatan}</td>
+          <td class="py-2.5 px-3 text-center">
+            <button onclick="openVerifikasiModal(${item.id})" class="px-2.5 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[9px]">Verifikasi Item</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Update Analisa Klaim values
+      calculateTotalAnalisa(claimId);
+    }
+
+    function calculateTotalAnalisa(claimId) {
+      const items = kwitansiItemsData[claimId] || [];
+      const totalDiajukan = items.reduce((sum, item) => sum + item.diajukan, 0);
+      const totalDisetujui = items.reduce((sum, item) => sum + item.disetujui, 0);
+      const selisih = totalDiajukan - totalDisetujui;
+
+      document.getElementById("analisa-diajukan").innerText = formatRupiah(totalDiajukan);
+      document.getElementById("analisa-disetujui").innerText = formatRupiah(totalDisetujui);
+      document.getElementById("analisa-selisih").innerText = formatRupiah(selisih);
+    }
+
+    // Modal Verifikasi Item
+    function openVerifikasiModal(itemId) {
+      selectedKwitansiId = itemId;
+      const items = kwitansiItemsData[currentOpenId] || [];
+      const item = items.find(k => k.id === itemId);
+      if (!item) return;
+
+      document.getElementById("modal-verifikasi").classList.remove("hidden");
+      document.getElementById("modal-jenis-layanan").innerText = item.jenis;
+      document.getElementById("modal-nominal-diajukan").innerText = formatRupiah(item.diajukan);
+      document.getElementById("input-disetujui").value = item.disetujui === 0 ? item.diajukan : item.disetujui;
+      document.getElementById("input-alasan").value = item.catatan !== "-" ? item.catatan : "";
+
+      // Limit checking
+      const sisaLimit = cekSisaLimit(item.jenis, item.diajukan, currentOpenId);
+      const limit = limitJenisLayanan[item.jenis];
+
+      document.getElementById("modal-limit-plafon").innerText = formatRupiah(limit);
+      document.getElementById("modal-limit-sisa").innerText = formatRupiah(sisaLimit);
+
+      calculateSelisihModal();
+    }
+
+    function closeVerifikasiModal() {
+      document.getElementById("modal-verifikasi").classList.add("hidden");
+      selectedKwitansiId = null;
+    }
+
+    function calculateSelisihModal() {
+      const diajukanText = document.getElementById("modal-nominal-diajukan").innerText.replace(/[^0-9]/g, "");
+      const diajukan = parseInt(diajukanText) || 0;
+      const disetujuiVal = parseInt(document.getElementById("input-disetujui").value) || 0;
+      
+      const itemJenis = document.getElementById("modal-jenis-layanan").innerText;
+      const sisaLimit = cekSisaLimit(itemJenis, diajukan, currentOpenId);
+
+      // Warning show
+      const warningBox = document.getElementById("modal-limit-warning");
+      if (disetujuiVal > sisaLimit) {
+        warningBox.classList.remove("hidden");
+      } else {
+        warningBox.classList.add("hidden");
+      }
+
+      const selisih = Math.max(0, diajukan - disetujuiVal);
+      document.getElementById("modal-selisih").innerText = formatRupiah(selisih);
+    }
+
+    function saveVerifikasiItem(approved) {
+      const items = kwitansiItemsData[currentOpenId] || [];
+      const item = items.find(k => k.id === selectedKwitansiId);
+      if (!item) return;
+
+      const disetujuiVal = approved ? (parseInt(document.getElementById("input-disetujui").value) || 0) : 0;
+      const alasan = document.getElementById("input-alasan").value || (approved ? "-" : "Ditolak oleh verifikator");
+
+      // Sisa limit constraint enforcement
+      const sisaLimit = cekSisaLimit(item.jenis, item.diajukan, currentOpenId);
+      if (disetujuiVal > sisaLimit) {
+        showToast("Melebihi Limit", `Plafon maksimal disetujui disesuaikan ke sisa limit: ${formatRupiah(sisaLimit)}`, "warning");
+        item.disetujui = sisaLimit;
+      } else {
+        item.disetujui = disetujuiVal;
+      }
+
+      item.status = approved ? "Setuju" : "Ditolak";
+      item.catatan = alasan;
+
+      showToast("Berhasil", "Verifikasi rincian kwitansi disimpan.", "success");
+      closeVerifikasiModal();
+      renderKwitansiTable(currentOpenId);
+    }
+
+    // Uncovered items rendering
+    function renderUncoveredItems(claimId) {
+      const listEl = document.getElementById("item-tidak-dijamin-list");
+      listEl.innerHTML = "";
+      const items = uncoveredItems[claimId] || [];
+
+      if (items.length === 0) {
+        listEl.innerHTML = `<div class="text-[10px] text-slate-400 italic">Tidak ada item tidak dijamin</div>`;
+        return;
+      }
+
+      items.forEach((item, idx) => {
+        const div = document.createElement("div");
+        div.className = "flex items-center justify-between bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-[10px]";
+        div.innerHTML = `
+          <span>${item}</span>
+          <button onclick="hapusItemTidakDijamin(${claimId}, ${idx})" class="text-rose-500 hover:text-rose-700"><i class="fas fa-trash"></i></button>
+        `;
+        listEl.appendChild(div);
+      });
+    }
+
+    function tambahItemTidakDijamin() {
+      const text = prompt("Masukkan nama obat/tindakan yang tidak dijamin beserta biayanya:");
+      if (!text) return;
+      if (!uncoveredItems[currentOpenId]) {
+        uncoveredItems[currentOpenId] = [];
+      }
+      uncoveredItems[currentOpenId].push(text);
+      renderUncoveredItems(currentOpenId);
+      showToast("Ditambahkan", "Item tidak dijamin ditambahkan.", "info");
+    }
+
+    function hapusItemTidakDijamin(claimId, idx) {
+      if (uncoveredItems[claimId]) {
+        uncoveredItems[claimId].splice(idx, 1);
+        renderUncoveredItems(claimId);
+        showToast("Dihapus", "Item tidak dijamin dihapus.", "warning");
+      }
+    }
+
+    function previewAnalisaDoc() {
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (!claim) return;
+      const data = {
+        nomorKlaim: claim.nomorKlaim,
+        tanggal: formatIndoDate(new Date()),
+        namaRS: claim.faskes,
+        namaPeserta: claim.nama,
+        nrp: claim.nrpNip,
+        rincian: [
+          { jenisLayanan: 'Rawat Jalan JKK', diajukan: 'Rp 850.000', disetujui: 'Rp 850.000', selisih: 'Rp 0' },
+          { jenisLayanan: 'Biaya Angkut Darat', diajukan: 'Rp 2.500.000', disetujui: 'Rp 2.000.000', selisih: 'Rp 500.000' }
+        ],
+        totalDiajukan: 'Rp 3.350.000',
+        totalDisetujui: 'Rp 2.850.000',
+        totalSelisih: 'Rp 500.000',
+        itemTidakDijamin: [
+          { nama: 'Biaya Angkut Darat', alasan: 'Dibatasi limit plafon JJK Darat maksimal Rp 2.000.000' }
+        ],
+        namaVerifikator: 'Verifikator Medis Utama'
+      };
+      previewAnalisaKlaim(data);
+    }
+
+    function generateAnalisaDoc() {
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (!claim) return;
+      const data = {
+        nomorKlaim: claim.nomorKlaim,
+        tanggal: formatIndoDate(new Date()),
+        namaRS: claim.faskes,
+        namaPeserta: claim.nama,
+        nrp: claim.nrpNip,
+        rincian: [
+          { jenisLayanan: 'Rawat Jalan JKK', diajukan: 'Rp 850.000', disetujui: 'Rp 850.000', selisih: 'Rp 0' },
+          { jenisLayanan: 'Biaya Angkut Darat', diajukan: 'Rp 2.500.000', disetujui: 'Rp 2.000.000', selisih: 'Rp 500.000' }
+        ],
+        totalDiajukan: 'Rp 3.350.000',
+        totalDisetujui: 'Rp 2.850.000',
+        totalSelisih: 'Rp 500.000',
+        itemTidakDijamin: [
+          { nama: 'Biaya Angkut Darat', alasan: 'Dibatasi limit plafon JJK Darat maksimal Rp 2.000.000' }
+        ],
+        namaVerifikator: 'Verifikator Medis Utama'
+      };
+      downloadAnalisaKlaim(data);
+    }
+
+    function previewSPRestitusiDoc() {
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (!claim) return;
+      const data = {
+        nomorSP: claim.noRestitusi || `RES-2026-092`,
+        tanggal: formatIndoDate(new Date()),
+        nomorKlaim: claim.nomorKlaim,
+        namaRS: claim.faskes,
+        bank: 'Bank Mandiri',
+        noRekening: '132-00-1923-112',
+        atasNama: 'Faskes Dustira',
+        totalDiajukan: 'Rp 3.350.000',
+        totalDisetujui: 'Rp 2.850.000',
+        selisih: 'Rp 500.000',
+        alasanSelisih: 'Melebihi limit plafon biaya angkut darat',
+        namaKabid: 'Kabid Layanan Kancab'
+      };
+      previewSPRestitusi(data);
+    }
+
+    function downloadSPRestitusi() {
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (!claim) return;
+      const data = {
+        nomorSP: claim.noRestitusi || `RES-2026-092`,
+        tanggal: formatIndoDate(new Date()),
+        nomorKlaim: claim.nomorKlaim,
+        namaRS: claim.faskes,
+        bank: 'Bank Mandiri',
+        noRekening: '132-00-1923-112',
+        atasNama: 'Faskes Dustira',
+        totalDiajukan: 'Rp 3.350.000',
+        totalDisetujui: 'Rp 2.850.000',
+        selisih: 'Rp 500.000',
+        alasanSelisih: 'Melebihi limit plafon biaya angkut darat',
+        namaKabid: 'Kabid Layanan Kancab'
+      };
+      downloadSPRestitusi(data);
+    }
+
+    function downloadRekapRestitusiDoc() {
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (!claim) return;
+      
+      const kwitansiList = kwitansiItemsData[currentOpenId] || [];
+      const totalDiajukan = kwitansiList.reduce((sum, item) => sum + (item.diajukan || 0), 0);
+      const totalApproved = kwitansiList.reduce((sum, item) => sum + (item.disetujui || 0), 0);
+      const totalSelisih = totalDiajukan - totalApproved;
+      
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      const branchCode = claim.nomorKejadian.includes("JKT") ? "KNC-JKT" : "KNC-BDG";
+      const computedSPNum = claim.noRestitusi !== "-" ? claim.noRestitusi : `RES/${branchCode}/${String(month).padStart(2,'0')}/${year}/0189`;
+
+      let bankName = "Mandiri";
+      let norek = "1234567890";
+      let an = claim.faskes;
+      if (claim.rekeningRS) {
+        const parts = claim.rekeningRS.split(" a/n ");
+        if (parts.length > 1) an = parts[1];
+        const leftParts = parts[0].split(" ");
+        if (leftParts.length > 0) bankName = leftParts[0];
+        if (leftParts.length > 1) norek = leftParts.slice(1).join(" ");
+      }
+
+      let statusText = "Menunggu Keuangan";
+      if (claim.status === "Keuangan") statusText = "Sedang Diproses";
+      else if (claim.status === "Selesai") statusText = "Selesai Dibayar";
+
+      const data = {
+        nomorSP: computedSPNum,
+        tanggalTerbit: formatIndoDate(new Date()),
+        nomorKlaim: claim.nomorKlaim,
+        namaRS: claim.faskes,
+        bank: bankName,
+        noRekening: norek,
+        atasNama: an,
+        totalDiajukan: formatRupiah(totalDiajukan),
+        totalDisetujui: formatRupiah(totalApproved),
+        selisih: formatRupiah(totalSelisih),
+        statusPembayaran: statusText,
+        namaKabid: 'Kabid Layanan Kancab'
+      };
+      downloadRekapRestitusi(data);
+    }
+
+    // Dispute logic RS Review
+    function toggleRSReviewMode() {
+      const agree = document.getElementById("rs-agree").checked;
+      const claim = processData.find(item => item.id === currentOpenId);
+      if (!claim) return;
+
+      if (!agree) {
+        claim.status = "Dispute RS";
+        showToast("Status Diperbarui", "Status klaim dialihkan ke Dispute RS.", "warning");
+        
+        // Auto-add chat log
+        if (!initialChats[currentOpenId]) initialChats[currentOpenId] = [];
+        initialChats[currentOpenId].push({
+          sender: "RS",
+          time: new Date().toLocaleDateString('id-ID') + " " + new Date().toLocaleTimeString('id-ID').slice(0, 5),
+          text: "Dispute: Rumah sakit mengajukan keberatan terhadap selisih bayar item obat."
+        });
+      } else {
+        claim.status = "Verifikasi Layer 2";
+        showToast("Status Diperbarui", "Dispute diselesaikan, lanjut ke Verifikasi Layer 2.", "success");
+      }
+      openDetail(currentOpenId);
+    }
+
+    // Chat timeline
+    function renderChatTimeline(claimId) {
+      const timeline = document.getElementById("chat-timeline");
+      timeline.innerHTML = "";
+      const chats = initialChats[claimId] || [];
+
+      if (chats.length === 0) {
+        timeline.innerHTML = `<div class="text-center text-slate-400 italic text-[10px] py-4">Belum ada obrolan komunikasi</div>`;
+        return;
+      }
+
+      chats.forEach(chat => {
+        const div = document.createElement("div");
+        div.className = "p-2 rounded-xl text-[10px] space-y-1 bg-white border border-slate-200";
+        if (chat.sender === "ASABRI") {
+          div.className += " border-l-4 border-l-asabri-blue";
+          div.innerHTML = `
+            <div class="flex justify-between font-bold text-asabri-blue">
+              <span>[ASABRI] Verifikator Medis</span>
+              <span class="text-slate-400 font-normal">${chat.time}</span>
+            </div>
+            <p class="text-slate-700">${chat.text}</p>
+          `;
+        } else {
+          div.className += " border-l-4 border-l-rose-500";
+          div.innerHTML = `
+            <div class="flex justify-between font-bold text-rose-600">
+              <span>[RS] Bagian Keuangan RS</span>
+              <span class="text-slate-400 font-normal">${chat.time}</span>
+            </div>
+            <p class="text-slate-700">${chat.text}</p>
+          `;
+        }
+        timeline.appendChild(div);
+      });
+      timeline.scrollTop = timeline.scrollHeight;
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById("chat-message-input");
+      const text = input.value.trim();
+      if (!text) return;
+
+      if (!initialChats[currentOpenId]) {
+        initialChats[currentOpenId] = [];
+      }
+
+      initialChats[currentOpenId].push({
+        sender: "ASABRI",
+        time: new Date().toLocaleDateString('id-ID') + " " + new Date().toLocaleTimeString('id-ID').slice(0, 5),
+        text: text
+      });
+
+      input.value = "";
+      renderChatTimeline(currentOpenId);
+      showToast("Pesan Terkirim", "Tanggapan dikirim ke Rumah Sakit.", "success");
+    }
+
+    function previewDoc(name) {
+      showToast("Preview Dokumen", `Membuka lampiran file: ${name}`, "info");
+    }
+
+    function downloadSPRestitusi() {
+      showToast("Download Sukses", "Surat Perintah Restitusi berhasil diunduh.", "success");
+    }
+
+    window.onload = function() {
+      applyFilters();
+      
+      // Check query params if redirecting from Pengajuan Baru
+      const urlParams = new URLSearchParams(window.location.search);
+      const openId = parseInt(urlParams.get('openId'));
+      if (openId) {
+        openDetail(openId);
+      }
+    };
+  </script>
+</body>
+</html>

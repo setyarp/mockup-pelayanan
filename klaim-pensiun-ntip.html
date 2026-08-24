@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Pelayanan NTIP)</title>
+  <meta name="description" content="Halaman Pelayanan Nilai Tunai Iuran Pensiun (NTIP) ASABRI YANDU NG.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: { blue: '#004799', blueDark: '#002e63', gold: '#FFD700', softBlue: '#F3F8FC', textDark: '#1E293B' }
+          },
+          fontFamily: { sans: ['Outfit','sans-serif'], mono: ['JetBrains Mono','monospace'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:#f1f5f9}
+    ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+    .tab-btn{transition:all .15s}
+    .tab-pane{display:none}
+    .tab-pane.active{display:block}
+    .warning-box{animation:pulse-warn 2s infinite}
+    @keyframes pulse-warn{0%,100%{border-color:#fbbf24}50%{border-color:#f59e0b}}
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md flex-shrink-0">
+  <div class="flex items-center gap-5">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center">
+        <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none">
+          <path d="M10 25 C15 15,25 12,35 18 C30 22,22 23,15 27 Z" fill="#FFD700"/>
+          <path d="M60 25 C55 15,45 12,35 18 C40 22,48 23,55 27 Z" fill="#FFD700"/>
+          <path d="M28 15 H42 L45 28 C45 35,35 40,35 40 C35 40,25 35,25 28 Z" fill="#0A58CA" stroke="#fff" stroke-width="2"/>
+          <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700"/>
+        </svg>
+        <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+      </div>
+      <div class="h-6 w-px bg-white/20"></div>
+      <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors text-lg"><i class="fas fa-bars"></i></button>
+      <div class="flex flex-col ml-1">
+        <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+        <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center gap-4">
+    <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-xs font-semibold text-white tracking-wide">ROLE : Staf KANCAB</span>
+    </div>
+    <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer">
+      <i class="fas fa-bell text-sm"></i>
+    </div>
+    <div class="h-8 w-px bg-white/10"></div>
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm">SK</div>
+      <div class="flex flex-col">
+        <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+        <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════ BODY ═══════════════ -->
+<div class="flex flex-1 overflow-hidden">
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside id="sidebar-nav" class="w-80 bg-asabri-softBlue border-r border-slate-200 flex flex-col flex-shrink-0 transition-all duration-300">
+      <div class="p-5 border-b border-slate-200 bg-white/50">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Menu Layanan</h2>
+      </div>
+
+      <!-- Accordion Navigation List -->
+      <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+        <!-- 1. Dashboard -->
+        <a href="index.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-chart-pie text-base text-asabri-blue"></i>
+            <span>1. Dashboard</span>
+          </div>
+        </a>
+
+        <!-- 2. Pelayanan Registrasi Peserta Klaim -->
+        <a href="registrasi.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-pen-to-square text-base text-asabri-blue"></i>
+            <span>2. Pelayanan Registrasi Klaim Peserta</span>
+          </div>
+        </a>
+
+        <!-- 3. Data Peserta -->
+        <a href="data-peserta.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-search text-base text-asabri-blue"></i>
+            <span>3. Data Peserta</span>
+          </div>
+        </a>
+
+        <!-- 4. Riwayat Transaksi Klaim -->
+        <a href="riwayat.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-clock-rotate-left text-base text-asabri-blue"></i>
+            <span>4. Riwayat Transaksi Klaim</span>
+          </div>
+        </a>
+
+        <!-- 5. Pelayanan Klaim -->
+        <a href="kejadian.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-file-invoice text-base text-asabri-blue"></i>
+            <span>5. Pelayanan Klaim</span>
+          </div>
+        </a>
+
+                <!-- 6. Perawatan JKK -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-perawatan','chevron-perawatan')" class="w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-hand-holding-medical text-base text-asabri-blue"></i>
+              <span>6. Perawatan JKK</span>
+            </div>
+            <i id="chevron-perawatan" class="fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-perawatan" class="hidden pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="perawatan-kejadian.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-notes-medical w-4 text-slate-400"></i>
+              <span>Laporan Kejadian</span>
+            </a>
+            <a href="perawatan-klaim.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-file-medical w-4 text-slate-400"></i>
+              <span>Pengajuan Klaim</span>
+            </a>
+            <a href="perawatan-verifikasi.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-user-shield w-4 text-slate-400"></i>
+              <span>Verifikasi Klaim</span>
+            </a>
+          </div>
+        </div>
+
+<!-- 7. Pelayanan Komunikasi Pelanggan -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-kominfo','chevron-kominfo')" class="w-full w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-comments text-base text-asabri-blue"></i>
+              <span>7. Pelayanan Komunikasi Pelanggan</span>
+            </div>
+            <i id="chevron-kominfo" class="fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-kominfo" class="hidden pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="komunikasi-dashboard.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-gauge w-4 text-slate-400"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="komunikasi-riwayat.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-clock-rotate-left w-4 text-slate-400"></i>
+              <span>Riwayat Interaksi</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-slate-250 bg-slate-100 text-[10px] text-slate-400 font-mono text-center">
+        ASABRI YANDU NG v1.2.0
+      </div>
+    </aside>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="flex-1 flex flex-col overflow-hidden">
+
+  <!-- Breadcrumb -->
+  <div class="bg-white border-b border-slate-200 px-8 py-3 flex items-center justify-between flex-shrink-0">
+    <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+      <span>Peserta Pensiun</span><span class="text-slate-400">/</span>
+      <span class="font-bold text-asabri-blue">Pelayanan NTIP</span>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="flex-1 flex flex-col overflow-hidden bg-slate-50">
+
+    <!-- No Data Warning -->
+    <div id="no-data-warning" class="hidden m-6 p-8 bg-amber-50 border border-amber-200 rounded-2xl flex flex-col gap-4 text-center items-center justify-center">
+      <i class="fas fa-triangle-exclamation text-5xl text-amber-500"></i>
+      <div>
+        <h3 class="text-sm font-bold text-amber-800">Belum Ada Data Registrasi NTIP</h3>
+        <p class="text-xs text-amber-700 mt-1">Lakukan registrasi pengajuan klaim NTIP (Nilai Tunai Iuran Pensiun) terlebih dahulu.</p>
+      </div>
+      <a href="registrasi.html" class="px-5 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white text-xs font-bold rounded-xl transition-all shadow-md flex items-center gap-2">
+        <i class="fas fa-pen-to-square"></i> Registrasi Klaim Sekarang
+      </a>
+    </div>
+
+    <!-- Main Layout: Content Flow -->
+    <div id="main-content-flow" class="hidden flex-1 flex flex-col overflow-hidden">
+
+      <!-- STICKY HEADER SUMMARY BAR -->
+      <div class="bg-white border-b border-slate-200 px-8 py-4 shadow-sm flex flex-wrap items-center justify-between gap-4 flex-shrink-0">
+        <div class="flex items-center gap-6">
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">NO. AGENDA / REGISTRASI</span>
+            <span class="text-base font-extrabold text-slate-800 mt-1 block font-mono" id="top-noreg">REG-2026-00000</span>
+          </div>
+          <div class="h-8 w-px bg-slate-200"></div>
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">PESERTA / NIP-NRP</span>
+            <span class="text-sm font-extrabold text-slate-800 mt-1 block" id="top-peserta">Loading...</span>
+          </div>
+          <div class="h-8 w-px bg-slate-200"></div>
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">PROGRAM KLAIM</span>
+            <span class="text-sm font-extrabold text-asabri-blue mt-1 block" id="top-manfaat">Pelayanan NTIP</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-5">
+          <div class="flex flex-col items-end">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">SLA DURASI PROSES</span>
+            <div class="flex items-center gap-1.5 mt-1 font-mono font-bold text-xs">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-slate-800" id="top-sla">00:05:00</span>
+            </div>
+          </div>
+          <div class="h-8 w-px bg-slate-200"></div>
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">STATUS BERKAS</span>
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200 block mt-1" id="top-status-berkas">Diproses</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS NAV BAR -->
+      <div class="bg-white border-b border-slate-200 px-8 flex-shrink-0 overflow-x-auto">
+        <div class="flex gap-6 whitespace-nowrap">
+          <button id="btn-tab-peserta" onclick="switchTab('tab-peserta')" class="tab-btn py-3 px-1 border-b-2 border-asabri-blue text-xs font-bold text-asabri-blue focus:outline-none transition-all flex items-center gap-1.5 active">
+            <i class="fas fa-user-shield text-xs"></i> 1. Data Peserta
+          </button>
+          <button id="btn-tab-pengaju" onclick="switchTab('tab-pengaju')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-user-edit text-xs"></i> 2. Data Pengaju
+          </button>
+          <button id="btn-tab-persyaratan" onclick="switchTab('tab-persyaratan')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-list-check text-xs"></i> 3. Persyaratan Dokumen
+          </button>
+          <button id="btn-tab-verifikasi" onclick="switchTab('tab-verifikasi')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-stamp text-xs"></i> 4. Verifikasi Berkas
+          </button>
+          <button id="btn-tab-manfaat" onclick="switchTab('tab-manfaat')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-calculator text-xs"></i> 5. Perhitungan Manfaat
+          </button>
+          <button id="btn-tab-riwayat" onclick="switchTab('tab-riwayat')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-clock-rotate-left text-xs"></i> 6. Status &amp; Riwayat
+          </button>
+        </div>
+      </div>
+
+      <!-- SCROLLABLE TAB PANE CONTENT AREA -->
+      <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
+        <div class="max-w-5xl mx-auto space-y-6">
+
+          <!-- ───── TAB 1: Data Peserta ───── -->
+          <div id="tab-peserta" class="tab-pane active space-y-5">
+            <!-- Kartu: Informasi Kepesertaan -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-800">Informasi Kepesertaan</h3>
+                  <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Data kepesertaan read-only dari database ASABRI</p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">Peserta Pensiun</span>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-6 text-xs">
+                <div><span class="text-slate-400 block mb-0.5">Nama Lengkap</span><strong class="text-slate-800 text-sm font-bold" id="p-nama">—</strong></div>
+                <div><span class="text-slate-400 block mb-0.5">NIP / NRP</span><strong class="text-slate-800 text-sm font-bold" id="p-nip">—</strong></div>
+                <div><span class="text-slate-400 block mb-0.5">NIK (KTP)</span><strong class="text-slate-800 text-sm font-mono font-bold" id="p-nik">—</strong></div>
+                <div><span class="text-slate-400 block mb-0.5">No. KPA (Kartu Peserta ASABRI)</span><strong class="text-slate-800 font-bold" id="p-kpa">—</strong></div>
+                <div><span class="text-slate-400 block mb-0.5">Pangkat / Golongan</span><strong class="text-slate-800 font-bold" id="p-pangkat">—</strong></div>
+                <div><span class="text-slate-400 block mb-0.5">Satuan Kerja / Kesatuan</span><strong class="text-slate-800 font-bold" id="p-kesatuan">—</strong></div>
+                <div><span class="text-slate-400 block mb-0.5">Gaji Pokok Terakhir</span><strong class="text-slate-800 font-bold" id="p-gapok">—</strong></div>
+                <div><span class="text-slate-400 block mb-0.5">TMT Pensiun</span><strong class="text-slate-800 font-bold" id="p-tmt">—</strong></div>
+              </div>
+            </div>
+
+            <!-- Kartu: Ringkasan Registrasi Klaim -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-800">Ringkasan Registrasi Klaim</h3>
+                  <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Informasi dasar registrasi (Read-only)</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold border border-slate-200 bg-slate-50 text-slate-600 font-mono" id="rs-noreg">—</span>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs text-slate-700">
+                <div><span class="text-slate-400 block mb-0.5">Tanggal Registrasi</span><strong id="rs-tgl">—</strong></div>
+                <div><span class="text-slate-400 block mb-0.5">Sumber Pengajuan</span><span id="rs-sumber" class="px-2 py-0.5 rounded-full text-[10px] font-bold border border-slate-200 bg-slate-50 text-slate-600">—</span></div>
+                <div><span class="text-slate-400 block mb-0.5">Kantor Cabang</span><strong id="rs-kancab">—</strong></div>
+                <div><span class="text-slate-400 block mb-0.5">Kondisi Pengajuan</span><span id="rs-kondisi" class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border border-purple-200 bg-purple-50 text-purple-700">—</span></div>
+              </div>
+            </div>
+          </div><!-- /tab-peserta -->
+
+          <!-- ───── TAB 2: Data Pengaju ───── -->
+          <div id="tab-pengaju" class="tab-pane space-y-5">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-5">
+              <div class="border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-800">Form Pengajuan NTIP</h3>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Rincian kondisi pengajuan, tanggal berhenti/meninggal, dan kantor bayar</p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-slate-700">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1.5">Kondisi Pengajuan <span class="text-rose-500">*</span></label>
+                  <select id="fp-kondisi-ntip" onchange="onKondisiNtipChange()" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white font-bold text-slate-800">
+                    <option value="NTIP_BERHENTI">Berhenti Tanpa Hak Pensiun</option>
+                    <option value="NTIP_MENINGGAL">Meninggal Dunia Dalam Dinas Aktif (Ahli Waris Lainnya)</option>
+                  </select>
+                </div>
+                <div>
+                  <label id="lbl-tgl-berhenti" class="block font-bold text-slate-700 mb-1.5">Tanggal Berhenti Kerja <span class="text-rose-500">*</span></label>
+                  <input type="date" id="fp-tgl-berhenti" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1.5">Masa Kerja Kontribusi (Bulan Iuran) <span class="text-rose-500">*</span></label>
+                  <input type="number" id="fp-masa-iuran" value="120" min="1" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                </div>
+              </div>
+
+              <!-- Data Pengaju -->
+              <div class="border-t border-slate-100 pt-4 space-y-4">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Data Ahli Waris / Pemohon Pengaju</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-slate-700">
+                  <div>
+                    <label class="block font-bold text-slate-750 mb-1.5">Nama Lengkap Pengaju <span class="text-rose-500">*</span></label>
+                    <input type="text" id="fp-a-nama" placeholder="Nama lengkap pengaju" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-750 mb-1.5">Hubungan Keluarga <span class="text-rose-500">*</span></label>
+                    <select id="fp-a-hub" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white">
+                      <option value="Diri">Peserta Sendiri (Diri Sendiri)</option>
+                      <option value="Istri">Istri</option>
+                      <option value="Suami">Suami</option>
+                      <option value="Anak">Anak Kandung</option>
+                      <option value="OrangTua">Orang Tua</option>
+                      <option value="Lainnya">Lainnya (Saudara/Ahli Waris Lain)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-750 mb-1.5">NIK (KTP) <span class="text-rose-500">*</span></label>
+                    <input type="text" id="fp-a-nik" placeholder="16 digit NIK" maxlength="16" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-750 mb-1.5">No. Telepon / HP <span class="text-rose-500">*</span></label>
+                    <input type="tel" id="fp-a-telp" placeholder="08xxxxxxxxxx" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs">
+                  </div>
+                  <div class="md:col-span-2">
+                    <label class="block font-bold text-slate-750 mb-1.5">Alamat Lengkap Pengaju</label>
+                    <input type="text" id="fp-a-alamat" placeholder="Alamat lengkap pengaju saat ini" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kantor Bayar -->
+              <div class="border-t border-slate-100 pt-4 space-y-4">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Mitra Kantor Bayar / Rekening Pengaju</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold text-slate-700">
+                  <div>
+                    <label class="block font-bold text-slate-750 mb-1.5">Bank / Pos Mitra <span class="text-rose-500">*</span></label>
+                    <input type="text" id="fp-bank" placeholder="Nama Bank/Pos" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-750 mb-1.5">Jenis Tabungan</label>
+                    <select id="fp-jenis-tabungan" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white">
+                      <option>Tabungan</option><option>Giro</option><option>Deposito</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-750 mb-1.5">No. Rekening <span class="text-rose-500">*</span></label>
+                    <input type="text" id="fp-norek" placeholder="Nomor rekening" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono font-bold">
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-2 border-t border-slate-100 font-bold">
+                <button onclick="switchTab('tab-peserta')" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-semibold text-slate-600 transition-colors">Kembali</button>
+                <button onclick="simpanDraftNTIP('tab-pengaju')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all"><i class="fas fa-file-invoice"></i> Simpan Draft</button>
+                <button onclick="savePengajuTab()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                  Lanjut ke Persyaratan <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div><!-- /tab-pengaju -->
+
+          <!-- ───── TAB 3: Persyaratan Dokumen ───── -->
+          <div id="tab-persyaratan" class="tab-pane space-y-5">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <div class="border-b border-slate-100 pb-3 mb-5 flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-800" id="req-title">Persyaratan Dokumen NTIP</h3>
+                  <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Lengkapi berkas persyaratan di bawah ini</p>
+                </div>
+                <span id="persyaratan-progress" class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">0 / 0 Terpenuhi</span>
+              </div>
+
+              <div id="persyaratan-list" class="divide-y divide-slate-100"></div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 mt-5 font-bold">
+                <button onclick="switchTab('tab-pengaju')" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-semibold text-slate-600 transition-colors">Kembali</button>
+                <button onclick="simpanDraftNTIP('tab-persyaratan')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all"><i class="fas fa-file-invoice"></i> Simpan Draft</button>
+                <button onclick="switchTab('tab-verifikasi')" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                  Lanjut ke Verifikasi <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div><!-- /tab-persyaratan -->
+
+          <!-- ───── TAB 4: Verifikasi Berkas ───── -->
+          <div id="tab-verifikasi" class="tab-pane space-y-5">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <div class="border-b border-slate-100 pb-3 mb-4">
+                <h3 class="text-sm font-bold text-slate-800">Ringkasan Dokumen</h3>
+              </div>
+              <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                <table class="w-full text-xs text-left">
+                  <thead class="bg-slate-50 border-b border-slate-200"><tr class="text-slate-600 font-bold">
+                    <th class="px-4 py-2.5">Nama Dokumen</th>
+                    <th class="px-4 py-2.5 text-center">Status Upload</th>
+                    <th class="px-4 py-2.5 text-center">Aksi</th>
+                  </tr></thead>
+                  <tbody id="tbl-verifikasi-ringkasan" class="divide-y divide-slate-100">
+                    <tr><td colspan="3" class="px-4 py-6 text-center text-slate-400 italic">Lengkapi dokumen di Tab 3 terlebih dahulu.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Status Dokumen Fisik -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <div class="border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-800">Status Dokumen Fisik / Persyaratan</h3>
+              </div>
+              <div class="space-y-3">
+                <label class="flex items-center gap-3 p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-300 hover:bg-emerald-50/30 has-[:checked]:border-emerald-400 has-[:checked]:bg-emerald-50/50 transition-all">
+                  <input type="radio" name="status-dok" value="Diterima" class="text-emerald-500 w-4 h-4" onchange="onVerifikasiStatusChange()">
+                  <div><span class="text-xs font-bold text-slate-800 block">Diterima (Lolos Validasi)</span><span class="text-[10px] text-slate-500">Semua dokumen fisik lengkap dan sah</span></div>
+                  <span class="ml-auto px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">Tab 5 Aktif</span>
+                </label>
+                <label class="flex items-center gap-3 p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-rose-300 hover:bg-rose-50/30 has-[:checked]:border-rose-400 has-[:checked]:bg-rose-50/50 transition-all">
+                  <input type="radio" name="status-dok" value="Ditolak" class="text-rose-500 w-4 h-4" onchange="onVerifikasiStatusChange()">
+                  <div><span class="text-xs font-bold text-slate-800 block">Ditolak</span><span class="text-[10px] text-slate-500">Klaim ditolak karena tidak memenuhi kriteria kelayakan</span></div>
+                </label>
+                <label class="flex items-center gap-3 p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-red-300 hover:bg-red-50/30 has-[:checked]:border-red-400 has-[:checked]:bg-red-50/50 transition-all">
+                  <input type="radio" name="status-dok" value="TidakBerhak" class="text-red-600 w-4 h-4" onchange="onVerifikasiStatusChange()">
+                  <div><span class="text-xs font-bold text-slate-800 block">Tidak Berhak Diproses</span><span class="text-[10px] text-slate-500">Berkas tidak memenuhi kriteria tunjangan ASABRI</span></div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Alasan / Catatan -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3">
+              <label class="block text-xs font-bold text-slate-700">Alasan Penolakan / Catatan Verifikasi</label>
+              <textarea id="fp-v-catatan" placeholder="Masukkan catatan tambahan verifikasi berkas di sini..." class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue h-20 bg-white"></textarea>
+            </div>
+
+            <!-- Upload Dokumen Pendukung -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Upload Dokumen Pendukung Tambahan</h4>
+              <div class="flex items-center gap-3">
+                <input type="file" id="fp-v-pendukung" class="hidden" accept=".pdf,.jpg,.png" onchange="document.getElementById('lbl-pendukung').innerText = this.files[0]?.name || 'Pilih Berkas'">
+                <button type="button" onclick="document.getElementById('fp-v-pendukung').click()" class="px-4 py-2 border border-slate-200 rounded-xl hover:bg-slate-50 text-xs font-semibold text-slate-600 flex items-center gap-1.5"><i class="fas fa-cloud-arrow-up"></i> Upload Berkas</button>
+                <span id="lbl-pendukung" class="text-xs font-semibold text-slate-500 italic">Belum ada file terpilih</span>
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-2 border-t border-slate-100 font-bold">
+              <button onclick="switchTab('tab-persyaratan')" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-semibold text-slate-600 transition-colors">Kembali</button>
+              <button onclick="simpanDraftNTIP('tab-verifikasi')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all"><i class="fas fa-file-invoice"></i> Simpan Draft</button>
+              <button id="btn-lanjut-manfaat" onclick="saveVerifikasiTab()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                Lanjut ke Manfaat <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div><!-- /tab-verifikasi -->
+
+          <!-- ───── TAB 5: Perhitungan Manfaat ───── -->
+          <div id="tab-manfaat" class="tab-pane space-y-5">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-800">Perhitungan Manfaat NTIP</h3>
+                <span id="manfaat-v-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">Berkas Diterima</span>
+              </div>
+
+              <!-- Rincian Manfaat -->
+              <div class="p-4 border border-slate-200 rounded-xl bg-slate-50 space-y-4">
+                <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-calculator text-asabri-blue"></i> Rincian Akumulasi NTIP</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold text-slate-700">
+                  <div>
+                    <span class="text-slate-400 block mb-0.5">Total Iuran Terbayar (4.75%)</span>
+                    <strong class="text-slate-800" id="calc-iuran">Rp 0</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 block mb-0.5">Pengembangan Iuran (5%)</span>
+                    <strong class="text-emerald-600" id="calc-pengembangan">Rp 0</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 block mb-0.5">Total NTIP</span>
+                    <strong class="text-slate-800 text-base" id="calc-total-ntip">Rp 0</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Potongan -->
+              <div class="p-4 border border-slate-200 rounded-xl bg-slate-50 space-y-4">
+                <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-hand-holding-dollar text-rose-500"></i> Rincian Potongan (Jika Ada)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold">
+                  <div>
+                    <label class="block text-slate-600 mb-1">Potongan Saldo Hutang</label>
+                    <input type="text" id="calc-pot-hutang" oninput="hitungNetto()" value="0" class="w-full border border-slate-200 rounded-lg px-2.5 py-1.5 font-mono font-bold text-slate-750 text-right">
+                  </div>
+                  <div>
+                    <label class="block text-slate-600 mb-1">Potongan Lainnya / Denda</label>
+                    <input type="text" id="calc-pot-lainnya" oninput="hitungNetto()" value="0" class="w-full border border-slate-200 rounded-lg px-2.5 py-1.5 font-mono font-bold text-slate-750 text-right">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tabel Ringkasan -->
+              <div class="border border-slate-200 rounded-xl overflow-hidden mt-4">
+                <table class="w-full text-xs text-left">
+                  <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold"><tr class="divide-x divide-slate-200">
+                    <th class="px-4 py-2.5">Deskripsi Komponen</th>
+                    <th class="px-4 py-2.5 text-right w-48">Nominal</th>
+                  </tr></thead>
+                  <tbody class="divide-y divide-slate-100 text-slate-700">
+                    <tr class="divide-x divide-slate-150">
+                      <td class="px-4 py-2.5">Iuran Pensiun Terbayar</td>
+                      <td class="px-4 py-2.5 text-right font-mono font-bold text-slate-800" id="sum-iuran">Rp 0</td>
+                    </tr>
+                    <tr class="divide-x divide-slate-150">
+                      <td class="px-4 py-2.5 text-emerald-800">Pengembangan Iuran (5%)</td>
+                      <td class="px-4 py-2.5 text-right font-mono font-bold text-emerald-600" id="sum-pengembangan">Rp 0</td>
+                    </tr>
+                    <tr class="divide-x divide-slate-150 bg-rose-50/20">
+                      <td class="px-4 py-2.5 text-rose-800 font-semibold"><i class="fas fa-minus-circle mr-1 text-[10px]"></i> Total Potongan</td>
+                      <td class="px-4 py-2.5 text-right font-mono font-bold text-rose-600" id="sum-potongan">Rp 0</td>
+                    </tr>
+                    <tr class="divide-x divide-slate-150 bg-emerald-50/30 border-t-2 border-slate-200 font-bold text-slate-800">
+                      <td class="px-4 py-2.5 text-emerald-800 text-sm font-extrabold">TOTAL BERSIH (NETTO)</td>
+                      <td class="px-4 py-2.5 text-right font-mono text-emerald-600 text-sm font-extrabold" id="sum-netto">Rp 0</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-2 border-t border-slate-100 font-bold">
+                <button onclick="switchTab('tab-verifikasi')" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-semibold text-slate-600 transition-colors">Kembali</button>
+                <button onclick="simpanDraftNTIP('tab-manfaat')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all"><i class="fas fa-file-invoice"></i> Simpan Draft</button>
+                <button onclick="simpanManfaatNTIP()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                  <i class="fas fa-floppy-disk"></i> Simpan Perhitungan
+                </button>
+              </div>
+            </div>
+          </div><!-- /tab-manfaat -->
+
+          <!-- ───── TAB 6: Status & Riwayat ───── -->
+          <div id="tab-riwayat" class="tab-pane space-y-5">
+            <!-- Status Berkas -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs font-semibold">
+                <div>
+                  <span class="text-slate-400 block mb-0.5">Status Terkini Klaim</span>
+                  <strong class="text-slate-800 text-sm font-bold flex items-center gap-1.5" id="sum-status-label"><span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> Sedang Diproses</strong>
+                </div>
+                <div class="text-right">
+                  <span class="text-slate-400 block mb-0.5">SLA Waktu Penyelesaian</span>
+                  <strong class="text-slate-800 font-mono" id="sum-sla-label">00:05:00</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Log Aktivitas -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <h3 class="text-sm font-bold text-slate-800">Log Aktivitas Proses Klaim</h3>
+              <div class="relative pl-6 border-l-2 border-slate-200 space-y-5 text-xs text-slate-600" id="sum-log-container">
+                <!-- Log entries added dynamically -->
+              </div>
+            </div>
+
+            <!-- Info Klaim Lanjutan (NTIP sekali bayar) -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <div class="border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-800">Peta Alih Status &amp; Manfaat Lanjutan</h3>
+              </div>
+              <div class="p-4 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-800 flex items-start gap-2.5">
+                <i class="fas fa-circle-info text-blue-500 mt-0.5"></i>
+                <div>
+                  <strong class="block mb-1">Informasi Klaim:</strong>
+                  <p>NTIP adalah pembayaran sekali bayar (lump sum) atas pengembalian Nilai Tunai Iuran Pensiun. Tidak ada skema klaim lanjutan atau alih status dari program ini.</p>
+                </div>
+              </div>
+
+              <div class="pt-4 border-t border-slate-100 flex justify-end">
+                <button onclick="selesaikanKlaim()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                  <i class="fas fa-check-circle"></i> Selesaikan Klaim NTIP
+                </button>
+              </div>
+            </div>
+          </div><!-- /tab-riwayat -->
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- Toast Notifications -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-[999] flex flex-col gap-2"></div>
+
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
+<script>
+  let currentTab = 'tab-peserta';
+  let kondisiNtip = 'NTIP_BERHENTI';
+  let regNo = '';
+  let claimState = null;
+  let persyaratanTersimpan = false;
+  let verifikasiStatus = '';
+  let manfaatTersimpan = false;
+
+  const PERSYARATAN_CONFIG = {
+    NTIP_BERHENTI: [
+      'Formulir Pengajuan',
+      'Asli Surat Pengantar dari Dan/Kasatker',
+      'Asli dan FC Legalisir Keputusan Pemberhentian',
+      'Asli Riwayat Hidup Singkat (RHS)',
+      'Asli SKPP dari KPPN / e-SKPP',
+      'Fotokopi Keputusan Pengangkatan Pertama / CPNS',
+      'Fotokopi e-KTP Pengaju',
+      'Fotokopi Kartu Keluarga (KK)',
+      'Fotokopi Buku Rekening Tabungan Pengaju'
+    ],
+    NTIP_MENINGGAL: [
+      'Formulir Pengajuan',
+      'Asli Riwayat Hidup Singkat (RHS)',
+      'Asli Surat Keterangan Ahli Waris — disahkan Lurah/Kades',
+      'Fotokopi Akta Kematian dari Dukcapil',
+      'Fotokopi Legalisir Perincian Gaji saat Meninggal (DPP Gaji KU-107)',
+      'Fotokopi e-KTP Ahli Waris',
+      'Fotokopi Kartu Keluarga (KK)',
+      'Fotokopi Buku Rekening Tabungan Pengaju'
+    ]
+  };
+
+  const MOCK_PESERTA_DB = {
+    'REG-2025-00080': {
+      peserta: {
+        nama: "Letda Cpm Hendra Wijaya",
+        nip: "2195000827",
+        nik: "3173030505920005",
+        kpa: "KPA-7722-2021",
+        pangkat: "Letda Cpm",
+        kesatuan: "Puspomad",
+        gapok: "Rp 4.000.000",
+        tmt: "01 Juli 2026"
+      },
+      registrasi: {
+        noreg: "REG-2025-00080",
+        tgl: "01 Agustus 2026",
+        sumber: "Kancab",
+        kancab: "KC Utama Jakarta",
+        manfaat: "NTIP",
+        kondisi: "NTIP_BERHENTI"
+      }
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlNoreg = urlParams.get('noAgenda');
+
+    if (urlNoreg) {
+      loadFromRegistrasi(urlNoreg);
+    } else {
+      document.getElementById('no-data-warning').classList.remove('hidden');
+      document.getElementById('main-content-flow').classList.add('hidden');
+    }
+
+    setTimeout(() => {
+      const el = document.getElementById('submenu-klaim-pensiun');
+      if (el) el.classList.remove('hidden');
+      const chev = document.getElementById('chevron-klaim-pensiun');
+      if (chev) chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+    }, 100);
+  });
+
+  function loadFromRegistrasi(noreg) {
+    regNo = noreg;
+    let data = MOCK_PESERTA_DB[noreg];
+    if (!data) {
+      data = {
+        peserta: {
+          nama: "Peltu Ahmad Sobari",
+          nip: "2198000821",
+          nik: "3273010101750006",
+          kpa: "KPA-7722-1998",
+          pangkat: "Peltu",
+          kesatuan: "Kodam III/Siliwangi",
+          gapok: "Rp 4.200.000",
+          tmt: "01 Agustus 2026"
+        },
+        registrasi: {
+          noreg: noreg,
+          tgl: new Date().toLocaleDateString('id-ID', {day:'2-digit', month:'long', year:'numeric'}),
+          sumber: "Kancab",
+          kancab: "KC Utama Jakarta",
+          manfaat: "NTIP",
+          kondisi: "NTIP_BERHENTI"
+        }
+      };
+      
+      const draft = localStorage.getItem(`draft_ntip_${noreg}`);
+      if (draft) {
+        claimState = JSON.parse(draft);
+      }
+    }
+
+    if (!claimState) {
+      claimState = {
+        noRegistrasi: data.registrasi.noreg,
+        tanggalRegistrasi: data.registrasi.tgl,
+        sumberPengajuan: data.registrasi.sumber,
+        kancab: data.registrasi.kancab,
+        peserta: data.peserta,
+        pengaju: { nama: '', hub: 'Diri', NIK: '', telp: '', alamat: '', bank: '', noRekening: '' },
+        kondisiNtip: data.registrasi.kondisi || 'NTIP_BERHENTI',
+        tglBerhenti: '',
+        masaIuran: 120,
+        uploadedDocs: {},
+        verifikasiStatus: '',
+        verifikasiCatatan: '',
+        manfaatTersimpan: false,
+        potonganHutang: 0,
+        potonganLainnya: 0
+      };
+    }
+
+    renderClaimState();
+    document.getElementById('no-data-warning').classList.add('hidden');
+    document.getElementById('main-content-flow').classList.remove('hidden');
+    
+    document.getElementById('top-noreg').innerText = claimState.noRegistrasi;
+    document.getElementById('top-peserta').innerText = `${claimState.peserta.nama} / ${claimState.peserta.nip}`;
+    
+    addLog('System', '127.0.0.1', 'Diproses', 'Registrasi Klaim', 'Klaim baru Nilai Tunai Iuran Pensiun (NTIP) didaftarkan');
+  }
+
+  function renderClaimState() {
+    if (!claimState) return;
+
+    // Tab 1 details
+    document.getElementById('p-nama').innerText = claimState.peserta.nama;
+    document.getElementById('p-nip').innerText = claimState.peserta.nip;
+    document.getElementById('p-nik').innerText = claimState.peserta.nik;
+    document.getElementById('p-kpa').innerText = claimState.peserta.kpa;
+    document.getElementById('p-pangkat').innerText = claimState.peserta.pangkat;
+    document.getElementById('p-kesatuan').innerText = claimState.peserta.kesatuan;
+    document.getElementById('p-gapok').innerText = claimState.peserta.gapok;
+    document.getElementById('p-tmt').innerText = claimState.peserta.tmt;
+
+    document.getElementById('rs-noreg').innerText = claimState.noRegistrasi;
+    document.getElementById('rs-tgl').innerText = claimState.tanggalRegistrasi;
+    document.getElementById('rs-sumber').innerText = claimState.sumberPengajuan;
+    document.getElementById('rs-kancab').innerText = claimState.kancab;
+    document.getElementById('rs-kondisi').innerText = claimState.kondisiNtip === 'NTIP_BERHENTI' ? 'Berhenti Tanpa Hak' : 'Meninggal Dunia';
+
+    // Tab 2 details
+    document.getElementById('fp-kondisi-ntip').value = claimState.kondisiNtip;
+    document.getElementById('fp-tgl-berhenti').value = claimState.tglBerhenti;
+    document.getElementById('fp-masa-iuran').value = claimState.masaIuran;
+    document.getElementById('fp-a-nama').value = claimState.pengaju.nama;
+    document.getElementById('fp-a-hub').value = claimState.pengaju.hub;
+    document.getElementById('fp-a-nik').value = claimState.pengaju.nik || '';
+    document.getElementById('fp-a-telp').value = claimState.pengaju.telp;
+    document.getElementById('fp-a-alamat').value = claimState.pengaju.alamat;
+    document.getElementById('fp-bank').value = claimState.pengaju.bank;
+    document.getElementById('fp-norek').value = claimState.pengaju.noRekening;
+
+    kondisiNtip = claimState.kondisiNtip;
+    onKondisiNtipChange();
+  }
+
+  function onKondisiNtipChange() {
+    kondisiNtip = document.getElementById('fp-kondisi-ntip').value;
+    claimState.kondisiNtip = kondisiNtip;
+    document.getElementById('rs-kondisi').innerText = kondisiNtip === 'NTIP_BERHENTI' ? 'Berhenti Tanpa Hak' : 'Meninggal Dunia';
+
+    const lblTglBerhenti = document.getElementById('lbl-tgl-berhenti');
+    if (kondisiNtip === 'NTIP_BERHENTI') {
+      lblTglBerhenti.innerHTML = `Tanggal Berhenti Kerja <span class="text-rose-500">*</span>`;
+    } else {
+      lblTglBerhenti.innerHTML = `Tanggal Meninggal Dunia <span class="text-rose-500">*</span>`;
+    }
+
+    updatePersyaratanList();
+  }
+
+  function updatePersyaratanList() {
+    const listEl = document.getElementById('persyaratan-list');
+    listEl.innerHTML = '';
+    const docs = PERSYARATAN_CONFIG[kondisiNtip] || [];
+    
+    document.getElementById('req-title').innerText = `Persyaratan Dokumen NTIP (${kondisiNtip === 'NTIP_BERHENTI' ? 'Berhenti' : 'Meninggal'})`;
+
+    docs.forEach((item, idx) => {
+      const isUploaded = claimState.uploadedDocs[item] ? true : false;
+      const div = document.createElement('div');
+      div.className = 'py-3 flex items-center justify-between gap-4';
+      div.innerHTML = `
+        <label class="flex items-center gap-3 cursor-pointer flex-1">
+          <input type="checkbox" id="req-${idx}" ${isUploaded ? 'checked' : ''} class="req-checkbox w-4 h-4 text-asabri-blue rounded focus:ring-asabri-blue border-slate-300" onchange="updatePersyaratanProgress()">
+          <span class="font-semibold text-slate-700 text-xs">${idx+1}. ${item}</span>
+        </label>
+        <div class="flex items-center gap-2 shrink-0">
+          <span id="req-file-${idx}" class="text-[10px] font-mono text-emerald-600 font-bold ${isUploaded ? '' : 'hidden'} italic mr-1"><i class="fas fa-check-circle mr-1"></i><span class="fname">${claimState.uploadedDocs[item] || ''}</span></span>
+          <input type="file" id="file-doc-${idx}" class="hidden" accept=".pdf,.jpg,.jpeg,.png" onchange="handleReqUpload(event, ${idx}, '${item}')">
+          <button id="btn-view-doc-${idx}" onclick="previewReqFile(${idx})" type="button" class="${isUploaded ? '' : 'hidden'} px-2.5 py-1.5 border border-asabri-blue text-asabri-blue rounded-lg hover:bg-asabri-blue/5 text-[10px] font-bold transition-colors flex items-center gap-1"><i class="fas fa-eye text-[9px]"></i> Detail</button>
+          <button onclick="document.getElementById('file-doc-${idx}').click()" class="px-3 py-1.5 border border-slate-200 rounded-lg hover:bg-slate-50 text-[10px] font-bold text-slate-600 transition-colors flex items-center gap-1">
+            <i class="fas fa-cloud-arrow-up"></i> Upload
+          </button>
+        </div>`;
+      listEl.appendChild(div);
+    });
+
+    updatePersyaratanProgress();
+  }
+
+  function handleReqUpload(e, idx, docName) {
+    const file = e.target.files[0];
+    if (file) {
+      claimState.uploadedDocs[docName] = file.name;
+      const fileLabel = document.getElementById(`req-file-${idx}`);
+      fileLabel.classList.remove('hidden');
+      fileLabel.querySelector('.fname').innerText = file.name;
+      document.getElementById(`btn-view-doc-${idx}`).classList.remove('hidden');
+      document.getElementById(`req-${idx}`).checked = true;
+      updatePersyaratanProgress();
+      showToast('Berkas Diunggah', `${docName} berhasil diupload.`);
+    }
+  }
+
+  function updatePersyaratanProgress() {
+    const total = document.querySelectorAll('.req-checkbox').length;
+    const checked = document.querySelectorAll('.req-checkbox:checked').length;
+    document.getElementById('persyaratan-progress').innerText = `${checked} / ${total} Terpenuhi`;
+    persyaratanTersimpan = (checked === total);
+  }
+
+  function savePengajuTab() {
+    // Collect data to claimState
+    claimState.tglBerhenti = document.getElementById('fp-tgl-berhenti').value;
+    claimState.masaIuran = parseInt(document.getElementById('fp-masa-iuran').value) || 120;
+    claimState.pengaju.nama = document.getElementById('fp-a-nama').value;
+    claimState.pengaju.hub = document.getElementById('fp-a-hub').value;
+    claimState.pengaju.nik = document.getElementById('fp-a-nik').value;
+    claimState.pengaju.telp = document.getElementById('fp-a-telp').value;
+    claimState.pengaju.alamat = document.getElementById('fp-a-alamat').value;
+    claimState.pengaju.bank = document.getElementById('fp-bank').value;
+    claimState.pengaju.noRekening = document.getElementById('fp-norek').value;
+
+    if (!claimState.tglBerhenti || !claimState.pengaju.nama || !claimState.pengaju.nik || !claimState.pengaju.bank || !claimState.pengaju.noRekening) {
+      showToast('Data Belum Lengkap', 'Mohon lengkapi semua field bertanda bintang wajib (*).', 'warning');
+      return;
+    }
+
+    addLog('Staf KANCAB', '192.168.1.5', 'Diproses', 'Data Pengaju', `Menyimpan data pemohon NTIP atas nama ${claimState.pengaju.nama}`);
+    switchTab('tab-persyaratan');
+  }
+
+  function saveVerifikasiTab() {
+    const radio = document.querySelector('input[name="status-dok"]:checked');
+    if (!radio) {
+      showToast('Pilih Status', 'Harap pilih status berkas fisik terlebih dahulu.', 'warning');
+      return;
+    }
+    verifikasiStatus = radio.value;
+    claimState.verifikasiStatus = verifikasiStatus;
+    claimState.verifikasiCatatan = document.getElementById('fp-v-catatan').value;
+
+    addLog('Staf KANCAB', '192.168.1.5', verifikasiStatus === 'Diterima' ? 'Diterima' : 'Ditolak', 'Verifikasi Berkas', `Melakukan verifikasi berkas fisik dengan status: ${verifikasiStatus}`);
+    
+    if (verifikasiStatus === 'Diterima') {
+      document.getElementById('btn-lanjut-manfaat').disabled = false;
+      document.getElementById('manfaat-v-badge').className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200";
+      document.getElementById('manfaat-v-badge').innerText = "Berkas Diterima";
+      updateManfaatTab();
+      switchTab('tab-manfaat');
+    } else {
+      showToast('Berkas Ditolak/Tidak Berhak', 'Klaim tidak dapat dilanjutkan ke perhitungan manfaat.', 'danger');
+      switchTab('tab-riwayat');
+    }
+  }
+
+  function onVerifikasiStatusChange() {
+    const radio = document.querySelector('input[name="status-dok"]:checked').value;
+    document.getElementById('btn-lanjut-manfaat').innerText = radio === 'Diterima' ? 'Lanjut ke Manfaat' : 'Simpan Verifikasi';
+  }
+
+  function updateManfaatTab() {
+    const gapok = parseInt(claimState.peserta.gapok.replace(/[^0-9]/g, '')) || 4000000;
+    
+    // NTIP Iuran = 4.75% * Gapok * Jumlah Bulan Iuran
+    const iuranSebulan = gapok * 0.0475;
+    const totalIuran = iuranSebulan * claimState.masaIuran;
+    
+    // Pengembangan = 5% dari Total Iuran
+    const pengembangan = totalIuran * 0.05;
+    const totalNtip = totalIuran + pengembangan;
+
+    document.getElementById('calc-iuran').innerText = formatRupiah(totalIuran);
+    document.getElementById('calc-pengembangan').innerText = formatRupiah(pengembangan);
+    document.getElementById('calc-total-ntip').innerText = formatRupiah(totalNtip);
+
+    document.getElementById('sum-iuran').innerText = formatRupiah(totalIuran);
+    document.getElementById('sum-pengembangan').innerText = formatRupiah(pengembangan);
+
+    hitungNetto();
+  }
+
+  function hitungNetto() {
+    const calcTotalText = document.getElementById('calc-total-ntip').innerText;
+    const totalNtip = parseInt(calcTotalText.replace(/[^0-9]/g, '')) || 0;
+
+    const potHutang = parseInt(document.getElementById('calc-pot-hutang').value.replace(/[^0-9]/g, '')) || 0;
+    const potLainnya = parseInt(document.getElementById('calc-pot-lainnya').value.replace(/[^0-9]/g, '')) || 0;
+
+    const totalPot = potHutang + potLainnya;
+    const netto = Math.max(0, totalNtip - totalPot);
+
+    document.getElementById('sum-potongan').innerText = formatRupiah(totalPot);
+    document.getElementById('sum-netto').innerText = formatRupiah(netto);
+    
+    claimState.potonganHutang = potHutang;
+    claimState.potonganLainnya = potLainnya;
+  }
+
+  function simpanManfaatNTIP() {
+    manfaatTersimpan = true;
+    claimState.manfaatTersimpan = true;
+    
+    addLog('Staf KANCAB', '192.168.1.5', 'Diproses', 'Perhitungan Manfaat', `Menyimpan rincian NTIP bersih`);
+    showToast('Perhitungan Disimpan', 'Data hasil perhitungan NTIP berhasil disimpan.');
+    setTimeout(() => switchTab('tab-riwayat'), 1000);
+  }
+
+  function selesaikanKlaim() {
+    addLog('Staf KANCAB', '192.168.1.5', 'Disetujui', 'Penyelesaian Klaim', `Menyelesaikan proses seluruh berkas NTIP`);
+    showToast('Klaim Selesai', 'Seluruh proses klaim NTIP berhasil diselesaikan dan diarsipkan.');
+    
+    document.getElementById('top-status-berkas').className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 block mt-1";
+    document.getElementById('top-status-berkas').innerText = "Disetujui";
+    document.getElementById('sum-status-label').innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Disetujui (Arsip)`;
+  }
+
+  // Utilities
+  function formatRupiah(num) {
+    return 'Rp ' + Number(num).toLocaleString('id-ID');
+  }
+
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-pane').forEach(p => {
+      p.classList.toggle('active', p.id === tabId);
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      const suffix = btn.id.replace('btn-', '');
+      if (suffix === tabId) {
+        btn.className = 'tab-btn py-3 px-1 border-b-2 border-asabri-blue text-xs font-bold text-asabri-blue focus:outline-none transition-all flex items-center gap-1.5 active';
+      } else {
+        btn.className = 'tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5';
+      }
+    });
+    if (tabId === 'tab-verifikasi') renderVerifikasiRingkasan();
+    window.scrollTo(0, 0);
+  }
+
+  function renderVerifikasiRingkasan() {
+    const tbody = document.getElementById('tbl-verifikasi-ringkasan');
+    tbody.innerHTML = '';
+    const docs = PERSYARATAN_CONFIG[kondisiNtip] || [];
+    
+    docs.forEach(doc => {
+      const isUp = claimState.uploadedDocs[doc] ? true : false;
+      tbody.innerHTML += `
+        <tr class="divide-x divide-slate-100 hover:bg-slate-50/50 transition-colors">
+          <td class="px-4 py-2.5 font-semibold text-slate-700">${doc}</td>
+          <td class="px-4 py-2.5 text-center">${isUp ? '<span class="text-xs font-bold text-emerald-600"><i class="fas fa-check-circle"></i> Terupload</span>' : '<span class="text-xs font-bold text-slate-400">Belum Ada</span>'}</td>
+          <td class="px-4 py-2.5 text-center">${isUp ? `<button onclick="showToast('Preview Berkas', 'Membuka ${claimState.uploadedDocs[doc]}')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded text-[10px] font-bold text-slate-600"><i class="fas fa-eye"></i> Detail</button>` : '—'}</td>
+        </tr>`;
+    });
+  }
+
+  function previewReqFile(idx) {
+    const docs = PERSYARATAN_CONFIG[kondisiNtip] || [];
+    const name = docs[idx];
+    showToast('Preview Berkas', `Previewing file: ${claimState.uploadedDocs[name]}`);
+  }
+
+  function simpanDraftNTIP(step) {
+    localStorage.setItem(`draft_ntip_${claimState.noRegistrasi}`, JSON.stringify(claimState));
+    showToast('Draft Disimpan', `Progress klaim NTIP berhasil disimpan sebagai draft pada tahap: ${step}`);
+  }
+
+  function addLog(actor, ip, status, activity, notes) {
+    const logs = document.getElementById('sum-log-container');
+    const time = new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    const div = document.createElement('div');
+    div.className = 'relative pl-5';
+    div.innerHTML = `
+      <span class="absolute left-[-25px] top-0.5 w-3.5 h-3.5 rounded-full border-2 border-white bg-slate-400 flex items-center justify-center text-[8px] text-white font-bold shadow-sm">L</span>
+      <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold mb-1">
+        <span>${activity} &bull; ${actor} (${ip})</span>
+        <span>${time}</span>
+      </div>
+      <p class="font-bold text-slate-800 text-[11px]">${notes}</p>
+      <span class="inline-block mt-1 px-2 py-0.5 rounded text-[9px] font-bold bg-slate-100 text-slate-600 border border-slate-200">${status}</span>`;
+    
+    const dot = div.querySelector('span');
+    if (status === 'Diterima' || status === 'Disetujui') {
+      dot.className = dot.className.replace('bg-slate-400', 'bg-emerald-500');
+    } else if (status === 'Ditolak') {
+      dot.className = dot.className.replace('bg-slate-400', 'bg-rose-500');
+    }
+
+    logs.insertBefore(div, logs.firstChild);
+  }
+
+  function showToast(title, msg, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'flex items-center gap-3 bg-white border border-slate-200 rounded-2xl p-4 shadow-xl max-w-sm animate-slide-in';
+    
+    let icon = 'fa-check-circle text-emerald-500';
+    if (type === 'warning') icon = 'fa-triangle-exclamation text-amber-500';
+    if (type === 'danger') icon = 'fa-circle-xmark text-rose-500';
+    if (type === 'info') icon = 'fa-circle-info text-blue-500';
+
+    toast.innerHTML = `
+      <i class="fas ${icon} text-2xl shrink-0"></i>
+      <div>
+        <h4 class="text-xs font-bold text-slate-800">${title}</h4>
+        <p class="text-[10px] text-slate-500 mt-0.5 font-semibold">${msg}</p>
+      </div>`;
+    
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  function toggleSidebarAccordion(menuId, chevId) {
+    const menu = document.getElementById(menuId);
+    const chev = document.getElementById(chevId);
+    if (menu.classList.contains('hidden')) {
+      menu.classList.remove('hidden');
+      chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+    } else {
+      menu.classList.add('hidden');
+      chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+    }
+  }
+</script>
+</body>
+</html>

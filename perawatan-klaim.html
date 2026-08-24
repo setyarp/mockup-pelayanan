@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Pengajuan Klaim JKK)</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide mr-1">ROLE :</span>
+        <select id="role-switcher" onchange="changeRole()" class="bg-transparent text-white font-semibold text-xs border-0 outline-none cursor-pointer focus:ring-0">
+          <option value="Staf KANCAB" class="text-slate-800">Staf KANCAB</option>
+          <option value="Verifikator Medis" class="text-slate-800">Verifikator Medis</option>
+          <option value="KAKANCAB" class="text-slate-800">KAKANCAB</option>
+          <option value="Kabid/Kadiv Layanan" class="text-slate-800">Kabid/Kadiv Layanan</option>
+        </select>
+      </div>
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+    <aside id="sidebar-nav" class="w-80 bg-asabri-softBlue border-r border-slate-200 flex flex-col flex-shrink-0 transition-all duration-300">
+      <div class="p-5 border-b border-slate-200 bg-white/50">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Menu Layanan</h2>
+      </div>
+      <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+        <a href="index.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-chart-pie text-base text-asabri-blue"></i>
+            <span>1. Dashboard</span>
+          </div>
+        </a>
+        <a href="registrasi.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-pen-to-square text-base text-asabri-blue"></i>
+            <span>2. Pelayanan Registrasi Klaim Peserta</span>
+          </div>
+        </a>
+        <a href="data-peserta.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-search text-base text-asabri-blue"></i>
+            <span>3. Data Peserta</span>
+          </div>
+        </a>
+        <a href="riwayat.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-clock-rotate-left text-base text-asabri-blue"></i>
+            <span>4. Riwayat Transaksi Klaim</span>
+          </div>
+        </a>
+        <a href="kejadian.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-file-invoice text-base text-asabri-blue"></i>
+            <span>5. Pelayanan Klaim</span>
+          </div>
+        </a>
+        <!-- 6. Perawatan JKK -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-perawatan','chevron-perawatan')" class="w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-hand-holding-medical text-base text-asabri-blue"></i>
+              <span>6. Perawatan JKK</span>
+              <span id="badge-perawatan" class="ml-1 px-1.5 py-0.5 bg-rose-500 text-white rounded-full text-[9px] font-bold hidden"></span>
+            </div>
+            <i id="chevron-perawatan" class="fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-perawatan" class="pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="perawatan-kejadian.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-notes-medical w-4 text-slate-400"></i>
+              <span>Laporan Kejadian</span>
+            </a>
+            <a href="perawatan-klaim.html" class="relative pl-5 py-1 text-xs font-semibold text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-asabri-blue"></span>
+              <i class="fas fa-file-medical w-4 text-asabri-blue"></i>
+              <span>Pengajuan Klaim</span>
+              <span id="badge-laporan" class="ml-1 px-1.5 py-0.5 bg-rose-500 text-white rounded-full text-[9px] font-bold hidden"></span>
+            </a>
+            <a href="perawatan-verifikasi.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-user-shield w-4 text-slate-400"></i>
+              <span>Verifikasi Klaim</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+      <div class="p-4 border-t border-slate-250 bg-slate-100 text-[10px] text-slate-400 font-mono text-center">ASABRI YANDU NG v1.2.0</div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <div class="bg-white border-b border-slate-200 px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+            <span>Perawatan JKK</span><span class="text-slate-400">/</span><span class="font-bold text-asabri-blue" id="view-title">Data Kejadian JKK Aktif</span>
+          </div>
+          <!-- Dropdown view selector -->
+          <div class="flex items-center gap-2 text-xs">
+            <span class="font-bold text-slate-400">PILIH TAMPILAN:</span>
+            <select id="view-selector" onchange="toggleView()" class="bg-white border border-slate-200 rounded-xl px-3 py-1.5 font-bold outline-none focus:border-asabri-blue text-slate-700 shadow-sm">
+              <option value="kejadian">Data Kejadian JKK</option>
+              <option value="klaim">Data Pengajuan Klaim</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <button onclick="processSelectedRow()" class="px-5 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-blue-100"><i class="fas fa-file-invoice"></i> Buka Verifikasi Klaim</button>
+            <button onclick="showToast('Batal Klaim', 'Pengajuan klaim yang dipilih telah dibatalkan.', 'warning')" class="px-4 py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-650 font-bold rounded-xl text-xs">Batal Klaim</button>
+          </div>
+          <span class="px-3 py-1 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-full font-bold text-[10px]" id="count-badge">0 Data Terload</span>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+          <div class="overflow-x-auto" id="table-container">
+            <!-- Data table populated dynamically -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL DRAWER: Form Verifikasi Klaim JKK -->
+  <div id="claim-modal" class="fixed inset-0 z-[110] flex items-center justify-end hidden bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+    <div class="bg-white h-full w-full max-w-4xl shadow-2xl border-l border-slate-200 flex flex-col transform translate-x-full transition-transform duration-300 overflow-hidden" id="claim-drawer">
+      <div class="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2"><i class="fas fa-file-prescription text-asabri-blue text-base"></i> Portal Verifikasi JKK Perawatan</h3>
+          <span class="text-[10px] text-slate-400 font-semibold" id="drawer-subtitle">Verifikasi Dokumen JKK</span>
+        </div>
+        <button onclick="closeClaimDrawer()" class="text-slate-400 hover:text-slate-600 transition-colors"><i class="fas fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- Stepper UI -->
+      <div class="bg-slate-50 border-b border-slate-200 px-6 py-3">
+        <div class="flex items-center justify-between max-w-3xl mx-auto relative">
+          <div class="absolute top-4 left-[5%] right-[5%] h-0.5 bg-slate-200 -z-1">
+            <div class="h-full bg-asabri-blue transition-all duration-500" id="restitusi-stepper-line" style="width: 0%;"></div>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[9px] w-12 text-center">
+            <div class="w-6 h-6 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]" id="r-step-1">1</div>
+            <span class="font-bold text-slate-700 leading-tight">Pengajuan</span>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[9px] w-12 text-center">
+            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]" id="r-step-2">2</div>
+            <span class="font-bold text-slate-505 leading-tight">Verif Dok</span>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[9px] w-12 text-center">
+            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]" id="r-step-3">3</div>
+            <span class="font-bold text-slate-505 leading-tight">Verif Medis L1</span>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[9px] w-12 text-center">
+            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]" id="r-step-4">4</div>
+            <span class="font-bold text-slate-505 leading-tight">Verif L2</span>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[9px] w-12 text-center">
+            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]" id="r-step-5">5</div>
+            <span class="font-bold text-slate-505 leading-tight">Approval</span>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[9px] w-12 text-center">
+            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]" id="r-step-6">6</div>
+            <span class="font-bold text-slate-505 leading-tight">Keuangan</span>
+          </div>
+          <div class="flex flex-col items-center relative z-10 text-[9px] w-12 text-center">
+            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]" id="r-step-7">7</div>
+            <span class="font-bold text-slate-505 leading-tight">Selesai</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border-b border-slate-150 flex px-6">
+        <button onclick="switchFormTab('tab-data-kejadian')" id="btn-tab-data-kejadian" class="py-3 px-4 text-xs font-bold border-b-2 border-asabri-blue text-asabri-blue transition-all">Tab 1: Verifikasi Data Kejadian & Rekening</button>
+        <button onclick="switchFormTab('tab-data-kuitansi')" id="btn-tab-data-kuitansi" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">Tab 2: Verifikasi Data Kuitansi</button>
+        <button onclick="switchFormTab('tab-data-dokumen')" id="btn-tab-data-dokumen" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">Tab 3: Verifikasi Dokumen</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-6 space-y-6">
+        
+        <!-- Tab 1: Verifikasi Data Kejadian & Rekening -->
+        <div id="tab-data-kejadian" class="space-y-6 text-xs">
+          <div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 space-y-4">
+            <h4 class="text-xs font-bold text-slate-450 uppercase tracking-wide">Data Profil Kejadian & Perbankan (Read-Only):</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Nomor Kejadian</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold font-mono text-slate-600" id="v-no-kejadian">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Provider</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-provider">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Kejadian</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600 leading-tight" id="v-kejadian">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">NRP/NIP</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold font-mono text-slate-600" id="v-nrp">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">NIK</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold font-mono text-slate-600" id="v-nik">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Nama Peserta</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-bold text-slate-700" id="v-nama">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Pangkat</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-pangkat">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">UNOR</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-unor">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Cabang</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-cabang">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Pelapor / Telepon</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-pelapor">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Tgl Lapor & Tgl Kejadian</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-dates">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Tgl Mulai Rawat</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-tgl-rawat">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">COB</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-cob">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Jenis Layanan & Kelas Rawat</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-layanan-kelas">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Bank Penyalur</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-semibold text-slate-600" id="v-bank">-</div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-400 mb-0.5">Nomor Rekening / A.N</label>
+                <div class="p-2.5 bg-slate-100 rounded-xl font-bold font-mono text-indigo-900" id="v-rekening">-</div>
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block font-bold text-slate-400 mb-0.5">Catatan Kejadian</label>
+                <div class="p-3 bg-slate-100 rounded-xl text-slate-600 italic leading-relaxed" id="v-catatan">-</div>
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block font-bold text-slate-400 mb-0.5">Diagnosa Kejadian</label>
+                <div class="p-3 bg-slate-100 rounded-xl font-semibold text-rose-700" id="v-diagnosa-kejadian">-</div>
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block font-bold text-slate-400 mb-0.5">Diagnosa Klaim</label>
+                <div class="p-3 bg-slate-100 rounded-xl font-semibold text-indigo-950" id="v-diagnosa-klaim">-</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Verifikasi Data Kejadian & Rekening -->
+          <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-4">
+            <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i class="fas fa-check-double text-asabri-blue"></i> Validasi Kelayakan Data & Rekening</h4>
+            <div class="space-y-3 text-xs">
+              <div class="font-bold text-slate-700">Data lengkap & sesuai?</div>
+              <div class="flex items-center gap-4">
+                <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                  <input type="radio" name="verifikasiTab1" value="Lengkap" onchange="checkFormValidity()" class="w-4 h-4 text-asabri-blue">
+                  <span>Lengkap</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                  <input type="radio" name="verifikasiTab1" value="Tidak Lengkap" checked onchange="checkFormValidity()" class="w-4 h-4 text-asabri-blue">
+                  <span>Tidak Lengkap</span>
+                </label>
+              </div>
+              <div class="space-y-1">
+                <label class="block font-bold text-slate-500">Catatan:</label>
+                <textarea id="val-t1-catatan" oninput="checkFormValidity()" placeholder="Tulis catatan kelengkapan..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-asabri-blue outline-none resize-none h-16"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Verifikasi Data Kuitansi -->
+        <div id="tab-data-kuitansi" class="hidden space-y-6 text-xs">
+          <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-4">
+            <h4 class="text-xs font-bold text-slate-800"><i class="fas fa-receipt text-asabri-blue"></i> Rincian Kuitansi Diajukan</h4>
+            
+            <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white">
+              <table class="w-full text-left border-collapse text-[11px]">
+                <thead>
+                  <tr class="bg-slate-100 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[9px]">
+                    <th class="py-2 px-3">Jenis Layanan</th>
+                    <th class="py-2 px-3">Keterangan</th>
+                    <th class="py-2 px-3">Kuitansi (No/Tgl)</th>
+                    <th class="py-2 px-3 text-right">Bruto (Rp)</th>
+                    <th class="py-2 px-3 text-right">Diajukan (Rp)</th>
+                    <th class="py-2 px-3 text-right">Disetujui (Rp)</th>
+                    <th class="py-2 px-3">Catatan Selisih</th>
+                    <th class="py-2 px-3 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="kuitansi-verify-tbody" class="divide-y divide-slate-100">
+                  <!-- dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Summary Verifikasi Kuitansi -->
+          <div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 space-y-4">
+            <h4 class="text-xs font-bold text-slate-800"><i class="fas fa-calculator text-asabri-blue"></i> Kalkulator Verifikasi Kuitansi</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-bold text-slate-700">
+              <div class="p-3 bg-white border border-slate-200 rounded-xl">
+                <span class="text-[9px] text-slate-400 block uppercase">Total Diajukan</span>
+                <span class="text-sm font-extrabold text-slate-800" id="total-diajukan-lbl">Rp 0</span>
+              </div>
+              <div class="p-3 bg-white border border-slate-200 rounded-xl">
+                <span class="text-[9px] text-slate-400 block uppercase">Total Disetujui</span>
+                <span class="text-sm font-extrabold text-emerald-600" id="total-disetujui-lbl">Rp 0</span>
+              </div>
+              <div class="p-3 bg-white border border-slate-200 rounded-xl">
+                <span class="text-[9px] text-slate-400 block uppercase">Selisih Biaya</span>
+                <span class="text-sm font-extrabold text-rose-600" id="total-selisih-lbl">Rp 0</span>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <div class="font-bold text-slate-700">Hasil Verifikasi Kuitansi:</div>
+              <div class="flex flex-wrap gap-4">
+                <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                  <input type="radio" name="verifikasiTab2" value="Lengkap & Sesuai" onchange="checkFormValidity()" class="w-4 h-4 text-asabri-blue">
+                  <span>Lengkap & Sesuai</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                  <input type="radio" name="verifikasiTab2" value="Ada Item Tidak Dijamin" checked onchange="checkFormValidity()" class="w-4 h-4 text-asabri-blue">
+                  <span>Ada Item Tidak Dijamin</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                  <input type="radio" name="verifikasiTab2" value="Pending" onchange="checkFormValidity()" class="w-4 h-4 text-asabri-blue">
+                  <span>Pending</span>
+                </label>
+              </div>
+              <div class="space-y-1">
+                <label class="block font-bold text-slate-500">Catatan:</label>
+                <textarea id="val-t2-catatan" oninput="checkFormValidity()" placeholder="Tulis catatan selisih / jaminan..." class="w-full p-2.5 bg-white border border-slate-200 rounded-xl focus:border-asabri-blue outline-none resize-none h-16"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Verifikasi Dokumen -->
+        <div id="tab-data-dokumen" class="hidden space-y-6 text-xs">
+          <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-3">
+            <h4 class="text-xs font-bold text-slate-800"><i class="fas fa-file-shield text-asabri-blue"></i> Checklist Dokumen Upload</h4>
+            
+            <div class="divide-y divide-slate-100">
+              <div class="flex items-center justify-between py-2.5">
+                <span class="font-bold text-slate-750">1. Rincian Biaya Perawatan</span>
+                <button type="button" onclick="previewDoc('Rincian Biaya Perawatan')" class="text-xs text-asabri-blue font-bold hover:underline"><i class="fas fa-eye"></i> Preview</button>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <span class="font-bold text-slate-750">2. Resume Medis</span>
+                <button type="button" onclick="previewDoc('Resume Medis')" class="text-xs text-asabri-blue font-bold hover:underline"><i class="fas fa-eye"></i> Preview</button>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <span class="font-bold text-slate-750">3. Surat Tagihan</span>
+                <button type="button" onclick="previewDoc('Surat Tagihan')" class="text-xs text-asabri-blue font-bold hover:underline"><i class="fas fa-eye"></i> Preview</button>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <span class="font-bold text-slate-750">4. Penunjang Medis</span>
+                <button type="button" onclick="previewDoc('Penunjang Medis')" class="text-xs text-asabri-blue font-bold hover:underline"><i class="fas fa-eye"></i> Preview</button>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <span class="font-bold text-slate-750">5. Fotokopi Buku Tabungan</span>
+                <button type="button" onclick="previewDoc('Fotokopi Buku Tabungan')" class="text-xs text-asabri-blue font-bold hover:underline"><i class="fas fa-eye"></i> Preview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Verifikasi Dokumen -->
+          <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-4">
+            <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i class="fas fa-check-double text-asabri-blue"></i> Validasi Kelengkapan Dokumen</h4>
+            <div class="space-y-3 text-xs">
+              <div class="font-bold text-slate-700">Semua dokumen lengkap & valid?</div>
+              <div class="flex items-center gap-4">
+                <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                  <input type="radio" name="verifikasiTab3" value="Lengkap" onchange="checkFormValidity()" class="w-4 h-4 text-asabri-blue">
+                  <span>Lengkap</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
+                  <input type="radio" name="verifikasiTab3" value="Tidak Lengkap" checked onchange="checkFormValidity()" class="w-4 h-4 text-asabri-blue">
+                  <span>Tidak Lengkap</span>
+                </label>
+              </div>
+              <div class="space-y-1">
+                <label class="block font-bold text-slate-500">Catatan:</label>
+                <textarea id="val-t3-catatan" oninput="checkFormValidity()" placeholder="Tulis catatan dokumen..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-asabri-blue outline-none resize-none h-16"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="px-6 py-4 border-t border-slate-150 bg-slate-50 flex items-center justify-between gap-3">
+        <button type="button" onclick="closeClaimDrawer()" class="px-5 py-2.5 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs">Batal</button>
+        <div class="flex gap-2">
+          <button type="button" id="btn-pending-klaim" onclick="pendingKlaimAction()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs shadow-md">Pending — Kembalikan ke Pengaju</button>
+          <button type="button" id="btn-lanjut-klaim" disabled onclick="lanjutKlaimAction()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl text-xs shadow-md">Lanjut ke Verifikasi Medis</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP MODAL: Verifikasi Item Kuitansi -->
+  <div id="kuitansi-item-modal" class="fixed inset-0 z-[120] flex items-center justify-center hidden bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 space-y-4 animate-fade-in shadow-2xl">
+      <h3 class="font-extrabold text-sm text-slate-800 border-b border-slate-100 pb-2">Verifikasi Item Kuitansi</h3>
+      <div class="text-xs space-y-3">
+        <div class="grid grid-cols-2 gap-2 text-slate-500">
+          <div>Jenis Layanan:</div><div class="font-bold text-slate-750" id="item-jenis">-</div>
+          <div>Diajukan RS:</div><div class="font-bold text-slate-750" id="item-diajukan">-</div>
+        </div>
+        <div class="space-y-1">
+          <label class="block font-bold text-slate-500">Nominal Disetujui (Rp):</label>
+          <input type="text" id="item-disetujui-input" placeholder="Rp 0" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 font-mono font-bold text-emerald-700 outline-none">
+        </div>
+        <div class="space-y-1">
+          <label class="block font-bold text-slate-500">Catatan Selisih (jika ada):</label>
+          <input type="text" id="item-catatan-input" placeholder="Misal: melebihi plafon..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none">
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button type="button" onclick="closeKuitansiItemModal()" class="px-4 py-2 border border-slate-200 text-slate-600 font-bold rounded-xl text-xs">Kembali</button>
+        <button type="button" onclick="submitItemVerification()" class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-md">Simpan Verifikasi</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2"></div>
+
+  <script>
+    function toggleSidebarAccordion(menuId, chevId) {
+      const menu = document.getElementById(menuId);
+      const chev = document.getElementById(chevId);
+      if (!menu || !chev) return;
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+      } else {
+        menu.classList.add('hidden');
+        chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+      }
+    }
+
+    function showToast(title, message, type = "success") {
+      const container = document.getElementById("toast-container");
+      if (!container) return;
+      const toast = document.createElement("div");
+      toast.className = "flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xl w-80 animate-fade-in text-xs";
+      let iconColor = "text-emerald-500";
+      let iconClass = "fa-circle-check";
+      if (type === "warning") {
+        iconColor = "text-amber-500";
+        iconClass = "fa-triangle-exclamation";
+      } else if (type === "info") {
+        iconColor = "text-asabri-blue";
+        iconClass = "fa-circle-info";
+      }
+      toast.innerHTML = `
+        <i class="fas ${iconClass} ${iconColor} text-base mt-0.5"></i>
+        <div class="flex-1">
+          <div class="font-bold text-slate-800">${title}</div>
+          <div class="text-slate-500 mt-0.5">${message}</div>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
+          <i class="fas fa-xmark text-[10px]"></i>
+        </button>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 4000);
+    }
+
+    function formatRupiah(angka) {
+      if (typeof angka !== 'number') return angka;
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
+    }
+
+    function parseRupiah(str) {
+      if (!str) return 0;
+      return parseFloat(String(str).replace(/[^0-9]/g, '')) || 0;
+    }
+
+    function formatIndoDate(dateStr) {
+      if (!dateStr || dateStr === "-") return '-';
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    let kejadianList = [
+      { id: 101, jenis: "Faskes", nomorKejadian: "JKK-2026-0801", ktpa: "3273120105910003", nrpNip: "311200923211", nama: "Ahmad Fauzi", unor: "TNI-AD", provider: "RSPAD Gatot Soebroto", cob: "BPJS Kesehatan", tglLapor: "2026-08-01", tglKejadian: "2026-07-25", tglRawat: "2026-07-26", pengguna: "Staf KC Jakarta", kejadian: "Laka Kerja (Kecelakaan di Tempat Kerja)", pangkat: "Kolonel", cabang: "KANCAB JAKARTA", pelapor: "dr. Budianto", telpPelapor: "0812-321-123", catatanKejadian: "Terpeleset saat dinas pagi di hanggar.", diagnosaKejadian: "Fraktur Tibia", layanan: "Rawat Inap", kelas: "VIP", bank: "Mandiri", rekening: "132-00-982312-9", anRekening: "RS RSPAD Gatot Soebroto", diagnosaKlaim: "Fracture Tibia Dextra Curing" },
+      { id: 102, jenis: "Peserta", nomorKejadian: "JKK-2026-0802", ktpa: "3578140902940004", nrpNip: "3578140902940004", nama: "Kartika Sari", unor: "TNI-AU", provider: "RS Sumber Waras", cob: "-", tglLapor: "2026-08-03", tglKejadian: "2026-07-28", tglRawat: "2026-07-28", pengguna: "Staf KC Bandung", kejadian: "Laka Kerja + Laka Lantas Tunggal", pangkat: "Mayor", cabang: "KANCAB BANDUNG", pelapor: "Mayor Laut Suhartono", telpPelapor: "0811-987-654", catatanKejadian: "Tabrakan tunggal saat berkendara dinas.", diagnosaKejadian: "Luxatio Humeri", layanan: "Rawat Inap", kelas: "Kelas I", bank: "BRI", rekening: "0012-01-098321-50-8", anRekening: "Kartika Sari", diagnosaKlaim: "Luxatio Humeri Sinistra" }
+    ];
+
+    let klaimList = [
+      {
+        id: 201,
+        status: "Pengajuan",
+        jenisKlaim: "Faskes",
+        nomorKejadian: "JKK-2026-0801",
+        nomorKlaim: "KLM-PRV/001-ASABRI/VIII/2026",
+        ktpa: "3273120105910003",
+        nrpNip: "311200923211",
+        nama: "Ahmad Fauzi",
+        unor: "TNI-AD",
+        provider: "RSPAD Gatot Soebroto",
+        cob: "BPJS Kesehatan",
+        tglLapor: "2026-08-01",
+        tglKejadian: "2026-07-25",
+        tglRawat: "2026-07-26",
+        pengguna: "Staf KC Jakarta",
+        kejadian: "Laka Kerja (Kecelakaan di Tempat Kerja)",
+        pangkat: "Kolonel",
+        cabang: "KANCAB JAKARTA",
+        pelapor: "dr. Budianto",
+        telpPelapor: "0812-321-123",
+        catatanKejadian: "Terpeleset saat dinas pagi di hanggar.",
+        diagnosaKejadian: "Fraktur Tibia",
+        layanan: "Rawat Inap",
+        kelas: "VIP",
+        bank: "Mandiri",
+        rekening: "132-00-982312-9",
+        anRekening: "RS RSPAD Gatot Soebroto",
+        diagnosaKlaim: "Fracture Tibia Dextra Curing",
+        kuitansi: [
+          { jenis: "Rawat Inap", tgl: "2026-08-01", no: "K-01", bruto: 12500000, diajukan: 4500000, disetujui: 0, catatan: "" },
+          { jenis: "Angkut Darat", tgl: "2026-08-01", no: "K-02", bruto: 2500000, diajukan: 2000000, disetujui: 0, catatan: "" }
+        ]
+      }
+    ];
+
+    let activeView = "kejadian";
+    let selectedRowId = null;
+    let currentKlaimObj = null;
+    let selectedKuitansiIndex = null;
+
+    function toggleView() {
+      activeView = document.getElementById("view-selector").value;
+      const title = document.getElementById("view-title");
+      if (activeView === "kejadian") {
+        title.innerText = "Data Kejadian JKK Aktif";
+      } else {
+        title.innerText = "Daftar Pengajuan Klaim JKK";
+      }
+      selectedRowId = null;
+      renderActiveTable();
+    }
+
+    function renderActiveTable() {
+      const container = document.getElementById("table-container");
+      if (!container) return;
+
+      if (activeView === "kejadian") {
+        container.innerHTML = `
+          <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
+            <thead>
+              <tr class="bg-slate-100 border-b border-slate-200 text-slate-500 uppercase font-bold text-[9px]">
+                <th class="py-2.5 px-3 text-center">Pilih</th>
+                <th class="py-2.5 px-3">Jenis</th>
+                <th class="py-2.5 px-3">Nomor Kejadian</th>
+                <th class="py-2.5 px-3">KTPA</th>
+                <th class="py-2.5 px-3">NRP/NIP</th>
+                <th class="py-2.5 px-3">Nama</th>
+                <th class="py-2.5 px-3">Unor</th>
+                <th class="py-2.5 px-3">Provider</th>
+                <th class="py-2.5 px-3">COB</th>
+                <th class="py-2.5 px-3 font-mono">Tgl Lapor</th>
+                <th class="py-2.5 px-3 font-mono">Tgl Kejadian</th>
+                <th class="py-2.5 px-3">Kejadian</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+              ${kejadianList.map(item => `
+                <tr class="hover:bg-slate-50/50 transition-colors ${selectedRowId === item.id ? 'bg-indigo-50/40' : ''}">
+                  <td class="py-2.5 px-3 text-center">
+                    <input type="radio" name="row-selector" value="${item.id}" ${selectedRowId === item.id ? 'checked' : ''} onclick="selectRow(${item.id})" class="w-4 h-4 text-asabri-blue">
+                  </td>
+                  <td class="py-2.5 px-3 font-bold text-asabri-blue">${item.jenis}</td>
+                  <td class="py-2.5 px-3 font-mono font-bold text-slate-800">${item.nomorKejadian}</td>
+                  <td class="py-2.5 px-3 font-mono text-slate-500">${item.ktpa}</td>
+                  <td class="py-2.5 px-3 font-mono text-slate-500">${item.nrpNip}</td>
+                  <td class="py-2.5 px-3 font-bold text-slate-700">${item.nama}</td>
+                  <td class="py-2.5 px-3 text-slate-500">${item.unor}</td>
+                  <td class="py-2.5 px-3 font-semibold text-slate-700">${item.provider}</td>
+                  <td class="py-2.5 px-3 text-slate-500">${item.cob}</td>
+                  <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.tglLapor)}</td>
+                  <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.tglKejadian)}</td>
+                  <td class="py-2.5 px-3 font-bold text-slate-750">${item.kejadian}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+        document.getElementById("count-badge").innerText = `${kejadianList.length} Kejadian`;
+      } else {
+        container.innerHTML = `
+          <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
+            <thead>
+              <tr class="bg-slate-100 border-b border-slate-200 text-slate-500 uppercase font-bold text-[9px]">
+                <th class="py-2.5 px-3 text-center">Pilih</th>
+                <th class="py-2.5 px-3">Status</th>
+                <th class="py-2.5 px-3">Nomor Kejadian</th>
+                <th class="py-2.5 px-3">Nomor Klaim</th>
+                <th class="py-2.5 px-3">Nama</th>
+                <th class="py-2.5 px-3">Provider</th>
+                <th class="py-2.5 px-3 font-mono">Tgl Lapor</th>
+                <th class="py-2.5 px-3 font-mono">Tgl Kejadian</th>
+                <th class="py-2.5 px-3">Kejadian</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+              ${klaimList.map(item => {
+                let badgeClass = "bg-rose-50 text-rose-700 border border-rose-200";
+                if (item.status === "Verifikasi") badgeClass = "bg-amber-50 text-amber-700 border border-amber-200";
+                else if (item.status === "Verifikasi Medis") badgeClass = "bg-orange-50 text-orange-650 border border-orange-200";
+                else if (item.status === "Persetujuan Verifikasi") badgeClass = "bg-blue-50 text-blue-700 border border-blue-200";
+                else if (item.status === "Keuangan") badgeClass = "bg-purple-50 text-purple-700 border border-purple-200";
+                else if (item.status === "Selesai") badgeClass = "bg-emerald-50 text-emerald-700 border border-emerald-200";
+                else if (item.status === "Pending") badgeClass = "bg-slate-100 text-slate-500 border border-slate-300";
+                else if (item.status === "Ditolak") badgeClass = "bg-rose-900 text-rose-100 border border-rose-800";
+
+                return `
+                  <tr class="hover:bg-slate-50/50 transition-colors ${selectedRowId === item.id ? 'bg-indigo-50/40' : ''}">
+                    <td class="py-2.5 px-3 text-center">
+                      <input type="radio" name="row-selector" value="${item.id}" ${selectedRowId === item.id ? 'checked' : ''} onclick="selectRow(${item.id})" class="w-4 h-4 text-asabri-blue">
+                    </td>
+                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full font-bold text-[9px] ${badgeClass}">${item.status}</span></td>
+                    <td class="py-2.5 px-3 font-mono font-bold text-slate-800">${item.nomorKejadian}</td>
+                    <td class="py-2.5 px-3 font-mono font-bold text-asabri-blue">${item.nomorKlaim}</td>
+                    <td class="py-2.5 px-3 font-bold text-slate-700">${item.nama}</td>
+                    <td class="py-2.5 px-3 font-semibold text-slate-700">${item.provider}</td>
+                    <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.tglLapor)}</td>
+                    <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.tglKejadian)}</td>
+                    <td class="py-2.5 px-3 font-bold text-slate-700 leading-tight">${item.kejadian}</td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        `;
+        document.getElementById("count-badge").innerText = `${klaimList.length} Klaim`;
+      }
+    }
+
+    function selectRow(id) {
+      selectedRowId = id;
+    }
+
+    function processSelectedRow() {
+      if (!selectedRowId) {
+        showToast("Pilih Baris", "Silakan pilih salah satu data dari tabel terlebih dahulu.", "warning");
+        return;
+      }
+      
+      let item = null;
+      if (activeView === "kejadian") {
+        const kej = kejadianList.find(k => k.id === selectedRowId);
+        // Map to a mock claim object
+        item = {
+          id: Date.now(),
+          status: "Pengajuan",
+          jenisKlaim: "Faskes",
+          nomorKejadian: kej.nomorKejadian,
+          nomorKlaim: `KLM-RST/0826/${Math.floor(Math.random() * 9000) + 1000}`,
+          ktpa: kej.ktpa,
+          nrpNip: kej.nrpNip,
+          nama: kej.nama,
+          unor: kej.unor,
+          provider: kej.provider,
+          cob: kej.cob,
+          tglLapor: kej.tglLapor,
+          tglKejadian: kej.tglKejadian,
+          tglRawat: kej.tglRawat,
+          pengguna: "Staf KC Jakarta",
+          kejadian: kej.kejadian,
+          pangkat: kej.pangkat,
+          cabang: kej.cabang,
+          pelapor: kej.pelapor,
+          telpPelapor: kej.telpPelapor,
+          catatanKejadian: kej.catatanKejadian,
+          diagnosaKejadian: kej.diagnosaKejadian,
+          layanan: kej.layanan,
+          kelas: kej.kelas,
+          bank: kej.bank,
+          rekening: kej.rekening,
+          anRekening: kej.anRekening,
+          diagnosaKlaim: kej.diagnosaKlaim || "Pemeriksaan Medis JKK",
+          kuitansi: [
+            { jenis: "Rawat Inap", tgl: kej.tglRawat, no: "K-01", bruto: 8500000, diajukan: 8500000, disetujui: 0, catatan: "" }
+          ]
+        };
+      } else {
+        item = klaimList.find(k => k.id === selectedRowId);
+      }
+
+      if (item) {
+        currentKlaimObj = item;
+        openClaimDrawer(item);
+      }
+    }
+
+    function switchFormTab(tabId) {
+      document.getElementById("tab-data-kejadian").classList.add("hidden");
+      document.getElementById("tab-data-kuitansi").classList.add("hidden");
+      document.getElementById("tab-data-dokumen").classList.add("hidden");
+
+      const btnIds = ["btn-tab-data-kejadian", "btn-tab-data-kuitansi", "btn-tab-data-dokumen"];
+      btnIds.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.classList.remove("border-asabri-blue", "text-asabri-blue");
+          btn.classList.add("border-transparent", "text-slate-400");
+        }
+      });
+
+      document.getElementById(tabId).classList.remove("hidden");
+      document.getElementById("btn-" + tabId).classList.add("border-asabri-blue", "text-asabri-blue");
+    }
+
+    function updateRestitusiStepper(status) {
+      const line = document.getElementById("restitusi-stepper-line");
+      const steps = [
+        document.getElementById("r-step-2"),
+        document.getElementById("r-step-3"),
+        document.getElementById("r-step-4"),
+        document.getElementById("r-step-5"),
+        document.getElementById("r-step-6"),
+        document.getElementById("r-step-7")
+      ];
+      
+      steps.forEach(s => {
+        s.className = "w-6 h-6 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+      });
+
+      if (status === "Pengajuan") {
+        line.style.width = "0%";
+      } else if (status === "Verifikasi Dokumen" || status === "Verifikasi") {
+        line.style.width = "16%";
+        steps[0].className = "w-6 h-6 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+      } else if (status === "Verifikasi Medis") {
+        line.style.width = "33%";
+        steps[0].className = "w-6 h-6 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+        steps[1].className = "w-6 h-6 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+      } else if (status === "Persetujuan Verifikasi") {
+        line.style.width = "50%";
+        steps[0].className = "w-6 h-6 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+        steps[1].className = "w-6 h-6 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+        steps[2].className = "w-6 h-6 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+      } else if (status === "Keuangan") {
+        line.style.width = "83%";
+        steps.slice(0, 5).forEach(s => {
+          s.className = "w-6 h-6 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+        });
+      } else if (status === "Selesai") {
+        line.style.width = "100%";
+        steps.forEach(s => {
+          s.className = "w-6 h-6 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+        });
+      } else if (status === "Pending") {
+        line.style.width = "16%";
+        steps[0].className = "w-6 h-6 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center border border-white shadow mb-0.5 text-[9px]";
+      }
+    }
+
+    function openClaimDrawer(klaim) {
+      const modal = document.getElementById("claim-modal");
+      const drawer = document.getElementById("claim-drawer");
+
+      // Set Tab 1 Details
+      document.getElementById("v-no-kejadian").innerText = klaim.nomorKejadian;
+      document.getElementById("v-provider").innerText = klaim.provider;
+      document.getElementById("v-kejadian").innerText = klaim.kejadian;
+      document.getElementById("v-nrp").innerText = klaim.nrpNip;
+      document.getElementById("v-nik").innerText = klaim.ktpa;
+      document.getElementById("v-nama").innerText = klaim.nama;
+      document.getElementById("v-pangkat").innerText = klaim.pangkat || "Kolonel";
+      document.getElementById("v-unor").innerText = klaim.unor;
+      document.getElementById("v-cabang").innerText = klaim.cabang;
+      document.getElementById("v-pelapor").innerText = `${klaim.pelapor || '-'} (${klaim.telpPelapor || '-'})`;
+      document.getElementById("v-dates").innerText = `Lapor: ${formatIndoDate(klaim.tglLapor)} & Kejadian: ${formatIndoDate(klaim.tglKejadian)}`;
+      document.getElementById("v-tgl-rawat").innerText = formatIndoDate(klaim.tglRawat);
+      document.getElementById("v-cob").innerText = klaim.cob;
+      document.getElementById("v-layanan-kelas").innerText = `${klaim.layanan || 'Rawat Inap'} - ${klaim.kelas || 'VIP'}`;
+      document.getElementById("v-bank").innerText = klaim.bank || "Mandiri";
+      document.getElementById("v-rekening").innerText = `${klaim.rekening || '-'} (A.N. ${klaim.anRekening || '-'})`;
+      document.getElementById("v-catatan").innerText = klaim.catatanKejadian || "-";
+      document.getElementById("v-diagnosa-kejadian").innerText = klaim.diagnosaKejadian || "-";
+      document.getElementById("v-diagnosa-klaim").innerText = klaim.diagnosaKlaim || "-";
+
+      // Reset validation controls
+      document.querySelectorAll('input[name="verifikasiTab1"]').forEach(r => r.checked = (r.value === 'Tidak Lengkap'));
+      document.querySelectorAll('input[name="verifikasiTab2"]').forEach(r => r.checked = (r.value === 'Ada Item Tidak Dijamin'));
+      document.querySelectorAll('input[name="verifikasiTab3"]').forEach(r => r.checked = (r.value === 'Tidak Lengkap'));
+      document.getElementById("val-t1-catatan").value = "";
+      document.getElementById("val-t2-catatan").value = "";
+      document.getElementById("val-t3-catatan").value = "";
+
+      updateRestitusiStepper(klaim.status);
+      renderKuitansiVerifyList();
+      applyRolePermissions();
+
+      document.getElementById("drawer-subtitle").innerText = `Nomor Kejadian: ${klaim.nomorKejadian} | Nomor Klaim: ${klaim.nomorKlaim}`;
+      
+      modal.classList.remove("hidden");
+      setTimeout(() => { drawer.classList.remove("translate-x-full"); }, 50);
+      switchFormTab("tab-data-kejadian");
+    }
+
+    function closeClaimDrawer() {
+      const modal = document.getElementById("claim-modal");
+      const drawer = document.getElementById("claim-drawer");
+      drawer.classList.add("translate-x-full");
+      setTimeout(() => { modal.classList.add("hidden"); }, 300);
+      currentKlaimObj = null;
+    }
+
+    function renderKuitansiVerifyList() {
+      const tbody = document.getElementById("kuitansi-verify-tbody");
+      if (!tbody || !currentKlaimObj) return;
+
+      tbody.innerHTML = (currentKlaimObj.kuitansi || []).map((k, index) => {
+        return `
+          <tr class="hover:bg-slate-55">
+            <td class="py-2.5 px-3 font-bold text-slate-700">${k.jenis}</td>
+            <td class="py-2.5 px-3 text-slate-500">${k.no}</td>
+            <td class="py-2.5 px-3 font-mono text-slate-600">${formatIndoDate(k.tgl)}</td>
+            <td class="py-2.5 px-3 text-right font-mono font-semibold">${formatRupiah(k.bruto)}</td>
+            <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-800">${formatRupiah(k.diajukan)}</td>
+            <td class="py-2.5 px-3 text-right font-mono font-extrabold text-emerald-600">${formatRupiah(k.disetujui)}</td>
+            <td class="py-2.5 px-3 text-slate-500 font-semibold italic">${k.catatan || '-'}</td>
+            <td class="py-2.5 px-3 text-center">
+              <button type="button" onclick="openKuitansiItemModal(${index})" class="px-3 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[9px]"><i class="fas fa-check-to-slot"></i> Verifikasi Item</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      calculateVerifySummary();
+    }
+
+    function openKuitansiItemModal(index) {
+      selectedKuitansiIndex = index;
+      const k = currentKlaimObj.kuitansi[index];
+
+      document.getElementById("item-jenis").innerText = k.jenis;
+      document.getElementById("item-diajukan").innerText = formatRupiah(k.diajukan);
+      document.getElementById("item-disetujui-input").value = formatRupiah(k.disetujui || k.diajukan);
+      document.getElementById("item-catatan-input").value = k.catatan || "";
+
+      document.getElementById("kuitansi-item-modal").classList.remove("hidden");
+    }
+
+    function closeKuitansiItemModal() {
+      document.getElementById("kuitansi-item-modal").classList.add("hidden");
+    }
+
+    function submitItemVerification() {
+      if (selectedKuitansiIndex === null || !currentKlaimObj) return;
+
+      const disetujuiVal = parseRupiah(document.getElementById("item-disetujui-input").value);
+      const catatanVal = document.getElementById("item-catatan-input").value;
+
+      currentKlaimObj.kuitansi[selectedKuitansiIndex].disetujui = disetujuiVal;
+      currentKlaimObj.kuitansi[selectedKuitansiIndex].catatan = catatanVal;
+
+      closeKuitansiItemModal();
+      renderKuitansiVerifyList();
+    }
+
+    function calculateVerifySummary() {
+      if (!currentKlaimObj) return;
+      let totalDiajukan = 0;
+      let totalDisetujui = 0;
+
+      currentKlaimObj.kuitansi.forEach(k => {
+        totalDiajukan += k.diajukan;
+        totalDisetujui += k.disetujui || 0;
+      });
+
+      const selisih = Math.max(0, totalDiajukan - totalDisetujui);
+
+      document.getElementById("total-diajukan-lbl").innerText = formatRupiah(totalDiajukan);
+      document.getElementById("total-disetujui-lbl").innerText = formatRupiah(totalDisetujui);
+      document.getElementById("total-selisih-lbl").innerText = formatRupiah(selisih);
+    }
+
+    function previewDoc(name) {
+      alert(`[PREVIEW DOKUMEN]\nMembuka lampiran berkas digital untuk: ${name}.\nStatus berkas: Valid.`);
+    }
+
+    function checkFormValidity() {
+      const el1 = document.querySelector('input[name="verifikasiTab1"]:checked');
+      const el2 = document.querySelector('input[name="verifikasiTab2"]:checked');
+      const el3 = document.querySelector('input[name="verifikasiTab3"]:checked');
+
+      const v1 = el1 ? el1.value : '';
+      const v2 = el2 ? el2.value : '';
+      const v3 = el3 ? el3.value : '';
+
+      const tab1OK = v1 === 'Lengkap';
+      const tab2OK = v2 === 'Lengkap & Sesuai';
+      const tab3OK = v3 === 'Lengkap';
+
+      const allOK = tab1OK && tab2OK && tab3OK;
+
+      document.getElementById("btn-lanjut-klaim").disabled = !allOK;
+      document.getElementById("btn-pending-klaim").disabled = allOK;
+    }
+
+    function pendingKlaimAction() {
+      if (!currentKlaimObj) return;
+      currentKlaimObj.status = "Pending";
+      const existingIdx = klaimList.findIndex(k => k.nomorKlaim === currentKlaimObj.nomorKlaim);
+      if (existingIdx !== -1) {
+        klaimList[existingIdx] = currentKlaimObj;
+      } else {
+        klaimList.push(currentKlaimObj);
+      }
+      showToast("Klaim Pending", "Pengajuan klaim dikembalikan ke Pengaju untuk dokumen tambahan.", "warning");
+      closeClaimDrawer();
+      renderActiveTable();
+    }
+
+    function lanjutKlaimAction() {
+      if (!currentKlaimObj) return;
+      currentKlaimObj.status = "Verifikasi Medis";
+      const existingIdx = klaimList.findIndex(k => k.nomorKlaim === currentKlaimObj.nomorKlaim);
+      if (existingIdx !== -1) {
+        klaimList[existingIdx] = currentKlaimObj;
+      } else {
+        klaimList.push(currentKlaimObj);
+      }
+      showToast("Verifikasi Sukses", "Berkas klaim dilanjutkan ke tahap Verifikasi Medis.", "success");
+      closeClaimDrawer();
+      renderActiveTable();
+    }
+
+    function changeRole() {
+      const selected = document.getElementById("role-switcher").value;
+      localStorage.setItem('currentRole', selected);
+      showToast("Role Berubah", `Menu Pengajuan Klaim dipantau sebagai ${selected}`, "info");
+      applyRolePermissions();
+    }
+
+    function applyRolePermissions() {
+      const currentRole = localStorage.getItem('currentRole') || 'Staf KANCAB';
+      document.getElementById("role-switcher").value = currentRole;
+
+      const isStaf = currentRole === 'Staf KANCAB';
+      
+      document.querySelectorAll('input[type="radio"]').forEach(r => {
+        if (r.name.startsWith("verifikasiTab")) {
+          r.disabled = !isStaf;
+        }
+      });
+      document.querySelectorAll('textarea[id^="val-t"]').forEach(ta => {
+        ta.disabled = !isStaf;
+      });
+      document.querySelectorAll('#kuitansi-verify-tbody button').forEach(btn => {
+        btn.disabled = !isStaf;
+      });
+
+      // Update footer button states based on validity and role
+      if (!isStaf) {
+        document.getElementById("btn-lanjut-klaim").disabled = true;
+        document.getElementById("btn-pending-klaim").disabled = true;
+      } else {
+        checkFormValidity();
+      }
+    }
+
+    window.onload = function() {
+      toggleView();
+      applyRolePermissions();
+      
+      // format rupiah on input field in popup modal
+      document.getElementById("item-disetujui-input").addEventListener("input", function() {
+        const val = parseRupiah(this.value);
+        this.value = formatRupiah(val);
+      });
+    };
+  </script>
+</body>
+</html>

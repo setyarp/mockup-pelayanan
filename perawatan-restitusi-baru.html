@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Restitusi Baru)</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Sidebar Component -->
+  <script src="sidebar.js"></script>
+  <script src="shared.js?v=1.0.1"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide mr-1">ROLE :</span>
+        <select id="role-switcher" onchange="changeRole()" class="bg-transparent text-white font-semibold text-xs border-0 outline-none cursor-pointer focus:ring-0">
+          <option value="Staf KANCAB" class="text-slate-800" selected>Staf KANCAB</option>
+          <option value="Verifikator Medis" class="text-slate-800">Verifikator Medis</option>
+          <option value="KAKANCAB" class="text-slate-800">KAKANCAB</option>
+          <option value="Kabid/Kadiv Layanan" class="text-slate-800">Kabid/Kadiv Layanan</option>
+        </select>
+      </div>
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+    <div id="sidebar"></div>
+    <script>
+      renderSidebar('perawatan');
+    </script>
+
+    <!-- CONTENT -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <div class="bg-white border-b border-slate-200 px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+            <span>Perawatan JKK</span><span class="text-slate-400">/</span><span>Restitusi Perawatan</span><span class="text-slate-400">/</span><span class="font-bold text-asabri-blue">Pengajuan Baru</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+        <!-- FILTER & TOMBOL -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-end justify-between">
+          <div class="flex flex-wrap gap-4 items-center">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Entitas</label>
+              <select id="filter-entitas" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue text-slate-700 min-w-[150px]">
+                <option value="Semua">Semua</option>
+                <option value="Provider">Provider</option>
+                <option value="Peserta">Peserta</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Status</label>
+              <select id="filter-status" disabled class="bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none text-slate-500 min-w-[150px] cursor-not-allowed">
+                <option value="Pengajuan" selected>Pengajuan</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <button onclick="applyFilters()" class="px-5 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs flex items-center gap-2 transition-all">
+              <i class="fas fa-filter"></i> Filter
+            </button>
+          </div>
+        </div>
+
+        <!-- TABLE MONITORING -->
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-slate-150 bg-slate-50 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-file-invoice-dollar text-asabri-blue"></i>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Daftar Pengajuan Restitusi Baru</h3>
+            </div>
+            <span class="px-3 py-1 bg-rose-50 border border-rose-100 text-rose-700 rounded-full font-bold text-[10px]" id="data-count-badge">5 Pengajuan</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
+              <thead>
+                <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-500 uppercase font-bold text-[9px]">
+                  <th class="py-2.5 px-3">Status</th>
+                  <th class="py-2.5 px-3">Jenis Klaim</th>
+                  <th class="py-2.5 px-3">Nomor Kejadian</th>
+                  <th class="py-2.5 px-3">Nomor Klaim</th>
+                  <th class="py-2.5 px-3 font-mono">KTPA</th>
+                  <th class="py-2.5 px-3 font-mono">NRP/NIP</th>
+                  <th class="py-2.5 px-3">Nama</th>
+                  <th class="py-2.5 px-3">Unor</th>
+                  <th class="py-2.5 px-3">Provider</th>
+                  <th class="py-2.5 px-3">COB</th>
+                  <th class="py-2.5 px-3 font-mono">Tgl Lapor</th>
+                  <th class="py-2.5 px-3 font-mono">Tgl Kejadian</th>
+                  <th class="py-2.5 px-3 font-mono">Tgl Rawat</th>
+                  <th class="py-2.5 px-3">Pengguna</th>
+                  <th class="py-2.5 px-3">Kejadian</th>
+                  <th class="py-2.5 px-3 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="monitoring-tbody" class="divide-y divide-slate-100 font-medium text-slate-700">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2"></div>
+
+  <script>
+    // Initialize currentRole in localStorage if not set
+    if (!localStorage.getItem('currentRole')) {
+      localStorage.setItem('currentRole', 'Staf KANCAB');
+    }
+    document.getElementById("role-switcher").value = localStorage.getItem('currentRole');
+
+    function toggleSidebarAccordion(menuId, chevId) {
+      const menu = document.getElementById(menuId);
+      const chev = document.getElementById(chevId);
+      if (!menu || !chev) return;
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+      } else {
+        menu.classList.add('hidden');
+        chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+      }
+    }
+
+    function changeRole() {
+      const currentRole = document.getElementById("role-switcher").value;
+      localStorage.setItem('currentRole', currentRole);
+      showToast("Role Diubah", `Role saat ini diset sebagai ${currentRole}`, "info");
+    }
+
+    function showToast(title, message, type = "success") {
+      const container = document.getElementById("toast-container");
+      if (!container) return;
+      const toast = document.createElement("div");
+      toast.className = "flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xl w-80 animate-fade-in text-xs";
+      let iconColor = "text-emerald-500";
+      let iconClass = "fa-circle-check";
+      if (type === "warning") {
+        iconColor = "text-amber-500";
+        iconClass = "fa-triangle-exclamation";
+      } else if (type === "info") {
+        iconColor = "text-asabri-blue";
+        iconClass = "fa-circle-info";
+      }
+      toast.innerHTML = `
+        <i class="fas ${iconClass} ${iconColor} text-base mt-0.5"></i>
+        <div class="flex-1">
+          <div class="font-bold text-slate-800">${title}</div>
+          <div class="text-slate-500 mt-0.5">${message}</div>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
+          <i class="fas fa-xmark text-[10px]"></i>
+        </button>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 4000);
+    }
+
+    function formatIndoDate(dateStr) {
+      if (!dateStr || dateStr === "-") return '-';
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    // 5 Dummy Data rows status Pengajuan, entitas bervariasi
+    const dummyRestitusiBaru = [
+      {
+        id: 1,
+        status: "Pengajuan",
+        jenisKlaim: "Restitusi Perawatan JKK",
+        nomorKejadian: "KJD/KNC-JKT/08/2026/001",
+        nomorKlaim: "KLM-RES-2026-0001",
+        ktpa: "3273120105910003",
+        nrpNip: "311200923211",
+        nama: "Suhardi Prasetyo",
+        unor: "TNI-AD (KODAM JAYA)",
+        provider: "RSPAD Gatot Soebroto",
+        cob: "Jasa Raharja",
+        tglLapor: "2026-08-10",
+        tglKejadian: "2026-08-09",
+        tglRawat: "2026-08-09",
+        pengguna: "Suhardi Prasetyo (Peserta)",
+        kejadian: "Kecelakaan lalu lintas ganda saat berangkat dinas",
+        entitas: "Peserta"
+      },
+      {
+        id: 2,
+        status: "Pengajuan",
+        jenisKlaim: "Restitusi Perawatan JKK",
+        nomorKejadian: "KJD/KNC-BDG/08/2026/002",
+        nomorKlaim: "KLM-RES-2026-0002",
+        ktpa: "3578140902940004",
+        nrpNip: "3578140902940004",
+        nama: "Retno Wulandari",
+        unor: "TNI-AU (LANUD HUSEIN S.)",
+        provider: "RS Salamun Bandung",
+        cob: "-",
+        tglLapor: "2026-08-12",
+        tglKejadian: "2026-08-11",
+        tglRawat: "2026-08-11",
+        pengguna: "RS Salamun Bandung (Provider)",
+        kejadian: "Luka robek dan patah tulang akibat kecelakaan kerja di hanggar",
+        entitas: "Provider"
+      },
+      {
+        id: 3,
+        status: "Pengajuan",
+        jenisKlaim: "Restitusi Perawatan JKK",
+        nomorKejadian: "KJD/KNC-SMG/08/2026/003",
+        nomorKlaim: "KLM-RES-2026-0003",
+        ktpa: "3171092801890001",
+        nrpNip: "3171092801890001",
+        nama: "Dwi Cahyono",
+        unor: "POLRI (POLDA JATENG)",
+        provider: "RS Bhayangkara Semarang",
+        cob: "BPJS Kesehatan",
+        tglLapor: "2026-08-15",
+        tglKejadian: "2026-08-14",
+        tglRawat: "2026-08-14",
+        pengguna: "Dwi Cahyono (Peserta)",
+        kejadian: "Terjatuh saat melakukan patroli keamanan wilayah",
+        entitas: "Peserta"
+      },
+      {
+        id: 4,
+        status: "Pengajuan",
+        jenisKlaim: "Restitusi Perawatan JKK",
+        nomorKejadian: "KJD/KNC-JKT/08/2026/004",
+        nomorKlaim: "KLM-RES-2026-0004",
+        ktpa: "3374110304620002",
+        nrpNip: "3374110304620002",
+        nama: "Budi Santoso",
+        unor: "KEMHAN (Pusdatin)",
+        provider: "RS Pusat Otak Nasional",
+        cob: "-",
+        tglLapor: "2026-08-18",
+        tglKejadian: "2026-08-17",
+        tglRawat: "2026-08-17",
+        pengguna: "RS Pusat Otak Nasional (Provider)",
+        kejadian: "Stroke mendadak akibat kelelahan kerja ekstrem saat bertugas",
+        entitas: "Provider"
+      },
+      {
+        id: 5,
+        status: "Pengajuan",
+        jenisKlaim: "Restitusi Perawatan JKK",
+        nomorKejadian: "KJD/KNC-JKT/08/2026/005",
+        nomorKlaim: "KLM-RES-2026-0005",
+        ktpa: "3273120105910088",
+        nrpNip: "3273120105910088",
+        nama: "Eka Wijaya",
+        unor: "TNI-AL (MABESAL)",
+        provider: "RSAL Mintohardjo",
+        cob: "-",
+        tglLapor: "2026-08-19",
+        tglKejadian: "2026-08-18",
+        tglRawat: "2026-08-18",
+        pengguna: "Eka Wijaya (Peserta)",
+        kejadian: "Kecelakaan saat latihan simulasi penyelamatan laut",
+        entitas: "Peserta"
+      }
+    ];
+
+    function applyFilters() {
+      const entitas = document.getElementById("filter-entitas").value;
+      let filtered = dummyRestitusiBaru;
+
+      if (entitas !== "Semua") {
+        filtered = filtered.filter(item => item.entitas === entitas);
+      }
+
+      renderTable(filtered);
+    }
+
+    function renderTable(list) {
+      const tbody = document.getElementById("monitoring-tbody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      document.getElementById("data-count-badge").innerText = `${list.length} Pengajuan`;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="16" class="py-8 text-center text-slate-400 italic">Tidak ada data pengajuan baru</td></tr>`;
+        return;
+      }
+
+      list.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50/50 transition-colors";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full font-bold text-[9px] bg-rose-100 text-rose-700 border border-rose-200">${item.status}</span></td>
+          <td class="py-2.5 px-3 font-bold text-slate-700">${item.jenisKlaim}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-slate-800">${item.nomorKejadian}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-asabri-blue">${item.nomorKlaim}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${item.ktpa}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${item.nrpNip}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-700">${item.nama}</td>
+          <td class="py-2.5 px-3 text-slate-500">${item.unor}</td>
+          <td class="py-2.5 px-3 font-semibold text-slate-700">${item.provider}</td>
+          <td class="py-2.5 px-3 text-slate-500">${item.cob}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.tglLapor)}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.tglKejadian)}</td>
+          <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.tglRawat)}</td>
+          <td class="py-2.5 px-3 text-slate-500 font-semibold">${item.pengguna}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-700 leading-tight">${item.kejadian}</td>
+          <td class="py-2.5 px-3 text-center">
+            <button onclick="startProcessing(${item.id})" class="px-2 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[9px]"><i class="fas fa-arrow-right"></i> Proses</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function startProcessing(id) {
+      showToast("Memproses Pengajuan", "Restitusi diteruskan ke halaman Proses Restitusi.", "success");
+      setTimeout(() => {
+        window.location.href = `perawatan-restitusi-proses.html?openId=${id}`;
+      }, 1000);
+    }
+
+    window.onload = function() {
+      applyFilters();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Riwayat Transaksi)</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Sidebar Component -->
+  <script src="sidebar.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar for High Density look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .highlight-row {
+      background-color: #fef9c3 !important;
+      transition: background-color 0.5s ease;
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR / HEADER BAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <!-- ASABRI Logo & Branding -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right-side Topbar Controls -->
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide">ROLE : Staf KANCAB</span>
+      </div>
+      
+      <!-- Notification Bell -->
+      <div class="relative group cursor-pointer" id="header-notification-bell">
+        <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-150 relative">
+          <i class="fas fa-bell text-sm"></i>
+          <!-- Badge -->
+          <span id="header-notif-badge" class="absolute -top-1.5 -right-1.5 bg-rose-500 text-white font-extrabold text-[8px] w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-asabri-blue shadow-sm animate-bounce" style="width: 18px; height: 18px; display: none;">0</span>
+        </div>
+        <!-- Tooltip -->
+        <div class="absolute right-0 top-10 bg-slate-900 text-white text-[10px] font-bold px-3 py-2 rounded-lg shadow-xl pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col gap-1.5 w-64 z-50">
+          <div class="flex justify-between items-center border-b border-white/10 pb-1 mb-1">
+            <span class="text-asabri-gold uppercase tracking-wider text-[9px]"><i class="fas fa-triangle-exclamation mr-1"></i>Peringatan SLA</span>
+            <span class="text-[9px] text-white/50" id="header-notif-count">0 Klaim</span>
+          </div>
+          <p class="font-normal text-white/90 leading-tight">Ada klaim aktif yang mendekati (35-60 menit) atau telah melewati (60+ menit) batas SLA.</p>
+          <div id="header-notif-details" class="flex flex-col gap-1 mt-1 text-[9px] border-t border-white/5 pt-1"></div>
+        </div>
+      </div>
+
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- SIDEBAR: Navigation Panel -->
+    <div id="sidebar"></div>
+    <script>
+      renderSidebar('riwayat');
+    </script>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      
+      <!-- BREADCRUMB BAR -->
+      <div class="bg-white border-b border-slate-200 px-8 py-3 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-1 text-[11px] font-medium">
+          <span class="font-bold text-asabri-blue">Riwayat Transaksi</span>
+        </div>
+      </div>
+
+      <!-- WORKSPACE PANELS -->
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+
+        <!-- ==========================================
+             PANEL 1: TABLE VIEW (HISTORY LIST)
+             ========================================== -->
+        <section id="table-view" class="space-y-6">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <!-- Table Header -->
+            <div class="px-6 py-5 border-b border-slate-200 bg-slate-50/50 flex flex-wrap gap-4 items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-slate-800">Riwayat Seluruh Transaksi Registrasi</h3>
+                <p class="text-[10px] text-slate-400 uppercase mt-0.5 font-bold tracking-wider">Arsip Sinkronisasi YANDU NG</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="text" id="table-search-input" oninput="applyTableFilters()" placeholder="Cari NIP/NRP / NIK / Nama / No Reg..." class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs outline-none focus:border-asabri-blue w-64 font-medium shadow-inner">
+              </div>
+            </div>
+            
+            <!-- Table Sub-Header Filters -->
+            <div class="bg-slate-50/30 px-6 py-4 border-b border-slate-100 flex flex-wrap gap-4 items-center justify-between">
+              <div class="flex flex-wrap gap-4 items-center flex-1">
+                <div class="flex flex-col gap-1">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Status Berkas</span>
+                  <select id="filter-status" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-semibold text-slate-700 min-w-[120px]">
+                    <option value="All">All</option>
+                    <option value="Diterima">Diterima</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Ditolak">Ditolak</option>
+                  </select>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Sumber Pengajuan</span>
+                  <select id="filter-sumber" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-semibold text-slate-700 min-w-[130px]">
+                    <option value="All">Semua</option>
+                    <option value="Kantor Cabang">Kantor Cabang</option>
+                    <option value="ASABRI-link">ASABRI-link</option>
+                    <option value="Metadata Kemenkeu">Metadata Kemenkeu</option>
+                  </select>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Periode Tanggal</span>
+                  <div class="flex items-center gap-2">
+                    <input type="date" id="filter-start-date" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-medium text-slate-700">
+                    <span class="text-xs text-slate-400">s/d</span>
+                    <input type="date" id="filter-end-date" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-medium text-slate-700">
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button onclick="resetTableFilters()" class="bg-slate-100 hover:bg-slate-200 border border-slate-250 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+                  <i class="fas fa-undo text-[10px]"></i> Reset
+                </button>
+              </div>
+            </div>
+
+            <!-- Table Body -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="border-b border-slate-200 text-slate-400 uppercase text-[9px] font-bold tracking-wider bg-slate-50/30">
+                    <th class="py-3.5 px-6">Registrasi</th>
+                    <th class="py-3.5 px-6">NIP / NRP</th>
+                    <th class="py-3.5 px-6">Nama Peserta</th>
+                    <th class="py-3.5 px-6">Jenis Kejadian</th>
+                    <th class="py-3.5 px-6">Klaim Yang Didapatkan</th>
+                    <th class="py-3.5 px-6">Sumber</th>
+                    <th class="py-3.5 px-6">Status Klaim</th>
+                    <th class="py-3.5 px-6 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="riwayat-table-body" class="divide-y divide-slate-100 text-slate-600">
+                  <!-- Injected dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             PANEL 2: DETAIL VIEW (HISTORY VIEW DETAIL)
+             ========================================== -->
+        <section id="detail-view" class="space-y-6 hidden animate-fade-in">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            
+            <!-- Header Detail -->
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+              <div>
+                <h3 class="text-sm font-bold text-slate-800">Detail Arsip Data & Audit Trail Registrasi</h3>
+                <p class="text-[10px] text-slate-400 uppercase mt-0.5 font-bold tracking-wider">Histori Data & Arsip Berkas</p>
+              </div>
+              <span id="detail-status-badge" class="bg-slate-100 text-slate-700 text-[10px] font-bold px-3 py-1 rounded-full">Selesai</span>
+            </div>
+
+            <!-- Review & Verifikasi Content Layout -->
+            <div class="space-y-6">
+              
+              <!-- Card 1: Registrasi Pengajuan -->
+              <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm">
+                <h5 class="font-bold text-slate-800 flex items-center gap-2 uppercase tracking-wide text-xs border-b border-slate-200/80 pb-3 mb-4">
+                  <i class="fas fa-file-invoice text-sm text-asabri-blue"></i> 1. Registrasi Pengajuan
+                </h5>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-xs text-slate-600">
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">No. Registrasi</span>
+                    <strong id="det-no-reg" class="text-slate-800 font-extrabold text-xs block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Tanggal Pengajuan</span>
+                    <strong id="det-date-reg" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Jenis Pengajuan</span>
+                    <strong id="det-jenis" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Nomor Induk Kependudukan (NIK)</span>
+                    <strong id="det-nik" class="text-slate-800 font-mono font-bold block">-</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2: Data Diri Peserta -->
+              <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm">
+                <h5 class="font-bold text-slate-800 flex items-center gap-2 uppercase tracking-wide text-xs border-b border-slate-200/80 pb-3 mb-4">
+                  <i class="fas fa-user-circle text-sm text-asabri-blue"></i> 2. Data Diri Peserta
+                </h5>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-xs text-slate-600">
+                  <div class="col-span-1 md:col-span-2">
+                    <span class="text-slate-400 font-bold block mb-1">Nama Lengkap Sesuai KTP</span>
+                    <strong id="det-nama" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">NRP / NIP</span>
+                    <strong id="det-nrp" class="text-slate-800 font-mono font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Status Personil / Kepesertaan</span>
+                    <strong id="det-status-personil" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Angkatan Militer/Polri</span>
+                    <strong id="det-angkatan" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Organisasi Utama (UNOR)</span>
+                    <strong id="det-unor" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Unit Kerja (UKER)</span>
+                    <strong id="det-uker" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Kantor Cabang Pemroses</span>
+                    <strong id="det-kancab" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Nomor Telepon / HP</span>
+                    <strong id="det-telepon" class="text-slate-800 font-mono font-bold block">-</strong>
+                  </div>
+                  <div class="col-span-1 md:col-span-2">
+                    <span class="text-slate-400 font-bold block mb-1">Alamat Lengkap</span>
+                    <strong id="det-alamat" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">RT / RW</span>
+                    <strong id="det-rt-rw" class="text-slate-800 font-mono font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Provinsi</span>
+                    <strong id="det-provinsi" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Kota / Kabupaten</span>
+                    <strong id="det-kota" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Kecamatan</span>
+                    <strong id="det-kecamatan" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Desa / Kelurahan</span>
+                    <strong id="det-kelurahan" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Kode Pos</span>
+                    <strong id="det-kodepos" class="text-slate-800 font-mono font-bold block">-</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3: Berkas Persyaratan -->
+              <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm">
+                <h5 class="font-bold text-slate-800 flex items-center gap-2 uppercase tracking-wide text-xs border-b border-slate-200/80 pb-3 mb-4">
+                  <i class="fas fa-file-shield text-sm text-asabri-blue"></i> 3. Berkas Persyaratan (Klik berkas untuk pratinjau)
+                </h5>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  
+                  <div onclick="openDetDoc('ktp')" class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-asabri-blue hover:shadow-sm transition-all" id="det-box-ktp">
+                    <span id="det-icon-ktp"></span> 
+                    <div>
+                      <span class="text-slate-400 font-bold text-[9px] block">Berkas KTP</span>
+                      <span class="text-slate-600 font-bold text-[10px]" id="det-lbl-ktp">Belum Diunggah</span>
+                    </div>
+                  </div>
+
+                  <div onclick="openDetDoc('kk')" class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-asabri-blue hover:shadow-sm transition-all" id="det-box-kk">
+                    <span id="det-icon-kk"></span> 
+                    <div>
+                      <span class="text-slate-400 font-bold text-[9px] block">Berkas KK</span>
+                      <span class="text-slate-600 font-bold text-[10px]" id="det-lbl-kk">Belum Diunggah</span>
+                    </div>
+                  </div>
+
+                  <div onclick="openDetDoc('surat')" class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-asabri-blue hover:shadow-sm transition-all" id="det-box-surat">
+                    <span id="det-icon-surat"></span> 
+                    <div>
+                      <span class="text-slate-400 font-bold text-[9px] block" id="det-surat-title">Surat Pengajuan</span>
+                      <span class="text-slate-600 font-bold text-[10px]" id="det-lbl-surat">Belum Diunggah</span>
+                    </div>
+                  </div>
+
+                  <div onclick="openDetDoc('foto')" class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-asabri-blue hover:shadow-sm transition-all" id="det-box-foto">
+                    <span id="det-icon-foto"></span> 
+                    <div>
+                      <span class="text-slate-400 font-bold text-[9px] block">Foto Fisik</span>
+                      <span class="text-slate-600 font-bold text-[10px]" id="det-lbl-foto">Belum Diunggah</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Card 4: Log Audit Trail (Aktivitas Berkas) -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                <h5 class="font-bold text-slate-800 flex items-center gap-2 uppercase tracking-wide text-xs border-b border-slate-200 pb-3 mb-4">
+                  <i class="fas fa-route text-sm text-asabri-blue"></i> Log Audit Trail (Aktivitas Berkas)
+                </h5>
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                  <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                      <tr class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[9px] border-b border-slate-200 font-bold">
+                        <th class="p-3">Tanggal & Waktu</th>
+                        <th class="p-3">Petugas/User</th>
+                        <th class="p-3">Aksi</th>
+                        <th class="p-3">Keterangan</th>
+                      </tr>
+                    </thead>
+                    <tbody id="det-audit-trail-body" class="divide-y divide-slate-100 text-slate-600 font-medium">
+                      <!-- Injected dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Card 5: Ubah Status Berkas (Only for Pending) -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 border-amber-300 bg-amber-50/10" id="det-change-status-container">
+                <h5 class="font-bold text-slate-800 flex items-center gap-2 uppercase tracking-wide text-xs border-b border-amber-200 pb-3 mb-4">
+                  <i class="fas fa-circle-info text-sm text-amber-600"></i> Tindak Lanjut Berkas Ditangguhkan (Pending)
+                </h5>
+                <form onsubmit="handleStatusUpdateForm(event)" class="space-y-4">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1.5">
+                      <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Pilih Status Baru <span class="text-rose-500">*</span></label>
+                      <select id="update-status-select" class="border border-slate-200 bg-white rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30" onchange="toggleUpdateNotesRequired()" required>
+                        <option value="" disabled selected>-- Pilih Status Baru --</option>
+                        <option value="Diterima">Diterima (Berkas Lengkap & Valid)</option>
+                        <option value="Ditolak">Ditolak (Berkas Tidak Valid / Dibatalkan)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-1.5">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider" id="update-notes-label">Catatan Tindak Lanjut <span class="text-rose-500">*</span></label>
+                    <textarea id="update-status-notes" rows="3" placeholder="Masukkan detail alasan tindak lanjut berkas..." class="border border-slate-200 bg-white rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue resize-none" required></textarea>
+                  </div>
+                  <div class="flex justify-end pt-2">
+                    <button type="submit" class="bg-asabri-blue hover:bg-asabri-blueDark text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-100 flex items-center gap-1.5">
+                      <i class="fas fa-save"></i> Perbarui Status Berkas
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="border-t border-slate-200 pt-6 flex items-center justify-end gap-3">
+                <a id="btn-proses-workspace" href="#" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-100 flex items-center gap-1.5 hidden">
+                  <i class="fas fa-screwdriver-wrench"></i> Proses Berkas di Workspace
+                </a>
+                <button onclick="closeDetail()" class="px-5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-100 flex items-center gap-1.5">
+                  <i class="fas fa-arrow-left"></i> Kembali ke Riwayat
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- DEDICATED DOCUMENT PREVIEW MODAL -->
+  <div id="doc-preview-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
+    <div id="doc-preview-container" class="bg-white w-[550px] max-w-full rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300">
+      <!-- Header -->
+      <div class="bg-asabri-blue text-white px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2 text-sm font-bold">
+          <i class="fas fa-file-invoice text-asabri-gold"></i>
+          <span id="doc-preview-title">Pratinjau Dokumen</span>
+        </div>
+        <button onclick="closeDocPreviewModal()" class="text-white/80 hover:text-white"><i class="fas fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- Preview Body Area -->
+      <div class="p-6 bg-slate-100 flex items-center justify-center min-h-[300px]" id="doc-preview-body">
+        <!-- Content injected dynamically -->
+      </div>
+
+      <!-- Footer -->
+      <div class="bg-white px-6 py-4 border-t border-slate-200 flex justify-end">
+        <button onclick="closeDocPreviewModal()" class="px-4 py-2 border border-slate-250 hover:bg-slate-50 text-slate-600 rounded-xl text-xs font-bold transition-colors">Tutup Pratinjau</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared JS Layer -->
+  <script src="data.js?v=1.0.1"></script>
+  <script src="shared.js?v=1.0.1"></script>
+  
+  <script>
+    const DUMMY_TRANSAKSI = [
+      {
+        noRegistrasi: 'REG-2026-00101',
+        tanggal: '19 Agustus 2026',
+        nip: '197608192001121001',
+        namaPeserta: 'Ahmad Fauzi',
+        jenisKejadian: 'Pensiun',
+        klaimDidapatkan: 'TA + PP',
+        sumber: 'Kantor Cabang',
+        statusKlaim: 'Dokumen Diterima',
+        sla: '5 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00102',
+        tanggal: '19 Agustus 2026',
+        nip: '198109282005011002',
+        namaPeserta: 'Budi Santoso',
+        jenisKejadian: 'Pensiun',
+        klaimDidapatkan: 'TA + PP',
+        sumber: 'ASABRI-link',
+        statusKlaim: 'Menunggu Verifikasi',
+        sla: '12 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00103',
+        tanggal: '19 Agustus 2026',
+        nip: '198511222010122003',
+        namaPeserta: 'Kartika Sari',
+        jenisKejadian: 'Pensiun',
+        klaimDidapatkan: 'TA + PP',
+        sumber: 'Metadata Kemenkeu',
+        statusKlaim: 'Menunggu Verifikasi',
+        sla: '8 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00091',
+        tanggal: '10 Agustus 2026',
+        nip: '3273120105910003',
+        namaPeserta: 'Ahmad Fauzi',
+        jenisKejadian: 'Pensiun',
+        klaimDidapatkan: 'TA + PP',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Pembayaran Selesai',
+        sla: '10 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00090',
+        tanggal: '09 Agustus 2026',
+        nip: '3171092801890001',
+        namaPeserta: 'Wirata Atmaja',
+        jenisKejadian: 'Berhenti dengan Hak Tunjangan',
+        klaimDidapatkan: 'NTTA + Tunjangan Terbatas',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Diverifikasi',
+        sla: '25 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00089',
+        tanggal: '08 Agustus 2026',
+        nip: '3273120105910011',
+        namaPeserta: 'Bambang Triyono',
+        jenisKejadian: 'Berhenti tanpa Hak Pensiun',
+        klaimDidapatkan: 'NTTA + NTIP',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Dokumen Diterima',
+        sla: '20 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00088',
+        tanggal: '07 Agustus 2026',
+        nip: '3273120105910044',
+        namaPeserta: 'Siti Rahayu',
+        jenisKejadian: 'Istri/Suami Meninggal Dunia',
+        klaimDidapatkan: 'BPI/S',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Pembayaran Selesai',
+        sla: '15 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00087',
+        tanggal: '06 Agustus 2026',
+        nip: '3273120105910055',
+        namaPeserta: 'Hendra Kusuma',
+        jenisKejadian: 'Anak Meninggal Dunia',
+        klaimDidapatkan: 'BPA',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Disetujui',
+        sla: '30 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00086',
+        tanggal: '05 Agustus 2026',
+        nip: '3273120105910066',
+        namaPeserta: 'Rudi Santoso',
+        jenisKejadian: 'Meninggal Dunia dalam Dinas Aktif',
+        klaimDidapatkan: 'NTTA + SKS + UDW + Beasiswa',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Pending',
+        sla: '45 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00085',
+        tanggal: '04 Agustus 2026',
+        nip: '3273120105910077',
+        namaPeserta: 'Dedi Kurniawan',
+        jenisKejadian: 'Kecelakaan Kerja — Dirawat',
+        klaimDidapatkan: 'Perawatan JKK + Biaya Pengangkutan',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Diverifikasi',
+        sla: '35 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00084',
+        tanggal: '03 Agustus 2026',
+        nip: '3273120105910088',
+        namaPeserta: 'Eko Prasetyo',
+        jenisKejadian: 'Kecelakaan Kerja — Meninggal Dunia',
+        klaimDidapatkan: 'NTTA + SRKK + Biaya Pengangkutan + Beasiswa',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Dokumen Diterima',
+        sla: '40 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00083',
+        tanggal: '02 Agustus 2026',
+        nip: '3273120105910099',
+        namaPeserta: 'Fajar Nugroho',
+        jenisKejadian: 'Kecelakaan Kerja — Cacat Tetap Bekerja',
+        klaimDidapatkan: 'Santunan Cacat (SCDK)',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Disetujui',
+        sla: '20 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00082',
+        tanggal: '01 Agustus 2026',
+        nip: '3273120105910100',
+        namaPeserta: 'Gunawan Wibowo',
+        jenisKejadian: 'Kecelakaan Kerja — Cacat Pensiun',
+        klaimDidapatkan: 'Santunan Cacat + Tunjangan Cacat',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'SP Terbit',
+        sla: '50 menit',
+      },
+      // PESERTA PENSIUN
+      {
+        noRegistrasi: 'REG-2026-00081',
+        tanggal: '31 Juli 2026',
+        nip: '3273120105910111',
+        namaPeserta: 'Hartono Susilo',
+        jenisKejadian: 'Pensiun Sendiri — Meninggal Dunia',
+        klaimDidapatkan: 'BPPP + UDW',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Pembayaran Selesai',
+        sla: '15 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00080',
+        tanggal: '30 Juli 2026',
+        nip: '3273120105910122',
+        namaPeserta: 'Indah Permata',
+        jenisKejadian: 'Pensiun Sendiri — Istri/Suami Meninggal Dunia',
+        klaimDidapatkan: 'BPI/S',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Diverifikasi',
+        sla: '12 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00079',
+        tanggal: '29 Juli 2026',
+        nip: '3273120105910133',
+        namaPeserta: 'Joko Widodo',
+        jenisKejadian: 'Pensiun Sendiri — Anak Meninggal Dunia',
+        klaimDidapatkan: 'BPA',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Dokumen Diterima',
+        sla: '18 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00078',
+        tanggal: '28 Juli 2026',
+        nip: '3273120105910144',
+        namaPeserta: 'Kartika Sari',
+        jenisKejadian: 'Pensiun Warakawuri — Meninggal Dunia',
+        klaimDidapatkan: 'BPI/S + UDW',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Disetujui',
+        sla: '22 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00077',
+        tanggal: '27 Juli 2026',
+        nip: '3273120105910155',
+        namaPeserta: 'Lestari Dewi',
+        jenisKejadian: 'Tunjangan Yatim/Piatu/Yatim-Piatu — Meninggal',
+        klaimDidapatkan: 'Alih Status Tunjangan Yatim-Piatu',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Pending',
+        sla: '28 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00076',
+        tanggal: '26 Juli 2026',
+        nip: '3273120105910166',
+        namaPeserta: 'Mega Wulandari',
+        jenisKejadian: 'Tunjangan Yatim/Piatu/Yatim-Piatu — Dewasa',
+        klaimDidapatkan: 'Alih Status Tunjangan Yatim-Piatu',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Diverifikasi',
+        sla: '33 menit',
+      },
+      {
+        noRegistrasi: 'REG-2026-00075',
+        tanggal: '25 Juli 2026',
+        nip: '3273120105910177',
+        namaPeserta: 'Nugroho Santoso',
+        jenisKejadian: 'Tunjangan Orang Tua — Meninggal',
+        klaimDidapatkan: 'Alih Status Tunjangan Orang Tua',
+        sumber: 'Offline (Kantor Cabang)',
+        statusKlaim: 'Pembayaran Selesai',
+        sla: '16 menit',
+      },
+    ];
+
+    function getClaims() {
+      const stored = localStorage.getItem("asabri_claims");
+      let claims = [];
+      if (stored) {
+        try {
+          claims = JSON.parse(stored);
+        } catch (e) {
+          claims = [];
+        }
+      }
+      
+      const mappedDummy = DUMMY_TRANSAKSI.map(item => {
+        return {
+          noRegistrasi: item.noRegistrasi,
+          noAgenda: item.noRegistrasi,
+          nik: item.nip,
+          nrp: item.nip,
+          nrp_nip: item.nip,
+          namaPeserta: item.namaPeserta,
+          jenisKejadian: item.jenisKejadian,
+          jenisKlaim: item.jenisKejadian,
+          manfaatKlaim: item.klaimDidapatkan,
+          sumber: item.sumber,
+          sumberPengajuan: item.sumber,
+          tanggalRegistrasi: item.tanggal,
+          status: item.statusKlaim,
+          sla: { waktu: item.sla, status: 'normal' },
+          kantorCabang: "KC Utama Jakarta",
+          catatan: "Dummy data otomatis.",
+          dokumen: ["KTP.pdf"],
+          auditTrail: [{ tanggal: item.tanggal + " 09:00", user: "Sistem YANDU", aksi: "Registrasi Dibuat", keterangan: "Inisialisasi dummy data" }]
+        };
+      });
+
+      const dummyIds = new Set(mappedDummy.map(d => d.noRegistrasi));
+      const filteredStored = claims.filter(c => !dummyIds.has(c.noRegistrasi) && !dummyIds.has(c.noAgenda));
+
+      return [...mappedDummy, ...filteredStored];
+    }
+
+    let currentDetailClaim = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check for redirect toast message
+      const redirectToastTitle = sessionStorage.getItem("asabri_toast_title");
+      const redirectToastMessage = sessionStorage.getItem("asabri_toast_message");
+      const redirectToastType = sessionStorage.getItem("asabri_toast_type") || "success";
+      if (redirectToastTitle && redirectToastMessage) {
+        showToast(redirectToastTitle, redirectToastMessage, redirectToastType);
+        sessionStorage.removeItem("asabri_toast_title");
+        sessionStorage.removeItem("asabri_toast_message");
+        sessionStorage.removeItem("asabri_toast_type");
+      }
+
+      // Check deep link details or filter
+      const urlParams = new URLSearchParams(window.location.search);
+      const detailNoReg = urlParams.get('detail');
+      const isSlaFiltered = urlParams.get('filterSla') === 'active';
+
+      applyTableFilters();
+
+      const highlightId = urlParams.get('highlight');
+      if (highlightId) {
+        setTimeout(() => {
+          const targetRow = document.querySelector(`tr[data-registration-no="${highlightId}"]`);
+          if (targetRow) {
+            targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetRow.classList.add('highlight-row');
+          }
+        }, 100);
+      }
+
+      if (detailNoReg) {
+        openDetail(detailNoReg);
+      }
+      
+      if (isSlaFiltered) {
+        showToast("Penyaringan SLA", "Menampilkan daftar antrian kritis (mendekati/melewati SLA).");
+      }
+
+      // Listen for claims changes in storage to update live
+      window.addEventListener("storage", () => {
+        applyTableFilters();
+      });
+    });
+
+    // Render Riwayat Transaksi Table
+    function renderRiwayatTable(filteredData = null) {
+      const body = document.getElementById("riwayat-table-body");
+      const listToRender = filteredData || getClaims();
+
+      if (listToRender.length === 0) {
+        body.innerHTML = `
+          <tr>
+            <td colspan="12" class="py-12 text-center text-slate-400 font-medium">
+              <i class="fas fa-receipt text-2xl block mb-2"></i>
+              Tidak ada data transaksi yang tersimpan.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      body.innerHTML = listToRender.map(d => {
+        let statusBadge = "";
+        const stat = (d.status || "").toLowerCase();
+        if (stat.includes("pending")) {
+          statusBadge = `<span class="bg-amber-50 border border-amber-200 text-amber-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-hourglass-half text-amber-500"></i> Pending</span>`;
+        } else if (stat.includes("tolak")) {
+          statusBadge = `<span class="bg-rose-50 border border-rose-250 text-rose-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-circle-xmark text-rose-500"></i> Ditolak</span>`;
+        } else if (stat.includes("daftar")) {
+          statusBadge = `<span class="bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-id-card text-slate-500"></i> Terdaftar</span>`;
+        } else if (stat.includes("terima")) {
+          statusBadge = `<span class="bg-blue-50 border border-blue-200 text-blue-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-file-import text-blue-500"></i> Dokumen Diterima</span>`;
+        } else if (stat.includes("verifikasi") || stat.includes("verif")) {
+          statusBadge = `<span class="bg-indigo-50 border border-indigo-200 text-indigo-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-user-check text-indigo-500"></i> Diverifikasi</span>`;
+        } else if (stat.includes("setuju")) {
+          statusBadge = `<span class="bg-emerald-50 border border-emerald-250 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-circle-check text-emerald-500"></i> Disetujui</span>`;
+        } else if (stat.includes("sp terbit") || stat.includes("sp_terbit")) {
+          statusBadge = `<span class="bg-teal-50 border border-teal-200 text-teal-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-file-invoice-dollar text-teal-500"></i> SP Terbit</span>`;
+        } else if (stat.includes("proses") || stat.includes("bayar")) {
+          if (stat.includes("selesai")) {
+            statusBadge = `<span class="bg-green-100 border border-green-200 text-green-800 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-check-double text-green-600"></i> Selesai</span>`;
+          } else {
+            statusBadge = `<span class="bg-cyan-50 border border-cyan-200 text-cyan-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-spinner fa-spin text-cyan-500"></i> Proses Bayar</span>`;
+          }
+        } else if (stat.includes("selesai")) {
+          statusBadge = `<span class="bg-green-100 border border-green-200 text-green-800 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-circle-check text-green-600"></i> Selesai</span>`;
+        } else {
+          statusBadge = `<span class="bg-emerald-50 border border-emerald-250 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-circle-check text-emerald-500"></i> Diterima</span>`;
+        }
+
+        const NIP_NRP = d.peserta?.nrp_nip || d.participant?.nrp_nip || d.nrp || d.nrp_nip || d.nik || d.peserta?.nik || d.participant?.nik || '-';
+        const namaPeserta = d.peserta?.nama || d.participant?.nama || d.namaPeserta || d.nama || '-';
+        const JENIS_KEJADIAN_MAP = {
+          "jkk": (d.manfaatKlaim || "").toLowerCase().includes("perawatan") ? "Kecelakaan Kerja — Dirawat" : "Kecelakaan Kerja — Meninggal Dunia",
+          "jkm": "Meninggal Dunia dalam Dinas Aktif",
+          "tht": "Pensiun",
+          "ntip": "Berhenti tanpa Hak Pensiun",
+          "pensiun": "Pensiun"
+        };
+        const rawJenis = d.jenisKejadian || d.jenisKlaim || '—';
+        const jenisKejadian = JENIS_KEJADIAN_MAP[rawJenis.toLowerCase()] || rawJenis;
+        const sumberStr = d.sumber || d.sumberPengajuan || 'Kantor Cabang';
+        const noAgendaVal = d.noRegistrasi || d.noAgenda || '-';
+
+        const rawDate = d.tanggalRegistrasi || d.timestamp || '';
+        let dateVal = '—';
+        if (rawDate) {
+          const dateObj = new Date(rawDate);
+          if (!isNaN(dateObj.getTime())) {
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            dateVal = `${String(dateObj.getDate()).padStart(2, '0')} ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+          } else {
+            dateVal = rawDate;
+          }
+        }
+
+        let sourceBadge = `<span class="bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-semibold text-[10px]">${sumberStr}</span>`;
+        if (sumberStr === 'Kantor Cabang') {
+          sourceBadge = `<span class="bg-blue-50 border border-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-building mr-1"></i>${sumberStr}</span>`;
+        } else if (sumberStr === 'ASABRI-link') {
+          sourceBadge = `<span class="bg-emerald-50 border border-emerald-150 text-emerald-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-link mr-1"></i>${sumberStr}</span>`;
+        } else if (sumberStr === 'Metadata Kemenkeu') {
+          sourceBadge = `<span class="bg-purple-50 border border-purple-100 text-purple-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-file-invoice mr-1"></i>${sumberStr}</span>`;
+        } else {
+          const isOnline = sumberStr.toLowerCase().includes("mobile") || sumberStr.toLowerCase().includes("klik") || sumberStr.toLowerCase().includes("link") || sumberStr.toLowerCase().includes("online");
+          sourceBadge = isOnline
+            ? `<span class="bg-blue-50 border border-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-globe mr-1"></i>Online (${sumberStr})</span>`
+            : `<span class="bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-building mr-1"></i>Offline (${sumberStr})</span>`;
+        }
+
+        let slaContent = "";
+        if (stat.includes("tolak")) {
+          slaContent = `<span class="text-slate-400 font-medium font-mono">—</span>`;
+        } else if (stat.includes("pending")) {
+          slaContent = `
+            <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-slate-200 bg-slate-100 text-slate-500 text-[9px] font-bold">
+              <i class="fas fa-snowflake text-[9px] text-slate-400"></i>
+              <span>FREEZE</span>
+            </div>
+          `;
+        } else if (stat.includes("proses") || stat.includes("selesai") || stat.includes("bayar")) {
+          const waktuVal = (d.sla && d.sla.waktu) ? d.sla.waktu : "—";
+          slaContent = `
+            <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-500 text-[9px] font-bold">
+              <i class="fas fa-circle-check text-[9px] text-slate-400"></i>
+              <span>${waktuVal}</span>
+            </div>
+          `;
+        } else {
+          let minutes = 15;
+          let waktuStr = "15 menit";
+          if (d.sla && d.sla.waktu) {
+            waktuStr = d.sla.waktu;
+            minutes = parseInt(d.sla.waktu);
+            if (isNaN(minutes)) minutes = 15;
+          }
+
+          let slaColor = "text-emerald-700 bg-emerald-50 border-emerald-250";
+          let iconClass = "fa-clock";
+
+          if (minutes > 60) {
+            slaColor = "text-rose-700 bg-rose-50 border-rose-250 font-extrabold";
+            iconClass = "fa-triangle-exclamation text-rose-500 animate-pulse";
+          } else if (minutes > 35) {
+            slaColor = "text-amber-700 bg-amber-50 border-amber-200 animate-pulse";
+            iconClass = "fa-triangle-exclamation text-amber-500";
+          }
+
+          slaContent = `
+            <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-[9px] font-bold ${slaColor}">
+              <i class="fas ${iconClass} text-[9px]"></i>
+              <span>${waktuStr}</span>
+            </div>
+          `;
+        }
+
+        const productsList = d.manfaatKlaim ? d.manfaatKlaim.split(/[&,]/).map(p => p.trim()).filter(Boolean) : [];
+        const pCount = productsList.length;
+        const pText = pCount > 0 ? `${pCount} Produk (${productsList.join(', ')})` : '—';
+
+        const PENSIUN_EVENTS = [
+          "Pensiun Sendiri — Meninggal Dunia",
+          "Pensiun Sendiri — Istri/Suami Meninggal Dunia",
+          "Pensiun Sendiri — Anak Meninggal Dunia",
+          "Pensiun Warakawuri — Meninggal Dunia",
+          "Tunjangan Yatim/Piatu/Yatim-Piatu — Meninggal",
+          "Tunjangan Yatim/Piatu/Yatim-Piatu — Dewasa",
+          "Tunjangan Orang Tua — Meninggal"
+        ];
+        const isPensiunEvent = PENSIUN_EVENTS.includes(jenisKejadian);
+        const eventBadge = isPensiunEvent 
+          ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${jenisKejadian}</span>`
+          : `<span class="bg-blue-50 text-blue-700 border border-blue-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${jenisKejadian}</span>`;
+
+        return `
+          <tr class="hover:bg-slate-50/50 transition-colors border-b border-slate-100" data-registration-no="${noAgendaVal}">
+            <td class="py-3 px-6">
+              <div class="font-mono font-bold text-slate-800 text-xs">${noAgendaVal}</div>
+              <div class="text-[9px] text-slate-400 font-mono mt-0.5">${dateVal}</div>
+            </td>
+            <td class="py-3 px-6 font-mono text-xs">${NIP_NRP}</td>
+            <td class="py-3 px-6 font-semibold text-xs text-slate-700">${namaPeserta}</td>
+            <td class="py-3 px-6">${eventBadge}</td>
+            <td class="py-3 px-6"><span class="bg-blue-50 text-blue-700 border border-blue-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${pText}</span></td>
+            <td class="py-3 px-6">${sourceBadge}</td>
+            <td class="py-3 px-6">${statusBadge}</td>
+            <td class="py-3 px-6 text-center">
+              <button type="button" onclick="lihatDetail('${noAgendaVal}')" class="px-2.5 py-1.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-lg font-bold text-[10px] transition-colors inline-flex items-center gap-1 shadow-sm">
+                <i class="fas fa-eye text-[9px]"></i> Lihat Detail
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function applyTableFilters() {
+      const claims = getClaims();
+      
+      const search = document.getElementById("table-search-input").value.toLowerCase().trim();
+      const status = document.getElementById("filter-status").value;
+      const sumber = document.getElementById("filter-sumber").value;
+      const start = document.getElementById("filter-start-date").value;
+      const end = document.getElementById("filter-end-date").value;
+      
+      // SLA Filter from URL if active
+      const urlParams = new URLSearchParams(window.location.search);
+      const isSlaFiltered = urlParams.get('filterSla') === 'active';
+
+      let filtered = claims;
+
+      if (search) {
+        filtered = filtered.filter(c => 
+          (c.namaPeserta && c.namaPeserta.toLowerCase().includes(search)) ||
+          (c.nik && c.nik.toLowerCase().includes(search)) ||
+          (c.nrp && c.nrp.toLowerCase().includes(search)) ||
+          (c.nrp_nip && c.nrp_nip.toLowerCase().includes(search)) ||
+          (c.noRegistrasi && c.noRegistrasi.toLowerCase().includes(search))
+        );
+      }
+      
+      if (status !== "All") {
+        if (status === "Diterima") {
+          filtered = filtered.filter(c => c.status === "Diterima" || c.status === "Selesai");
+        } else {
+          filtered = filtered.filter(c => c.status === status);
+        }
+      }
+
+      if (sumber !== "All") {
+        filtered = filtered.filter(c => c.sumber === sumber);
+      }
+
+      if (start) {
+        filtered = filtered.filter(c => parseIndoDate(c.tanggalRegistrasi) >= new Date(start));
+      }
+      if (end) {
+        filtered = filtered.filter(c => parseIndoDate(c.tanggalRegistrasi) <= new Date(end));
+      }
+
+      if (isSlaFiltered) {
+        filtered = filtered.filter(c => 
+          c.slaProgress !== null && c.slaProgress >= 90
+        );
+      }
+
+      renderRiwayatTable(filtered);
+    }
+
+    function resetTableFilters() {
+      // Clear URL params without reloading
+      const url = new URL(window.location);
+      url.searchParams.delete('filterSla');
+      window.history.pushState({}, '', url);
+
+      document.getElementById("table-search-input").value = "";
+      document.getElementById("filter-status").value = "All";
+      document.getElementById("filter-sumber").value = "All";
+      document.getElementById("filter-start-date").value = "";
+      document.getElementById("filter-end-date").value = "";
+      applyTableFilters();
+      showToast("Filter Direset", "Menampilkan seluruh riwayat transaksi.");
+    }
+
+    function lihatDetail(noAgenda) {
+      // Remove highlight if present
+      const highlightedRow = document.querySelector(`tr[data-registration-no="${noAgenda}"]`);
+      if (highlightedRow) {
+        highlightedRow.classList.remove('highlight-row');
+      }
+
+      const claims = getClaims();
+      let klaim = claims.find(c => c.noRegistrasi === noAgenda || c.noAgenda === noAgenda);
+      if (!klaim && typeof DUMMY_TRANSAKSI !== 'undefined') {
+        const dummyFound = DUMMY_TRANSAKSI.find(c => c.noRegistrasi === noAgenda || c.noAgenda === noAgenda);
+        if (dummyFound) {
+          klaim = {
+            noRegistrasi: dummyFound.noRegistrasi,
+            noAgenda: dummyFound.noRegistrasi,
+            nik: dummyFound.nip,
+            nrp: dummyFound.nip,
+            nrp_nip: dummyFound.nip,
+            namaPeserta: dummyFound.namaPeserta,
+            jenisKejadian: dummyFound.jenisKejadian,
+            jenisKlaim: dummyFound.jenisKejadian,
+            manfaatKlaim: dummyFound.klaimDidapatkan,
+            sumber: dummyFound.sumber,
+            sumberPengajuan: dummyFound.sumber,
+            tanggalRegistrasi: dummyFound.tanggal,
+            status: dummyFound.statusKlaim,
+            sla: { waktu: dummyFound.sla, status: 'normal' },
+            kantorCabang: "KC Utama Jakarta",
+            catatan: "Dummy data otomatis.",
+            dokumen: ["KTP.pdf"],
+            auditTrail: [{ tanggal: dummyFound.tanggal + " 09:00", user: "Sistem YANDU", aksi: "Registrasi Dibuat", keterangan: "Inisialisasi dummy data" }]
+          };
+        }
+      }
+      
+      if (klaim) {
+        localStorage.setItem('detailKlaim', JSON.stringify(klaim));
+        localStorage.setItem('selectedNoAgenda', noAgenda);
+      }
+      window.location.href = `detail-registrasi.html?noAgenda=${noAgenda}`;
+    }
+
+    function openDetail(noReg) {
+      const claims = getClaims();
+      // Look up by noRegistrasi or noReg
+      const claim = claims.find(c => (c.noRegistrasi === noReg || c.noReg === noReg));
+      if (!claim) return;
+
+      currentDetailClaim = claim;
+
+      // Populate text fields
+      document.getElementById("det-no-reg").innerText = claim.noRegistrasi || claim.noReg;
+      document.getElementById("det-date-reg").innerText = claim.tanggalRegistrasi || claim.date || "2026-07-08";
+      document.getElementById("det-jenis").innerText = claim.jenisKlaim || claim.jenis || "-";
+      document.getElementById("det-nik").innerText = claim.nik || "-";
+      document.getElementById("det-nama").innerText = claim.namaPeserta || claim.nama || "-";
+      document.getElementById("det-nrp").innerText = claim.nrp || claim.nik || "-";
+      document.getElementById("det-status-personil").innerText = claim.statusPersonil || "Peserta ASABRI";
+      document.getElementById("det-angkatan").innerText = claim.angkatan || "-";
+      document.getElementById("det-unor").innerText = claim.unor || "-";
+      document.getElementById("det-uker").innerText = claim.unitKerja || claim.uker || "-";
+      document.getElementById("det-kancab").innerText = claim.kantorCabang || claim.kancab || "-";
+      document.getElementById("det-telepon").innerText = claim.telepon || "-";
+      document.getElementById("det-alamat").innerText = claim.alamat || "-";
+      document.getElementById("det-rt-rw").innerText = (claim.rt && claim.rw) ? `RT ${claim.rt} / RW ${claim.rw}` : "-";
+      document.getElementById("det-provinsi").innerText = claim.provinsi || "-";
+      document.getElementById("det-kota").innerText = claim.kota || "-";
+      document.getElementById("det-kecamatan").innerText = claim.kecamatan || "-";
+      document.getElementById("det-kelurahan").innerText = claim.kelurahan || "-";
+      document.getElementById("det-kodepos").innerText = claim.kodepos || "-";
+
+      // Status Badge
+      const statusBadge = document.getElementById("detail-status-badge");
+      statusBadge.innerText = claim.status;
+      if (claim.status === "Pending") {
+        statusBadge.className = "bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-bold px-3 py-1 rounded-full";
+      } else if (claim.status === "Ditolak") {
+        statusBadge.className = "bg-rose-50 border border-rose-250 text-rose-700 text-[10px] font-bold px-3 py-1 rounded-full";
+      } else {
+        // Status Diterima
+        statusBadge.className = "bg-emerald-50 border border-emerald-250 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full";
+      }
+
+      // Update document buttons
+      updateDetFileBadge(claim, "ktp");
+      updateDetFileBadge(claim, "kk");
+      updateDetFileBadge(claim, "surat");
+      updateDetFileBadge(claim, "foto");
+
+      // Render Audit Trail
+      const auditTrailBody = document.getElementById("det-audit-trail-body");
+      if (claim.auditTrail && claim.auditTrail.length > 0) {
+        auditTrailBody.innerHTML = claim.auditTrail.map(log => `
+          <tr class="border-b border-slate-100 hover:bg-slate-50/50">
+            <td class="p-3 font-mono text-slate-500 text-[10px] whitespace-nowrap">${log.tanggal}</td>
+            <td class="p-3 font-bold text-slate-700">${log.user}</td>
+            <td class="p-3"><span class="bg-slate-100 text-slate-800 border border-slate-200 px-1.5 py-0.5 rounded font-bold text-[9px]">${log.aksi}</span></td>
+            <td class="p-3 font-medium text-slate-500">${log.keterangan}</td>
+          </tr>
+        `).join("");
+      } else {
+        auditTrailBody.innerHTML = `
+          <tr>
+            <td colspan="4" class="p-4 text-center text-slate-400 font-medium">Tidak ada riwayat aktivitas.</td>
+          </tr>
+        `;
+      }
+
+      // Show/Hide Ubah Status Form
+      const changeStatusContainer = document.getElementById("det-change-status-container");
+      if (claim.status === "Pending") {
+        changeStatusContainer.classList.remove("hidden");
+        document.getElementById("update-status-select").value = "";
+        document.getElementById("update-status-notes").value = "";
+        toggleUpdateNotesRequired();
+      } else {
+        changeStatusContainer.classList.add("hidden");
+      }
+      
+      // Control proses-klaim.html workspace redirect button
+      const btnWorkspace = document.getElementById("btn-proses-workspace");
+      if (btnWorkspace) {
+        if (!["Dibayar", "Ditolak"].includes(claim.status)) {
+          let targetPage = "proses-klaim.html"; // fallback
+          const manfaat = claim.manfaatKlaim || "";
+          const jenis = claim.jenisKlaim || "";
+
+          if (jenis === "JKK Perawatan" || manfaat === "Perawatan" || manfaat.includes("Perawatan")) {
+            targetPage = "klaim-jkk-perawatan.html";
+          } else if (jenis === "JKK Santunan" || manfaat.startsWith("Santunan") || manfaat.includes("Santunan") || manfaat === "SCDK" || manfaat === "SCDB" || manfaat === "SRKK Gugur" || manfaat === "SRKK Tewas") {
+            targetPage = "klaim-jkk-santunan.html";
+          } else if (jenis === "JKm") {
+            targetPage = "klaim-jkm.html";
+          } else if (jenis === "THT" && (manfaat === "THT_AKTIF" || manfaat === "THT")) {
+            targetPage = "klaim-tht.html";
+          } else if (manfaat === "PP") {
+            targetPage = "klaim-pensiun-pp.html";
+          } else if (manfaat === "PPI") {
+            targetPage = "klaim-pensiun-warakawuri.html";
+          } else if (manfaat === "PPA") {
+            targetPage = "klaim-pensiun-yatim-piatu.html";
+          } else if (manfaat === "PPOR") {
+            targetPage = "klaim-pensiun-orang-tua.html";
+          } else if (manfaat === "UDW_PEMAKAMAN") {
+            targetPage = "klaim-pensiun-udw-pemakaman.html";
+          } else if (manfaat === "UKP") {
+            targetPage = "klaim-pensiun-ukp.html";
+          } else if (manfaat === "NTIP") {
+            targetPage = "klaim-pensiun-ntip.html";
+          }
+          btnWorkspace.href = `${targetPage}?noAgenda=${claim.noRegistrasi || claim.noReg}`;
+          btnWorkspace.classList.remove("hidden");
+        } else {
+          btnWorkspace.classList.add("hidden");
+        }
+      }
+
+      // Switch view
+      document.getElementById("table-view").classList.add("hidden");
+      document.getElementById("detail-view").classList.remove("hidden");
+    }
+
+    function closeDetail() {
+      currentDetailClaim = null;
+      document.getElementById("detail-view").classList.add("hidden");
+      document.getElementById("table-view").classList.remove("hidden");
+      applyTableFilters();
+    }
+
+    function updateDetFileBadge(claim, type) {
+      const hasFile = (claim.uploadedUrls && claim.uploadedUrls[type]) || (claim.uploadedUrls && claim.uploadedUrls[type.toUpperCase()]);
+      const box = document.getElementById(`det-box-${type}`);
+      const icon = document.getElementById(`det-icon-${type}`);
+      const lbl = document.getElementById(`det-lbl-${type}`);
+      if (!box || !icon || !lbl) return;
+
+      if (hasFile) {
+        box.className = "flex items-center gap-3 p-3 rounded-xl border border-emerald-200 bg-emerald-50/50 cursor-pointer hover:border-emerald-400 hover:shadow-sm transition-all";
+        icon.className = "w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px]";
+        icon.innerHTML = `<i class="fas fa-check"></i>`;
+        lbl.className = "text-emerald-700 font-bold text-[10px]";
+        lbl.innerText = "Sudah Diunggah";
+      } else {
+        // Fallback for static mock files or missing files
+        if (claim.noRegistrasi && claim.noRegistrasi.startsWith("REG-2025-000")) {
+          box.className = "flex items-center gap-3 p-3 rounded-xl border border-emerald-200 bg-emerald-50/50 cursor-pointer hover:border-emerald-400 hover:shadow-sm transition-all";
+          icon.className = "w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px]";
+          icon.innerHTML = `<i class="fas fa-check"></i>`;
+          lbl.className = "text-emerald-700 font-bold text-[10px]";
+          lbl.innerText = "Sudah Diunggah (Mock)";
+        } else {
+          box.className = "flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-asabri-blue hover:shadow-sm transition-all";
+          icon.className = "w-6 h-6 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center text-[10px]";
+          icon.innerHTML = `<i class="fas fa-xmark"></i>`;
+          lbl.className = "text-rose-600 font-bold text-[10px]";
+          lbl.innerText = "Belum Diunggah";
+        }
+      }
+    }
+
+    function openDetDoc(type) {
+      if (!currentDetailClaim) return;
+      const claim = currentDetailClaim;
+      const titleSpan = document.getElementById("doc-preview-title");
+      const bodyDiv = document.getElementById("doc-preview-body");
+      const container = document.getElementById("doc-preview-container");
+
+      let docName = "";
+      if (type === 'ktp') {
+        docName = "Kartu Tanda Penduduk (KTP)";
+      } else if (type === 'kk') {
+        docName = "Kartu Keluarga (KK)";
+      } else if (type === 'surat') {
+        docName = "Surat Registrasi Klaim";
+      } else if (type === 'foto') {
+        docName = "Foto Fisik Peserta";
+      }
+
+      titleSpan.innerText = `Pratinjau ${docName}`;
+
+      let fileUrl = claim.uploadedUrls ? (claim.uploadedUrls[type] || claim.uploadedUrls[type.toUpperCase()]) : null;
+      let fileType = claim.uploadedTypes ? (claim.uploadedTypes[type] || claim.uploadedTypes[type.toUpperCase()]) : null;
+
+      // Fallback for static mock files
+      if (!fileUrl && claim.noRegistrasi && claim.noRegistrasi.startsWith("REG-2025-000")) {
+        fileUrl = "mock";
+        fileType = "image/png";
+      }
+
+      let htmlContent = "";
+      if (fileUrl) {
+        if (fileUrl === "mock") {
+          htmlContent = `
+            <div class="flex flex-col items-center gap-3 w-full">
+              <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Berkas Arsip Kepesertaan (${docName})</span>
+              <div class="border border-slate-200 rounded-xl bg-white p-6 shadow-md flex flex-col items-center justify-center text-center gap-2 w-full max-w-[480px] h-[340px]">
+                <i class="fas fa-file-invoice text-5xl text-asabri-blue"></i>
+                <strong class="text-xs text-slate-800 uppercase mt-2">${docName} - ${claim.namaPeserta}</strong>
+                <p class="text-[10px] text-slate-400 max-w-[280px]">Berkas digital hasil arsip pendaftaran offline sistem kepesertaan ASABRI.</p>
+              </div>
+            </div>
+          `;
+        } else if (fileType === 'application/pdf' || fileType.includes('/pdf')) {
+          container.className = "bg-white w-[750px] max-w-[95vw] h-[80vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300";
+          bodyDiv.className = "p-2 bg-slate-150 flex-1 flex items-center justify-center overflow-hidden";
+          htmlContent = `<iframe src="${fileUrl}" class="w-full h-full rounded-xl border-0" style="background: white;"></iframe>`;
+        } else {
+          container.className = "bg-white w-[550px] max-w-full rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300";
+          bodyDiv.className = "p-6 bg-slate-100 flex items-center justify-center min-h-[300px]";
+          htmlContent = `
+            <div class="flex flex-col items-center gap-3 w-full">
+              <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Berkas Unggahan (${docName})</span>
+              <div class="border border-slate-200 rounded-xl bg-white p-3 shadow-md flex items-center justify-center w-full max-w-[480px] h-[340px]">
+                <img src="${fileUrl}" class="max-w-full max-h-full rounded-lg object-contain animate-fade-in" alt="${docName}">
+              </div>
+            </div>
+          `;
+        }
+      } else {
+        container.className = "bg-white w-[550px] max-w-full rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300";
+        bodyDiv.className = "p-6 bg-slate-100 flex items-center justify-center min-h-[300px]";
+        htmlContent = `
+          <div class="flex flex-col items-center justify-center text-center gap-2 p-8 text-slate-400 w-full">
+            <i class="fas fa-file-arrow-up text-4xl text-slate-350"></i>
+            <strong class="text-xs font-bold text-slate-700 mt-2">Belum Ada Berkas Diunggah</strong>
+            <p class="text-[10px] text-slate-400 max-w-[280px]">Persyaratan ${docName} tidak diunggah saat registrasi.</p>
+          </div>
+        `;
+      }
+
+      bodyDiv.innerHTML = htmlContent;
+
+      const modal = document.getElementById("doc-preview-modal");
+      modal.classList.remove("opacity-0", "pointer-events-none");
+    }
+
+    function closeDocPreviewModal() {
+      const modal = document.getElementById("doc-preview-modal");
+      modal.classList.add("opacity-0", "pointer-events-none");
+    }
+
+    function toggleUpdateNotesRequired() {
+      const status = document.getElementById("update-status-select").value;
+      const notes = document.getElementById("update-status-notes");
+      const label = document.getElementById("update-notes-label");
+      
+      if (status === "Ditolak") {
+        notes.setAttribute("required", "true");
+        label.innerHTML = `Catatan Tindak Lanjut <span class="text-rose-500">*</span>`;
+        notes.placeholder = "Masukkan detail alasan penolakan tindak lanjut berkas (Wajib)...";
+      } else {
+        notes.removeAttribute("required");
+        label.innerHTML = `Catatan Tindak Lanjut`;
+        notes.placeholder = "Masukkan detail alasan tindak lanjut berkas (Opsional)...";
+      }
+    }
+
+    function handleStatusUpdateForm(e) {
+      e.preventDefault();
+      if (!currentDetailClaim) return;
+      
+      const newStatus = document.getElementById("update-status-select").value;
+      const notes = document.getElementById("update-status-notes").value.trim();
+      
+      if (newStatus === "Ditolak" && !notes) {
+        showToast("Catatan Wajib", "Harap isi catatan penolakan.");
+        return;
+      }
+      
+      const res = updateClaimStatus(currentDetailClaim.noRegistrasi || currentDetailClaim.noReg, newStatus, notes);
+      if (res) {
+        showToast("Status Diperbarui", `Berkas ${currentDetailClaim.noRegistrasi || currentDetailClaim.noReg} telah diubah menjadi ${newStatus}.`);
+        // Refresh open detail view
+        openDetail(currentDetailClaim.noRegistrasi || currentDetailClaim.noReg);
+      } else {
+        showToast("Gagal Memperbarui", "Terjadi kesalahan memperbarui status berkas.");
+      }
+    }
+
+    function parseIndoDate(dateStr) {
+      if (!dateStr) return new Date();
+      if (dateStr.includes("-")) return new Date(dateStr);
+      
+      const months = {
+        januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5,
+        juli: 6, agustus: 7, september: 8, oktober: 9, november: 10, desember: 11,
+        jan: 0, feb: 1, mar: 2, apr: 3, mei: 4, jun: 5, jul: 6, agu: 7, sep: 8, okt: 9, nov: 10, des: 11
+      };
+      
+      const parts = dateStr.toLowerCase().split(" ");
+      if (parts.length === 3) {
+        const day = parseInt(parts[0], 10);
+        const month = months[parts[1]] !== undefined ? months[parts[1]] : 0;
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
+      return new Date(dateStr);
+    }
+  </script>
+
+  <script>
+    if (typeof toggleSidebarAccordion === 'undefined') {
+      function toggleSidebarAccordion(menuId, chevId) {
+        const menu = document.getElementById(menuId);
+        const chev = document.getElementById(chevId);
+        if (!menu || !chev) return;
+        if (menu.classList.contains('hidden')) {
+          menu.classList.remove('hidden');
+          chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+        } else {
+          menu.classList.add('hidden');
+          chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

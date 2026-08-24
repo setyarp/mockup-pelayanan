@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Dashboard Utama)</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Sidebar Component -->
+  <script src="sidebar.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar for High Density look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR / HEADER BAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+    <div class="flex items-center gap-5">
+      <!-- ASABRI Logo & Branding -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+          </svg>
+          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+        </div>
+        <div class="h-6 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right-side Topbar Controls -->
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide">ROLE : Staf KANCAB</span>
+      </div>
+      
+      <!-- Notification Bell -->
+      <div class="relative group cursor-pointer" id="header-notification-bell">
+        <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-150 relative">
+          <i class="fas fa-bell text-sm"></i>
+          <!-- Badge -->
+          <span id="header-notif-badge" class="absolute -top-1.5 -right-1.5 bg-rose-500 text-white font-extrabold text-[8px] w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-asabri-blue shadow-sm animate-bounce" style="width: 18px; height: 18px; display: none;">0</span>
+        </div>
+        <!-- Tooltip -->
+        <div class="absolute right-0 top-10 bg-slate-900 text-white text-[10px] font-bold px-3 py-2 rounded-lg shadow-xl pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col gap-1.5 w-64 z-50">
+          <div class="flex justify-between items-center border-b border-white/10 pb-1 mb-1">
+            <span class="text-asabri-gold uppercase tracking-wider text-[9px]"><i class="fas fa-triangle-exclamation mr-1"></i>Peringatan SLA</span>
+            <span class="text-[9px] text-white/50" id="header-notif-count">0 Klaim</span>
+          </div>
+          <p class="font-normal text-white/90 leading-tight">Ada klaim aktif yang mendekati (35-60 menit) atau telah melewati (60+ menit) batas SLA.</p>
+          <div id="header-notif-details" class="flex flex-col gap-1 mt-1 text-[9px] border-t border-white/5 pt-1"></div>
+        </div>
+      </div>
+
+      <div class="h-8 w-px bg-white/10"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- SIDEBAR: Navigation Panel (Light Blue Background) -->
+    <div id="sidebar"></div>
+    <script>
+      renderSidebar('dashboard');
+    </script>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      
+      <!-- BREADCRUMB BAR (No more horizontal tabs) -->
+      <div class="bg-white border-b border-slate-200 px-8 py-3 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-1 text-[11px] font-medium">
+          <span class="font-bold text-asabri-blue">Dashboard Utama</span>
+        </div>
+      </div>
+
+      <!-- WORKSPACE PANELS -->
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+
+        <!-- ==========================================
+             PANEL: DASHBOARD UTAMA
+             ========================================== -->
+        <section class="space-y-6">
+
+          <!-- Filter Bar Above Summary Cards -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-end justify-between">
+            <div class="flex flex-wrap gap-5 items-center flex-1">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Sumber Pengajuan</label>
+                <select id="filter-sumber" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 font-semibold text-slate-700 min-w-[150px]">
+                  <option value="All">All</option>
+                  <option value="On the Spot">On the Spot</option>
+                  <option value="Ekspedisi/Pos">Ekspedisi/Pos</option>
+                  <option value="Klik ASABRI">Klik ASABRI</option>
+                  <option value="ASABRI Link">ASABRI Link</option>
+                  <option value="ASABRI Mobile">ASABRI Mobile</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kantor Cabang</label>
+                <select id="filter-kancab" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 font-semibold text-slate-700 min-w-[180px]">
+                  <option value="All">All</option>
+                  <option value="KC Utama Jakarta">KC Utama Jakarta</option>
+                  <option value="KC Bandung">KC Bandung</option>
+                  <option value="KC Surabaya">KC Surabaya</option>
+                  <option value="KC Medan">KC Medan</option>
+                  <option value="KC Makassar">KC Makassar</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Periode Pengajuan</label>
+                <div class="flex items-center gap-2">
+                  <input type="date" id="filter-start-date" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue text-slate-700 font-semibold">
+                  <span class="text-xs text-slate-400">s/d</span>
+                  <input type="date" id="filter-end-date" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue text-slate-700 font-semibold">
+                </div>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="applyFilters()" class="bg-asabri-blue hover:bg-asabri-blueDark text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-100 flex items-center gap-1.5">
+                <i class="fas fa-filter text-[10px]"></i> Terapkan
+              </button>
+              <button onclick="resetFilters()" class="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+                <i class="fas fa-undo text-[10px]"></i> Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Metric Cards Grid (5 columns) -->
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <!-- Card 1: Total -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div class="space-y-1">
+                <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block leading-snug">Total Hari Ini</span>
+                <h3 class="text-2xl font-extrabold text-slate-800" id="stat-total">0</h3>
+              </div>
+              <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-lg">
+                <i class="fas fa-file-invoice"></i>
+              </div>
+            </div>
+            <!-- Card 2: Diterima -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div class="space-y-1">
+                <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block leading-snug">Jumlah Diterima</span>
+                <h3 class="text-2xl font-extrabold text-slate-800" id="stat-diterima">0</h3>
+              </div>
+              <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-lg">
+                <i class="fas fa-circle-check"></i>
+              </div>
+            </div>
+            <!-- Card 3: Ditolak -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div class="space-y-1">
+                <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block leading-snug">Jumlah Ditolak</span>
+                <h3 class="text-2xl font-extrabold text-slate-800" id="stat-ditolak">0</h3>
+              </div>
+              <div class="w-10 h-10 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center text-lg">
+                <i class="fas fa-circle-xmark"></i>
+              </div>
+            </div>
+            <!-- Card 4: Pending -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div class="space-y-1">
+                <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block leading-snug">Jumlah Pending</span>
+                <h3 class="text-2xl font-extrabold text-slate-800" id="stat-pending">0</h3>
+              </div>
+              <div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-lg">
+                <i class="fas fa-clock"></i>
+              </div>
+            </div>
+            <!-- Card 5: Mendekati SLA -->
+            <div class="bg-white p-5 rounded-2xl border border-amber-300 bg-amber-50/20 shadow-sm flex items-center justify-between">
+              <div class="space-y-1">
+                <span class="text-amber-800 text-[10px] font-bold uppercase tracking-wider block leading-snug">Mendekati SLA</span>
+                <h3 class="text-2xl font-extrabold text-amber-700" id="stat-sla-warning">0</h3>
+              </div>
+              <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-lg animate-pulse">
+                <i class="fas fa-clock"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- ROW 1: 2-Column Responsive Charts Grid (Diameter minimal 200px) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Card 1: Ringkasan Status Registrasi -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+              <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Ringkasan Status Registrasi</h3>
+              <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 py-6 flex-1">
+                <!-- Donut Chart Container Wrapper -->
+                <div class="relative w-48 h-48 md:w-52 md:h-52 xl:w-56 xl:h-56 flex-shrink-0">
+                  <svg id="status-donut-svg" viewBox="0 0 100 100" class="w-full h-full -rotate-90">
+                    <!-- Circles generated dynamically -->
+                  </svg>
+                  <!-- Donut Hole -->
+                  <div class="absolute inset-[15%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner pointer-events-none">
+                    <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest leading-none">Total</span>
+                    <span class="text-2xl md:text-3xl font-black text-slate-800 mt-1" id="status-total-donut">0</span>
+                  </div>
+                  <!-- Tooltip Box -->
+                  <div id="status-chart-tooltip" class="absolute bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-xl pointer-events-none opacity-0 transition-all duration-200 flex flex-col items-center whitespace-nowrap z-30" style="top: -45px; left: 50%; transform: translateX(-50%);">
+                    <span>Label</span>
+                    <span class="text-asabri-gold mt-0.5 font-bold">Value</span>
+                    <!-- Down arrow -->
+                    <div class="w-1.5 h-1.5 bg-slate-900 rotate-45 absolute -bottom-0.5 left-1/2 -translate-x-1/2"></div>
+                  </div>
+                </div>
+                <!-- Legend list -->
+                <div class="flex-1 w-full space-y-2.5" id="status-legend-list">
+                  <!-- Generated dynamically -->
+                </div>
+              </div>
+              <p class="text-[10px] text-slate-400 font-semibold border-t border-slate-100 pt-3"><i class="fas fa-circle-info text-slate-350 mr-1"></i> Arahkan kursor ke legend untuk rincian data</p>
+            </div>
+
+            <!-- Card 2: Monitoring SLA -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+              <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Monitoring SLA</h3>
+              <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 py-6 flex-1">
+                <!-- Donut Chart Container Wrapper -->
+                <div class="relative w-48 h-48 md:w-52 md:h-52 xl:w-56 xl:h-56 flex-shrink-0">
+                  <svg id="sla-donut-svg" viewBox="0 0 100 100" class="w-full h-full -rotate-90">
+                    <!-- Circles generated dynamically -->
+                  </svg>
+                  <!-- Donut Hole -->
+                  <div class="absolute inset-[15%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner pointer-events-none">
+                    <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest leading-none">Total</span>
+                    <span class="text-2xl md:text-3xl font-black text-slate-800 mt-1" id="sla-total-donut">0</span>
+                  </div>
+                  <!-- Tooltip Box -->
+                  <div id="sla-chart-tooltip" class="absolute bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-xl pointer-events-none opacity-0 transition-all duration-200 flex flex-col items-center whitespace-nowrap z-30" style="top: -45px; left: 50%; transform: translateX(-50%);">
+                    <span>Label</span>
+                    <span class="text-asabri-gold mt-0.5 font-bold">Value</span>
+                    <!-- Down arrow -->
+                    <div class="w-1.5 h-1.5 bg-slate-900 rotate-45 absolute -bottom-0.5 left-1/2 -translate-x-1/2"></div>
+                  </div>
+                </div>
+                <!-- Legend list -->
+                <div class="flex-1 w-full space-y-2.5" id="sla-legend-list">
+                  <!-- Generated dynamically -->
+                </div>
+              </div>
+              <p class="text-[10px] text-slate-400 font-semibold border-t border-slate-100 pt-3"><i class="fas fa-circle-info text-slate-350 mr-1"></i> Arahkan kursor ke legend untuk rincian data</p>
+            </div>
+
+          </div>
+
+          <!-- Real-Time JKK Notification Container (NEW) -->
+          <div id="jkk-notification-box" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 hidden animate-fade-in">
+            <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3 flex justify-between items-center mb-4">
+              <span class="flex items-center gap-2"><i class="fas fa-bell text-rose-500"></i> Laporan JKK Baru Masuk</span>
+              <button onclick="clearJKKNotifications()" class="text-[9px] bg-slate-100 hover:bg-slate-200 text-slate-650 border border-slate-200 px-2 py-0.5 rounded font-bold">Tandai Dibaca</button>
+            </h3>
+            <div id="jkk-notification-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <!-- Dynamically populated JKK notifications -->
+            </div>
+          </div>
+
+          <!-- ROW 1.5: Critical SLA Alerts (Full Width) -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3 flex justify-between items-center mb-4">
+              <span class="flex items-center gap-2"><i class="fas fa-triangle-exclamation text-amber-500"></i> Antrian Berkas Kritis (Mendekati / Melewati Batas SLA)</span>
+              <span class="text-[9px] bg-rose-55 text-rose-700 border border-rose-200 px-2 py-0.5 rounded font-mono font-bold animate-pulse" id="stat-sla-critical-count" style="background-color: #ffe4e6;">0 Berkas</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="sla-warning-list">
+              <!-- Injected dynamically via JS -->
+            </div>
+            <div class="text-center pt-4 border-t border-slate-100 mt-4">
+              <a href="riwayat.html?filterSla=active" class="text-xs text-asabri-blue font-bold hover:underline inline-flex items-center gap-1">Lihat Rincian Antrian SLA <i class="fas fa-chevron-right text-[9px]"></i></a>
+            </div>
+          </div>
+
+          <!-- ROW 2: Antrian Klaim Terbaru Table -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between">
+              <h3 class="text-sm font-bold text-slate-800">Antrian Klaim Terbaru</h3>
+              <span class="text-[9px] bg-slate-100 text-slate-500 border border-slate-200 px-2 py-0.5 rounded font-mono font-bold">Menampilkan 5 Data Terbaru</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-200 text-slate-400 uppercase text-[9px] font-bold tracking-wider bg-slate-50/30">
+                    <th class="py-3 px-6">Tanggal Registrasi<br>No. Registrasi</th>
+                    <th class="py-3 px-6">NIP/NRP</th>
+                    <th class="py-3 px-6">Nama Peserta</th>
+                    <th class="py-3 px-6">Jenis Kejadian</th>
+                    <th class="py-3 px-6">Klaim yang didapatkan</th>
+                    <th class="py-3 px-6">Sumber</th>
+                    <th class="py-3 px-6">Status Klaim</th>
+                    <th class="py-3 px-6 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-xs text-slate-600">
+                  <!-- Injected dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+            
+            <a href="riwayat.html" class="text-[10px] text-asabri-blue font-bold text-center block hover:underline py-3 bg-slate-50/30 border-t border-slate-100">Lihat Semua Antrian <i class="fas fa-chevron-right text-[8px]"></i></a>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Shared JS Layer -->
+  <script src="data.js?v=1.0.1"></script>
+  <script src="shared.js?v=1.0.1"></script>
+  <script>
+    // Helper to render dynamic SVG Donut Chart (Diameter responsive minimal 200px)
+    function renderDonutChart(svgId, totalId, tooltipId, data) {
+      const svg = document.getElementById(svgId);
+      const totalEl = document.getElementById(totalId);
+      if (!svg || !totalEl) return;
+
+      const totalVal = data.reduce((sum, item) => sum + item.value, 0);
+      totalEl.innerText = totalVal;
+
+      let accumulatedPercent = 0;
+      let circlesHtml = "";
+
+      data.forEach((item, idx) => {
+        const percent = totalVal > 0 ? Math.round((item.value / totalVal) * 100) : 0;
+        if (percent > 0) {
+          circlesHtml += `
+            <circle cx="50" cy="50" r="38" 
+                    fill="transparent" 
+                    stroke="${item.color}" 
+                    stroke-width="12" 
+                    pathLength="100" 
+                    stroke-dasharray="${percent} 100" 
+                    stroke-dashoffset="-${accumulatedPercent}" 
+                    class="cursor-pointer hover:stroke-[14] transition-all duration-200" 
+                    pointer-events="stroke" 
+                    onmouseenter="showCustomTooltip('${tooltipId}', '${item.label}', '${item.value} (${percent}%)', event)" 
+                    onmouseleave="hideCustomTooltip('${tooltipId}')">
+            </circle>
+          `;
+          accumulatedPercent += percent;
+        }
+      });
+
+      svg.innerHTML = circlesHtml;
+    }
+
+    function renderLegend(legendId, data, totalVal, tooltipId) {
+      const legendEl = document.getElementById(legendId);
+      if (!legendEl) return;
+
+      legendEl.innerHTML = data.map((item, idx) => {
+        const percent = totalVal > 0 ? Math.round((item.value / totalVal) * 100) : 0;
+        return `
+          <div class="flex items-center justify-between cursor-pointer hover:bg-slate-55 p-1.5 rounded-lg transition-colors" style="border-bottom: 1px solid #f1f5f9;"
+               onmouseenter="showCustomTooltip('${tooltipId}', '${item.label}', '${item.value} (${percent}%)')" 
+               onmouseleave="hideCustomTooltip('${tooltipId}')">
+            <span class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: ${item.color};"></span>
+              <span class="font-bold text-slate-700 text-xs sm:text-sm">${item.label}</span>
+            </span>
+            <span class="font-mono text-slate-500 text-xs sm:text-sm font-bold">${item.value} <span class="text-[10px] text-slate-400 font-normal">(${percent}%)</span></span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function showCustomTooltip(tooltipId, label, val, event) {
+      const tooltip = document.getElementById(tooltipId);
+      if (!tooltip) return;
+      
+      const labelSpan = tooltip.querySelector('span:first-child');
+      const valSpan = tooltip.querySelector('span:nth-child(2)');
+      
+      if (labelSpan) labelSpan.innerText = label;
+      if (valSpan) valSpan.innerText = val;
+      
+      tooltip.style.opacity = "1";
+      tooltip.style.top = "-45px";
+      tooltip.style.left = "50%";
+    }
+    
+    function renderNotifikasiDashboard() {
+      const notifBox = document.getElementById("jkk-notification-box");
+      const notifListEl = document.getElementById("jkk-notification-list");
+      if (!notifBox || !notifListEl) return;
+
+      const notifList = JSON.parse(localStorage.getItem('notifikasiJKK') || '[]');
+      const unread = notifList.filter(n => n.status === 'Belum Dibaca');
+
+      if (unread.length === 0) {
+        notifBox.classList.add("hidden");
+        // Clear badges
+        const badgePerawatan = document.getElementById("badge-perawatan");
+        const badgeLaporan = document.getElementById("badge-laporan");
+        if (badgePerawatan) badgePerawatan.classList.add("hidden");
+        if (badgeLaporan) badgeLaporan.classList.add("hidden");
+        return;
+      }
+
+      notifBox.classList.remove("hidden");
+
+      notifListEl.innerHTML = unread.map(n => {
+        // Calculate SLA remaining (24 hour SLA)
+        const dateCreated = new Date(n.waktu);
+        const now = new Date();
+        const diffMs = (dateCreated.getTime() + 24 * 60 * 60 * 1000) - now.getTime();
+        
+        let slaText = "SLA Telah Habis";
+        if (diffMs > 0) {
+          const hours = Math.floor(diffMs / (60 * 60 * 1000));
+          const mins = Math.floor((diffMs % (60 * 60 * 1000)) / (60 * 1000));
+          slaText = `SLA: ${hours} jam ${mins} menit tersisa`;
+        }
+
+        return `
+          <div class="bg-rose-50/50 border border-rose-100 p-4 rounded-xl flex flex-col justify-between space-y-3 relative text-xs">
+            <span class="absolute top-3 right-3 text-[9px] bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded font-bold">Kritis</span>
+            <div class="space-y-1">
+              <div class="font-extrabold text-slate-800">${n.judul}</div>
+              <div class="font-mono text-[9px] text-slate-500 font-bold">${n.id}</div>
+              <div class="font-semibold text-slate-700 mt-1">${n.pesan}</div>
+              <div class="text-slate-500">${n.kejadian}</div>
+            </div>
+            <div class="flex items-center justify-between border-t border-rose-100/50 pt-2 text-[10px] font-bold">
+              <span class="text-slate-500 font-mono"><i class="far fa-clock mr-1"></i> ${slaText}</span>
+              <a href="perawatan-kejadian.html" class="text-asabri-blue hover:underline">Lihat Detail</a>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Also update badges in sidebar
+      const badgePerawatan = document.getElementById("badge-perawatan");
+      const badgeLaporan = document.getElementById("badge-laporan");
+      if (badgePerawatan) {
+        badgePerawatan.innerText = `🔴 ${unread.length}`;
+        badgePerawatan.classList.remove("hidden");
+      }
+      if (badgeLaporan) {
+        badgeLaporan.innerText = `🔴 ${unread.length}`;
+        badgeLaporan.classList.remove("hidden");
+      }
+    }
+
+    function clearJKKNotifications() {
+      const notifList = JSON.parse(localStorage.getItem('notifikasiJKK') || '[]');
+      notifList.forEach(n => n.status = 'Dibaca');
+      localStorage.setItem('notifikasiJKK', JSON.stringify(notifList));
+      renderNotifikasiDashboard();
+      if (typeof showToast === 'function') {
+        showToast("Berhasil", "Semua notifikasi ditandai dibaca.");
+      } else {
+        alert("Semua notifikasi ditandai dibaca.");
+      }
+    }
+
+    // Page Specific Metrics Updating
+    document.addEventListener("DOMContentLoaded", () => {
+      updateMetrics();
+      renderNotifikasiDashboard();
+      setInterval(renderNotifikasiDashboard, 10000);
+      // Listen for claims changes in storage to update live
+      window.addEventListener("storage", updateMetrics);
+    });
+
+    function updateMetrics() {
+      const claims = getClaims();
+      
+      const total = claims.length;
+      
+      // Calculate category counts
+      const ditolakCount = claims.filter(c => c.status === "Ditolak").length;
+      const pendingCount = claims.filter(c => c.status === "Pending").length;
+      const diterimaCount = claims.filter(c => c.status === "Diterima").length;
+
+      const slaWarning = claims.filter(c => 
+        ["Diterima"].includes(c.status) && 
+        c.sla && (c.sla.status === "mendekati" || c.sla.status === "melewati")
+      ).length;
+
+      // Update metrics count cards
+      document.getElementById("stat-total").innerText = total;
+      document.getElementById("stat-diterima").innerText = diterimaCount;
+      document.getElementById("stat-ditolak").innerText = ditolakCount;
+      document.getElementById("stat-pending").innerText = pendingCount;
+      document.getElementById("stat-sla-warning").innerText = slaWarning;
+      
+      // Ringkasan Status Registrasi - 3 categories
+      const statusData = [
+        { label: "Diterima", value: diterimaCount, color: "#22C55E" },
+        { label: "Pending", value: pendingCount, color: "#F59E0B" },
+        { label: "Ditolak", value: ditolakCount, color: "#EF4444" }
+      ];
+
+      // Monitoring SLA - 3 categories
+      const slaNormal = claims.filter(c => c.sla && c.sla.status === "normal").length;
+      const slaMendekati = claims.filter(c => c.sla && c.sla.status === "mendekati").length;
+      const slaMelewati = claims.filter(c => c.sla && c.sla.status === "melewati").length;
+
+      const slaData = [
+        { label: "Memenuhi SLA", value: slaNormal, color: "#22c55e" },
+        { label: "Mendekati Batas", value: slaMendekati, color: "#f59e0b" },
+        { label: "Melewati SLA", value: slaMelewati, color: "#ef4444" }
+      ];
+
+      renderDonutChart("status-donut-svg", "status-total-donut", "status-chart-tooltip", statusData);
+      renderLegend("status-legend-list", statusData, total, "status-chart-tooltip");
+
+      const totalSla = slaNormal + slaMendekati + slaMelewati;
+      renderDonutChart("sla-donut-svg", "sla-total-donut", "sla-chart-tooltip", slaData);
+      renderLegend("sla-legend-list", slaData, totalSla, "sla-chart-tooltip");
+      
+      renderAntrianTerbaru();
+      renderSlaWarnings();
+    }
+
+    function renderAntrianTerbaru() {
+      const claims = getClaims();
+      const tbody = document.querySelector("tbody");
+      if (!tbody) return;
+      
+      const filterSumber = document.getElementById("filter-sumber").value;
+      const filterKancab = document.getElementById("filter-kancab").value;
+      const filterStart = document.getElementById("filter-start-date").value;
+      const filterEnd = document.getElementById("filter-end-date").value;
+      
+      let filtered = claims;
+      
+      if (filterSumber !== "All") {
+        filtered = filtered.filter(c => c.sumber === filterSumber);
+      }
+      if (filterKancab !== "All") {
+        filtered = filtered.filter(c => c.kantorCabang === filterKancab);
+      }
+      if (filterStart) {
+        filtered = filtered.filter(c => {
+          const cDate = parseIndoDate(c.tanggalRegistrasi);
+          return cDate >= new Date(filterStart);
+        });
+      }
+      if (filterEnd) {
+        filtered = filtered.filter(c => {
+          const cDate = parseIndoDate(c.tanggalRegistrasi);
+          return cDate <= new Date(filterEnd);
+        });
+      }
+      
+      // Limit to 5 rows for "Terbaru"
+      const displayClaims = filtered.slice(0, 5);
+      
+      if (displayClaims.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" class="py-8 text-center text-slate-400 font-medium">
+              Tidak ada antrian klaim yang sesuai filter.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      tbody.innerHTML = displayClaims.map(c => {
+        let statusBadge = "";
+        const stat = (c.status || "").toLowerCase();
+        if (stat.includes("pending")) {
+          statusBadge = `<span class="bg-amber-50 border border-amber-200 text-amber-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-hourglass-half text-amber-500"></i> Pending</span>`;
+        } else if (stat.includes("tolak")) {
+          statusBadge = `<span class="bg-rose-50 border border-rose-250 text-rose-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-circle-xmark text-rose-500"></i> Ditolak</span>`;
+        } else if (stat.includes("daftar")) {
+          statusBadge = `<span class="bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-id-card text-slate-500"></i> Terdaftar</span>`;
+        } else if (stat.includes("terima")) {
+          statusBadge = `<span class="bg-blue-50 border border-blue-200 text-blue-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-file-import text-blue-500"></i> Dokumen Diterima</span>`;
+        } else if (stat.includes("verifikasi") || stat.includes("verif")) {
+          statusBadge = `<span class="bg-indigo-50 border border-indigo-200 text-indigo-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-user-check text-indigo-500"></i> Diverifikasi</span>`;
+        } else if (stat.includes("setuju")) {
+          statusBadge = `<span class="bg-emerald-50 border border-emerald-250 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-circle-check text-emerald-500"></i> Disetujui</span>`;
+        } else if (stat.includes("sp terbit") || stat.includes("sp_terbit")) {
+          statusBadge = `<span class="bg-teal-50 border border-teal-200 text-teal-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-file-invoice-dollar text-teal-500"></i> SP Terbit</span>`;
+        } else if (stat.includes("proses") || stat.includes("bayar")) {
+          if (stat.includes("selesai")) {
+            statusBadge = `<span class="bg-green-100 border border-green-200 text-green-800 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-check-double text-green-600"></i> Selesai</span>`;
+          } else {
+            statusBadge = `<span class="bg-cyan-50 border border-cyan-200 text-cyan-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-spinner fa-spin text-cyan-500"></i> Proses Bayar</span>`;
+          }
+        } else if (stat.includes("selesai")) {
+          statusBadge = `<span class="bg-green-100 border border-green-200 text-green-800 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-circle-check text-green-600"></i> Selesai</span>`;
+        } else {
+          statusBadge = `<span class="bg-emerald-50 border border-emerald-250 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-circle-check text-emerald-500"></i> Diterima</span>`;
+        }
+
+        const NIP_NRP = c.peserta?.nrp_nip || c.participant?.nrp_nip || c.nrp || c.nrp_nip || c.nik || c.peserta?.nik || c.participant?.nik || '-';
+        const namaPeserta = c.peserta?.nama || c.participant?.nama || c.namaPeserta || c.nama || '-';
+        
+        const JENIS_KEJADIAN_MAP = {
+          "jkk": "Kecelakaan Kerja",
+          "jkm": "Jaminan Kematian",
+          "tht": "Tabungan Hari Tua",
+          "ntip": "Nilai Tunai Iuran Pensiun",
+          "pensiun": "Pensiun"
+        };
+        const rawJenis = c.jenisKejadian || c.jenisKlaim || '—';
+        const jenisKejadian = JENIS_KEJADIAN_MAP[rawJenis.toLowerCase()] || rawJenis;
+        const sumberStr = c.sumber || c.sumberPengajuan || 'Kantor Cabang';
+        const noAgendaVal = c.noRegistrasi || c.noAgenda || '-';
+
+        const rawDate = c.tanggalRegistrasi || c.timestamp || '';
+        let dateVal = '—';
+        if (rawDate) {
+          const dateObj = new Date(rawDate);
+          if (!isNaN(dateObj.getTime())) {
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            dateVal = `${String(dateObj.getDate()).padStart(2, '0')} ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+          } else {
+            dateVal = rawDate;
+          }
+        }
+
+        const isOnline = sumberStr.toLowerCase().includes("mobile") || sumberStr.toLowerCase().includes("klik") || sumberStr.toLowerCase().includes("link") || sumberStr.toLowerCase().includes("online");
+        const sourceBadge = isOnline
+          ? `<span class="bg-blue-50 border border-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-globe mr-1"></i>Online (${sumberStr})</span>`
+          : `<span class="bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-building mr-1"></i>Offline (${sumberStr})</span>`;
+
+        let slaContent = "";
+        if (stat.includes("tolak")) {
+          slaContent = `<span class="text-slate-400 font-medium font-mono">—</span>`;
+        } else if (stat.includes("pending")) {
+          slaContent = `
+            <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-slate-200 bg-slate-100 text-slate-500 text-[9px] font-bold">
+              <i class="fas fa-snowflake text-[9px] text-slate-400"></i>
+              <span>FREEZE</span>
+            </div>
+          `;
+        } else if (stat.includes("proses") || stat.includes("selesai") || stat.includes("bayar")) {
+          const waktuVal = (c.sla && c.sla.waktu) ? c.sla.waktu : "—";
+          slaContent = `
+            <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-500 text-[9px] font-bold">
+              <i class="fas fa-circle-check text-[9px] text-slate-400"></i>
+              <span>${waktuVal}</span>
+            </div>
+          `;
+        } else {
+          let minutes = 15;
+          let waktuStr = "15 menit";
+          if (c.sla && c.sla.waktu) {
+            waktuStr = c.sla.waktu;
+            minutes = parseInt(c.sla.waktu);
+            if (isNaN(minutes)) minutes = 15;
+          }
+
+          let slaColor = "text-emerald-700 bg-emerald-50 border-emerald-250";
+          let iconClass = "fa-clock";
+
+          if (minutes > 60) {
+            slaColor = "text-rose-700 bg-rose-50 border-rose-250 font-extrabold";
+            iconClass = "fa-triangle-exclamation text-rose-500 animate-pulse";
+          } else if (minutes > 35) {
+            slaColor = "text-amber-700 bg-amber-50 border-amber-200 animate-pulse";
+            iconClass = "fa-triangle-exclamation text-amber-500";
+          }
+
+          slaContent = `
+            <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-[9px] font-bold ${slaColor}">
+              <i class="fas ${iconClass} text-[9px]"></i>
+              <span>${waktuStr}</span>
+            </div>
+          `;
+        }
+
+        const productsList = c.manfaatKlaim ? c.manfaatKlaim.split(/[&,]/).map(p => p.trim()).filter(Boolean) : [];
+        const pCount = productsList.length;
+        const pText = pCount > 0 ? `${pCount} Produk (${productsList.join(', ')})` : '—';
+
+        const PENSIUN_EVENTS = [
+          "Pensiun Sendiri — Meninggal Dunia",
+          "Pensiun Sendiri — Istri/Suami Meninggal Dunia",
+          "Pensiun Sendiri — Anak Meninggal Dunia",
+          "Pensiun Warakawuri — Meninggal Dunia",
+          "Tunjangan Yatim/Piatu/Yatim-Piatu — Meninggal",
+          "Tunjangan Yatim/Piatu/Yatim-Piatu — Dewasa",
+          "Tunjangan Orang Tua — Meninggal"
+        ];
+        const isPensiunEvent = PENSIUN_EVENTS.includes(jenisKejadian);
+        const eventBadge = isPensiunEvent 
+          ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${jenisKejadian}</span>`
+          : `<span class="bg-blue-50 text-blue-700 border border-blue-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${jenisKejadian}</span>`;
+
+        return `
+          <tr class="hover:bg-slate-50/50 transition-colors border-b border-slate-100">
+            <td class="py-3 px-6">
+              <div class="font-mono font-bold text-slate-800 text-xs">${noAgendaVal}</div>
+              <div class="text-[9px] text-slate-400 font-mono mt-0.5">${dateVal}</div>
+            </td>
+            <td class="py-3 px-6 font-mono text-xs">${NIP_NRP}</td>
+            <td class="py-3 px-6 font-semibold text-xs text-slate-700">${namaPeserta}</td>
+            <td class="py-3 px-6">${eventBadge}</td>
+            <td class="py-3 px-6"><span class="bg-blue-50 text-blue-700 border border-blue-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${pText}</span></td>
+            <td class="py-3 px-6">${sourceBadge}</td>
+            <td class="py-3 px-6">${statusBadge}</td>
+            <td class="py-3 px-6 text-center">
+              <a href="detail-registrasi.html?noAgenda=${noAgendaVal}" class="px-2.5 py-1.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-lg font-bold text-[10px] transition-colors inline-flex items-center gap-1 shadow-sm">
+                <i class="fas fa-eye text-[9px]"></i> Lihat Detail
+              </a>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderSlaWarnings() {
+      const claims = getClaims();
+      const listDiv = document.getElementById("sla-warning-list");
+      if (!listDiv) return;
+      
+      const warningClaims = claims.filter(c => 
+        ["Registrasi", "Diproses", "Diterima"].includes(c.status) && 
+        c.sla && (c.sla.status === "mendekati" || c.sla.status === "melewati")
+      );
+      
+      const warningCountEl = document.getElementById("stat-sla-critical-count");
+      if (warningCountEl) {
+        warningCountEl.innerText = `${warningClaims.length} Berkas`;
+      }
+      
+      if (warningClaims.length === 0) {
+        listDiv.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400 font-medium bg-slate-50/20 rounded-xl">Tidak ada antrian berkas kritis saat ini.</div>`;
+        return;
+      }
+      
+      listDiv.innerHTML = warningClaims.map(c => {
+        let badgeClass = "bg-amber-50 text-amber-700 border-amber-250";
+        let icon = `<i class="fas fa-clock text-amber-500"></i>`;
+        if (c.sla.status === "melewati") {
+          badgeClass = "bg-rose-50 text-rose-700 border-rose-250 animate-pulse";
+          icon = `<i class="fas fa-triangle-exclamation text-rose-500"></i>`;
+        }
+        return `
+          <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 flex items-center justify-between text-xs transition-all shadow-sm">
+            <div class="space-y-1 overflow-hidden">
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-slate-800">${c.noRegistrasi}</span>
+                <span class="bg-slate-200 text-slate-700 px-1 py-0.2 rounded text-[8px] font-bold font-mono">${c.jenisKlaim}</span>
+              </div>
+              <span class="text-slate-500 font-semibold block truncate text-[11px]">${c.namaPeserta}</span>
+            </div>
+            <span class="border px-2.5 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 ${badgeClass}">
+              ${icon} ${c.sla.waktu}
+            </span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function applyFilters() {
+      updateMetrics();
+      showToast("Filter Diterapkan", "Data dashboard berhasil disaring.");
+    }
+    
+    function resetFilters() {
+      document.getElementById("filter-sumber").value = "All";
+      document.getElementById("filter-kancab").value = "All";
+      document.getElementById("filter-start-date").value = "";
+      document.getElementById("filter-end-date").value = "";
+      updateMetrics();
+      showToast("Filter Direset", "Dashboard kembali menampilkan seluruh data.");
+    }
+
+    function mulaiProses(nik) {
+      window.location.href = `registrasi.html?nik=${nik}`;
+    }
+    
+    function lihatDetail(noReg) {
+      const claims = getClaims();
+      const found = claims.find(c => c.noRegistrasi === noReg || c.noReg === noReg);
+      if (found && ["Dibayar", "Ditolak"].includes(found.status)) {
+        window.location.href = `riwayat.html?detail=${noReg}`;
+      } else {
+        if (found && (found.jenisKlaim === 'JKK Perawatan' || found.manfaatKlaim === 'Perawatan' || (found.manfaatKlaim && found.manfaatKlaim.includes('Perawatan')))) {
+          window.location.href = `klaim-jkk-perawatan.html?noAgenda=${noReg}`;
+        } else {
+          window.location.href = `proses-klaim.html?noAgenda=${noReg}`;
+        }
+      }
+    }
+
+    // Helper to parse Indonesian date strings like "14 Mei 2025" into Date objects
+    function parseIndoDate(dateStr) {
+      if (!dateStr) return new Date();
+      if (dateStr.includes("-")) return new Date(dateStr);
+      
+      const months = {
+        januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5,
+        juli: 6, agustus: 7, september: 8, oktober: 9, november: 10, desember: 11,
+        jan: 0, feb: 1, mar: 2, apr: 3, mei: 4, jun: 5, jul: 6, agu: 7, sep: 8, okt: 9, nov: 10, des: 11
+      };
+      
+      const parts = dateStr.toLowerCase().split(" ");
+      if (parts.length === 3) {
+        const day = parseInt(parts[0], 10);
+        const month = months[parts[1]] !== undefined ? months[parts[1]] : 0;
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
+      return new Date(dateStr);
+    }
+  </script>
+
+  <script>
+    if (typeof toggleSidebarAccordion === 'undefined') {
+      function toggleSidebarAccordion(menuId, chevId) {
+        const menu = document.getElementById(menuId);
+        const chev = document.getElementById(chevId);
+        if (!menu || !chev) return;
+        if (menu.classList.contains('hidden')) {
+          menu.classList.remove('hidden');
+          chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
+        } else {
+          menu.classList.add('hidden');
+          chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

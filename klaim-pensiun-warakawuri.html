@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - YANDU NG (Pelayanan Pensiun Warakawuri)</title>
+  <meta name="description" content="Halaman Pelayanan Pensiun Warakawuri (PPI) ASABRI YANDU NG.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: { blue: '#004799', blueDark: '#002e63', gold: '#FFD700', softBlue: '#F3F8FC', textDark: '#1E293B' }
+          },
+          fontFamily: { sans: ['Outfit','sans-serif'], mono: ['JetBrains Mono','monospace'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:#f1f5f9}
+    ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+    .tab-btn{transition:all .15s}
+    .tab-pane{display:none}
+    .tab-pane.active{display:block}
+    .warning-box{animation:pulse-warn 2s infinite}
+    @keyframes pulse-warn{0%,100%{border-color:#fbbf24}50%{border-color:#f59e0b}}
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md flex-shrink-0">
+  <div class="flex items-center gap-5">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center">
+        <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none">
+          <path d="M10 25 C15 15,25 12,35 18 C30 22,22 23,15 27 Z" fill="#FFD700"/>
+          <path d="M60 25 C55 15,45 12,35 18 C40 22,48 23,55 27 Z" fill="#FFD700"/>
+          <path d="M28 15 H42 L45 28 C45 35,35 40,35 40 C35 40,25 35,25 28 Z" fill="#0A58CA" stroke="#fff" stroke-width="2"/>
+          <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700"/>
+        </svg>
+        <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+      </div>
+      <div class="h-6 w-px bg-white/20"></div>
+      <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors text-lg"><i class="fas fa-bars"></i></button>
+      <div class="flex flex-col ml-1">
+        <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
+        <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center gap-4">
+    <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-xs font-semibold text-white tracking-wide">ROLE : Staf KANCAB</span>
+    </div>
+    <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer">
+      <i class="fas fa-bell text-sm"></i>
+    </div>
+    <div class="h-8 w-px bg-white/10"></div>
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm">SK</div>
+      <div class="flex flex-col">
+        <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+        <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════ BODY ═══════════════ -->
+<div class="flex flex-1 overflow-hidden">
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside id="sidebar-nav" class="w-80 bg-asabri-softBlue border-r border-slate-200 flex flex-col flex-shrink-0 transition-all duration-300">
+      <div class="p-5 border-b border-slate-200 bg-white/50">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Menu Layanan</h2>
+      </div>
+
+      <!-- Accordion Navigation List -->
+      <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+        <!-- 1. Dashboard -->
+        <a href="index.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-chart-pie text-base text-asabri-blue"></i>
+            <span>1. Dashboard</span>
+          </div>
+        </a>
+
+        <!-- 2. Pelayanan Registrasi Peserta Klaim -->
+        <a href="registrasi.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-pen-to-square text-base text-asabri-blue"></i>
+            <span>2. Pelayanan Registrasi Klaim Peserta</span>
+          </div>
+        </a>
+
+        <!-- 3. Data Peserta -->
+        <a href="data-peserta.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-search text-base text-asabri-blue"></i>
+            <span>3. Data Peserta</span>
+          </div>
+        </a>
+
+        <!-- 4. Riwayat Transaksi Klaim -->
+        <a href="riwayat.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-clock-rotate-left text-base text-asabri-blue"></i>
+            <span>4. Riwayat Transaksi Klaim</span>
+          </div>
+        </a>
+
+        <!-- 5. Pelayanan Klaim -->
+        <a href="kejadian.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <div class="flex items-center gap-2.5">
+            <i class="fas fa-file-invoice text-base text-asabri-blue"></i>
+            <span>5. Pelayanan Klaim</span>
+          </div>
+        </a>
+
+                <!-- 6. Perawatan JKK -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-perawatan','chevron-perawatan')" class="w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-hand-holding-medical text-base text-asabri-blue"></i>
+              <span>6. Perawatan JKK</span>
+            </div>
+            <i id="chevron-perawatan" class="fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-perawatan" class="hidden pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="perawatan-kejadian.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-notes-medical w-4 text-slate-400"></i>
+              <span>Laporan Kejadian</span>
+            </a>
+            <a href="perawatan-klaim.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-file-medical w-4 text-slate-400"></i>
+              <span>Pengajuan Klaim</span>
+            </a>
+            <a href="perawatan-verifikasi.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-user-shield w-4 text-slate-400"></i>
+              <span>Verifikasi Klaim</span>
+            </a>
+          </div>
+        </div>
+
+<!-- 7. Pelayanan Komunikasi Pelanggan -->
+        <div class="space-y-1">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-kominfo','chevron-kominfo')" class="w-full w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-comments text-base text-asabri-blue"></i>
+              <span>7. Pelayanan Komunikasi Pelanggan</span>
+            </div>
+            <i id="chevron-kominfo" class="fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200"></i>
+          </button>
+          <div id="submenu-kominfo" class="hidden pl-6 py-2 space-y-2 relative">
+            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
+            <a href="komunikasi-dashboard.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-gauge w-4 text-slate-400"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="komunikasi-riwayat.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
+              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+              <i class="fas fa-clock-rotate-left w-4 text-slate-400"></i>
+              <span>Riwayat Interaksi</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-slate-250 bg-slate-100 text-[10px] text-slate-400 font-mono text-center">
+        ASABRI YANDU NG v1.2.0
+      </div>
+    </aside>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="flex-1 flex flex-col overflow-hidden">
+
+  <!-- Breadcrumb -->
+  <div class="bg-white border-b border-slate-200 px-8 py-3 flex items-center justify-between flex-shrink-0">
+    <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+      <span>Peserta Klaim Pensiun</span><span class="text-slate-400">/</span>
+      <span class="font-bold text-asabri-blue">Pensiun Warakawuri</span>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="flex-1 flex flex-col overflow-hidden bg-slate-50">
+
+    <!-- No Data Warning -->
+    <div id="no-data-warning" class="hidden m-6 p-8 bg-amber-50 border border-amber-200 rounded-2xl flex flex-col gap-4 text-center items-center justify-center">
+      <i class="fas fa-triangle-exclamation text-5xl text-amber-500"></i>
+      <div>
+        <h3 class="text-sm font-bold text-amber-800">Belum Ada Data Registrasi Pensiun Warakawuri</h3>
+        <p class="text-xs text-amber-700 mt-1">Lakukan registrasi pengajuan klaim Pensiun Warakawuri (PPI) terlebih dahulu.</p>
+      </div>
+      <a href="registrasi.html" class="px-5 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white text-xs font-bold rounded-xl transition-all shadow-md flex items-center gap-2">
+        <i class="fas fa-pen-to-square"></i> Registrasi Klaim Sekarang
+      </a>
+    </div>
+
+    <!-- Main Layout: Full Width Content Area -->
+    <div id="main-content-flow" class="hidden flex-1 flex flex-col overflow-hidden">
+
+      <!-- STICKY HEADER SUMMARY BAR -->
+      <div class="bg-white border-b border-slate-200 px-8 py-4 shadow-sm flex flex-wrap items-center justify-between gap-4 flex-shrink-0">
+        <div class="flex items-center gap-6">
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">NO. AGENDA / REGISTRASI</span>
+            <span class="text-base font-extrabold text-slate-800 mt-1 block font-mono" id="top-noreg">REG-2026-00000</span>
+          </div>
+          <div class="h-8 w-px bg-slate-200"></div>
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">PESERTA / NIP-NRP</span>
+            <span class="text-sm font-extrabold text-slate-800 mt-1 block" id="top-peserta">Loading...</span>
+          </div>
+          <div class="h-8 w-px bg-slate-200"></div>
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">PROGRAM / MANFAAT KLAIM</span>
+            <span class="text-sm font-extrabold text-asabri-blue mt-1 block">PPI &bull; Pensiun Warakawuri</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-5">
+          <div class="flex flex-col items-end">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">SLA DURASI PROSES</span>
+            <div class="flex items-center gap-1.5 mt-1 font-mono font-bold text-xs">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-slate-800" id="top-sla">00:05:00</span>
+            </div>
+          </div>
+          <div class="h-8 w-px bg-slate-200"></div>
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block leading-none">STATUS BERKAS</span>
+            <div class="mt-1" id="top-status-container">
+              <span class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold border border-indigo-200 inline-flex items-center gap-1">
+                <i class="fas fa-spinner fa-spin text-xs"></i> Diproses
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS NAV BAR -->
+      <div class="bg-white border-b border-slate-200 px-8 flex-shrink-0 overflow-x-auto">
+        <div class="flex gap-6 whitespace-nowrap">
+          <button id="btn-tab-peserta" onclick="switchTab('tab-peserta')" class="tab-btn py-3 px-1 border-b-2 border-asabri-blue text-xs font-bold text-asabri-blue focus:outline-none transition-all flex items-center gap-1.5 active">
+            <i class="fas fa-user-shield text-xs"></i> 1. Data Peserta
+          </button>
+          <button id="btn-tab-pengaju" onclick="switchTab('tab-pengaju')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-user-edit text-xs"></i> 2. Data Pengaju
+          </button>
+          <button id="btn-tab-persyaratan" onclick="switchTab('tab-persyaratan')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-list-check text-xs"></i> 3. Persyaratan Dokumen
+          </button>
+          <button id="btn-tab-verifikasi" onclick="switchTab('tab-verifikasi')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-stamp text-xs"></i> 4. Verifikasi Berkas
+          </button>
+          <button id="btn-tab-manfaat" onclick="switchTab('tab-manfaat')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-calculator text-xs"></i> 5. Perhitungan Manfaat
+          </button>
+          <button id="btn-tab-riwayat" onclick="switchTab('tab-riwayat')" class="tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5">
+            <i class="fas fa-clock-rotate-left text-xs"></i> 6. Status &amp; Riwayat
+          </button>
+        </div>
+      </div>
+
+      <!-- SCROLLABLE TAB PANE CONTENT AREA -->
+      <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
+        <div class="max-w-5xl mx-auto space-y-6">
+
+          <!-- ───── TAB 1: Data Peserta ───── -->
+          <div id="tab-peserta" class="tab-pane active space-y-5">
+            
+            <!-- Kartu: Informasi Kepesertaan -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-800">Informasi Kepesertaan</h3>
+                  <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Data kepesertaan read-only dari database ASABRI</p>
+                </div>
+                <span id="badge-status-kepesertaan" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">Peserta Pensiun</span>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-5 text-xs text-slate-700">
+                <div><span class="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">Nama Lengkap</span><strong id="p-nama" class="text-slate-800">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">NIP / NRP</span><strong id="p-nrp" class="text-slate-800 font-mono">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">NIK</span><strong id="p-nik" class="text-slate-800 font-mono">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">No. KTPA</span><strong id="p-ktpa" class="text-slate-800 font-mono">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">Pangkat / Golongan</span><strong id="p-pangkat" class="text-slate-800">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">Satuan Kerja / Kesatuan</span><strong id="p-kesatuan" class="text-slate-800">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">Gaji Pokok Terakhir</span><strong id="p-gaji" class="text-slate-800 font-mono">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">TMT Dinas Aktif</span><strong id="p-tmt" class="text-slate-800 font-mono">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">TMT Pensiun</span><strong id="p-tmtpensiun" class="text-slate-800 font-mono">—</strong></div>
+              </div>
+            </div>
+
+            <!-- Kartu: Ringkasan Registrasi -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-800">Ringkasan Registrasi Klaim</h3>
+                <span id="badge-asal-klaim" class="hidden px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-50 text-blue-750 border border-blue-200"></span>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs bg-slate-50 border border-slate-200 p-4 rounded-xl">
+                <div><span class="text-slate-400 font-bold block mb-1">No. Registrasi</span><strong id="rs-noreg" class="text-asabri-blue font-mono font-bold">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1">Nama / NIK</span><strong id="rs-peserta" class="text-slate-800 font-bold">—</strong></div>
+                <div><span class="text-slate-400 font-bold block mb-1">Sumber Pengajuan</span><span id="rs-sumber" class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border border-slate-200 bg-white text-slate-700">—</span></div>
+                <div><span class="text-slate-400 font-bold block mb-1">Kondisi Pengajuan</span><span id="rs-kondisi" class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border border-purple-200 bg-purple-50 text-purple-700">—</span></div>
+              </div>
+            </div>
+
+
+
+          </div><!-- /tab-peserta -->
+
+          <!-- ───── TAB 2: Data Pengaju ───── -->
+          <div id="tab-pengaju" class="tab-pane space-y-5">
+            
+            <!-- Form Pengajuan Pensiun Warakawuri -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-5">
+              <div class="border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-800">Form Pengajuan Pensiun Warakawuri (PPI)</h3>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Rincian data warakawuri, pernikahan, anak, dan rekening</p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Kondisi Pengajuan -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Kondisi Pengajuan <span class="text-rose-500">*</span></label>
+                  <select id="fp-kondisi" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue bg-white">
+                    <option value="">-- Pilih Kondisi --</option>
+                    <option value="dinas_aktif">Peserta Meninggal Dunia Dalam Dinas Aktif</option>
+                    <option value="pensiun_meninggal">Peserta Pensiun Meninggal Dunia</option>
+                  </select>
+                </div>
+                <!-- Tanggal Meninggal Peserta -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Tanggal Meninggal Peserta <span class="text-rose-500">*</span></label>
+                  <input type="date" id="fp-tgl-meninggal" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                </div>
+              </div>
+
+              <!-- Data Pemohon (Warakawuri) -->
+              <div class="border-t border-slate-100 pt-4 space-y-4">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Data Pemohon (Istri / Suami / Warakawuri)</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Nama Lengkap Pemohon <span class="text-rose-500">*</span></label>
+                    <div class="flex gap-2">
+                      <input type="text" id="fp-a-nama" placeholder="Nama lengkap pemohon" class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                      <div class="flex gap-1 shrink-0">
+                        <label class="flex items-center gap-1 px-2 py-1.5 border border-slate-200 rounded-lg text-[10px] font-bold cursor-pointer has-[:checked]:bg-asabri-blue has-[:checked]:text-white"><input type="radio" name="fp-a-jk" value="L" class="hidden">L</label>
+                        <label class="flex items-center gap-1 px-2 py-1.5 border border-slate-200 rounded-lg text-[10px] font-bold cursor-pointer has-[:checked]:bg-pink-500 has-[:checked]:text-white"><input type="radio" name="fp-a-jk" value="P" class="hidden" checked>P</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Tanggal Lahir <span class="text-rose-500">*</span></label>
+                    <input type="date" id="fp-a-tgllahir" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Hubungan Keluarga <span class="text-rose-500">*</span></label>
+                    <select id="fp-a-hub" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white outline-none focus:border-asabri-blue">
+                      <option value="Istri">Istri</option>
+                      <option value="Suami">Suami</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">NIK <span class="text-rose-500">*</span></label>
+                    <input type="text" id="fp-a-nik" placeholder="16 digit NIK" maxlength="16" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue font-mono">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">No. Telepon / HP <span class="text-rose-500">*</span></label>
+                    <input type="tel" id="fp-a-telp" placeholder="08xxxxxxxxxx" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Email</label>
+                    <input type="email" id="fp-a-email" placeholder="email@domain.com" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">NPWP</label>
+                    <input type="text" id="fp-a-npwp" placeholder="Nomor NPWP" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue font-mono font-bold">
+                  </div>
+                  <div class="md:col-span-2">
+                    <label class="block font-bold text-slate-700 mb-1.5">Alamat Lengkap Pemohon</label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                      <input type="text" id="fp-a-kelurahan" placeholder="Kelurahan" class="border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                      <input type="text" id="fp-a-kecamatan" placeholder="Kecamatan" class="border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                      <input type="text" id="fp-a-kota" placeholder="Kota/Kabupaten" class="border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                      <input type="text" id="fp-a-provinsi" placeholder="Provinsi" class="border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Data Pernikahan -->
+              <div class="border-t border-slate-100 pt-4 space-y-4">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Data Pernikahan</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Tanggal Pernikahan <span class="text-rose-500">*</span></label>
+                    <input type="date" id="fp-m-tgl" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">No. Surat Nikah / KPI / KARIS / KARSU <span class="text-rose-500">*</span></label>
+                    <input type="text" id="fp-m-nosurat" placeholder="Nomor surat nikah/anggota" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Status Pernikahan Saat Ini <span class="text-rose-500">*</span></label>
+                    <select id="fp-m-status" onchange="checkStatusPernikahanWarakawuri()" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue bg-white">
+                      <option value="Belum">Belum Menikah Lagi</option>
+                      <option value="Sudah">Sudah Menikah Lagi</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Warning Status Menikah Lagi -->
+                <div id="warn-menikah-lagi" class="hidden p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 flex items-start gap-2">
+                  <i class="fas fa-triangle-exclamation text-rose-500 mt-0.5 flex-shrink-0"></i>
+                  <p><strong>Peringatan Hak Manfaat:</strong> Sesuai aturan ASABRI, hak Pensiun Warakawuri akan diberhentikan secara permanen jika penerima menikah lagi.</p>
+                </div>
+              </div>
+
+              <!-- Data Anak -->
+              <div class="border-t border-slate-100 pt-4 space-y-4">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Data Anak (Tunjangan &amp; Beasiswa)</p>
+                <div id="form-daftar-anak" class="space-y-4">
+                  <div id="list-anak-container" class="space-y-4"></div>
+                  <button onclick="tambahAnak()" id="btn-tambah-anak" class="px-4 py-2 border border-dashed border-asabri-blue text-asabri-blue rounded-xl text-xs font-bold hover:bg-asabri-blue/5 transition-all flex items-center gap-1.5"><i class="fas fa-plus"></i> Tambah Data Anak</button>
+                </div>
+              </div>
+
+              <!-- Kantor Bayar -->
+              <div class="border-t border-slate-100 pt-4 space-y-4">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Kantor Bayar / Rekening Penerima</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Bank / Pos <span class="text-rose-500">*</span></label>
+                    <input type="text" id="fp-bank" placeholder="Nama Bank/Pos Mitra Bayar" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue">
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Jenis Tabungan</label>
+                    <select id="fp-jenis-tabungan" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue bg-white">
+                      <option>Tabungan</option><option>Giro</option><option>Deposito</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">No. Rekening <span class="text-rose-500">*</span></label>
+                    <input type="text" id="fp-norek" placeholder="Nomor rekening" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue font-mono font-bold">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pas Foto upload -->
+              <div class="border-t border-slate-100 pt-4 space-y-2">
+                <label class="block text-xs font-bold text-slate-700">Pas Foto 4×6 (2 lembar) <span class="text-rose-500">*</span></label>
+                <div class="flex items-center gap-3">
+                  <input type="file" id="fp-file-pasfoto" class="hidden" accept=".jpg,.jpeg,.png" onchange="document.getElementById('lbl-pasfoto').innerText = this.files[0]?.name || 'Pilih File'">
+                  <button type="button" onclick="document.getElementById('fp-file-pasfoto').click()" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-600 flex items-center gap-1.5"><i class="fas fa-image"></i> Pilih Foto</button>
+                  <span id="lbl-pasfoto" class="text-xs font-semibold text-slate-500 italic">Belum ada file terpilih</span>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-2 border-t border-slate-100">
+                <button onclick="switchTab('tab-peserta')" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-600 transition-colors">Kembali</button>
+                <button onclick="simpanDraftPPI('tab-pengaju')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all"><i class="fas fa-file-invoice"></i> Simpan Draft</button>
+                <button onclick="simpanDataPengajuPPI()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                  <i class="fas fa-floppy-disk"></i> Simpan &amp; Lanjutkan
+                </button>
+              </div>
+            </div>
+
+            <!-- Kartu 2: Surat Keterangan Kejandaan -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <div class="border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-800">Surat Keterangan Kejandaan</h3>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Surat Keterangan Belum Menikah Lagi / Kejandaan disahkan Lurah / Kepala Desa</p>
+              </div>
+              <div class="space-y-3 text-xs">
+                <div>
+                  <label class="block font-bold text-slate-650 mb-1.5">Nomor Surat Kejandaan <span class="text-rose-500">*</span></label>
+                  <input type="text" id="fp-k-nosurat" placeholder="Nomor surat dari kelurahan" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-655 mb-1.5">Upload Scan Surat Keterangan Kejandaan (PDF/JPG) <span class="text-rose-500">*</span></label>
+                  <div class="flex items-center gap-3">
+                    <input type="file" id="fp-file-kejandaan" class="hidden" accept=".pdf,.jpg,.jpeg,.png" onchange="document.getElementById('lbl-kejandaan').innerText = this.files[0]?.name || 'Pilih File'">
+                    <button type="button" onclick="document.getElementById('fp-file-kejandaan').click()" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-600 flex items-center gap-1.5"><i class="fas fa-file-pdf"></i> Pilih Berkas</button>
+                    <span id="lbl-kejandaan" class="text-xs font-semibold text-slate-500 italic">Belum ada file</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /tab-pengaju -->
+
+          <!-- ───── TAB 3: Persyaratan Dokumen ───── -->
+          <div id="tab-persyaratan" class="tab-pane space-y-5">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <div class="border-b border-slate-100 pb-3 mb-5 flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-800">Persyaratan Dokumen Pensiun Warakawuri (PPI)</h3>
+                  <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Lengkapi 7 berkas fisik di bawah ini</p>
+                </div>
+                <span id="persyaratan-progress" class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">0 / 7 Terpenuhi</span>
+              </div>
+
+              <div id="persyaratan-list" class="divide-y divide-slate-100"></div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 mt-5 font-bold">
+                <button onclick="switchTab('tab-pengaju')" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-semibold text-slate-600 transition-colors">Kembali</button>
+                <button onclick="simpanDraftPPI('tab-persyaratan')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all"><i class="fas fa-file-invoice"></i> Simpan Draft</button>
+                <button onclick="switchTab('tab-verifikasi')" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                  Lanjut ke Verifikasi <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div><!-- /tab-persyaratan -->
+
+          <!-- ───── TAB 4: Verifikasi Berkas ───── -->
+          <div id="tab-verifikasi" class="tab-pane space-y-5">
+            
+            <!-- Kartu 1: Ringkasan Dokumen -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <div class="border-b border-slate-100 pb-3 mb-4">
+                <h3 class="text-sm font-bold text-slate-800">Ringkasan Dokumen</h3>
+              </div>
+              <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                <table class="w-full text-xs text-left">
+                  <thead class="bg-slate-50 border-b border-slate-200"><tr class="text-slate-600 font-bold">
+                    <th class="px-4 py-2.5">Nama Dokumen</th>
+                    <th class="px-4 py-2.5 text-center">Status Upload</th>
+                    <th class="px-4 py-2.5 text-center">Aksi</th>
+                  </tr></thead>
+                  <tbody id="tbl-verifikasi-ringkasan" class="divide-y divide-slate-100">
+                    <tr><td colspan="3" class="px-4 py-6 text-center text-slate-400 italic">Lengkapi dokumen di Tab 3 terlebih dahulu.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Kartu 2: Status Dokumen Fisik -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <div class="border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-800">Status Dokumen Fisik / Persyaratan</h3>
+              </div>
+              <div class="space-y-3">
+                <label class="flex items-center gap-3 p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-300 hover:bg-emerald-50/30 has-[:checked]:border-emerald-400 has-[:checked]:bg-emerald-50/50 transition-all">
+                  <input type="radio" name="status-dok" value="Diterima" class="text-emerald-500 w-4 h-4" onchange="onVerifikasiStatusChange()">
+                  <div><span class="text-xs font-bold text-slate-800 block">Diterima (Lolos Validasi)</span><span class="text-[10px] text-slate-500">Semua dokumen fisik lengkap dan sah</span></div>
+                  <span class="ml-auto px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">Tab 5 Aktif</span>
+                </label>
+                <label class="flex items-center gap-3 p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-rose-300 hover:bg-rose-50/30 has-[:checked]:border-rose-400 has-[:checked]:bg-rose-50/50 transition-all">
+                  <input type="radio" name="status-dok" value="Ditolak" class="text-rose-500 w-4 h-4" onchange="onVerifikasiStatusChange()">
+                  <div><span class="text-xs font-bold text-slate-800 block">Ditolak</span><span class="text-[10px] text-slate-500">Klaim ditolak karena tidak memenuhi kriteria kelayakan</span></div>
+                </label>
+                <label class="flex items-center gap-3 p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-red-300 hover:bg-red-50/30 has-[:checked]:border-red-400 has-[:checked]:bg-red-50/50 transition-all">
+                  <input type="radio" name="status-dok" value="TidakBerhak" class="text-red-650 w-4 h-4" onchange="onVerifikasiStatusChange()">
+                  <div><span class="text-xs font-bold text-slate-800 block">Tidak Berhak Diproses</span><span class="text-[10px] text-slate-500">Berkas tidak memenuhi kriteria pensiun ASABRI</span></div>
+                </label>
+                <label class="flex items-center gap-3 p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-300 hover:bg-amber-50/30 has-[:checked]:border-amber-400 has-[:checked]:bg-amber-50/50 transition-all">
+                  <input type="radio" name="status-dok" value="Pending" class="text-amber-500 w-4 h-4" onchange="onVerifikasiStatusChange()">
+                  <div><span class="text-xs font-bold text-slate-800 block">Ditangguhkan (Pending)</span><span class="text-[10px] text-slate-500">Kekurangan dokumen fisik, menunggu kelengkapan</span></div>
+                </label>
+              </div>
+
+              <!-- Banners -->
+              <div id="banner-ditolak" class="hidden p-4 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-3 text-xs text-rose-800">
+                <i class="fas fa-circle-xmark text-rose-500 text-base shrink-0 mt-0.5"></i>
+                <div><strong class="block mb-0.5">Klaim Ditolak.</strong> Peserta/Warakawuri perlu mengajukan ulang klaim ini. Notifikasi "VALIDASI DITOLAK" telah dikirim.</div>
+              </div>
+              <div id="banner-tidakberhak" class="hidden p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3 text-xs text-red-800">
+                <i class="fas fa-ban text-red-500 text-base shrink-0 mt-0.5"></i>
+                <div><strong class="block mb-0.5">Tidak Berhak Diproses.</strong> Klaim diarsipkan secara permanen dengan notifikasi khusus.</div>
+              </div>
+              <div id="banner-pending" class="hidden p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3 text-xs text-amber-800">
+                <i class="fas fa-clock text-amber-500 text-base shrink-0 mt-0.5"></i>
+                <div><strong class="block mb-0.5">Klaim Ditangguhkan.</strong> Lengkapi berkas yang kurang untuk melanjutkan proses.</div>
+              </div>
+            </div>
+
+            <!-- Kartu 3: Catatan -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3">
+              <div class="border-b border-slate-100 pb-3">
+                <label id="alasan-label" class="text-sm font-bold text-slate-800 block">Alasan / Catatan</label>
+              </div>
+              <textarea id="alasan-catatan" rows="3" placeholder="Masukkan rincian catatan berkas atau alasan..." class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue resize-none"></textarea>
+            </div>
+
+            <!-- Kartu 4: Upload Dokumen Pendukung -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <div class="border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-800">Upload Dokumen Pendukung</h3>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Tambahkan dokumen fisik pendukung jika diperlukan</p>
+              </div>
+              <div id="dz-verifikasi-area" onclick="document.getElementById('dz-verifikasi-input').click()" class="border-2 border-dashed border-slate-300 rounded-xl p-8 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-asabri-blue hover:bg-asabri-blue/5 transition-all">
+                <i class="fas fa-cloud-arrow-up text-3xl text-slate-300"></i>
+                <span class="text-xs font-bold text-slate-500">Klik atau seret file PDF/JPG/PNG ke sini</span>
+                <input type="file" id="dz-verifikasi-input" class="hidden" accept=".pdf,.jpg,.jpeg,.png" multiple onchange="handleDropzoneUpload(event,'dz-verifikasi-previews')">
+              </div>
+              <div id="dz-verifikasi-previews" class="space-y-2"></div>
+            </div>
+
+            <div class="flex justify-end gap-3">
+              <button onclick="switchTab('tab-persyaratan')" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-600 transition-colors">Kembali</button>
+              <button onclick="simpanDraftPPI('tab-verifikasi')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all"><i class="fas fa-file-invoice"></i> Simpan Draft</button>
+              <button onclick="simpanVerifikasiPPI()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                <i class="fas fa-floppy-disk"></i> Simpan Verifikasi
+              </button>
+            </div>
+
+          </div><!-- /tab-verifikasi -->
+
+          <!-- ───── TAB 5: Perhitungan Manfaat ───── -->
+          <div id="tab-manfaat" class="tab-pane space-y-5">
+            
+            <!-- Gate -->
+            <div id="manfaat-gate" class="p-6 bg-amber-50 border border-amber-200 rounded-2xl flex items-center gap-3 text-xs text-amber-800">
+              <i class="fas fa-lock text-amber-500 text-xl shrink-0"></i>
+              <div><strong class="block mb-0.5">Tab Terkunci</strong>Selesaikan verifikasi berkas di Tab 4 terlebih dahulu (status harus: Diterima).</div>
+            </div>
+
+            <!-- Konten Manfaat -->
+            <div id="manfaat-konten" class="hidden space-y-5">
+              <!-- Kartu 1: Status -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <span class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600 text-base"><i class="fas fa-circle-check"></i></span>
+                  <div>
+                    <h3 class="text-sm font-bold text-slate-800">Status Verifikasi</h3>
+                    <p class="text-[10px] text-slate-400">Semua dokumen fisik dinyatakan lengkap</p>
+                  </div>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">Diterima</span>
+              </div>
+
+              <!-- Kartu 2: Rincian Manfaat -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <h3 class="text-sm font-bold text-slate-800">Rincian Manfaat Pensiun Warakawuri</h3>
+                  <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Kalkulasi bruto bulanan dan kompensasi terusan</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-2 text-xs">
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1">Masa Pensiun Terusan (Jika berlaku)</label>
+                    <select id="fp-terusan" onchange="hitungManfaatPPI()" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white outline-none focus:border-asabri-blue">
+                      <option value="0">Tidak Ada Terusan</option>
+                      <option value="6">6 Bulan (TNI/Polri Meninggal Biasa)</option>
+                      <option value="12">12 Bulan (TNI/Polri Meninggal dengan Bintang Naraya)</option>
+                      <option value="18">18 Bulan (Gugur/Tewas Pahlawan)</option>
+                    </select>
+                  </div>
+                  <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl flex items-center gap-2">
+                    <i class="fas fa-info-circle text-blue-500"></i>
+                    <span>Hak Pensiun Terusan diberikan penuh sebesar gaji terakhir sebelum pembayaran pokok Warakawuri dimulai.</span>
+                  </div>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                  <table class="w-full text-xs text-left">
+                    <thead class="bg-slate-50 border-b border-slate-200"><tr class="text-slate-600 font-bold">
+                      <th class="px-4 py-2.5">Jenis Manfaat / Tunjangan</th>
+                      <th class="px-4 py-2.5 text-right">Nominal</th>
+                      <th class="px-4 py-2.5">Keterangan</th>
+                    </tr></thead>
+                    <tbody id="tbl-manfaat-bruto" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Kartu 3: Potongan -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <h3 class="text-sm font-bold text-slate-800">Potongan Gaji Pensiun (e-SKPP)</h3>
+                  <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-0.5">Daftar kewajiban potongan wajib dan potongan hutang negara</p>
+                </div>
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                  <table class="w-full text-xs text-left">
+                    <thead class="bg-slate-50 border-b border-slate-200"><tr class="text-slate-600 font-bold">
+                      <th class="px-4 py-2.5">Uraian Potongan / Hutang</th>
+                      <th class="px-4 py-2.5 text-right">Nominal Potongan</th>
+                      <th class="px-4 py-2.5">Sumber Kewajiban</th>
+                    </tr></thead>
+                    <tbody id="tbl-manfaat-potongan" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Kartu 4: Ringkasan Bersih -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <h3 class="text-sm font-bold text-slate-800">Ringkasan Pembayaran Pensiun Warakawuri</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-bold">
+                  <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl text-center">
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-bold">Total Bruto Bulanan</span>
+                    <strong id="sum-bruto" class="text-slate-800 text-base font-extrabold block mt-1">Rp —</strong>
+                  </div>
+                  <div class="bg-rose-50 border border-rose-100 p-4 rounded-2xl text-center">
+                    <span class="text-[10px] text-rose-500 uppercase tracking-wider block font-bold">Total Potongan Bulanan</span>
+                    <strong id="sum-potongan" class="text-rose-700 text-base font-extrabold block mt-1">(Rp —)</strong>
+                  </div>
+                  <div class="bg-emerald-50 border border-emerald-250 p-4 rounded-2xl text-center">
+                    <span class="text-[10px] text-emerald-600 uppercase tracking-wider block font-bold">Total Netto Dibayarkan (Bulanan)</span>
+                    <strong id="sum-netto" class="text-emerald-700 text-lg font-black block mt-1">Rp —</strong>
+                    <span id="sum-netto-terbilang" class="text-[9px] text-emerald-500 font-bold block mt-0.5">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 font-bold">
+                <button onclick="switchTab('tab-verifikasi')" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-semibold text-slate-600 transition-colors">Kembali</button>
+                <button onclick="simpanDraftPPI('tab-manfaat')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all"><i class="fas fa-file-invoice"></i> Simpan Draft</button>
+                <button onclick="simpanManfaatPPI()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                  <i class="fas fa-floppy-disk"></i> Simpan Perhitungan
+                </button>
+              </div>
+            </div>
+
+          </div><!-- /tab-manfaat -->
+
+
+          <!-- ───── TAB 7: Status & Riwayat ───── -->
+          <div id="tab-riwayat" class="tab-pane space-y-5">
+            
+            <!-- Kartu 1: Status Klaim -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
+                <div>
+                  <span class="text-slate-400 block mb-0.5">Status Terkini Klaim</span>
+                  <span id="riwayat-status-terkini" class="inline-block px-3 py-1 rounded-full text-xs font-bold border bg-indigo-50 border-indigo-200 text-indigo-700">Diproses</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-slate-400 block mb-0.5">Tanggal Pemutakhiran</span>
+                  <strong id="riwayat-tgl-update" class="text-slate-800">—</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Kartu 2: Log Aktivitas -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3">
+              <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Log Aktivitas</h4>
+              <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                <table class="w-full text-xs text-left">
+                  <thead class="bg-slate-50 border-b border-slate-200"><tr class="text-slate-600 font-bold">
+                    <th class="px-4 py-2.5">Tanggal</th>
+                    <th class="px-4 py-2.5">Nama User</th>
+                    <th class="px-4 py-2.5">IP</th>
+                    <th class="px-4 py-2.5">Status</th>
+                    <th class="px-4 py-2.5">Kegiatan</th>
+                    <th class="px-4 py-2.5">Keterangan</th>
+                  </tr></thead>
+                  <tbody id="tbl-log-aktivitas" class="divide-y divide-slate-100">
+                    <tr><td colspan="6" class="px-4 py-6 text-center text-slate-400 italic">Belum ada aktivitas.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Kartu 3: Klaim Lanjutan -->
+            <div id="kartu-klaim-lanjutan" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+              <div class="border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-800">Manfaat Lanjutan / Penghentian Berkas</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">Proses lanjutan berdasarkan kejadian di masa depan</p>
+              </div>
+              <!-- Gate -->
+              <div id="klaim-lanjutan-gate" class="p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-3 text-xs text-amber-800">
+                <i class="fas fa-lock text-amber-500 shrink-0"></i>
+                <span>Selesaikan perhitungan manfaat di Tab 5 terlebih dahulu.</span>
+              </div>
+              <!-- Konten -->
+              <div id="klaim-lanjutan-konten" class="hidden space-y-4">
+                
+                <!-- Opsi Skenario -->
+                <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-3 text-xs">
+                  <p class="font-bold text-slate-700"><i class="fas fa-shuffle mr-1"></i> Pilih Skenario Kejadian Lanjutan (Simulasi):</p>
+                  <div class="flex flex-wrap gap-3">
+                    <label class="flex items-center gap-1.5 cursor-pointer font-semibold"><input type="radio" name="sim-skenario" value="normal" checked onchange="toggleSimSkenario()"> Aktif Normal</label>
+                    <label class="flex items-center gap-1.5 cursor-pointer font-semibold"><input type="radio" name="sim-skenario" value="meninggal" onchange="toggleSimSkenario()"> Warakawuri Meninggal</label>
+                    <label class="flex items-center gap-1.5 cursor-pointer font-semibold"><input type="radio" name="sim-skenario" value="nikah" onchange="toggleSimSkenario()"> Warakawuri Menikah Lagi</label>
+                  </div>
+                </div>
+
+                <!-- Skenario: Normal -->
+                <div id="sc-normal" class="space-y-4">
+                  <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-start gap-3">
+                    <i class="fas fa-circle-check text-emerald-500 text-base shrink-0 mt-0.5"></i>
+                    <p>Pensiun Warakawuri aktif berjalan. Tidak ada tindakan lanjutan yang diperlukan.</p>
+                  </div>
+                  <button onclick="konfirmasiSelesaikanKlaimPPI()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5"><i class="fas fa-check-circle"></i> Selesaikan Klaim PPI</button>
+                </div>
+
+                <!-- Skenario: Meninggal -->
+                <div id="sc-meninggal" class="hidden space-y-4">
+                  <div class="p-4 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-800 flex items-start gap-3">
+                    <i class="fas fa-info-circle text-blue-500 text-base shrink-0 mt-0.5"></i>
+                    <p>Jika penerima Pensiun Warakawuri meninggal dunia, ahli waris berhak atas manfaat lanjutan berdasarkan Peta Manfaat ASABRI.</p>
+                  </div>
+                  <div class="flex flex-wrap gap-3">
+                    <button onclick="bukaModalKlaimLanjutan('bpis', 'Klaim BPI/S')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all">Proses BPI/S &rarr;</button>
+                    <button onclick="bukaModalKlaimLanjutan('udw', 'Klaim UDW')" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all">Proses UDW &rarr;</button>
+                    <button id="btn-yatim-lanjutan" onclick="bukaModalKlaimLanjutan('yatim', 'Tunjangan Yatim-Piatu')" class="hidden px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-asabri-blue/5 rounded-xl text-xs font-bold transition-all">Proses Tunjangan Yatim-Piatu &rarr;</button>
+                  </div>
+                </div>
+
+                <!-- Skenario: Nikah Lagi -->
+                <div id="sc-nikah" class="hidden space-y-4">
+                  <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 flex items-start gap-3">
+                    <i class="fas fa-triangle-exclamation text-amber-500 text-base shrink-0 mt-0.5"></i>
+                    <p>Pensiun Warakawuri berhenti jika penerima menikah lagi. Lakukan proses penghentian pembayaran bulanan.</p>
+                  </div>
+                  <button onclick="hentikanPembayaranWarakawuri()" class="px-5 py-2.5 border border-rose-500 hover:bg-rose-50 rounded-xl text-xs font-bold text-rose-600 transition-all flex items-center gap-1.5"><i class="fas fa-ban"></i> Proses Penghentian Pensiun Warakawuri</button>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono text-slate-400"><span class="text-rose-500">*</span> Simpan untuk menutup proses klaim Pensiun Warakawuri</span>
+              <div class="flex gap-3">
+                <button onclick="cancelProcess()" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-600 transition-colors">Batal</button>
+                <button onclick="simpanDraftPPI('tab-riwayat')" class="px-4 py-2 border border-slate-250 text-slate-500 hover:bg-slate-100 rounded-xl text-xs font-bold transition-all"><i class="fas fa-file-invoice"></i> Simpan Draft</button>
+              </div>
+            </div>
+
+          </div><!-- /tab-riwayat -->
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- ─── MODAL: Dokumen dari Klaim Sebelumnya ─── -->
+<div id="modal-dokumen-lama" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+  <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 space-y-4">
+    <div>
+      <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+        <i class="fas fa-folder-open text-asabri-blue"></i>
+        Dokumen dari Klaim Sebelumnya
+      </h3>
+      <p id="modal-dokumen-lama-noReg" class="text-[10px] text-slate-400 mt-0.5 font-mono"></p>
+    </div>
+    <p class="text-xs text-slate-600">Dokumen berikut tersedia dari berkas asal. Pilih dokumen yang ingin digunakan kembali:</p>
+    <div id="modal-dokumen-lama-list" class="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden max-h-64 overflow-y-auto"></div>
+    <div class="flex gap-3 justify-between pt-1">
+      <button onclick="gunakanSemuaDokumenLama()" class="px-4 py-2 border border-asabri-blue text-asabri-blue hover:bg-blue-50 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5">
+        <i class="fas fa-check-double"></i> Gunakan Semua
+      </button>
+      <button onclick="lanjutDariDokumenLama()" class="px-5 py-2 bg-asabri-blue hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+        Lanjut ke Form <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Konfirmasi Selesaikan Klaim ═══ -->
+<div id="modal-selesai-ppi" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+  <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full mx-4 space-y-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0"><i class="fas fa-check-circle text-emerald-600"></i></div>
+      <div>
+        <h3 class="text-sm font-bold text-slate-800">Selesaikan Klaim PPI?</h3>
+        <p class="text-[11px] text-slate-500">Tindakan ini akan mengubah status klaim menjadi <strong>SELESAI</strong>.</p>
+      </div>
+    </div>
+    <p class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">Pastikan seluruh data perhitungan potongan dan manfaat sudah benar. Proses tidak dapat diubah kembali setelah selesai.</p>
+    <div class="flex gap-3 justify-end">
+      <button onclick="document.getElementById('modal-selesai-ppi').classList.add('hidden')" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-600 transition-colors">Batal</button>
+      <button onclick="eksekusiSelesaikanKlaimPPI()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5"><i class="fas fa-check"></i> Ya, Selesaikan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Konfirmasi Klaim Lanjutan ═══ -->
+<div id="modal-klaim-lanjutan-ppi" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+  <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full mx-4 space-y-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-asabri-blue/10 flex items-center justify-center shrink-0"><i class="fas fa-arrow-right text-asabri-blue"></i></div>
+      <div>
+        <h3 class="text-sm font-bold text-slate-800" id="modal-klaim-lanjutan-judul">Lanjut ke Klaim?</h3>
+        <p class="text-[11px] text-slate-500">Klaim baru akan dibuat dengan data peserta ter-prefill otomatis.</p>
+      </div>
+    </div>
+    <p class="text-xs text-slate-600 bg-blue-50 p-3 rounded-xl border border-blue-200"><i class="fas fa-info-circle text-blue-500 mr-1"></i> Dokumen yang overlap dari klaim Warakawuri ini akan ditawarkan untuk digunakan kembali di halaman klaim baru.</p>
+    <div class="flex gap-3 justify-end">
+      <button onclick="document.getElementById('modal-klaim-lanjutan-ppi').classList.add('hidden')" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-600 transition-colors">Batal</button>
+      <button id="btn-modal-klaim-lanjutan-eksekusi" onclick="eksekusiKlaimLanjutan()" class="px-5 py-2 bg-asabri-blue hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5"><i class="fas fa-arrow-right"></i> Ya, Lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script src="data.js?v=1.0.1"></script>
+<script src="shared.js?v=1.0.1"></script>
+<script>
+// ─── State ────────────────────────────────────────────────────────
+let activeClaimData = null;
+let anakData = [];
+let dropzoneFiles = {};
+let verifikasiDiterima = false;
+let manfaatTersimpan = false;
+let _klaimLanjutanTujuan = '';
+let sejarahLog = [];
+
+const DUMMY_PESERTA_PPI = {
+  noRegistrasi: 'REG-PPI-2026-00105',
+  noAgenda: 'AGD-PPI-2026-00105',
+  kondisiKlaim: 'dinas_aktif',
+  manfaatKlaim: 'PPI — Pensiun Pertama Istri / Warakawuri (janda / duda pensiunan)',
+  sumber: 'Kancab',
+  status: 'Diproses',
+  tanggalRegistrasi: '2026-08-01',
+  participant: {
+    nik: '3201010101800001',
+    nama: 'Budi Santoso (Alm)',
+    nrp_nip: '31800101',
+    no_ktpa: 'KTPA-8822-2015',
+    pangkat: 'Mayor Inf',
+    golongan_pangkat: 'Perwira',
+    angkatan: 'TNI AD',
+    kesatuan: 'Kodam Jaya / Mabes AD',
+    unitKerja: 'Kodam Jaya / Mabes AD',
+    gaji_pokok_terakhir: 5500000,
+    tmt_dinas: '2000-03-01',
+    tmt_pensiun: '2026-08-01',
+    tanggal_lahir: '1973-05-20',
+    jenis_kelamin: 'L',
+    statusKepesertaan: 'Peserta Pensiun',
+    pasangan: { nama: 'Siti Aminah', nik: '3201010101820001', tanggal_lahir: '1975-06-15', status_tunjangan: 'Berhak' },
+    anak: [
+      { nama: 'Budi Santoso Jr', tanggal_lahir: '2004-10-12', status_sekolah: 'Kuliah', menikah: false, bekerja: false, status_tunjangan: 'Berhak' },
+      { nama: 'Ani Santoso', tanggal_lahir: '2010-03-20', status_sekolah: 'SMA', menikah: false, bekerja: false, status_tunjangan: 'Berhak' }
+    ],
+    kantor_bayar: { bank: 'Bank Mandiri Taspen', jenis_tabungan: 'Tabungan', no_rekening: '9876543210' },
+    eskpp: {
+      status: "diterima",
+      timestamp: "2026-08-01T09:45:00",
+      no_skpp: "SKPP/2026/PPI/0002",
+      jenis_skpp: "Pensiun",
+      gaji_pokok_terakhir: 5500000,
+      tunjangan_istri: 440000,
+      tunjangan_anak: 220000,
+      jumlah_kotor: 7500000,
+      jumlah_potongan: 1100000,
+      jumlah_bersih: 6400000,
+      pensiun_pokok: 4400000,
+      hutang: []
+    }
+  },
+  sla: { waktu: '00:05:00' }
+};
+
+const PERSYARATAN_PPI = [
+  'Formulir Pengajuan (FPP)',
+  'Formulir SP3R',
+  'Asli dan Salinan Keputusan Pensiun (bagi peserta meninggal dunia dalam dinas aktif)',
+  'Asli SKPP dari KPPN / e-SKPP (bagi peserta meninggal dunia dalam dinas aktif)',
+  'Asli Surat Keterangan Kuliah (bagi anak kuliah usia >21 s/d 25 tahun)',
+  'Asli Surat Keterangan Belum Menikah lagi / Kejandaan — disahkan Lurah/Kepala Desa',
+  'Pas Foto 4×6 sebanyak 2 lembar'
+];
+
+// ─── Init ────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+});
+
+function loadData() {
+  let data = null;
+  const urlParams = new URLSearchParams(window.location.search);
+  const queryNoreg = urlParams.get('noAgenda') || urlParams.get('noRegistrasi') || urlParams.get('detail');
+
+  if (queryNoreg && typeof getClaims === 'function') {
+    const claims = getClaims();
+    const found = claims.find(c => c.noRegistrasi === queryNoreg || c.noAgenda === queryNoreg);
+    if (found) data = JSON.parse(JSON.stringify(found));
+  }
+
+  // Cek sessionStorage prefill dari JKm atau PP
+  const prefillStr = sessionStorage.getItem('prefillFromKlaim');
+  if (prefillStr) {
+    try {
+      const payload = JSON.parse(prefillStr);
+      data = assembleDataFromPrefill(payload);
+      sessionStorage.setItem('asabri_temp_claim_data', JSON.stringify(data));
+      showDokumenLamaModal(payload);
+    } catch(e) { console.error('Prefill parse error:', e); }
+  }
+
+  if (!data) {
+    const dataStr = sessionStorage.getItem('asabri_temp_claim_data');
+    if (dataStr) {
+      try { data = JSON.parse(dataStr); } catch(e) {}
+    }
+  }
+
+  // Fallback to dummy data
+  if (!data) data = JSON.parse(JSON.stringify(DUMMY_PESERTA_PPI));
+
+  const noDataEl = document.getElementById('no-data-warning');
+  const mainEl = document.getElementById('main-content-flow');
+
+  noDataEl.classList.add('hidden');
+  mainEl.classList.remove('hidden');
+  mainEl.classList.add('flex');
+
+  activeClaimData = data;
+
+  // Cek draft
+  const draftKey = `draft_ppi_${activeClaimData.noRegistrasi}`;
+  const draftStr = localStorage.getItem(draftKey);
+  if (draftStr) {
+    try {
+      const draft = JSON.parse(draftStr);
+      activeClaimData = Object.assign({}, activeClaimData, draft);
+      showToast('Draft Dimuat', 'Data draft berhasil dimuat.');
+    } catch(e) {}
+  }
+
+  populateTopBar();
+  populateTab1();
+  prefillFormPengaju();
+  checkIntegrasiTgl13();
+  addLog('Staf KANCAB', '192.168.1.5', 'Diproses', 'Buka Berkas', `Proses klaim Pensiun Warakawuri dibuka untuk ahli waris ${activeClaimData.participant?.pasangan?.nama || 'peserta'}`);
+}
+
+function assembleDataFromPrefill(payload) {
+  const pd = payload.prefillData;
+  const regNo = `REG-PPI-2025-00109`;
+  return {
+    noRegistrasi: regNo,
+    noAgenda: `AGD-PPI-2025-00109`,
+    kondisiKlaim: payload.jenisKlaimAsal === 'JKm' ? 'dinas_aktif' : 'pensiun_meninggal',
+    manfaatKlaim: 'PPI — Pensiun Pertama Istri / Warakawuri (janda / duda pensiunan)',
+    sumber: `Klaim Lanjutan ${payload.jenisKlaimAsal}`,
+    status: 'Diproses',
+    tanggalRegistrasi: '2026-08-01',
+    fromAsalNoreg: payload.fromKlaim,
+    jenisKlaimAsal: payload.jenisKlaimAsal,
+    participant: {
+      nik: pd.nik,
+      nama: pd.nama + ' (Alm)',
+      nrp_nip: pd.nrp,
+      no_ktpa: 'KTPA-PREFILL-02',
+      pangkat: pd.pangkat,
+      golongan_pangkat: 'Perwira',
+      angkatan: 'TNI AD',
+      kesatuan: pd.kesatuan,
+      unitKerja: pd.kesatuan,
+      gaji_pokok_terakhir: pd.gajiPokokTerakhir || 5500000,
+      tmt_dinas: '2000-03-01',
+      tmt_pensiun: pd.tmtPensiun || '2026-09-01',
+      tanggal_lahir: '1973-05-20',
+      jenis_kelamin: 'L',
+      statusKepesertaan: 'Peserta Pensiun',
+      pasangan: pd.dataKeluarga?.pasangan || { nama: pd.namaWarakawuri || 'Siti Aminah', nik: pd.nikWarakawuri || '3201010101820001', tanggal_lahir: '1975-06-15', status_tunjangan: 'Berhak' },
+      anak: pd.dataKeluarga?.anak || [
+        { nama: 'Budi Santoso Jr', tanggal_lahir: '2004-10-12', status_sekolah: 'Kuliah', menikah: false, bekerja: false, status_tunjangan: 'Berhak' },
+        { nama: 'Ani Santoso', tanggal_lahir: '2010-03-20', status_sekolah: 'SMA', menikah: false, bekerja: false, status_tunjangan: 'Berhak' }
+      ],
+      kantor_bayar: { bank: pd.bank || 'Bank Mandiri Taspen', jenis_tabungan: 'Tabungan', no_rekening: pd.noRekening || '9876543210' },
+      eskpp: pd.dataEskpp || {
+        status: "diterima",
+        timestamp: "2026-08-01T09:45:00",
+        no_skpp: "SKPP/2026/PPI/0002",
+        jenis_skpp: "Pensiun",
+        pensiun_pokok: pd.pensionPokok || 4400000,
+        gaji_pokok_terakhir: pd.gajiPokokTerakhir || 5500000,
+        tunjangan_istri: 440000,
+        tunjangan_anak: 220000,
+        jumlah_kotor: 7500000,
+        jumlah_potongan: 1100000,
+        jumlah_bersih: 6400000,
+        hutang: []
+      }
+    },
+    sla: { waktu: '00:05:00' }
+  };
+}
+
+function showDokumenLamaModal(payload) {
+  if (!payload || !payload.dokumenLama) return;
+  const modal = document.getElementById('modal-dokumen-lama');
+  const noregEl = document.getElementById('modal-dokumen-lama-noReg');
+  const listEl = document.getElementById('modal-dokumen-lama-list');
+
+  noregEl.innerText = `Asal klaim: ${payload.fromKlaim} (${payload.jenisKlaimAsal})`;
+  listEl.innerHTML = '';
+  
+  payload.dokumenLama.forEach((d, idx) => {
+    const div = document.createElement('div');
+    div.className = 'flex items-center justify-between p-3 text-xs bg-slate-50 border-b border-slate-100 hover:bg-slate-100/50';
+    div.innerHTML = `
+      <label class="flex items-center gap-3 cursor-pointer flex-1 font-semibold text-slate-700">
+        <input type="checkbox" id="dl-${idx}" data-docname="${d.nama}" ${d.defaultChecked ? 'checked' : ''} class="w-4 h-4 text-asabri-blue rounded focus:ring-asabri-blue border-slate-300">
+        <span>${d.nama}</span>
+      </label>
+      <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-150"><i class="fas fa-file-shield mr-1"></i>Re-use Ready</span>`;
+    listEl.appendChild(div);
+  });
+
+  modal.classList.remove('hidden');
+}
+
+function gunakanSemuaDokumenLama() {
+  document.querySelectorAll("[id^='dl-']").forEach(cb => cb.checked = true);
+}
+
+function lanjutDariDokumenLama() {
+  const selectedDocs = [];
+  document.querySelectorAll("[id^='dl-']").forEach(cb => {
+    if (cb.checked) selectedDocs.push(cb.getAttribute('data-docname'));
+  });
+
+  document.getElementById('modal-dokumen-lama').classList.add('hidden');
+  sessionStorage.removeItem('prefillFromKlaim');
+
+  setTimeout(() => {
+    selectedDocs.forEach(docName => {
+      const idx = PERSYARATAN_PPI.findIndex(item => item.includes(docName) || docName.includes(item));
+      if (idx !== -1) {
+        const checkbox = document.getElementById(`req-${idx}`);
+        if (checkbox) checkbox.checked = true;
+        const fileSpan = document.getElementById(`req-file-${idx}`);
+        if (fileSpan) {
+          fileSpan.classList.remove('hidden');
+          fileSpan.querySelector('.fname').innerText = `[RE-USED] ${docName}.pdf`;
+        }
+      }
+    });
+    updatePersyaratanProgress();
+    showToast('Dokumen Diimport', `${selectedDocs.length} dokumen berhasil diimport ke berkas Warakawuri.`);
+  }, 500);
+}
+
+function populateTopBar() {
+  if (!activeClaimData) return;
+  const p = activeClaimData.participant;
+  document.getElementById('top-noreg').innerText = activeClaimData.noRegistrasi || '—';
+  document.getElementById('top-peserta').innerText = `${p.nama} / ${p.nrp_nip}`;
+  if (activeClaimData.sla?.waktu) document.getElementById('top-sla').innerText = activeClaimData.sla.waktu;
+
+  const statusContainerTop = document.getElementById('top-status-container');
+  const st = activeClaimData.status || 'Diproses';
+  let cls = 'bg-indigo-50 text-indigo-700 border-indigo-200';
+  let icon = '<i class="fas fa-spinner fa-spin text-xs"></i>';
+  if (st === 'Selesai') { cls = 'bg-emerald-50 text-emerald-700 border-emerald-200'; icon = '<i class="fas fa-check text-xs"></i>'; }
+  else if (st === 'Ditolak') { cls = 'bg-rose-50 text-rose-700 border-rose-200'; icon = '<i class="fas fa-times text-xs"></i>'; }
+  else if (st === 'Pending') { cls = 'bg-amber-50 text-amber-700 border-amber-200'; icon = '<i class="fas fa-clock text-xs"></i>'; }
+  statusContainerTop.innerHTML = `<span class="${cls} px-3 py-1 rounded-full text-xs font-bold border inline-flex items-center gap-1">${icon} ${st}</span>`;
+}
+
+function populateTab1() {
+  if (!activeClaimData) return;
+  const p = activeClaimData.participant;
+  const fmt = (d) => d ? new Date(d).toLocaleDateString('id-ID', {day:'2-digit', month:'long', year:'numeric'}) : '—';
+
+  // main tab basic fields
+  document.getElementById('p-nama').innerText = p.nama || '—';
+  document.getElementById('p-nrp').innerText = p.nrp_nip || '—';
+  document.getElementById('p-nik').innerText = p.nik || '—';
+  document.getElementById('p-ktpa').innerText = p.no_ktpa || p.noPeserta || '—';
+  document.getElementById('p-pangkat').innerText = p.pangkat || '—';
+  document.getElementById('p-kesatuan').innerText = p.kesatuan || p.angkatan || p.unitKerja || '—';
+  document.getElementById('p-gaji').innerText = p.gaji_pokok_terakhir ? 'Rp ' + p.gaji_pokok_terakhir.toLocaleString('id-ID') : '—';
+  document.getElementById('p-tmt').innerText = fmt(p.tmt_dinas);
+  document.getElementById('p-tmtpensiun').innerText = fmt(p.tmt_pensiun);
+
+  // ringkasan reg
+  document.getElementById('rs-noreg').innerText = activeClaimData.noRegistrasi || '—';
+  document.getElementById('rs-peserta').innerText = `${p.nama} / ${p.nik || p.nrp_nip}`;
+  document.getElementById('rs-sumber').innerText = activeClaimData.sumber || '—';
+  
+  const kondisiText = activeClaimData.kondisiKlaim === 'dinas_aktif' ? 'Peserta Meninggal Dunia Dalam Dinas Aktif' : 'Peserta Pensiun Meninggal Dunia';
+  document.getElementById('rs-kondisi').innerText = kondisiText;
+
+  // Badge asal
+  const badgeAsal = document.getElementById('badge-asal-klaim');
+  if (activeClaimData.jenisKlaimAsal) {
+    badgeAsal.innerText = `Dilanjutkan dari ${activeClaimData.jenisKlaimAsal}: ${activeClaimData.fromAsalNoreg}`;
+    badgeAsal.classList.remove('hidden');
+  } else {
+    badgeAsal.classList.add('hidden');
+  }
+
+  // e-SKPP Status
+  const esc = p.eskpp;
+  if (esc) {
+    document.getElementById('eskpp-status-badge').innerText = esc.status === 'diterima' ? 'Diterima' : 'Gagal';
+    document.getElementById('eskpp-status-badge').className = esc.status === 'diterima' 
+      ? 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200'
+      : 'px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200';
+
+    // Tab e-SKPP Integrasi Info
+    document.getElementById('int-timestamp').innerText = new Date(esc.timestamp).toLocaleString('id-ID');
+    document.getElementById('skep-unor').innerText = p.kesatuan;
+    document.getElementById('skep-no').innerText = 'SKEP-W/2026/0105';
+    document.getElementById('skep-tgl').innerText = fmt('2026-07-28');
+    document.getElementById('skep-penerbit').innerText = 'KAPUSKEU TNI / PEKAS';
+    document.getElementById('skep-mdk').innerText = '26 Tahun';
+    document.getElementById('skep-gpt').innerText = 'Rp ' + esc.gaji_pokok_terakhir.toLocaleString('id-ID');
+    document.getElementById('skep-tmt').innerText = fmt(p.tmt_pensiun);
+    document.getElementById('skep-pokok').innerText = 'Rp ' + esc.pensiun_pokok.toLocaleString('id-ID');
+    document.getElementById('skep-pokok-wara').innerText = 'Rp ' + Math.round(esc.pensiun_pokok * 0.5).toLocaleString('id-ID');
+    document.getElementById('skep-bintang').innerText = 'Satyalancana Kesetiaan XXIV';
+
+    document.getElementById('skpp-no').innerText = esc.no_skpp;
+    document.getElementById('skpp-kppn').innerText = 'KPPN Jakarta II';
+    document.getElementById('skpp-tgl').innerText = fmt('2026-07-29');
+    document.getElementById('skpp-gapok').innerText = 'Rp ' + esc.gaji_pokok_terakhir.toLocaleString('id-ID');
+    document.getElementById('skpp-kotor').innerText = 'Rp ' + esc.jumlah_kotor.toLocaleString('id-ID');
+    document.getElementById('skpp-potongan').innerText = 'Rp ' + esc.jumlah_potongan.toLocaleString('id-ID');
+    document.getElementById('skpp-bersih').innerText = 'Rp ' + esc.jumlah_bersih.toLocaleString('id-ID');
+    document.getElementById('skpp-gaji13').innerText = 'Sudah Dibayarkan';
+    document.getElementById('skpp-thr').innerText = 'Sudah Dibayarkan';
+
+    const tbodyHutang = document.getElementById('tbl-integrasi-hutang');
+    if (tbodyHutang) {
+      tbodyHutang.innerHTML = '<tr><td colspan="4" class="px-4 py-4 text-center text-slate-400 italic">Tidak ada potongan hutang e-SKPP DJPB.</td></tr>';
+    }
+  }
+}
+
+function checkIntegrasiTgl13() {
+  const tgl13 = new Date(new Date().getFullYear(), new Date().getMonth(), 13);
+  const day = tgl13.getDay();
+  if (day === 0 || day === 6) {
+    document.getElementById('warn-libur-13').classList.remove('hidden');
+  }
+}
+
+function prefillFormPengaju() {
+  if (!activeClaimData) return;
+  const p = activeClaimData.participant;
+  
+  document.getElementById('fp-kondisi').value = activeClaimData.kondisiKlaim || 'dinas_aktif';
+  document.getElementById('fp-tgl-meninggal').value = '2026-07-10';
+
+  // Prefill Data Pemohon (Warakawuri/Istri)
+  if (p.pasangan) {
+    document.getElementById('fp-a-nama').value = p.pasangan.nama || '';
+    document.getElementById('fp-a-tgllahir').value = p.pasangan.tanggal_lahir || '';
+    document.getElementById('fp-a-nik').value = p.pasangan.nik || '';
+    document.getElementById('fp-a-hub').value = 'Istri';
+  }
+  
+  document.getElementById('fp-a-telp').value = '081377889900';
+  document.getElementById('fp-a-email').value = 'sitiaminah@domain.com';
+  document.getElementById('fp-a-npwp').value = '76.543.210.9-012.000';
+  document.getElementById('fp-a-kelurahan').value = 'Cilangkap';
+  document.getElementById('fp-a-kecamatan').value = 'Cipayung';
+  document.getElementById('fp-a-kota').value = 'Jakarta Timur';
+  document.getElementById('fp-a-provinsi').value = 'DKI Jakarta';
+
+  // Pernikahan
+  document.getElementById('fp-m-tgl').value = '2005-06-15';
+  document.getElementById('fp-m-nosurat').value = 'SURAT-NIKAH/2005/XI';
+
+  // Prefill Rekening
+  if (p.kantor_bayar) {
+    document.getElementById('fp-bank').value = p.kantor_bayar.bank || '';
+    document.getElementById('fp-norek').value = p.kantor_bayar.no_rekening || '';
+  }
+
+  // Initialize Anak
+  if (anakData.length === 0 && p.anak) {
+    p.anak.forEach(a => {
+      anakData.push({ nama: a.nama, tgllahir: a.tanggal_lahir, statusSekolah: a.status_sekolah, tunjangan: a.status_tunjangan || 'Berhak' });
+    });
+  }
+  renderDaftarAnak();
+
+  // Load Persyaratan Dokumen (Varian Tunggal)
+  updatePersyaratanList();
+}
+
+function checkStatusPernikahanWarakawuri() {
+  const val = document.getElementById('fp-m-status').value;
+  document.getElementById('warn-menikah-lagi').classList.toggle('hidden', val !== 'Sudah');
+}
+
+// ─── Tab Switching ────────────────────────────────────────────────
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-pane').forEach(p => {
+    p.classList.toggle('active', p.id === tabId);
+  });
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    const suffix = btn.id.replace('btn-', '');
+    if (suffix === tabId) {
+      btn.className = 'tab-btn py-3 px-1 border-b-2 border-asabri-blue text-xs font-bold text-asabri-blue focus:outline-none transition-all flex items-center gap-1.5 active';
+    } else {
+      btn.className = 'tab-btn py-3 px-1 border-b-2 border-transparent text-xs font-bold text-slate-400 hover:text-slate-600 focus:outline-none transition-all flex items-center gap-1.5';
+    }
+  });
+  if (tabId === 'tab-manfaat') updateManfaatTab();
+  if (tabId === 'tab-riwayat') updateRiwayatTab();
+  if (tabId === 'tab-verifikasi') renderVerifikasiRingkasan();
+  window.scrollTo(0, 0);
+}
+
+// ─── Persyaratan ──────────────────────────────────────────────────
+function updatePersyaratanList() {
+  const listEl = document.getElementById('persyaratan-list');
+  listEl.innerHTML = '';
+  PERSYARATAN_PPI.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'py-3 flex items-center justify-between gap-4';
+    div.innerHTML = `
+      <label class="flex items-center gap-3 cursor-pointer flex-1">
+        <input type="checkbox" id="req-${idx}" class="req-checkbox w-4 h-4 text-asabri-blue rounded focus:ring-asabri-blue border-slate-300" onchange="updatePersyaratanProgress()">
+        <span class="font-semibold text-slate-700 text-xs">${idx+1}. ${item}</span>
+      </label>
+      <div class="flex items-center gap-2 shrink-0">
+        <span id="req-file-${idx}" class="text-[10px] font-mono text-emerald-600 font-bold hidden italic mr-1"><i class="fas fa-check-circle mr-1"></i><span class="fname"></span></span>
+        <input type="file" id="file-doc-${idx}" class="hidden" accept=".pdf,.jpg,.jpeg,.png" onchange="handleReqUpload(event, ${idx})">
+        <button id="btn-view-doc-${idx}" onclick="previewReqFile(${idx})" type="button" class="hidden px-2.5 py-1.5 border border-asabri-blue text-asabri-blue rounded-lg hover:bg-asabri-blue/5 text-[10px] font-bold transition-colors flex items-center gap-1"><i class="fas fa-eye text-[9px]"></i> Detail</button>
+        <button onclick="document.getElementById('file-doc-${idx}').click()" class="px-3 py-1.5 border border-slate-200 rounded-lg hover:bg-slate-50 text-[10px] font-bold text-slate-600 transition-colors flex items-center gap-1">
+          <i class="fas fa-cloud-arrow-up"></i> Upload
+        </button>
+      </div>`;
+    listEl.appendChild(div);
+  });
+  updatePersyaratanProgress();
+}
+
+function handleReqUpload(e, idx) {
+  if (e.target.files.length > 0) {
+    const file = e.target.files[0];
+    const span = document.getElementById(`req-file-${idx}`);
+    span.classList.remove('hidden');
+    span.querySelector('.fname').innerText = file.name;
+    document.getElementById(`req-${idx}`).checked = true;
+    const btnView = document.getElementById(`btn-view-doc-${idx}`);
+    if (btnView) btnView.classList.remove('hidden');
+    updatePersyaratanProgress();
+  }
+}
+
+function previewReqFile(idx) {
+  const input = document.getElementById(`file-doc-${idx}`);
+  if (!input || !input.files[0]) return;
+  window.open(URL.createObjectURL(input.files[0]), '_blank');
+}
+
+function updatePersyaratanProgress() {
+  const all = document.querySelectorAll('.req-checkbox');
+  const checked = document.querySelectorAll('.req-checkbox:checked').length;
+  const el = document.getElementById('persyaratan-progress');
+  if (el) {
+    el.innerText = `${checked} / ${all.length} Terpenuhi`;
+    el.className = checked === all.length && all.length > 0
+      ? 'text-xs font-bold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full'
+      : 'text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full';
+  }
+}
+
+// ─── Anak ────────────────────────────────────────────────────────
+function tambahAnak() {
+  if (anakData.length >= 3) { showToast('Batas Maksimal', 'Maksimal 3 data anak.'); return; }
+  anakData.push({ nama: '', tgllahir: '', statusSekolah: '', tunjangan: 'Berhak' });
+  renderDaftarAnak();
+}
+
+function renderDaftarAnak() {
+  const container = document.getElementById('list-anak-container');
+  container.innerHTML = '';
+  anakData.forEach((anak, i) => {
+    let usia = '—';
+    let badgeTunjangan = '';
+    if (anak.tgllahir) {
+      const dob = new Date(anak.tgllahir);
+      usia = Math.floor((new Date() - dob) / (365.25 * 24 * 3600 * 1000));
+      const berhakTunjangan = usia <= 21 || (usia <= 25 && anak.statusSekolah === 'Kuliah');
+      badgeTunjangan = berhakTunjangan
+        ? '<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">✓ Eligible Tunjangan</span>'
+        : '<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-100 text-rose-700 border border-rose-200">✗ Tidak Tercover</span>';
+    }
+
+    const div = document.createElement('div');
+    div.className = 'p-4 border border-slate-200 rounded-xl bg-slate-50 space-y-3 text-xs';
+    div.innerHTML = `
+      <div class="flex items-center justify-between">
+        <span class="font-bold text-slate-700">Data Anak ${i+1}</span>
+        <div class="flex items-center gap-2">
+          ${badgeTunjangan}
+          <button onclick="hapusAnak(${i})" class="text-rose-400 hover:text-rose-600"><i class="fas fa-trash-can"></i></button>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="md:col-span-2">
+          <label class="block font-bold text-slate-655 mb-1">Nama Anak</label>
+          <input type="text" value="${anak.nama}" onchange="anakData[${i}].nama=this.value" placeholder="Nama lengkap" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-655 mb-1">Tanggal Lahir</label>
+          <input type="date" value="${anak.tgllahir}" onchange="anakData[${i}].tgllahir=this.value;renderDaftarAnak()" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-655 mb-1">Status Pendidikan</label>
+          <select onchange="anakData[${i}].statusSekolah=this.value;renderDaftarAnak()" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white">
+            <option value="">-- Pilih --</option>
+            ${['SD','SMP','SMA','Kuliah','Tidak Sekolah'].map(s => `<option ${anak.statusSekolah===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function hapusAnak(idx) {
+  anakData.splice(idx,1);
+  renderDaftarAnak();
+}
+
+// ─── Verifikasi ───────────────────────────────────────────────────
+function renderVerifikasiRingkasan() {
+  const tbody = document.getElementById('tbl-verifikasi-ringkasan');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  
+  PERSYARATAN_PPI.forEach((item, idx) => {
+    const input = document.getElementById(`file-doc-${idx}`);
+    const file = input && input.files ? input.files[0] : null;
+    const fileSpan = document.getElementById(`req-file-${idx}`);
+    const hasImported = fileSpan && !fileSpan.classList.contains('hidden');
+
+    const status = (file || hasImported)
+      ? '<span class="text-emerald-500 font-bold"><i class="fas fa-check-circle mr-1"></i>Sudah</span>'
+      : '<span class="text-rose-500 font-bold"><i class="fas fa-times-circle mr-1"></i>Belum</span>';
+    const aksi = (file || hasImported)
+      ? `<button onclick="previewReqFile(${idx})" class="px-2 py-0.5 border border-asabri-blue text-asabri-blue rounded text-[9px] font-bold hover:bg-asabri-blue/5"><i class="fas fa-eye mr-1"></i>Detail</button>`
+      : '—';
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-slate-50 text-xs';
+    tr.innerHTML = `<td class="px-4 py-2.5 font-semibold text-slate-700">${idx+1}. ${item}</td><td class="px-4 py-2.5 text-center">${status}</td><td class="px-4 py-2.5 text-center">${aksi}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function onVerifikasiStatusChange() {
+  const val = document.querySelector("input[name='status-dok']:checked")?.value;
+  const label = document.getElementById('alasan-label');
+  const textarea = document.getElementById('alasan-catatan');
+  
+  document.getElementById('banner-ditolak').classList.toggle('hidden', val !== 'Ditolak');
+  document.getElementById('banner-tidakberhak').classList.toggle('hidden', val !== 'TidakBerhak');
+  document.getElementById('banner-pending').classList.toggle('hidden', val !== 'Pending');
+  
+  if (['Ditolak','TidakBerhak','Pending'].includes(val)) {
+    label.innerHTML = 'Alasan / Catatan <span class="text-rose-500">*</span>';
+    textarea.required = true;
+  } else {
+    label.innerText = 'Alasan / Catatan';
+    textarea.required = false;
+  }
+}
+
+function simpanVerifikasiPPI() {
+  const statusEl = document.querySelector("input[name='status-dok']:checked");
+  if (!statusEl) { showToast('Form Belum Lengkap', 'Pilih status dokumen fisik.'); return; }
+  const status = statusEl.value;
+
+  if (['Ditolak','TidakBerhak','Pending'].includes(status) && !document.getElementById('alasan-catatan').value.trim()) {
+    showToast('Wajib Diisi', 'Masukkan alasan / catatan untuk status verifikasi berkas ini.'); return;
+  }
+
+  verifikasiDiterima = (status === 'Diterima');
+  addLog('Staf KANCAB', '192.168.1.5', status, 'Verifikasi Berkas', `Status berkas: ${status}`);
+
+  if (status === 'Diterima') {
+    showToast('Validasi Berhasil', 'Berkas dinyatakan lengkap. Mengirim notifikasi "VALIDASI DITERIMA" ke DJPB & ASABRI Mobile.');
+    hitungManfaatPPI();
+    setTimeout(() => switchTab('tab-manfaat'), 1200);
+  } else {
+    showToast('Verifikasi Disimpan', `Status verifikasi berkas: ${status}`);
+  }
+}
+
+// ─── Manfaat ──────────────────────────────────────────────────────
+function updateManfaatTab() {
+  const gate = document.getElementById('manfaat-gate');
+  const konten = document.getElementById('manfaat-konten');
+  if (verifikasiDiterima) {
+    gate.classList.add('hidden');
+    konten.classList.remove('hidden');
+    hitungManfaatPPI();
+  } else {
+    gate.classList.remove('hidden');
+    konten.classList.add('hidden');
+  }
+}
+
+function hitungManfaatPPI() {
+  if (!activeClaimData) return;
+  const p = activeClaimData.participant;
+  const tbodyBruto = document.getElementById('tbl-manfaat-bruto');
+  const tbodyPotongan = document.getElementById('tbl-manfaat-potongan');
+
+  tbodyBruto.innerHTML = '';
+  tbodyPotongan.innerHTML = '';
+
+  const esc = p.eskpp;
+  const pok = esc?.pensiun_pokok || 4400000;
+  const gp = p.gaji_pokok_terakhir || 5500000;
+
+  // Pensiun Warakawuri (50% of Pensiun Pokok)
+  const nominalWarakawuri = Math.round(pok * 0.5);
+  let brutoRows = [
+    { nama: 'Pensiun Warakawuri (50% Pokok)', nominal: nominalWarakawuri, ket: 'Hak bulanan Janda/Duda Pensiunan' }
+  ];
+
+  // Tunjangan Anak (2% of Pensiun Pokok per eligible child)
+  const anakBerhakCount = getEligibleAnakCount();
+  if (anakBerhakCount > 0) {
+    brutoRows.push({ nama: `Tunjangan Anak (${anakBerhakCount} anak)`, nominal: Math.round(pok * 0.02 * anakBerhakCount), ket: `${2 * anakBerhakCount}% dari Pensiun Pokok` });
+  }
+
+  // Tunjangan Beras & Tunjangan lainnya
+  brutoRows.push({ nama: 'Tunjangan Beras Pensiun', nominal: 180000, ket: 'Tunjangan pangan pangan' });
+
+  // Pensiun Terusan jika dipilih
+  const terusanBulan = parseInt(document.getElementById('fp-terusan')?.value || '0');
+  if (terusanBulan > 0) {
+    const nominalTerusan = gp * terusanBulan;
+    brutoRows.push({ nama: `Pensiun Terusan (${terusanBulan} Bulan sekaligus)`, nominal: nominalTerusan, ket: `Kompensasi penuh ${terusanBulan}x Gaji Pokok Terakhir` });
+  }
+
+  // Potongan BPJS/PPh
+  let potonganRows = [];
+  if (esc) {
+    potonganRows.push({ nama: 'Potongan PPh Pasal 21', nominal: 22000, ket: 'Pajak penghasilan bulanan' });
+    potonganRows.push({ nama: 'BPJS Kesehatan (1% dari Pokok)', nominal: Math.round(nominalWarakawuri * 0.01), ket: '1% Dapem BPJS' });
+  }
+
+  // Render Bruto
+  brutoRows.forEach(r => {
+    tbodyBruto.innerHTML += `
+      <tr class="hover:bg-slate-50">
+        <td class="px-4 py-2 font-semibold text-slate-800">${r.nama}</td>
+        <td class="px-4 py-2 text-right font-mono font-bold text-slate-800">Rp ${r.nominal.toLocaleString('id-ID')}</td>
+        <td class="px-4 py-2 text-slate-400 italic">${r.ket}</td>
+      </tr>`;
+  });
+
+  // Render Potongan
+  if (potonganRows.length === 0) {
+    tbodyPotongan.innerHTML = '<tr><td colspan="3" class="px-4 py-3 text-center text-slate-400 italic">Tidak ada potongan.</td></tr>';
+  } else {
+    potonganRows.forEach(r => {
+      tbodyPotongan.innerHTML += `
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-2 font-semibold text-slate-700">${r.nama}</td>
+          <td class="px-4 py-2 text-right font-mono font-bold text-rose-600">(Rp ${r.nominal.toLocaleString('id-ID')})</td>
+          <td class="px-4 py-2 text-slate-400 italic">${r.ket}</td>
+        </tr>`;
+    });
+  }
+
+  // Sums
+  const brutoSum = brutoRows.reduce((a, b) => a + b.nominal, 0);
+  const potonganSum = potonganRows.reduce((a, b) => a + b.nominal, 0);
+  const nettoSum = Math.max(0, brutoSum - potonganSum);
+
+  document.getElementById('sum-bruto').innerText = 'Rp ' + brutoSum.toLocaleString('id-ID');
+  document.getElementById('sum-potongan').innerText = '(Rp ' + potonganSum.toLocaleString('id-ID') + ')';
+  document.getElementById('sum-netto').innerText = 'Rp ' + nettoSum.toLocaleString('id-ID');
+  document.getElementById('sum-netto-terbilang').innerText = terbilang(nettoSum) + ' Rupiah';
+}
+
+function getEligibleAnakCount() {
+  return anakData.filter(a => {
+    if (!a.tgllahir) return false;
+    const usia = Math.floor((new Date() - new Date(a.tgllahir)) / (365.25 * 24 * 3600 * 1000));
+    return (usia <= 21) || (usia <= 25 && a.statusSekolah === 'Kuliah');
+  }).length;
+}
+
+function simpanManfaatPPI() {
+  manfaatTersimpan = true;
+  addLog('Staf KANCAB', '192.168.1.5', 'Diproses', 'Perhitungan Manfaat', 'Menyimpan rincian Pensiun Warakawuri bulanan dan potongan');
+  showToast('Perhitungan Disimpan', 'Data hasil perhitungan pensiun Warakawuri berhasil disimpan.');
+  setTimeout(() => switchTab('tab-riwayat'), 1000);
+}
+
+// ─── Riwayat & Lanjutan ───────────────────────────────────────────
+function updateRiwayatTab() {
+  const gate = document.getElementById('klaim-lanjutan-gate');
+  const konten = document.getElementById('klaim-lanjutan-konten');
+
+  if (!manfaatTersimpan) {
+    gate.classList.remove('hidden');
+    konten.classList.add('hidden');
+    return;
+  }
+
+  gate.classList.add('hidden');
+  konten.classList.remove('hidden');
+
+  // Cek jika ada anak eligible untuk tombol Yatim
+  const countAnak = getEligibleAnakCount();
+  document.getElementById('btn-yatim-lanjutan').classList.toggle('hidden', countAnak === 0);
+
+  toggleSimSkenario();
+}
+
+function toggleSimSkenario() {
+  const scenario = document.querySelector("input[name='sim-skenario']:checked").value;
+  document.getElementById('sc-normal').classList.toggle('hidden', scenario !== 'normal');
+  document.getElementById('sc-meninggal').classList.toggle('hidden', scenario !== 'meninggal');
+  document.getElementById('sc-nikah').classList.toggle('hidden', scenario !== 'nikah');
+}
+
+function hentikanPembayaranWarakawuri() {
+  if (confirm('Konfirmasi penghentian pembayaran Pensiun Warakawuri karena penerima menikah lagi?')) {
+    addLog('Staf KANCAB', '192.168.1.5', 'Dihentikan', 'Penghentian Pensiun', 'Hak Warakawuri dicabut karena penerima menikah lagi');
+    showToast('Hak Dicabut', 'Pembayaran bulanan Pensiun Warakawuri dihentikan secara permanen.');
+    setTimeout(() => {
+      window.location.href = 'riwayat.html';
+    }, 1500);
+  }
+}
+
+function bukaModalKlaimLanjutan(tujuan, label) {
+  _klaimLanjutanTujuan = tujuan;
+  document.getElementById('modal-klaim-lanjutan-judul').innerText = `Lanjut ke ${label}?`;
+  document.getElementById('modal-klaim-lanjutan-ppi').classList.remove('hidden');
+}
+
+function eksekusiKlaimLanjutan() {
+  if (!activeClaimData) return;
+  const p = activeClaimData.participant;
+  const noReg = activeClaimData.noRegistrasi;
+
+  const dokumenLama = [
+    { nama: 'Formulir Pengajuan', defaultChecked: true },
+    { nama: 'FC e-KTP Pengaju', defaultChecked: true },
+    { nama: 'FC Kartu Keluarga (KK)', defaultChecked: true },
+    { nama: 'FC Keputusan Pensiun', defaultChecked: true },
+    { nama: 'FC Buku Rekening', defaultChecked: true },
+    { nama: 'FC Surat Nikah / KARIS/KARSU', defaultChecked: true }
+  ];
+
+  const payload = {
+    prefillData: {
+      nik: p.nik,
+      nama: p.nama.replace(' (Alm)', ''),
+      nrp: p.nrp_nip,
+      pangkat: p.pangkat,
+      kesatuan: p.kesatuan,
+      namaWarakawuri: p.pasangan?.nama || '',
+      nikWarakawuri: p.pasangan?.nik || '',
+      tanggalMeninggal: document.getElementById('fp-tgl-meninggal').value || '',
+      noRegistrasiAsal: noReg,
+      bank: document.getElementById('fp-bank').value || '',
+      noRekening: document.getElementById('fp-norek').value || '',
+      dataEskpp: p.eskpp || null,
+      dataKeluarga: { pasangan: p.pasangan, anak: p.anak }
+    },
+    dokumenLama,
+    fromKlaim: noReg,
+    jenisKlaimAsal: 'PPI'
+  };
+
+  sessionStorage.setItem('prefillFromKlaim', JSON.stringify(payload));
+  addLog('Staf KANCAB', '192.168.1.5', 'Diproses', 'Klaim Lanjutan', `Membuka klaim lanjutan ke ${_klaimLanjutanTujuan}`);
+
+  document.getElementById('modal-klaim-lanjutan-ppi').classList.add('hidden');
+  showToast('Mengalihkan...', 'Membuka form baru...');
+
+  const pathMap = { 
+    bpis: 'klaim-tht.html', // BPI/S is processed under THT page
+    udw: 'klaim-pensiun-udw-pemakaman.html', 
+    yatim: 'klaim-pensiun-yatim-piatu.html' 
+  };
+  
+  setTimeout(() => {
+    window.location.href = (pathMap[_klaimLanjutanTujuan] || 'riwayat.html') + `?fromKlaim=${encodeURIComponent(noReg)}`;
+  }, 1200);
+}
+
+// ─── Draft & Selesai ──────────────────────────────────────────────
+function simpanDraftPPI(tabName) {
+  if (!activeClaimData) return;
+  const draftKey = `draft_ppi_${activeClaimData.noRegistrasi}`;
+  
+  const draftState = {
+    kondisiKlaim: document.getElementById('fp-kondisi')?.value,
+    tanggalMeninggal: document.getElementById('fp-tgl-meninggal')?.value,
+    pengaju: {
+      nama: document.getElementById('fp-a-nama')?.value,
+      nik: document.getElementById('fp-a-nik')?.value,
+      telp: document.getElementById('fp-a-telp')?.value,
+      bank: document.getElementById('fp-bank')?.value,
+      norek: document.getElementById('fp-norek')?.value,
+    }
+  };
+
+  localStorage.setItem(draftKey, JSON.stringify(draftState));
+  showToast('Draft Disimpan', `Progress pengisian dari ${tabName} disimpan ke dalam draft lokal.`);
+  addLog('Staf KANCAB', '192.168.1.5', 'Diproses', 'Simpan Draft', `Menyimpan draft pada tab ${tabName}`);
+}
+
+function simpanDataPengajuPPI() {
+  const name = document.getElementById('fp-a-nama').value.trim();
+  const tglMeninggal = document.getElementById('fp-tgl-meninggal').value;
+  if (!name || !tglMeninggal) { showToast('Wajib Diisi', 'Harap isi Nama Pemohon dan Tanggal Meninggal Peserta.'); return; }
+  
+  // check kejandaan
+  const scanFile = document.getElementById('fp-file-kejandaan');
+  if (!document.getElementById('fp-k-nosurat').value.trim() || (!scanFile.files[0] && !activeClaimData.fromAsalNoreg)) {
+    showToast('Wajib Diisi', 'Masukkan nomor scan surat kejandaan/belum nikah lagi.'); return;
+  }
+
+  addLog('Staf KANCAB', '192.168.1.5', 'Diproses', 'Data Pengaju', 'Menyimpan data pengaju pensiun Warakawuri');
+  showToast('Data Disimpan', 'Rincian data pengaju PPI berhasil disimpan.');
+  setTimeout(() => switchTab('tab-persyaratan'), 800);
+}
+
+function konfirmasiSelesaikanKlaimPPI() {
+  document.getElementById('modal-selesai-pp').classList.remove('hidden');
+}
+
+function eksekusiSelesaikanKlaimPPI() {
+  document.getElementById('modal-selesai-pp').classList.add('hidden');
+  if (activeClaimData) activeClaimData.status = 'Selesai';
+
+  addLog('Staf KANCAB', '192.168.1.5', 'Selesai', 'Penyelesaian Klaim PPI', 'Status berkas Pensiun Warakawuri diubah menjadi SELESAI');
+  document.getElementById('riwayat-status-terkini').innerText = 'Selesai';
+  document.getElementById('riwayat-status-terkini').className = 'inline-block px-3 py-1 rounded-full text-xs font-bold border bg-emerald-50 border-emerald-200 text-emerald-700';
+  
+  showToast('Klaim Selesai', 'Berkas Pensiun Warakawuri (PPI) telah dinyatakan selesai dibayarkan.');
+  setTimeout(() => {
+    localStorage.removeItem(`draft_ppi_${activeClaimData.noRegistrasi}`);
+    sessionStorage.removeItem('asabri_temp_claim_data');
+    window.location.href = 'riwayat.html';
+  }, 2000);
+}
+
+function cancelProcess() {
+  if (confirm('Batalkan proses klaim PPI ini? Seluruh data yang tidak disimpan ke draft akan hilang.')) {
+    sessionStorage.removeItem('asabri_temp_claim_data');
+    window.location.href = 'riwayat.html';
+  }
+}
+
+// ─── Dropzone ─────────────────────────────────────────────────────
+function handleDropzoneUpload(event, containerId) {
+  if (!dropzoneFiles[containerId]) dropzoneFiles[containerId] = [];
+  Array.from(event.target.files).forEach(f => dropzoneFiles[containerId].push(f));
+  renderDzPreviews(containerId);
+}
+
+function renderDzPreviews(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  (dropzoneFiles[containerId] || []).forEach((file, i) => {
+    const ext = file.name.split('.').pop().toUpperCase();
+    const div = document.createElement('div');
+    div.className = 'flex items-center gap-3 border border-slate-200 bg-slate-50 rounded-xl p-3 text-xs';
+    div.innerHTML = `
+      <div class="w-8 h-8 rounded-lg bg-asabri-blue/10 flex items-center justify-center text-asabri-blue font-bold text-[10px] shrink-0">${ext}</div>
+      <div class="flex-1 min-w-0"><span class="block font-semibold text-slate-700 truncate">${file.name}</span><span class="text-[9px] text-slate-400">${(file.size/1024).toFixed(1)} KB</span></div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button onclick="previewDzFile('${containerId}',${i})" type="button" class="px-2.5 py-1 border border-asabri-blue text-asabri-blue rounded-lg hover:bg-asabri-blue/5 text-[9px] font-bold transition-all flex items-center gap-1"><i class="fas fa-eye text-[8px]"></i> Detail</button>
+        <button type="button" onclick="dropzoneFiles['${containerId}'].splice(${i},1);renderDzPreviews('${containerId}')" class="text-slate-400 hover:text-rose-500 transition-colors shrink-0"><i class="fas fa-times"></i></button>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function previewDzFile(containerId, i) {
+  const file = (dropzoneFiles[containerId] || [])[i];
+  if (!file) return;
+  window.open(URL.createObjectURL(file), '_blank');
+}
+
+// ─── Log Aktivitas ────────────────────────────────────────────────
+function addLog(user, ip, status, kegiatan, keterangan) {
+  const now = new Date();
+  const tgl = now.toLocaleString('id-ID');
+  sejarahLog.unshift({ tgl, user, ip, status, kegiatan, keterangan });
+  renderLog();
+  document.getElementById('riwayat-tgl-update').innerText = tgl;
+}
+
+function renderLog() {
+  const tbody = document.getElementById('tbl-log-aktivitas');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  sejarahLog.forEach(log => {
+    let statusColor = 'bg-indigo-100 text-indigo-700';
+    if (log.status === 'Diterima' || log.status === 'Selesai') statusColor = 'bg-emerald-100 text-emerald-700';
+    else if (log.status === 'Ditolak' || log.status === 'TidakBerhak') statusColor = 'bg-rose-100 text-rose-700';
+    else if (log.status === 'Pending') statusColor = 'bg-amber-100 text-amber-700';
+
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-slate-50 text-xs';
+    tr.innerHTML = `
+      <td class="px-4 py-2.5 text-slate-500 font-mono whitespace-nowrap">${log.tgl}</td>
+      <td class="px-4 py-2.5 font-semibold text-slate-700">${log.user}</td>
+      <td class="px-4 py-2.5 font-mono text-slate-500">${log.ip}</td>
+      <td class="px-4 py-2.5"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${statusColor}">${log.status}</span></td>
+      <td class="px-4 py-2.5 text-slate-700">${log.kegiatan}</td>
+      <td class="px-4 py-2.5 text-slate-400 italic">${log.keterangan || '—'}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ─── Sidebar Toggle ───────────────────────────────────────────────
+document.getElementById('sidebar-toggle').addEventListener('click', () => {
+  const sidebar = document.getElementById('sidebar-nav');
+  sidebar.classList.toggle('w-80');
+  sidebar.classList.toggle('w-0');
+  sidebar.classList.toggle('overflow-hidden');
+});
+
+function toggleSidebarAccordion(menuId, chevronId) {
+  const menu = document.getElementById(menuId);
+  const chevron = document.getElementById(chevronId);
+  menu.classList.toggle('hidden');
+  if (chevron) chevron.classList.toggle('rotate-90');
+}
+
+// ─── Utilities ────────────────────────────────────────────────────
+function terbilang(n) {
+  if (n === 0) return 'Nol';
+  const satuan = ['','Satu','Dua','Tiga','Empat','Lima','Enam','Tujuh','Delapan','Sembilan','Sepuluh','Sebelas'];
+  function toWord(n) {
+    if (n < 12) return satuan[n];
+    if (n < 20) return satuan[n-10] + ' Belas';
+    if (n < 100) return satuan[Math.floor(n/10)] + ' Puluh ' + toWord(n%10);
+    if (n < 200) return 'Seratus ' + toWord(n-100);
+    if (n < 1000) return satuan[Math.floor(n/100)] + ' Ratus ' + toWord(n%100);
+    if (n < 2000) return 'Seribu ' + toWord(n-1000);
+    if (n < 1000000) return toWord(Math.floor(n/1000)) + ' Ribu ' + toWord(n%1000);
+    if (n < 1000000000) return toWord(Math.floor(n/1000000)) + ' Juta ' + toWord(n%1000000);
+    return toWord(Math.floor(n/1000000000)) + ' Miliar ' + toWord(n%1000000000);
+  }
+  return toWord(n).trim().replace(/\s+/g,' ');
+}
+
+function showToast(title, msg) {
+  const container = document.getElementById('toast-container') || (() => {
+    const c = document.createElement('div');
+    c.id = 'toast-container';
+    c.className = 'fixed bottom-6 right-6 z-[100] space-y-3';
+    document.body.appendChild(c);
+    return c;
+  })();
+  const toast = document.createElement('div');
+  toast.className = 'bg-white border border-slate-200 shadow-lg rounded-2xl p-4 flex items-start gap-3 max-w-xs transform translate-y-4 opacity-0 transition-all duration-300';
+  toast.innerHTML = `<div class="w-8 h-8 rounded-lg bg-asabri-blue/10 flex items-center justify-center shrink-0"><i class="fas fa-bell text-asabri-blue text-xs"></i></div><div><p class="text-xs font-bold text-slate-800">${title}</p><p class="text-[11px] text-slate-500 mt-0.5">${msg}</p></div>`;
+  container.appendChild(toast);
+  setTimeout(() => toast.classList.remove('translate-y-4','opacity-0'), 50);
+  setTimeout(() => { toast.classList.add('translate-y-4','opacity-0'); setTimeout(() => toast.remove(), 300); }, 4000);
+}
+</script>
+
+</body>
+</html>
