@@ -1,7 +1,7 @@
 // Global Shared Logic for ASABRI YANDU NG Multi-Page App
 
 // Database Methods
-const DATA_VERSION = "1.3"; // Increment this whenever MOCK_CLAIMS structure changes
+const DATA_VERSION = "1.4"; // Increment this whenever MOCK_CLAIMS structure changes
 
 function getClaims() {
   const data = localStorage.getItem("asabri_claims");
