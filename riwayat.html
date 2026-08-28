@@ -208,13 +208,15 @@
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr class="border-b border-slate-200 text-slate-400 uppercase text-[9px] font-bold tracking-wider bg-slate-50/30">
-                    <th class="py-3.5 px-6">Registrasi</th>
-                    <th class="py-3.5 px-6">NIP / NRP</th>
+                    <th class="py-3.5 px-6">No</th>
+                    <th class="py-3.5 px-6">Nomor Registrasi</th>
+                    <th class="py-3.5 px-6">Kantor Cabang</th>
                     <th class="py-3.5 px-6">Nama Peserta</th>
                     <th class="py-3.5 px-6">Jenis Kejadian</th>
-                    <th class="py-3.5 px-6">Klaim Yang Didapatkan</th>
                     <th class="py-3.5 px-6">Sumber</th>
-                    <th class="py-3.5 px-6">Status Klaim</th>
+                    <th class="py-3.5 px-6">Status</th>
+                    <th class="py-3.5 px-6">Tgl Registrasi</th>
+                    <th class="py-3.5 px-6">Tgl Selesai</th>
                     <th class="py-3.5 px-6 text-center">Aksi</th>
                   </tr>
                 </thead>
@@ -249,7 +251,7 @@
                 <h5 class="font-bold text-slate-800 flex items-center gap-2 uppercase tracking-wide text-xs border-b border-slate-200/80 pb-3 mb-4">
                   <i class="fas fa-file-invoice text-sm text-asabri-blue"></i> 1. Registrasi Pengajuan
                 </h5>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-xs text-slate-600">
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 text-xs text-slate-600">
                   <div>
                     <span class="text-slate-400 font-bold block mb-1">No. Registrasi</span>
                     <strong id="det-no-reg" class="text-slate-800 font-extrabold text-xs block">-</strong>
@@ -257,6 +259,10 @@
                   <div>
                     <span class="text-slate-400 font-bold block mb-1">Tanggal Pengajuan</span>
                     <strong id="det-date-reg" class="text-slate-800 font-bold block">-</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 font-bold block mb-1">Tanggal Selesai</span>
+                    <strong id="det-date-selesai" class="text-slate-800 font-bold block">-</strong>
                   </div>
                   <div>
                     <span class="text-slate-400 font-bold block mb-1">Jenis Pengajuan</span>
@@ -805,7 +811,7 @@
         return;
       }
 
-      body.innerHTML = listToRender.map(d => {
+      body.innerHTML = listToRender.map((d, index) => {
         let statusBadge = "";
         const stat = (d.status || "").toLowerCase();
         if (stat.includes("pending")) {
@@ -834,17 +840,8 @@
           statusBadge = `<span class="bg-emerald-50 border border-emerald-250 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1"><i class="fas fa-circle-check text-emerald-500"></i> Diterima</span>`;
         }
 
-        const NIP_NRP = d.peserta?.nrp_nip || d.participant?.nrp_nip || d.nrp || d.nrp_nip || d.nik || d.peserta?.nik || d.participant?.nik || '-';
         const namaPeserta = d.peserta?.nama || d.participant?.nama || d.namaPeserta || d.nama || '-';
-        const JENIS_KEJADIAN_MAP = {
-          "jkk": (d.manfaatKlaim || "").toLowerCase().includes("perawatan") ? "Kecelakaan Kerja — Dirawat" : "Kecelakaan Kerja — Meninggal Dunia",
-          "jkm": "Meninggal Dunia dalam Dinas Aktif",
-          "tht": "Pensiun",
-          "ntip": "Berhenti tanpa Hak Pensiun",
-          "pensiun": "Pensiun"
-        };
         const rawJenis = d.jenisKejadian || d.jenisKlaim || '—';
-        const jenisKejadian = JENIS_KEJADIAN_MAP[rawJenis.toLowerCase()] || rawJenis;
         const sumberStr = d.sumber || d.sumberPengajuan || 'Kantor Cabang';
         const noAgendaVal = d.noRegistrasi || d.noAgenda || '-';
 
@@ -863,66 +860,12 @@
         let sourceBadge = `<span class="bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-semibold text-[10px]">${sumberStr}</span>`;
         if (sumberStr === 'Kantor Cabang') {
           sourceBadge = `<span class="bg-blue-50 border border-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-building mr-1"></i>${sumberStr}</span>`;
-        } else if (sumberStr === 'ASABRI-link') {
-          sourceBadge = `<span class="bg-emerald-50 border border-emerald-150 text-emerald-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-link mr-1"></i>${sumberStr}</span>`;
-        } else if (sumberStr === 'Metadata Kemenkeu') {
-          sourceBadge = `<span class="bg-purple-50 border border-purple-100 text-purple-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-file-invoice mr-1"></i>${sumberStr}</span>`;
         } else {
           const isOnline = sumberStr.toLowerCase().includes("mobile") || sumberStr.toLowerCase().includes("klik") || sumberStr.toLowerCase().includes("link") || sumberStr.toLowerCase().includes("online");
           sourceBadge = isOnline
-            ? `<span class="bg-blue-50 border border-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-globe mr-1"></i>Online (${sumberStr})</span>`
-            : `<span class="bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-building mr-1"></i>Offline (${sumberStr})</span>`;
+            ? `<span class="bg-blue-50 border border-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-globe mr-1"></i>Online</span>`
+            : `<span class="bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-building mr-1"></i>Offline</span>`;
         }
-
-        let slaContent = "";
-        if (stat.includes("tolak")) {
-          slaContent = `<span class="text-slate-400 font-medium font-mono">—</span>`;
-        } else if (stat.includes("pending")) {
-          slaContent = `
-            <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-slate-200 bg-slate-100 text-slate-500 text-[9px] font-bold">
-              <i class="fas fa-snowflake text-[9px] text-slate-400"></i>
-              <span>FREEZE</span>
-            </div>
-          `;
-        } else if (stat.includes("proses") || stat.includes("selesai") || stat.includes("bayar")) {
-          const waktuVal = (d.sla && d.sla.waktu) ? d.sla.waktu : "—";
-          slaContent = `
-            <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-500 text-[9px] font-bold">
-              <i class="fas fa-circle-check text-[9px] text-slate-400"></i>
-              <span>${waktuVal}</span>
-            </div>
-          `;
-        } else {
-          let minutes = 15;
-          let waktuStr = "15 menit";
-          if (d.sla && d.sla.waktu) {
-            waktuStr = d.sla.waktu;
-            minutes = parseInt(d.sla.waktu);
-            if (isNaN(minutes)) minutes = 15;
-          }
-
-          let slaColor = "text-emerald-700 bg-emerald-50 border-emerald-250";
-          let iconClass = "fa-clock";
-
-          if (minutes > 60) {
-            slaColor = "text-rose-700 bg-rose-50 border-rose-250 font-extrabold";
-            iconClass = "fa-triangle-exclamation text-rose-500 animate-pulse";
-          } else if (minutes > 35) {
-            slaColor = "text-amber-700 bg-amber-50 border-amber-200 animate-pulse";
-            iconClass = "fa-triangle-exclamation text-amber-500";
-          }
-
-          slaContent = `
-            <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-[9px] font-bold ${slaColor}">
-              <i class="fas ${iconClass} text-[9px]"></i>
-              <span>${waktuStr}</span>
-            </div>
-          `;
-        }
-
-        const productsList = d.manfaatKlaim ? d.manfaatKlaim.split(/[&,]/).map(p => p.trim()).filter(Boolean) : [];
-        const pCount = productsList.length;
-        const pText = pCount > 0 ? `${pCount} Produk (${productsList.join(', ')})` : '—';
 
         const PENSIUN_EVENTS = [
           "Pensiun Sendiri — Meninggal Dunia",
@@ -933,23 +876,25 @@
           "Tunjangan Yatim/Piatu/Yatim-Piatu — Dewasa",
           "Tunjangan Orang Tua — Meninggal"
         ];
-        const isPensiunEvent = PENSIUN_EVENTS.includes(jenisKejadian);
+        const isPensiunEvent = PENSIUN_EVENTS.includes(rawJenis);
         const eventBadge = isPensiunEvent 
-          ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${jenisKejadian}</span>`
-          : `<span class="bg-blue-50 text-blue-700 border border-blue-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${jenisKejadian}</span>`;
+          ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${rawJenis}</span>`
+          : `<span class="bg-blue-50 text-blue-700 border border-blue-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${rawJenis}</span>`;
+
+        const kancabVal = d.kantorCabang || d.kancab || '—';
+        const tglSelesaiVal = d.tanggalSelesai || d.tglSelesai || '—';
 
         return `
           <tr class="hover:bg-slate-50/50 transition-colors border-b border-slate-100" data-registration-no="${noAgendaVal}">
-            <td class="py-3 px-6">
-              <div class="font-mono font-bold text-slate-800 text-xs">${noAgendaVal}</div>
-              <div class="text-[9px] text-slate-400 font-mono mt-0.5">${dateVal}</div>
-            </td>
-            <td class="py-3 px-6 font-mono text-xs">${NIP_NRP}</td>
+            <td class="py-3 px-6 font-bold text-slate-800 text-xs">${index + 1}</td>
+            <td class="py-3 px-6 font-mono font-bold text-slate-800 text-xs">${noAgendaVal}</td>
+            <td class="py-3 px-6 font-semibold text-xs text-slate-700">${kancabVal}</td>
             <td class="py-3 px-6 font-semibold text-xs text-slate-700">${namaPeserta}</td>
             <td class="py-3 px-6">${eventBadge}</td>
-            <td class="py-3 px-6"><span class="bg-blue-50 text-blue-700 border border-blue-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${pText}</span></td>
             <td class="py-3 px-6">${sourceBadge}</td>
             <td class="py-3 px-6">${statusBadge}</td>
+            <td class="py-3 px-6 font-mono text-slate-500 text-xs">${dateVal}</td>
+            <td class="py-3 px-6 font-mono text-slate-500 text-xs">${tglSelesaiVal}</td>
             <td class="py-3 px-6 text-center">
               <button type="button" onclick="lihatDetail('${noAgendaVal}')" class="px-2.5 py-1.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-lg font-bold text-[10px] transition-colors inline-flex items-center gap-1 shadow-sm">
                 <i class="fas fa-eye text-[9px]"></i> Lihat Detail
@@ -1081,6 +1026,7 @@
       // Populate text fields
       document.getElementById("det-no-reg").innerText = claim.noRegistrasi || claim.noReg;
       document.getElementById("det-date-reg").innerText = claim.tanggalRegistrasi || claim.date || "2026-07-08";
+      document.getElementById("det-date-selesai").innerText = claim.tanggalSelesai || claim.tglSelesai || "-";
       document.getElementById("det-jenis").innerText = claim.jenisKlaim || claim.jenis || "-";
       document.getElementById("det-nik").innerText = claim.nik || "-";
       document.getElementById("det-nama").innerText = claim.namaPeserta || claim.nama || "-";

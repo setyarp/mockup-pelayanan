@@ -55,6 +55,14 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #94a3b8;
     }
+    #prod-cards-container .grid {
+      grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    }
+    #prod-cards-container [class*="sm:col-span-"],
+    #prod-cards-container [class*="md:col-span-"],
+    #prod-cards-container [class*="col-span-"] {
+      grid-column: span 1 / span 1 !important;
+    }
     .tab-btn {
       transition: all 0.15s;
     }
@@ -289,9 +297,26 @@
             <!-- SCROLLABLE TAB PANE CONTENT AREA -->
             <div class="flex-1 overflow-y-auto p-8">
               <div class="max-w-5xl mx-auto space-y-6">
+                <!-- Global Pending Warning Banner -->
+                <div id="pending-banner" class="hidden p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl flex items-start gap-3 text-xs font-semibold shadow-sm">
+                  <i class="fas fa-triangle-exclamation text-amber-500 text-sm mt-0.5 animate-bounce"></i>
+                  <div>
+                    <strong>⚠️ Peserta belum terdaftar di sistem Kepesertaan.</strong>
+                    <p class="mt-1 font-medium text-slate-600">Proses klaim tidak dapat dilanjutkan sampai data peserta terdaftar. Harap koordinasi ke Divisi Kepesertaan terlebih dahulu.</p>
+                  </div>
+                </div>
+
                 <!-- TAB 1: Data Peserta -->
                 <div id="tab-peserta" class="tab-pane active space-y-6">
-                  
+                  <!-- Tab 1 Pending Banner -->
+                  <div id="t1-pending-banner" class="hidden p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl flex items-start gap-3 text-xs font-semibold shadow-sm">
+                    <i class="fas fa-triangle-exclamation text-rose-500 text-sm mt-0.5 animate-pulse"></i>
+                    <div>
+                      <strong>Data peserta belum terdaftar</strong>
+                      <p class="mt-1 font-medium text-slate-600">Silakan daftarkan peserta terlebih dahulu ke Divisi Kepesertaan untuk melengkapi profil data ini.</p>
+                    </div>
+                  </div>
+
                   <!-- Kartu 1: Ringkasan Registrasi Klaim -->
                   <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
                     <div class="border-b border-slate-100 pb-3">
@@ -458,16 +483,11 @@
                         <span id="error-kejadian-tgl-kejadian" class="text-rose-500 text-[10px] hidden font-semibold">Tanggal Kejadian wajib diisi</span>
                         <div id="regulasi-badge-container"></div>
                       </div>
+                      <input type="hidden" id="ptdh-tmt-pemberhentian">
                       <!-- Conditional TMT fields for PTDH -->
-                      <div id="ptdh-tmt-container" class="hidden space-y-3.5 border-t border-slate-100 pt-3">
+                      <div id="ptdh-tmt-container" class="hidden mt-4">
                         <div class="flex flex-col gap-1.5">
-                          <label class="font-bold text-slate-650 flex items-center gap-1">TMT Pemberhentian (dari SK) <span class="text-rose-500">*</span></label>
-                          <input type="date" id="ptdh-tmt-pemberhentian" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
-                          <span class="text-[10px] text-slate-400">Helper: Tanggal efektif pemberhentian sesuai SK Pemberhentian</span>
-                          <span id="error-ptdh-tmt-pemberhentian" class="text-rose-500 text-[10px] hidden font-semibold">TMT Pemberhentian wajib diisi</span>
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                          <label class="font-bold text-slate-650 flex items-center gap-1">TMT Pembayaran Gaji Terakhir <span class="text-rose-500">*</span></label>
+                          <label class="font-bold text-slate-650 flex items-center gap-1">TMT Gaji Terakhir <span class="text-rose-500">*</span></label>
                           <input type="date" id="ptdh-tmt-gaji-terakhir" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
                           <span class="text-[10px] text-slate-400">Helper: Tanggal terakhir gaji dibayarkan</span>
                           <span id="error-ptdh-tmt-gaji-terakhir" class="text-rose-500 text-[10px] hidden font-semibold">TMT Pembayaran Gaji Terakhir wajib diisi</span>
@@ -493,14 +513,14 @@
                       </div>
                       <!-- Conditional TMT Pensiun field -->
                       <div id="pensiun-tmt-container" class="hidden flex flex-col gap-1.5">
-                        <label class="font-bold text-slate-650 flex items-center gap-1">TMT Pensiun <span class="text-rose-500">*</span></label>
+                        <label class="font-bold text-slate-650 flex items-center gap-1">Tanggal Kejadian <span class="text-rose-500">*</span></label>
                         <input type="date" id="pensiun-tmt" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
                         <span class="text-[10px] text-slate-400">Terhitung Mulai Tanggal Pensiun sesuai SK Pensiun</span>
                         <span id="error-pensiun-tmt" class="text-rose-500 text-[10px] hidden font-semibold">TMT Pensiun wajib diisi</span>
                       </div>
                       <!-- Conditional TMT Meninggal Istri/Suami field -->
                       <div id="istri-suami-wafat-container" class="hidden flex flex-col gap-1.5">
-                        <label class="font-bold text-slate-650 flex items-center gap-1">TMT Meninggal Dunia Istri/Suami <span class="text-rose-500">*</span></label>
+                        <label class="font-bold text-slate-650 flex items-center gap-1">Tanggal Kejadian <span class="text-rose-500">*</span></label>
                         <input type="date" id="istri-suami-wafat-tgl" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
                         <span class="text-[10px] text-slate-400">Tanggal meninggal dunia istri/suami sesuai Surat Kematian</span>
                         <span id="error-istri-suami-wafat-tgl" class="text-rose-500 text-[10px] hidden font-semibold">TMT Meninggal Dunia Istri/Suami wajib diisi</span>
@@ -672,6 +692,9 @@
                     <!-- Cards will be added here dynamically -->
                   </div>
 
+                  <!-- Standalone Hitung Skorsing Section -->
+                  <div id="hitung-skorsing-section" class="hidden"></div>
+
                   <!-- Ringkasan Klaim Section (Auto-calculated) -->
                   <div id="ringkasan-klaim-container" class="hidden bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4 mb-6">
                     <!-- Ringkasan content will be generated dynamically -->
@@ -797,8 +820,11 @@
       
       if (!activeProducts || activeProducts.length === 0) {
         ringkasanContainer.classList.add("hidden");
+        hideSectionSkorsing();
         return;
       }
+
+      updateSkorsingSectionUI();
       
       let totalManfaat = 0;
       let rincianManfaatHtml = "";
@@ -862,40 +888,49 @@
       let skorsingRowsHtml = "";
       let totalPotonganSkorsing = 0;
       const jenisKejadian = document.getElementById("kejadian-jenis")?.value;
-      if (jenisKejadian === 'Berhenti tanpa Hak Pensiun' && currentParticipant && currentParticipant.nik) {
-        const localSkorsing = localStorage.getItem("skorsingData_" + currentParticipant.nik);
-        if (localSkorsing) {
+      if (jenisKejadian === 'Berhenti tanpa Hak Pensiun (PTDH)') {
+        let skorsingList = [];
+        try {
+          const dataPeserta = JSON.parse(localStorage.getItem('dataPeserta'));
+          skorsingList = dataPeserta?.gajiSkorsing || [];
+        } catch (e) {}
+        if (skorsingList.length === 0 && currentParticipant?.nik) {
           try {
-            const skorsingList = JSON.parse(localSkorsing) || [];
-            if (skorsingList.length > 0) {
-              let gp = 0;
-              const selectGajiNtta = document.querySelector("div[data-product='NTTA'] select[id$='-select-gaji-mkg']");
-              const selectGajiNtip = document.querySelector("div[data-product='NTIP'] select[id$='-select-gaji-mkg']");
-              if (selectGajiNtta) {
-                try { gp = JSON.parse(selectGajiNtta.value).gaji; } catch(e){}
-              } else if (selectGajiNtip) {
-                try { gp = JSON.parse(selectGajiNtip.value).gaji; } catch(e){}
-              }
-              const gapokok = gp || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
-              
-              totalPotonganSkorsing = hitungPotonganSkorsing(skorsingList, gapokok);
-              if (totalPotonganSkorsing > 0) {
-                totalPotongan += totalPotonganSkorsing;
-                skorsingRowsHtml = `
-                  <div class="flex justify-between py-1 text-rose-650">
-                    <span>Potongan Skorsing</span>
-                    <span class="font-mono font-semibold text-rose-600 font-bold">-${formatRupiah(totalPotonganSkorsing)}</span>
-                  </div>
-                `;
-              }
-            }
-          } catch(e) {
-            console.error(e);
+            const localSkorsing = localStorage.getItem("skorsingData_" + currentParticipant.nik);
+            if (localSkorsing) skorsingList = JSON.parse(localSkorsing) || [];
+          } catch(e) {}
+          if (skorsingList.length === 0) {
+            try {
+              const dataPesertaNik = JSON.parse(localStorage.getItem(`dataPeserta_${currentParticipant.nik}`));
+              skorsingList = dataPesertaNik?.gajiSkorsing || [];
+            } catch(e) {}
           }
         }
+
+        let gp = 0;
+        const selectGajiNtta = document.querySelector("div[data-product='NTTA'] select[id$='-select-gaji-mkg']");
+        const selectGajiNtip = document.querySelector("div[data-product='NTIP'] select[id$='-select-gaji-mkg']");
+        if (selectGajiNtta) {
+          try { gp = JSON.parse(selectGajiNtta.value).gaji; } catch(e){}
+        } else if (selectGajiNtip) {
+          try { gp = JSON.parse(selectGajiNtip.value).gaji; } catch(e){}
+        }
+        const gapokok = gp || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
+        
+        if (skorsingList.length > 0) {
+          totalPotonganSkorsing = hitungPotonganSkorsing(skorsingList, gapokok);
+        }
+
+        totalPotongan += totalPotonganSkorsing;
+        skorsingRowsHtml = `
+          <div class="flex justify-between py-1 text-rose-650 font-mono">
+            <span>Potongan Skorsing</span>
+            <span class="font-semibold text-rose-600 font-bold">${totalPotonganSkorsing > 0 ? '-' : ''}${formatRupiah(totalPotonganSkorsing)}</span>
+          </div>
+        `;
       }
 
-      if (totalPotongan > 0) {
+      if (totalPotongan > 0 || jenisKejadian === 'Berhenti tanpa Hak Pensiun (PTDH)') {
         potonganHtml = `
           <div class="border-t border-slate-100 pt-3">
             <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Potongan:</h4>
@@ -1193,6 +1228,123 @@
       ]
     };
 
+    const TABEL_CACAT_PP102 = {
+      'Tingkat III': {
+        'Kehilangan kedua anggota gerak bawah dari pangkal paha': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan kedua anggota gerak bawah dari pangkal paha': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan kedua anggota gerak atas dari sendi bahu': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan kedua anggota gerak atas dari sendi bahu': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan 1 anggota gerak bawah dan 1 anggota gerak atas': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan 1 anggota gerak bawah dan 1 anggota gerak atas': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan penglihatan kedua mata': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Bisu dan tuli': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Penyakit jiwa berat': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Cacat luas organ sistem syaraf/pernafasan/kardiovaskuler': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+      },
+      'Tingkat II': {
+        'Penyakit jiwa sedang': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Kehilangan 1 anggota gerak bawah dari pangkal paha': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kelumpuhan 1 anggota gerak bawah dari pangkal paha': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kehilangan 1 anggota gerak atas dari sendi bahu': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Kelumpuhan 1 anggota gerak atas dari sendi bahu': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Cacat sebagian organ sistem syaraf/pernafasan/kardiovaskuler': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Kehilangan penglihatan 1 mata atau diplopia': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kehilangan 1 jari telunjuk atau ibu jari tangan kanan': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Kehilangan 2 jari atau lebih tangan kanan': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Bisu': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Tuli': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Tangan kanan dari/atas pergelangan ke bawah': { 'Golongan A': 13.03, 'Golongan B': 26.07, 'Golongan C': 32.58 },
+        'Tangan kiri dari/atas pergelangan ke bawah': { 'Golongan A': 12.47, 'Golongan B': 24.93, 'Golongan C': 31.17 },
+        'Sebelah kaki dari mata kaki ke bawah': { 'Golongan A': 8.80, 'Golongan B': 17.60, 'Golongan C': 22.00 },
+        'Lengan kiri dari/atas siku ke bawah': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
+        'Kaki memendek 5 cm - kurang dari 7,5 cm': { 'Golongan A': 7.04, 'Golongan B': 14.08, 'Golongan C': 17.60 },
+        'Kaki memendek 7,5 cm atau lebih': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
+        'Cacat hilangnya cuping hidung': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
+        'Impotensi': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
+      },
+      'Tingkat I': {
+        'Gangguan kejiwaan ringan': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Kehilangan 1 jari tangan atau kaki': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Berkurangnya fungsi mata': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Kehilangan daun telinga': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Perubahan klasifikasi/fungsi organ tubuh': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Ibu jari tangan kiri': { 'Golongan A': 4.22, 'Golongan B': 8.45, 'Golongan C': 10.56 },
+        'Ruas pertama telunjuk tangan kanan': { 'Golongan A': 3.77, 'Golongan B': 7.55, 'Golongan C': 9.43 },
+        'Ruas pertama telunjuk tangan kiri': { 'Golongan A': 1.23, 'Golongan B': 2.46, 'Golongan C': 3.08 },
+        'Ruas pertama jari lain tangan kanan': { 'Golongan A': 1.89, 'Golongan B': 3.77, 'Golongan C': 4.72 },
+        'Ruas pertama jari lain tangan kiri': { 'Golongan A': 0.53, 'Golongan B': 1.06, 'Golongan C': 1.32 },
+        'Kaki memendek sebelah kurang dari 5 cm': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Penurunan daya dengar kedua telinga per 10 desibel': { 'Golongan A': 2.11, 'Golongan B': 4.22, 'Golongan C': 5.28 },
+        'Penurunan daya dengar sebelah telinga per 10 desibel': { 'Golongan A': 1.06, 'Golongan B': 2.11, 'Golongan C': 2.64 },
+        'Perforasi sekat rongga hidung': { 'Golongan A': 5.28, 'Golongan B': 10.56, 'Golongan C': 13.20 },
+        'Kehilangan daya penciuman': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Hilangnya kemampuan kerja fisik 10-25%': { 'Golongan A': 1.76, 'Golongan B': 3.52, 'Golongan C': 4.40 },
+        'Kehilangan penglihatan warna': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Kehilangan kedua belah daun telinga': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+      },
+      'Tingkat III Lainnya': {
+        'Kedua belah kaki dari mata kaki ke bawah': { 'Golongan A': 17.60, 'Golongan B': 35.20, 'Golongan C': 44.00 },
+      },
+    };
+
+    const TABEL_CACAT_PP54 = {
+      'Tingkat III': {
+        'Kehilangan kedua anggota gerak bawah dari pangkal paha ke bawah': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan kedua anggota gerak bawah dari pangkal paha ke bawah': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan kedua anggota gerak atas dari sendi bahu ke bawah': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan kedua anggota gerak atas dari sendi bahu ke bawah': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        '1 anggota gerak bawah dari pangkal paha ke bawah dan 1 anggota gerak atas dari sendi bahu ke bawah (Kelumpuhan)': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        '1 anggota gerak bawah dari pangkal paha ke bawah dan 1 anggota gerak atas dari sendi bahu ke bawah (Kehilangan)': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan penglihatan kedua mata': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Bisu dan tuli': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Penyakit jiwa berat / hilangnya kemampuan kerja mental tetap': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Cacat luas dari organ sistem syaraf, pernafasan, kardiovaskuler, pencernaan, atau urogenital': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 }
+      },
+      'Tingkat III Lainnya': {
+        'Kedua belah kaki dari mata kaki ke bawah': { 'Golongan A': 17.60, 'Golongan B': 35.20, 'Golongan C': 44.00 }
+      },
+      'Tingkat II': {
+        'Penyakit jiwa sedang': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Kehilangan 1 anggota gerak bawah dari pangkal paha': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kelumpuhan 1 anggota gerak bawah dari pangkal paha': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kehilangan 1 anggota gerak atas dari sendi bahu': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Kelumpuhan 1 anggota gerak atas dari sendi bahu': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Cacat sebagian organ sistem syaraf/pernafasan/kardiovaskuler': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Kehilangan penglihatan 1 mata atau diplopia': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kehilangan 1 jari telunjuk atau ibu jari tangan kanan': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Kehilangan 2 jari atau lebih tangan kanan': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Bisu': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Tuli': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Tangan kanan dari/atas pergelangan ke bawah': { 'Golongan A': 13.03, 'Golongan B': 26.07, 'Golongan C': 32.58 },
+        'Tangan kiri dari/atas pergelangan ke bawah': { 'Golongan A': 12.47, 'Golongan B': 24.93, 'Golongan C': 31.17 },
+        'Sebelah kaki dari mata kaki ke bawah': { 'Golongan A': 8.80, 'Golongan B': 17.60, 'Golongan C': 22.00 },
+        'Lengan kiri dari/atas siku ke bawah': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
+        'Kaki memendek 2-5 cm': { 'Golongan A': 7.04, 'Golongan B': 14.08, 'Golongan C': 17.60 },
+        'Kaki memendek 5 cm atau lebih': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
+        'Cacat hilangnya cuping hidung': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
+        'Impotensi': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 }
+      },
+      'Tingkat I': {
+        'Gangguan kejiwaan ringan': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Kehilangan 1 jari tangan atau kaki': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Berkurangnya fungsi mata': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Kehilangan daun telinga': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Perubahan klasifikasi/fungsi organ tubuh': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Ibu jari tangan kiri': { 'Golongan A': 4.22, 'Golongan B': 8.45, 'Golongan C': 10.56 },
+        'Ruas pertama telunjuk tangan kanan': { 'Golongan A': 3.77, 'Golongan B': 7.55, 'Golongan C': 9.43 },
+        'Ruas pertama telunjuk tangan kiri': { 'Golongan A': 1.23, 'Golongan B': 2.46, 'Golongan C': 3.08 },
+        'Ruas pertama jari lain tangan kanan': { 'Golongan A': 1.89, 'Golongan B': 3.77, 'Golongan C': 4.72 },
+        'Ruas pertama jari lain tangan kiri': { 'Golongan A': 0.53, 'Golongan B': 1.06, 'Golongan C': 1.32 },
+        'Kaki memendek sebelah kurang dari 2 cm': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Penurunan daya dengar kedua telinga per 10 desibel': { 'Golongan A': 2.11, 'Golongan B': 4.22, 'Golongan C': 5.28 },
+        'Penurunan daya dengar sebelah telinga per 10 desibel': { 'Golongan A': 1.06, 'Golongan B': 2.11, 'Golongan C': 2.64 },
+        'Perforasi sekat rongga hidung': { 'Golongan A': 5.28, 'Golongan B': 10.56, 'Golongan C': 13.20 },
+        'Kehilangan daya penciuman': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Hilangnya kemampuan kerja fisik 10-25%': { 'Golongan A': 1.76, 'Golongan B': 3.52, 'Golongan C': 4.40 },
+        'Kehilangan penglihatan warna': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 }
+      }
+    };
+
     function populateCacatDropdown(cardId) {
       const selectKondisi = document.getElementById(`${cardId}-kondisi`);
       if (!selectKondisi) return;
@@ -1296,6 +1448,126 @@
       updateRingkasanKlaim();
     }
 
+    window.handleCardCacatTingkatChange = function(cardId) {
+      const tingkat = document.getElementById(`${cardId}-tingkat`).value;
+      const kriteriaSelect = document.getElementById(`${cardId}-kriteria`);
+      const golonganSelect = document.getElementById(`${cardId}-golongan`);
+      const persenInput = document.getElementById(`${cardId}-persen`);
+      const besarInput = document.getElementById(`${cardId}-besar`);
+      const breakdownEl = document.getElementById(`${cardId}-breakdown`);
+
+      kriteriaSelect.innerHTML = '<option value="" disabled selected>-- Pilih Jenis Cacat --</option>';
+      golonganSelect.value = "";
+      persenInput.value = "—";
+      besarInput.value = "";
+      if (breakdownEl) {
+        breakdownEl.innerHTML = "";
+        breakdownEl.classList.add("hidden");
+      }
+
+      const rawReg = localStorage.getItem("registrasiKlaim");
+      let tanggalKejadian = "";
+      if (rawReg) {
+        const data = JSON.parse(rawReg);
+        tanggalKejadian = data.tanggalKejadian || "";
+      }
+      const tglKejadian = new Date(tanggalKejadian || Date.now());
+      const tglCutoff = new Date('2020-09-30');
+      const currentTable = tglKejadian < tglCutoff ? TABEL_CACAT_PP102 : TABEL_CACAT_PP54;
+
+      if (tingkat && currentTable[tingkat]) {
+        const listKriteria = Object.keys(currentTable[tingkat]);
+        listKriteria.forEach(item => {
+          const opt = document.createElement("option");
+          opt.value = item;
+          opt.innerText = item;
+          kriteriaSelect.appendChild(opt);
+        });
+      }
+    };
+
+    window.handleCardCacatKriteriaChange = function(cardId) {
+      const golonganSelect = document.getElementById(`${cardId}-golongan`);
+      const persenInput = document.getElementById(`${cardId}-persen`);
+      const besarInput = document.getElementById(`${cardId}-besar`);
+      const breakdownEl = document.getElementById(`${cardId}-breakdown`);
+
+      golonganSelect.value = "";
+      persenInput.value = "—";
+      besarInput.value = "";
+      if (breakdownEl) {
+        breakdownEl.innerHTML = "";
+        breakdownEl.classList.add("hidden");
+      }
+    };
+
+    window.handleCardCacatGolonganChange = function(cardId) {
+      const tingkat = document.getElementById(`${cardId}-tingkat`).value;
+      const kriteria = document.getElementById(`${cardId}-kriteria`).value;
+      const gol = document.getElementById(`${cardId}-golongan`).value;
+      const persenInput = document.getElementById(`${cardId}-persen`);
+      const besarInput = document.getElementById(`${cardId}-besar`);
+      const breakdownEl = document.getElementById(`${cardId}-breakdown`);
+
+      persenInput.value = "—";
+      besarInput.value = "";
+      if (breakdownEl) {
+        breakdownEl.innerHTML = "";
+        breakdownEl.classList.add("hidden");
+      }
+
+      const rawReg = localStorage.getItem("registrasiKlaim");
+      let tanggalKejadian = "";
+      if (rawReg) {
+        const data = JSON.parse(rawReg);
+        tanggalKejadian = data.tanggalKejadian || "";
+      }
+      const tglKejadian = new Date(tanggalKejadian || Date.now());
+      const tglCutoff = new Date('2020-09-30');
+      const currentTable = tglKejadian < tglCutoff ? TABEL_CACAT_PP102 : TABEL_CACAT_PP54;
+      const regLabel = tglKejadian < tglCutoff ? "PP 102/2015" : "PP 54/2020";
+
+      if (tingkat && kriteria && gol && currentTable[tingkat] && currentTable[tingkat][kriteria]) {
+        const matchGol = gol.includes("Golongan C") || gol === "C" || gol === "Golongan C" ? "Golongan C" 
+                         : gol.includes("Golongan B") || gol === "B" || gol === "Golongan B" ? "Golongan B" 
+                         : "Golongan A";
+        const val = currentTable[tingkat][kriteria][matchGol];
+        if (val !== undefined) {
+          persenInput.value = val + '%';
+          
+          let maxCapKali = 30.8;
+          if (matchGol === "Golongan C") maxCapKali = 61.6;
+          else if (matchGol === "Golongan B") maxCapKali = 49.3;
+
+          const rawGPVal = document.getElementById(`${cardId}-gaji-pokok-val`).value;
+          const gp = parseFloat(rawGPVal.replace(/[^0-9,-]+/g,"")) || 4500000;
+          
+          const cappedPersen = Math.min(val, maxCapKali * 100) / 100;
+          const finalNominal = cappedPersen * gp;
+
+          besarInput.value = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(finalNominal);
+
+          if (breakdownEl) {
+            breakdownEl.innerHTML = `
+              <strong>Rincian Kalkulasi Santunan Cacat (${regLabel})</strong><br>
+              ------------------------------------------<br>
+              Tingkat Cacat    : ${tingkat}<br>
+              Kriteria Cacat   : ${kriteria}<br>
+              Golongan Cacat   : ${matchGol}<br>
+              Persentase Tabel : ${val}%<br>
+              Cap Maksimal     : ${maxCapKali}× GP (${maxCapKali*100}%)<br>
+              Persentase Akhir : ${(cappedPersen * 100).toFixed(2)}%<br>
+              Gaji Pokok (GP)  : ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(gp)}<br>
+              ------------------------------------------<br>
+              <strong>Santunan = ${(cappedPersen * 100).toFixed(2)}% × ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(gp)} = ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(finalNominal)}</strong>
+            `;
+            breakdownEl.classList.remove("hidden");
+          }
+        }
+      }
+      updateRingkasanKlaim();
+    };
+
     function updateTunjangan1997(cardId) {
       const gp = getNumericValue(`${cardId}-gp-1997`);
       const anak = parseInt(document.getElementById(`${cardId}-jml-anak`).value) || 0;
@@ -1319,28 +1591,38 @@
       document.getElementById(`${cardId}-tunj-anak`).value = formatRupiah(tunjAnak);
     }
 
-    function updateTunjanganCacatPercentage(cardId) {
-      const gol = document.getElementById(`${cardId}-golongan`)?.value;
-      const tingkat = document.getElementById(`${cardId}-tingkat`)?.value;
-      const persenInput = document.getElementById(`${cardId}-persen`);
-      let pct = 70;
-      if (gol === "A") {
-        if (tingkat === "I") pct = 70;
-        else if (tingkat === "II") pct = 60;
-        else pct = 50;
-      } else if (gol === "B") {
-        if (tingkat === "I") pct = 50;
-        else if (tingkat === "II") pct = 40;
-        else pct = 30;
-      } else {
-        if (tingkat === "I") pct = 30;
-        else if (tingkat === "II") pct = 20;
-        else pct = 10;
+    function hitungTunjanganCacat(tingkat, akibatDinas, gapok) {
+      let persentase = 0.175;
+
+      if (tingkat === 'Tingkat III') {
+        persentase = akibatDinas ? 1.00 : 0.75;
+      } else if (tingkat === 'Tingkat II') {
+        persentase = akibatDinas ? 0.625 : 0.40;
+      } else if (tingkat === 'Tingkat I') {
+        persentase = 0.175;
       }
-      if (persenInput) persenInput.value = `${pct}%`;
+
+      return {
+        persentase: persentase * 100,
+        nominal: Math.round(persentase * gapok)
+      };
+    }
+
+    function updateTunjanganCacatPercentage(cardId) {
+      const tingkat = document.getElementById(`${cardId}-tingkat`)?.value || "Tingkat I";
+      const akibatDinas = (document.getElementById(`${cardId}-akibat-dinas`)?.value === "dinas");
+      const persenInput = document.getElementById(`${cardId}-persen`);
+      
+      const penspokInput = document.getElementById(`${cardId}-penspok-tc`);
+      let gapok = penspokInput ? (parseInt(penspokInput.value.replace(/[^0-9]/g, '')) || 0) : 0;
+      if (!gapok) gapok = currentParticipant?.pensiun_pokok || currentParticipant?.penspok || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 3500000;
+
+      const result = hitungTunjanganCacat(tingkat, akibatDinas, gapok);
+
+      if (persenInput) persenInput.value = `${result.persentase}%`;
 
       // Auto-calculate Tunjangan Cacat immediately
-      autoHitungTunjanganCacat(cardId, pct);
+      autoHitungTunjanganCacat(cardId, result.persentase);
     }
 
     function autoHitungTunjanganCacat(cardId, pct) {
@@ -1349,25 +1631,24 @@
       const penspokInput = document.getElementById(`${cardId}-penspok-tc`);
       if (!inputBesar) return;
 
-      // Use penspok from the dedicated field if available, else fallback to GP
-      let penspok = 0;
+      let gapok = 0;
       if (penspokInput) {
-        penspok = parseInt(penspokInput.value.replace(/[^0-9]/g, '')) || 0;
+        gapok = parseInt(penspokInput.value.replace(/[^0-9]/g, '')) || 0;
       }
-      if (!penspok) penspok = currentParticipant?.pensiun_pokok || currentParticipant?.penspok || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 3500000;
+      if (!gapok) gapok = currentParticipant?.pensiun_pokok || currentParticipant?.penspok || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 3500000;
 
-      const computedVal = Math.round((pct / 100) * penspok);
-      inputBesar.value = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(computedVal);
+      const computedVal = Math.round((pct / 100) * gapok);
+      inputBesar.value = formatRupiah(computedVal);
 
       if (breakdownEl) {
         breakdownEl.innerHTML = `
           <strong>Rincian Tunjangan Cacat (per bulan)</strong><br>
           ------------------------------------------<br>
-          Tunjangan Cacat = % Cacat × Pensiun Pokok<br>
+          Tunjangan Cacat = % Cacat &times; Gaji/Pensiun Pokok<br>
           % Tunjangan Cacat : ${pct}%<br>
-          Pensiun Pokok (Penspok): ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(penspok)}<br>
+          Basis Gaji/Penspok: ${formatRupiah(gapok)}<br>
           ------------------------------------------<br>
-          <strong>TOTAL TUNJANGAN CACAT: ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(computedVal)} / bulan</strong>
+          <strong>TOTAL TUNJANGAN CACAT: ${formatRupiah(computedVal)} / bulan</strong>
         `;
         breakdownEl.classList.remove('hidden');
       }
@@ -1426,10 +1707,12 @@
       const type = typeEl ? typeEl.value : 'Gugur';
 
       let nominalSRKK = 0;
-      if (reg === 'PP 102/2015') {
-        nominalSRKK = type === 'Gugur' ? 400000000 : 275000000;
-      } else {
-        nominalSRKK = type === 'Gugur' ? 450000000 : 350000000;
+      if (type === 'Meninggal Biasa') {
+        nominalSRKK = 225000000;
+      } else if (type === 'Gugur') {
+        nominalSRKK = reg === 'PP 54/2020' ? 450000000 : 400000000;
+      } else if (type === 'Tewas') {
+        nominalSRKK = reg === 'PP 54/2020' ? 350000000 : 275000000;
       }
 
       // Read bintangJasa from per-peserta localStorage
@@ -1762,7 +2045,7 @@
     function calculateThtProduct(cardId, type) {
       const tmtBerhenti = claimState?.kejadianDetails?.tmtPemberhentian || document.getElementById("ptdh-tmt-pemberhentian")?.value || "";
       const tmtGajiTerakhir = claimState?.kejadianDetails?.tmtGajiTerakhir || document.getElementById("ptdh-tmt-gaji-terakhir")?.value || "";
-      const isSelisihTmt = (document.getElementById("kejadian-jenis")?.value === 'Berhenti tanpa Hak Pensiun' || document.getElementById("kejadian-jenis")?.value === 'Berhenti dengan Hak Tunjangan') && tmtBerhenti && tmtGajiTerakhir && (tmtBerhenti !== tmtGajiTerakhir);
+      const isSelisihTmt = (document.getElementById("kejadian-jenis")?.value === 'Berhenti tanpa Hak Pensiun (PTDH)') && tmtBerhenti && tmtGajiTerakhir && (tmtBerhenti !== tmtGajiTerakhir);
 
       if (isSelisihTmt) {
         const inputTotal = document.getElementById(`${cardId}-total-manual`);
@@ -1828,6 +2111,10 @@
         breakdownEl.classList.remove('hidden');
       }
       if (type === "NTTA") {
+        const ntipCard = activeProducts.find(p => p.type === "NTIP");
+        if (ntipCard) {
+          calculateNtipProduct(ntipCard.id);
+        }
         updateSkorsingCardUI(cardId, type);
       }
       showToast(`Kalkulasi ${type} Selesai`, `Manfaat ${type} berhasil dihitung.`, "success");
@@ -1879,10 +2166,77 @@
       }
     }
 
+    function hitungMasaKerja(tglMula, tglAkhir) {
+      if (!tglMula || !tglAkhir) return 0;
+      const mulai = new Date(tglMula);
+      const selesai = new Date(tglAkhir);
+      if (isNaN(mulai) || isNaN(selesai)) return 0;
+      if (selesai < mulai) return 0;
+
+      const tahun = selesai.getFullYear() - mulai.getFullYear();
+      const bulan = selesai.getMonth() - mulai.getMonth();
+
+      const totalBulan = (tahun * 12) + bulan;
+      return totalBulan / 12;
+    }
+
+    function updateNtipP2FromDropdown(cardId) {
+      const selectEl = document.getElementById(`${cardId}-select-gaji-mkg`);
+      if (!selectEl) return;
+      try {
+        const selectedData = JSON.parse(selectEl.value);
+        const p2Input = document.getElementById(`${cardId}-p2`);
+        if (p2Input) {
+          p2Input.value = formatRupiah(selectedData.gaji);
+        }
+      } catch (e) {}
+    }
+
+    function hitungMasaDinas(tmtPengangkatan, tmtPensiun) {
+      if (!tmtPengangkatan || !tmtPensiun) return 0;
+      const mulai = new Date(tmtPengangkatan);
+      const selesai = new Date(tmtPensiun);
+      if (isNaN(mulai) || isNaN(selesai)) return 0;
+
+      const tahun = selesai.getFullYear() - mulai.getFullYear();
+      const bulan = selesai.getMonth() - mulai.getMonth();
+
+      const totalBulan = (tahun * 12) + bulan;
+      return Math.max(0, totalBulan / 12);
+    }
+
+    function hitungF1(jenisKejadian, masaDinas) {
+      if (jenisKejadian === 'Kecelakaan Kerja — Meninggal (Gugur/Tewas)' ||
+          jenisKejadian === 'Meninggal Dunia dalam Dinas Aktif (JKm)' ||
+          jenisKejadian === 'Meninggal dalam Tugas') {
+        return 80.0;
+      }
+      // Pensiun Normal
+      const f1 = 2.5 * masaDinas;
+      return Math.min(Math.max(f1, 20.0), 80.0);
+      // Min 20%, Maks 80%
+    }
+
+    function hitungPensiunWarakawuri(jenisKejadian, penspok) {
+      if (jenisKejadian === 'Gugur' || jenisKejadian === 'Tewas' || jenisKejadian === 'Kecelakaan Kerja — Meninggal (Gugur/Tewas)') {
+        return 0.80 * penspok;
+      }
+      return 0.50 * penspok;
+    }
+
+    function hitungTunjanganYatimPiatu(jenisKejadian, penspok, jumlahAnak) {
+      const persentase = (jenisKejadian === 'Gugur' || jenisKejadian === 'Tewas' || jenisKejadian === 'Kecelakaan Kerja — Meninggal (Gugur/Tewas)') ? 0.80 : 0.50;
+      return (persentase * penspok) / jumlahAnak;
+    }
+
+    function hitungTunjanganOrangTua(gapok) {
+      return 0.20 * gapok;
+    }
+
     function calculateNtipProduct(cardId) {
       const tmtBerhenti = claimState?.kejadianDetails?.tmtPemberhentian || document.getElementById("ptdh-tmt-pemberhentian")?.value || "";
       const tmtGajiTerakhir = claimState?.kejadianDetails?.tmtGajiTerakhir || document.getElementById("ptdh-tmt-gaji-terakhir")?.value || "";
-      const isSelisihTmt = (document.getElementById("kejadian-jenis")?.value === 'Berhenti tanpa Hak Pensiun' || document.getElementById("kejadian-jenis")?.value === 'Berhenti dengan Hak Tunjangan') && tmtBerhenti && tmtGajiTerakhir && (tmtBerhenti !== tmtGajiTerakhir);
+      const isSelisihTmt = (document.getElementById("kejadian-jenis")?.value === 'Berhenti tanpa Hak Pensiun (PTDH)') && tmtBerhenti && tmtGajiTerakhir && (tmtBerhenti !== tmtGajiTerakhir);
 
       if (isSelisihTmt) {
         const inputTotal = document.getElementById(`${cardId}-total-manual`);
@@ -1898,75 +2252,35 @@
       const tmtAngkat = document.getElementById(`${cardId}-tmt-angkat`).value;
       const tmtBerhentiVal = document.getElementById(`${cardId}-tmt-berhenti`).value;
       
-      const f1 = parseFloat(document.getElementById(`${cardId}-f1`).value) || 0;
-      const p1 = getNumericValue(`${cardId}-p1`);
-      const f2 = parseFloat(document.getElementById(`${cardId}-f2`).value) || 0;
-      let p2 = 0;
-      const selectGajiEl = document.getElementById(`${cardId}-select-gaji-mkg`);
-      if (selectGajiEl) {
-        try {
-          const selectedData = JSON.parse(selectGajiEl.value);
-          p2 = selectedData.gaji || 0;
-        } catch (e) {
-          console.error("Failed to parse NTIP P2 select value:", e);
-        }
-      } else {
-        p2 = getNumericValue(`${cardId}-p2`);
-      }
+      const nttaCard = activeProducts.find(p => p.type === "NTTA");
       
-      const det = detectNtipKondisi(tmtAngkat, tmtBerhentiVal);
-      const cutoff = new Date('2001-01-01');
-      const tglAngkat = new Date(tmtAngkat);
-      const tglBerhenti = new Date(tmtBerhenti);
+      let f1 = 0;
+      let f2 = 0;
+      let f1Text = "-";
+      let f2Text = "-";
 
-      let NTIP = 0;
-      let formulaStr = '';
-      let breakdownHtml = '';
-      
-      const gpFormattedP1 = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(p1);
-      const gpFormattedP2 = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(p2);
-
-      // Kondisi 1: Diangkat & berhenti SEBELUM 1 Jan 2001
-      if (tglAngkat < cutoff && tglBerhenti < cutoff) {
-        NTIP = f1 * p1;
-        formulaStr = 'F1 × P1';
-        breakdownHtml = `
-          F1               : ${f1}<br>
-          P1               : ${gpFormattedP1}<br>
-          TOTAL NTIP (F1×P1): <strong>${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(NTIP)}</strong>
-        `;
-      }
-      // Kondisi 2: Diangkat & berhenti SETELAH 1 Jan 2001
-      else if (tglAngkat >= cutoff && tglBerhenti >= cutoff) {
-        NTIP = f2 * p2;
-        formulaStr = 'F2 × P2';
-        breakdownHtml = `
-          F2               : ${f2}<br>
-          P2               : ${gpFormattedP2}<br>
-          TOTAL NTIP (F2×P2): <strong>${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(NTIP)}</strong>
-        `;
-      }
-      // Kondisi 3: Diangkat SEBELUM, berhenti SETELAH 1 Jan 2001
-      else {
-        const Bagian1 = f1 * p1;
-        const Bagian2 = f2 * (p2 - p1);
-        NTIP = Bagian1 + Bagian2;
-        formulaStr = '(F1 × P1) + {F2 × (P2 - P1)}';
+      if (nttaCard) {
+        const nttaTmtAngkat = document.getElementById(`${nttaCard.id}-tmt-angkat`)?.value || tmtAngkat;
+        const nttaTmtPensiun = document.getElementById(`${nttaCard.id}-tmt-pensiun`)?.value || tmtBerhentiVal;
         
-        const gpFormattedP2P1 = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(p2 - p1);
-        breakdownHtml = `
-          F1               : ${f1}<br>
-          P1               : ${gpFormattedP1}<br>
-          Bagian 1 (F1×P1) : ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Bagian1)}<br>
-          -------------------------------------<br>
-          F2               : ${f2}<br>
-          P2               : ${gpFormattedP2}<br>
-          P2 - P1          : ${gpFormattedP2P1}<br>
-          Bagian 2         : ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Bagian2)}<br>
-          -------------------------------------<br>
-          TOTAL NTIP       : <strong>${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(NTIP)}</strong>
-        `;
+        f1 = hitungMasaKerja(nttaTmtAngkat, '2000-12-31');
+        f2 = hitungMasaKerja('2001-01-01', nttaTmtPensiun);
+        f1Text = f1.toFixed(3) + " Tahun";
+        f2Text = f2.toFixed(3) + " Tahun";
       }
+
+      const f1Input = document.getElementById(`${cardId}-f1`);
+      if (f1Input) f1Input.value = f1Text;
+      const f2Input = document.getElementById(`${cardId}-f2`);
+      if (f2Input) f2Input.value = f2Text;
+
+      // P1 (Gapok lama)
+      const p1 = getNumericValue(`${cardId}-p1`);
+
+      // P2 (Gapok terakhir)
+      const p2 = getNumericValue(`${cardId}-p2`);
+
+      const NTIP = (f1 * p1) + (f2 * (p2 - p1));
 
       document.getElementById(`${cardId}-besar`).value = formatRupiah(NTIP);
 
@@ -1977,12 +2291,13 @@
           <strong>Rincian Perhitungan NTIP</strong><br>
           -------------------------------------<br>
           Regulasi         : ${reg}<br>
-          TMT Pengangkatan : ${formatIndoDate(tmtAngkat)}<br>
-          TMT Berhenti     : ${formatIndoDate(tmtBerhenti)}<br>
-          Kondisi Formula  : ${det.label.split(':')[0]}<br>
-          Formula          : ${formulaStr}<br>
+          F1 (s.d 31 Des 2000)  : ${f1.toFixed(3)} Tahun<br>
+          F2 (1 Jan 2001 - TMT) : ${f2.toFixed(3)} Tahun<br>
+          P1 (Gapok lama)       : ${formatRupiah(p1)}<br>
+          P2 (Gapok terakhir)   : ${formatRupiah(p2)}<br>
+          Formula          : (F1 &times; P1) + {F2 &times; (P2 - P1)}<br>
           -------------------------------------<br>
-          ${breakdownHtml}
+          <strong>TOTAL NTIP: ${formatRupiah(NTIP)}</strong>
         `;
         breakdownEl.classList.remove('hidden');
       }
@@ -1994,31 +2309,11 @@
     function calculatePemakamanProduct(cardId, produk) {
       const breakdownEl = document.getElementById(`${cardId}-breakdown`);
       if (produk === "BPPP") {
-        const val = 5000000;
+        const val = 7500000;
         document.getElementById(`${cardId}-besar`).value = formatRupiah(val);
       } else if (produk === "BPI/S") {
-        const val = 4000000;
+        const val = 6000000;
         document.getElementById(`${cardId}-besar`).value = formatRupiah(val);
-      } else if (produk === "BPA") {
-        const jmlInput = document.getElementById(`${cardId}-jml-anak`);
-        let count = parseInt(jmlInput.value) || 0;
-        if (count > 2) {
-          count = 2;
-          jmlInput.value = 2;
-        }
-        const val = 3000000 * count;
-        document.getElementById(`${cardId}-besar`).value = formatRupiah(val);
-        if (breakdownEl) {
-          breakdownEl.innerHTML = `
-            <strong>Rincian Perhitungan BPA</strong><br>
-            -------------------------------------<br>
-            Jumlah Anak Diajukan : ${count} anak (Maksimal 2)<br>
-            Tarif per Anak       : Rp 3.000.000<br>
-            -------------------------------------<br>
-            <strong>TOTAL BPA            : ${formatRupiah(val)}</strong>
-          `;
-          breakdownEl.classList.remove('hidden');
-        }
       }
       showToast("Kalkulasi Pemakaman Selesai", "Nominal biaya pemakaman berhasil dihitung.", "success");
       updateRingkasanKlaim();
@@ -2389,24 +2684,23 @@
       }
     }
 
-    const DAFTAR_KEJADIAN = [
-      "Pensiun",
-      "Berhenti dengan Hak Tunjangan",
-      "Berhenti tanpa Hak Pensiun",
-      "Istri/Suami Meninggal Dunia",
-      "Anak Meninggal Dunia",
-      "Meninggal Dunia dalam Dinas Aktif",
-      "Kecelakaan Kerja — Dirawat",
-      "Kecelakaan Kerja — Meninggal Dunia",
-      "Kecelakaan Kerja — Cacat Tetap Bekerja",
-      "Kecelakaan Kerja — Cacat Pensiun",
-      "Pensiun Sendiri — Meninggal Dunia",
-      "Pensiun Sendiri — Istri/Suami Meninggal Dunia",
-      "Pensiun Sendiri — Anak Meninggal Dunia",
-      "Pensiun Warakawuri — Meninggal Dunia",
-      "Tunjangan Yatim/Piatu/Yatim-Piatu — Meninggal",
-      "Tunjangan Yatim/Piatu/Yatim-Piatu — Dewasa",
-      "Tunjangan Orang Tua — Meninggal"
+    const JENIS_KEJADIAN = [
+      'Pensiun Pertama',
+      'Berhenti dengan Hak Tunjangan',
+      'Berhenti tanpa Hak Pensiun (PTDH)',
+      'Istri/Suami Meninggal Dunia',
+      'Anak Meninggal Dunia',
+      'Meninggal Dunia dalam Dinas Aktif (JKm)',
+      'Kecelakaan Kerja — Meninggal (Gugur/Tewas)',
+      'Kecelakaan Kerja — Cacat Tetap Bekerja',
+      'Kecelakaan Kerja — Cacat Pensiun',
+      'Pensiun Sendiri — Meninggal Dunia',
+      'Pensiun Sendiri — Istri/Suami Meninggal Dunia',
+      'Pensiun Sendiri — Anak Meninggal Dunia',
+      'Pensiun Warakawuri — Meninggal Dunia',
+      'Tunjangan Yatim/Piatu — Meninggal Dunia',
+      'Tunjangan Yatim/Piatu — Dewasa',
+      'Tunjangan Orang Tua — Meninggal Dunia',
     ];
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -2422,9 +2716,40 @@
       if (tglKejadianEl) {
         tglKejadianEl.addEventListener("change", (e) => {
           updateRegulasiUI(e.target.value);
+          const pTmt = document.getElementById("pensiun-tmt");
+          if (pTmt) pTmt.value = e.target.value;
+          const sTmt = document.getElementById("istri-suami-wafat-tgl");
+          if (sTmt) sTmt.value = e.target.value;
+          const ptdhTmt = document.getElementById("ptdh-tmt-pemberhentian");
+          if (ptdhTmt) ptdhTmt.value = e.target.value;
         });
         tglKejadianEl.addEventListener("input", (e) => {
           updateRegulasiUI(e.target.value);
+          const pTmt = document.getElementById("pensiun-tmt");
+          if (pTmt) pTmt.value = e.target.value;
+          const sTmt = document.getElementById("istri-suami-wafat-tgl");
+          if (sTmt) sTmt.value = e.target.value;
+          const ptdhTmt = document.getElementById("ptdh-tmt-pemberhentian");
+          if (ptdhTmt) ptdhTmt.value = e.target.value;
+        });
+      }
+
+      // Tab 4: Auto-fill shared fields between cards
+      const prodContainer = document.getElementById("prod-cards-container");
+      if (prodContainer) {
+        prodContainer.addEventListener("change", (e) => {
+          const field = e.target;
+          const fieldName = field.getAttribute("data-field");
+          if (fieldName) {
+            const val = field.value;
+            const otherFields = prodContainer.querySelectorAll(`[data-field="${fieldName}"]`);
+            otherFields.forEach(otherField => {
+              if (otherField !== field && !otherField.value) {
+                otherField.value = val;
+                otherField.dispatchEvent(new Event("change", { bubbles: true }));
+              }
+            });
+          }
         });
       }
 
@@ -2534,7 +2859,7 @@
     function togglePTDHTMTFields(val) {
       const container = document.getElementById("ptdh-tmt-container");
       if (!container) return;
-      if (val === 'Berhenti tanpa Hak Pensiun' || val === 'Berhenti dengan Hak Tunjangan') {
+      if (val === 'Berhenti tanpa Hak Pensiun (PTDH)') {
         container.classList.remove("hidden");
         document.getElementById("ptdh-tmt-pemberhentian").required = true;
         document.getElementById("ptdh-tmt-gaji-terakhir").required = true;
@@ -2549,11 +2874,10 @@
     function togglePensiunTMTField(val) {
       const container = document.getElementById("pensiun-tmt-container");
       if (!container) return;
-      if (val === 'Pensiun') {
-        container.classList.remove("hidden");
+      container.classList.add("hidden"); // Always keep hidden
+      if (val === 'Pensiun Pertama') {
         document.getElementById("pensiun-tmt").required = true;
       } else {
-        container.classList.add("hidden");
         document.getElementById("pensiun-tmt").required = false;
         const errTmt = document.getElementById("error-pensiun-tmt");
         if (errTmt) errTmt.classList.add("hidden");
@@ -2567,11 +2891,10 @@
     function toggleSpouseDeathTMTField(val) {
       const container = document.getElementById("istri-suami-wafat-container");
       if (!container) return;
+      container.classList.add("hidden"); // Always keep hidden
       if (val === 'Istri/Suami Meninggal Dunia' || val === 'Pensiun Sendiri — Istri/Suami Meninggal Dunia') {
-        container.classList.remove("hidden");
         document.getElementById("istri-suami-wafat-tgl").required = true;
       } else {
-        container.classList.add("hidden");
         document.getElementById("istri-suami-wafat-tgl").required = false;
         const errTmt = document.getElementById("error-istri-suami-wafat-tgl");
         if (errTmt) errTmt.classList.add("hidden");
@@ -2587,7 +2910,7 @@
       const container = document.getElementById('bintang-jasa-container');
       if (!container) return;
 
-      if (jenisKejadian !== 'Kecelakaan Kerja \u2014 Meninggal Dunia') {
+      if (jenisKejadian !== 'Kecelakaan Kerja — Meninggal (Gugur/Tewas)') {
         container.classList.add('hidden');
         return;
       }
@@ -2614,10 +2937,10 @@
       const container = document.getElementById("ahli-waris-dropdown-container");
       if (!container) return;
       const kejadianAhliWaris = [
-        'Meninggal Dunia dalam Dinas Aktif',
-        'Kecelakaan Kerja \u2014 Meninggal Dunia',
-        'Pensiun Sendiri \u2014 Meninggal Dunia',
-        'Pensiun Warakawuri \u2014 Meninggal Dunia'
+        'Meninggal Dunia dalam Dinas Aktif (JKm)',
+        'Kecelakaan Kerja — Meninggal (Gugur/Tewas)',
+        'Pensiun Sendiri — Meninggal Dunia',
+        'Pensiun Warakawuri — Meninggal Dunia'
       ];
 
       if (!kejadianAhliWaris.includes(val)) {
@@ -2868,7 +3191,7 @@
             document.getElementById('side-pangkat').innerText = currentParticipant?.pangkat || '-';
 
             // Populate Panel Kiri: Detail Pengaju
-            const pengaju = data.tipePengunjung || {};
+            const pengaju = data.tipePengunjung || data.pengaju || {};
             document.getElementById('side-pengaju-nama').innerText = pengaju.nama || currentParticipant?.nama || '-';
             document.getElementById('side-pengaju-hub').innerText = pengaju.hubungan || (pengaju.jenis === "Peserta" ? "Peserta Sendiri" : '-');
             document.getElementById('side-pengaju-nik').innerText = pengaju.nik || (pengaju.jenis === "Peserta" ? (currentParticipant?.nik || '-') : '-');
@@ -2879,11 +3202,11 @@
             const selectJenis = document.getElementById("kejadian-jenis");
             if (selectJenis) {
               selectJenis.innerHTML = '<option value="" disabled selected>-- Silahkan Pilih Kejadian --</option>';
-              DAFTAR_KEJADIAN.forEach(item => {
+              JENIS_KEJADIAN.forEach(item => {
                 const opt = document.createElement("option");
                 opt.value = item;
                 opt.innerText = item;
-                if (item === data.jenisKejadian) {
+                if (item === mapJenisKejadian(data.jenisKejadian)) {
                   opt.selected = true;
                 }
                 selectJenis.appendChild(opt);
@@ -2922,13 +3245,22 @@
             // Prefill Tanggal Kejadian if exists in state or details
             const tglKejadianEl = document.getElementById("kejadian-tgl-kejadian");
             if (tglKejadianEl) {
-              if (data.tanggalKejadian) {
-                tglKejadianEl.value = data.tanggalKejadian;
-                updateRegulasiUI(data.tanggalKejadian);
-              } else if (data.kejadianDetails && data.kejadianDetails.tanggalKejadian) {
-                tglKejadianEl.value = data.kejadianDetails.tanggalKejadian;
-                updateRegulasiUI(data.kejadianDetails.tanggalKejadian);
-              }
+               let val = "";
+               if (data.tanggalKejadian) {
+                 val = data.tanggalKejadian;
+               } else if (data.kejadianDetails && data.kejadianDetails.tanggalKejadian) {
+                 val = data.kejadianDetails.tanggalKejadian;
+               }
+               if (val) {
+                 tglKejadianEl.value = val;
+                 updateRegulasiUI(val);
+                 const pTmt = document.getElementById("pensiun-tmt");
+                 if (pTmt) pTmt.value = val;
+                 const sTmt = document.getElementById("istri-suami-wafat-tgl");
+                 if (sTmt) sTmt.value = val;
+                 const ptdhTmt = document.getElementById("ptdh-tmt-pemberhentian");
+                 if (ptdhTmt) ptdhTmt.value = val;
+               }
             }
 
             // Prefill other kejadianDetails if they exist
@@ -2982,7 +3314,12 @@
             populateTab1Data(data);
 
             // Populate Tab 3: Persyaratan Utama
-            renderPersyaratanUtama(data.jenisKejadian);
+            renderPersyaratanUtama(mapJenisKejadian(data.jenisKejadian));
+
+            // If the status is PENDING or participant is manual pending, apply the pending workflow
+            if (data.status === "PENDING" || (data.peserta && data.peserta.isManual) || (data.peserta && data.peserta.statusKepesertaan === "PENDING")) {
+              applyPendingFlow(data);
+            }
 
             // Show main workflow hide warning
             document.getElementById('no-data-warning').classList.add('hidden');
@@ -2996,6 +3333,160 @@
       // Fallback if no data is found
       document.getElementById('no-data-warning').classList.add('hidden');
       document.getElementById('main-content-flow').classList.remove('hidden');
+    }
+
+    function mapJenisKejadian(rawJenis) {
+      if (!rawJenis) return "";
+      const cleaned = rawJenis.trim();
+      if (cleaned === "Pensiun") return "Pensiun Pertama";
+      if (cleaned === "Berhenti tanpa Hak Pensiun") return "Berhenti tanpa Hak Pensiun (PTDH)";
+      if (cleaned === "Meninggal Dunia dalam Dinas Aktif") return "Meninggal Dunia dalam Dinas Aktif (JKm)";
+      if (cleaned === "Kecelakaan Kerja — Meninggal Dunia") return "Kecelakaan Kerja — Meninggal (Gugur/Tewas)";
+      if (cleaned === "Tunjangan Yatim/Piatu/Yatim-Piatu — Meninggal") return "Tunjangan Yatim/Piatu — Meninggal Dunia";
+      if (cleaned === "Tunjangan Yatim/Piatu/Yatim-Piatu — Dewasa") return "Tunjangan Yatim/Piatu — Dewasa";
+      if (cleaned === "Tunjangan Orang Tua — Meninggal") return "Tunjangan Orang Tua — Meninggal Dunia";
+      return cleaned;
+    }
+
+    function applyPendingFlow(data) {
+      if (!data) return;
+      const p = data.peserta || {};
+      
+      // 1. Show global warning banner
+      const banner = document.getElementById("pending-banner");
+      if (banner) {
+        banner.classList.remove("hidden");
+      }
+
+      // 2. Tab 1 — Data Peserta: Show minimal data only (Nama + NRP/NIK)
+      document.getElementById("t1-noreg").innerText = data.noAgenda || "-";
+      document.getElementById("t1-nama-nik").innerText = `${p.nama || "-"} / ${p.nrp_nip || p.nik || "-"}`;
+      document.getElementById("t1-sumber").innerText = data.sumberPengajuan || "Kantor Cabang";
+      document.getElementById("t1-kejadian").innerText = mapJenisKejadian(data.jenisKejadian);
+
+      document.getElementById("t1-p-nama").innerText = p.nama || "-";
+      document.getElementById("t1-p-nip").innerText = p.nrp_nip || "-";
+      document.getElementById("t1-p-nik").innerText = p.nik || "-";
+
+      // Clear other fields to dash/'-'
+      document.getElementById("t1-p-ktpa").innerText = "-";
+      document.getElementById("t1-p-pangkat").innerText = "-";
+      document.getElementById("t1-p-satuan").innerText = "-";
+      document.getElementById("t1-p-gaji").innerText = "-";
+      document.getElementById("t1-p-tmt").innerText = "-";
+
+      // Show Tab 1 banner
+      const t1Banner = document.getElementById("t1-pending-banner");
+      if (t1Banner) t1Banner.classList.remove("hidden");
+
+      // Hide Lihat Profil Lengkap button
+      const t1ProfileBtn = document.querySelector('button[onclick="redirectToDetailedProfile()"]');
+      if (t1ProfileBtn) t1ProfileBtn.classList.add("hidden");
+
+      // 3. Tab 2 — Data Kejadian: Hanya Jenis Kejadian & Tanggal Proses terisi (dari registrasi). Field lain kosong & tidak bisa diisi.
+      const tabKejadian = document.getElementById("tab-kejadian");
+      if (tabKejadian) {
+        const selectJenis = document.getElementById("kejadian-jenis");
+        const inputTglProses = document.getElementById("kejadian-tgl-proses");
+        const regDate = data.timestamp ? data.timestamp.split('T')[0] : new Date().toISOString().split('T')[0];
+
+        if (selectJenis) {
+          selectJenis.value = mapJenisKejadian(data.jenisKejadian);
+          selectJenis.disabled = true;
+          selectJenis.classList.add("bg-slate-100", "cursor-not-allowed");
+        }
+        if (inputTglProses) {
+          inputTglProses.value = regDate;
+          inputTglProses.disabled = true;
+          inputTglProses.classList.add("bg-slate-100", "cursor-not-allowed");
+        }
+
+        const inputs = tabKejadian.querySelectorAll("input, select, textarea, button");
+        inputs.forEach(input => {
+          if (input.id !== "kejadian-jenis" && input.id !== "kejadian-tgl-proses") {
+            input.disabled = true;
+            input.classList.add("bg-slate-100", "cursor-not-allowed");
+            if (input.tagName === "INPUT" && input.type !== "hidden" && input.type !== "button" && input.type !== "submit") {
+              input.value = "";
+            }
+            if (input.tagName === "TEXTAREA") {
+              input.value = "";
+            }
+            if (input.tagName === "SELECT") {
+              input.value = "";
+            }
+          }
+        });
+
+        // Add a Banner in Tab 2 if it doesn't exist yet
+        let tab2Banner = document.getElementById("tab2-pending-banner");
+        if (!tab2Banner) {
+          tab2Banner = document.createElement("div");
+          tab2Banner.id = "tab2-pending-banner";
+          tab2Banner.className = "p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl text-xs font-semibold mb-4 flex items-start gap-2";
+          tab2Banner.innerHTML = `
+            <i class="fas fa-triangle-exclamation text-amber-500 text-sm mt-0.5 animate-pulse"></i>
+            <div>
+              <strong>⚠️ Peserta belum terdaftar di sistem Kepesertaan.</strong>
+              <p class="mt-0.5 text-slate-600 font-medium">Harap koordinasi ke Divisi Kepesertaan sebelum proses klaim dapat dilanjutkan.</p>
+            </div>
+          `;
+          tabKejadian.insertBefore(tab2Banner, tabKejadian.firstChild);
+        }
+      }
+
+      // 3.5. Tab 3 — Persyaratan: Pastikan list persyaratan ter-render sesuai jenis kejadian & aktifkan upload
+      const tab3 = document.getElementById("tab-persyaratan");
+      if (tab3) {
+        const mappedJenis = mapJenisKejadian(data.jenisKejadian);
+        if (mappedJenis) {
+          renderPersyaratanUtama(mappedJenis);
+        }
+        
+        // Add a Banner in Tab 3 if it doesn't exist yet
+        let tab3Banner = document.getElementById("tab3-pending-banner");
+        if (!tab3Banner) {
+          tab3Banner = document.createElement("div");
+          tab3Banner.id = "tab3-pending-banner";
+          tab3Banner.className = "p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl text-xs font-semibold mb-4 flex items-start gap-2";
+          tab3Banner.innerHTML = `
+            <i class="fas fa-triangle-exclamation text-amber-500 text-sm mt-0.5 animate-pulse"></i>
+            <div>
+              <strong>⚠️ Peserta belum terdaftar di Kepesertaan.</strong>
+              <p class="mt-0.5 text-slate-600 font-medium">Silakan upload dokumen yang sudah diterima sebagai dokumentasi berkas masuk.</p>
+            </div>
+          `;
+          tab3.insertBefore(tab3Banner, tab3.firstChild);
+        }
+      }
+
+      // 4. Tab 4 — Hak/Produk: Terkunci
+      const tab4 = document.getElementById("tab-hak-produk");
+      if (tab4) {
+        const tab4Elements = tab4.querySelectorAll("input, select, textarea, button");
+        tab4Elements.forEach(el => {
+          el.disabled = true;
+          el.classList.add("opacity-50", "cursor-not-allowed");
+        });
+        let lockMsg = document.getElementById("tab4-lock-msg");
+        if (!lockMsg) {
+          lockMsg = document.createElement("div");
+          lockMsg.id = "tab4-lock-msg";
+          lockMsg.className = "p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl text-xs font-semibold mb-4 flex items-center gap-2";
+          lockMsg.innerHTML = `<i class="fas fa-lock text-amber-500"></i> Terkunci. Kalkulasi Hak/Produk tidak dapat diakses sampai data peserta terdaftar di Kepesertaan.`;
+          tab4.insertBefore(lockMsg, tab4.firstChild);
+        }
+      }
+
+      // 5. Tab 5 — Status & Riwayat: Status: PENDING
+      const statusContainer = document.getElementById('top-status-container');
+      if (statusContainer) {
+        statusContainer.innerHTML = `
+          <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full text-xs font-bold border border-amber-200 inline-flex items-center gap-1 animate-pulse">
+            <i class="fas fa-circle-exclamation text-xs"></i> PENDING
+          </span>
+        `;
+      }
     }
 
     function submitKejadianForm() {
@@ -3025,32 +3516,36 @@
         errTgl.classList.add("hidden");
       }
       
-      if (jenisEl.value === 'Berhenti tanpa Hak Pensiun' || jenisEl.value === 'Berhenti dengan Hak Tunjangan') {
+      if (jenisEl.value === 'Berhenti tanpa Hak Pensiun (PTDH)') {
         const inputPem = document.getElementById("ptdh-tmt-pemberhentian");
         const inputGaji = document.getElementById("ptdh-tmt-gaji-terakhir");
         const errPem = document.getElementById("error-ptdh-tmt-pemberhentian");
         const errGaji = document.getElementById("error-ptdh-tmt-gaji-terakhir");
         
-        if (!inputPem.value) {
+        if (inputPem && !inputPem.value && tglKejadianEl) {
+          inputPem.value = tglKejadianEl.value;
+        }
+
+        if (inputPem && !inputPem.value) {
           inputPem.classList.add("border-rose-500", "focus:ring-rose-500/30");
-          errPem.classList.remove("hidden");
+          if (errPem) errPem.classList.remove("hidden");
           isValid = false;
         } else {
-          inputPem.classList.remove("border-rose-500", "focus:ring-rose-500/30");
-          errPem.classList.add("hidden");
+          if (inputPem) inputPem.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+          if (errPem) errPem.classList.add("hidden");
         }
         
         if (!inputGaji.value) {
           inputGaji.classList.add("border-rose-500", "focus:ring-rose-500/30");
-          errGaji.classList.remove("hidden");
+          if (errGaji) errGaji.classList.remove("hidden");
           isValid = false;
         } else {
           inputGaji.classList.remove("border-rose-500", "focus:ring-rose-500/30");
-          errGaji.classList.add("hidden");
+          if (errGaji) errGaji.classList.add("hidden");
         }
       }
 
-      if (jenisEl.value === 'Pensiun') {
+      if (jenisEl.value === 'Pensiun Pertama') {
         const inputTmtP = document.getElementById("pensiun-tmt");
         const errTmtP = document.getElementById("error-pensiun-tmt");
         if (!inputTmtP.value) {
@@ -3096,7 +3591,7 @@
           const data = JSON.parse(rawData);
           data.jenisKejadian = jenisEl.value;
           data.ahliWaris = isAWVisible && awEl ? awEl.value : "";
-          if (jenisEl.value === 'Pensiun') {
+          if (jenisEl.value === 'Pensiun Pertama') {
             data.tmtPensiun = document.getElementById("pensiun-tmt").value;
           } else {
             delete data.tmtPensiun;
@@ -3115,7 +3610,7 @@
             nomorRekening: document.getElementById("bayar-norek").value,
             mitraBayar: document.getElementById("bayar-mitra").value,
             cabangMitra: document.getElementById("bayar-cabang").value,
-            tmtPensiun: jenisEl.value === 'Pensiun' ? document.getElementById("pensiun-tmt").value : (currentParticipant?.tmt_pensiun || ""),
+            tmtPensiun: jenisEl.value === 'Pensiun Pertama' ? document.getElementById("pensiun-tmt").value : (currentParticipant?.tmt_pensiun || ""),
             tmtMeninggalIstriSuami: (jenisEl.value === 'Istri/Suami Meninggal Dunia' || jenisEl.value === 'Pensiun Sendiri — Istri/Suami Meninggal Dunia') ? document.getElementById("istri-suami-wafat-tgl").value : "",
             tanggalSkep: currentParticipant?.tanggal_skep || "",
             nomorSkep: currentParticipant?.nomor_skep || "",
@@ -3194,7 +3689,7 @@
 
     const PERSYARATAN_CONFIG = {
 
-      'Pensiun': [
+      'Pensiun Pertama': [
         { nama: 'Formulir Pengajuan', wajib: false },
         { nama: 'Formulir SP3R', wajib: false },
         { nama: 'Asli Salinan Keputusan Pensiun', wajib: false },
@@ -3226,7 +3721,7 @@
         { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar (suami, istri)', wajib: false },
       ],
 
-      'Berhenti tanpa Hak Pensiun': [
+      'Berhenti tanpa Hak Pensiun (PTDH)': [
         { nama: 'Formulir Pengajuan', wajib: false },
         { nama: 'Asli Surat Pengantar dari Dan/Kasatker (Kesatuan Terakhir Dimana Diberhentikan)', wajib: false },
         { nama: 'Asli dan Fotokopi Legalisir Keputusan Pemberhentian dari Satuan Terakhir', wajib: false },
@@ -3263,7 +3758,7 @@
         { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
       ],
 
-      'Meninggal Dunia dalam Dinas Aktif': [
+      'Meninggal Dunia dalam Dinas Aktif (JKm)': [
         { nama: 'Formulir Pengajuan', wajib: false },
         { nama: 'Asli Riwayat Hidup Singkat (RHS)', wajib: false },
         { nama: 'Asli Surat Keterangan Ahli Waris (Istri/Suami) / Surat Keterangan Kuasa Ahli Waris (Anak) disahkan Lurah/Kepala Desa', wajib: false },
@@ -3293,7 +3788,7 @@
         { nama: 'Surat Penagihan Biaya Perawatan', wajib: false },
       ],
 
-      'Kecelakaan Kerja — Meninggal Dunia': [
+      'Kecelakaan Kerja — Meninggal (Gugur/Tewas)': [
         { nama: 'Formulir Pengajuan', wajib: false },
         { nama: 'Asli Riwayat Hidup Singkat (RHS)', wajib: false },
         { nama: 'Asli Surat Keterangan Ahli Waris (Istri/Suami) / Surat Keterangan Kuasa Ahli Waris (Anak) disahkan Lurah/Kepala Desa', wajib: false },
@@ -3381,7 +3876,7 @@
         { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
       ],
 
-      'Tunjangan Yatim/Piatu/Yatim-Piatu — Meninggal': [
+      'Tunjangan Yatim/Piatu — Meninggal Dunia': [
         { nama: 'Formulir Pengajuan', wajib: false },
         { nama: 'Formulir SP3R', wajib: false },
         { nama: 'Asli dan Salinan Keputusan Pensiun (bagi peserta meninggal dalam dinas aktif)', wajib: false },
@@ -3393,7 +3888,7 @@
         { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar', wajib: false },
       ],
 
-      'Tunjangan Yatim/Piatu/Yatim-Piatu — Dewasa': [
+      'Tunjangan Yatim/Piatu — Dewasa': [
         { nama: 'Formulir Pengajuan', wajib: false },
         { nama: 'Formulir SP3R', wajib: false },
         { nama: 'Asli dan Salinan Keputusan Pensiun', wajib: false },
@@ -3405,7 +3900,7 @@
         { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar', wajib: false },
       ],
 
-      'Tunjangan Orang Tua — Meninggal': [
+      'Tunjangan Orang Tua — Meninggal Dunia': [
         { nama: 'Formulir Pengajuan', wajib: false },
         { nama: 'Formulir SP3R', wajib: false },
         { nama: 'Asli dan Salinan Keputusan Pensiun', wajib: false },
@@ -3683,7 +4178,7 @@
     function populateTab1Data(data) {
       if (!data) return;
       const p = data.peserta || {};
-      const pengaju = data.tipePengunjung || {};
+      const pengaju = data.tipePengunjung || data.pengaju || {};
 
       // Kartu 1: Ringkasan
       document.getElementById("t1-noreg").innerText = data.noAgenda || "-";
@@ -3714,35 +4209,35 @@
     let activeProducts = [];
 
     const KEJADIAN_PRODUK_MAP = {
-      'Pensiun': ['TA', 'PP'],
+      'Pensiun Pertama': ['TA', 'PP'],
       'Berhenti dengan Hak Tunjangan': ['NTTA', 'Tunjangan Terbatas'],
-      'Berhenti tanpa Hak Pensiun': ['NTTA', 'NTIP'],
+      'Berhenti tanpa Hak Pensiun (PTDH)': ['NTTA', 'NTIP'],
       'Istri/Suami Meninggal Dunia': ['BPI/S'],
       'Anak Meninggal Dunia': ['BPA'],
-      'Meninggal Dunia dalam Dinas Aktif': ['NTTA', 'SKS', 'UDW', 'Beasiswa JKm'],
+      'Meninggal Dunia dalam Dinas Aktif (JKm)': ['NTTA', 'SKS', 'UDW', 'Beasiswa JKm'],
       'Kecelakaan Kerja — Dirawat': ['Perawatan JKK', 'Biaya Pengangkutan'],
-      'Kecelakaan Kerja — Meninggal Dunia': ['NTTA', 'SRKK', 'Biaya Pengangkutan', 'Beasiswa JKK'],
+      'Kecelakaan Kerja — Meninggal (Gugur/Tewas)': ['NTTA', 'SRKK', 'Biaya Pengangkutan', 'Beasiswa JKK'],
       'Kecelakaan Kerja — Cacat Tetap Bekerja': ['Santunan Cacat'],
-      'Kecelakaan Kerja — Cacat Pensiun': ['Santunan Cacat', 'Tunjangan Cacat'],
+      'Kecelakaan Kerja — Cacat Pensiun': ['Santunan Cacat'],
       'Pensiun Sendiri — Meninggal Dunia': ['BPPP', 'UDW'],
       'Pensiun Sendiri — Istri/Suami Meninggal Dunia': ['BPI/S'],
       'Pensiun Sendiri — Anak Meninggal Dunia': ['BPA'],
       'Pensiun Warakawuri — Meninggal Dunia': ['BPI/S', 'UDW'],
-      'Tunjangan Yatim/Piatu/Yatim-Piatu — Meninggal': ['Alih Status Tunjangan Yatim-Piatu'],
-      'Tunjangan Yatim/Piatu/Yatim-Piatu — Dewasa': ['Alih Status Tunjangan Yatim-Piatu'],
-      'Tunjangan Orang Tua — Meninggal': ['Alih Status Tunjangan Orang Tua'],
+      'Tunjangan Yatim/Piatu — Meninggal Dunia': ['Alih Status Tunjangan Yatim-Piatu'],
+      'Tunjangan Yatim/Piatu — Dewasa': ['Alih Status Tunjangan Yatim-Piatu'],
+      'Tunjangan Orang Tua — Meninggal Dunia': ['Alih Status Tunjangan Orang Tua'],
     };
 
     const KEJADIAN_AHLIWARIS_PRODUK_MAP = {
       // Meninggal Dinas Aktif
-      'Meninggal Dunia dalam Dinas Aktif_Istri/Suami': ['NTTA', 'SKS', 'UDW', 'Beasiswa JKm', 'Pensiun Warakawuri'],
-      'Meninggal Dunia dalam Dinas Aktif_Anak': ['NTTA', 'SKS', 'UDW', 'Beasiswa JKm', 'Tunjangan Yatim/Piatu'],
-      'Meninggal Dunia dalam Dinas Aktif_Lainnya': ['NTTA', 'SKS', 'UDW', 'NTIP'],
+      'Meninggal Dunia dalam Dinas Aktif (JKm)_Istri/Suami': ['NTTA', 'SKS', 'UDW', 'Beasiswa JKm', 'Pensiun Warakawuri'],
+      'Meninggal Dunia dalam Dinas Aktif (JKm)_Anak': ['NTTA', 'SKS', 'UDW', 'Beasiswa JKm', 'Tunjangan Yatim/Piatu'],
+      'Meninggal Dunia dalam Dinas Aktif (JKm)_Lainnya': ['NTTA', 'SKS', 'UDW', 'NTIP'],
 
       // KK Meninggal
-      'Kecelakaan Kerja — Meninggal Dunia_Istri/Suami': ['NTTA', 'SRKK', 'Biaya Angkut', 'Beasiswa JKK', 'Pensiun Warakawuri'],
-      'Kecelakaan Kerja — Meninggal Dunia_Anak': ['NTTA', 'SRKK', 'Biaya Angkut', 'Beasiswa JKK', 'Tunjangan Yatim/Piatu'],
-      'Kecelakaan Kerja — Meninggal Dunia_Orang Tua': ['NTTA', 'SRKK', 'Biaya Angkut', 'Tunjangan Orang Tua'],
+      'Kecelakaan Kerja — Meninggal (Gugur/Tewas)_Istri/Suami': ['NTTA', 'SRKK', 'Biaya Angkut', 'Beasiswa JKK', 'Pensiun Warakawuri'],
+      'Kecelakaan Kerja — Meninggal (Gugur/Tewas)_Anak': ['NTTA', 'SRKK', 'Biaya Angkut', 'Beasiswa JKK', 'Tunjangan Yatim/Piatu'],
+      'Kecelakaan Kerja — Meninggal (Gugur/Tewas)_Orang Tua': ['NTTA', 'SRKK', 'Biaya Angkut', 'Tunjangan Orang Tua'],
 
       // Pensiun Sendiri Meninggal
       'Pensiun Sendiri — Meninggal Dunia_Istri/Suami': ['BPPP', 'UDW', 'Pensiun Warakawuri'],
@@ -3833,7 +4328,7 @@
         if (rawData) {
           const data = JSON.parse(rawData);
           const p = data.peserta || {};
-          const pengaju = data.tipePengunjung || {};
+          const pengaju = data.tipePengunjung || data.pengaju || {};
           
           // Option 1: Pengunjung / Ahli Waris
           const optPengaju = document.createElement("option");
@@ -3904,7 +4399,7 @@
       // Determine product category
       let category = "Umum";
       if (produk === "TA" || produk === "NTTA") category = "THT";
-      else if (produk === "PP") category = "PP";
+      else if (produk === "PP" || produk === "Pensiun Warakawuri" || produk === "Tunjangan Yatim/Piatu" || produk === "Tunjangan Orang Tua") category = "PP";
       else if (produk === "SKS") category = "SKS";
       else if (produk === "UDW") category = "UDW";
       else if (produk === "SCDB" || produk === "SCDK" || produk === "Santunan Cacat") category = "Cacat";
@@ -3951,11 +4446,11 @@
             `}
             <div>
               <label class="block font-bold text-slate-500 mb-1">TMT Pensiun</label>
-              <input type="date" id="${cardId}-tmt-pensiun" value="${tmtPensiunVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              <input type="date" id="${cardId}-tmt-pensiun" data-field="tanggal_kejadian" value="${tmtPensiunVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Tanggal Skep Pensiun</label>
-              <input type="date" id="${cardId}-tgl-skep-pensiun" onchange="syncUdwWithNtta()" value="${tglSkepVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              <input type="date" id="${cardId}-tgl-skep-pensiun" data-field="tanggal_skep_pensiun" onchange="syncUdwWithNtta()" value="${tglSkepVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
             </div>
             
             <div>
@@ -3990,7 +4485,6 @@
             <div class="sm:col-span-3">
               <div id="${cardId}-selisih-tmt-container" class="mt-3"></div>
             </div>
-
             <div class="sm:col-span-3">
               <div id="${cardId}-skorsing-container" class="mt-3"></div>
             </div>
@@ -4002,39 +4496,106 @@
         const noSkepVal = claimState?.kejadianDetails?.nomorSkep || currentParticipant?.nomor_skep || "";
         const pangkatAkhirVal = claimState?.kejadianDetails?.pangkatAkhir || currentParticipant?.pangkat || "";
         
-        const recommendations = getPenspokRecommendation(pangkatAkhirVal);
-        const dropdownOptions = recommendations.map(val => {
-          return `<option value="${val}">Rp. ${val.toLocaleString("id-ID")},-</option>`;
-        }).join("");
+        let dropdownHtml = "";
+        let dropdownLabel = "Penspok";
+        if (produk === "Tunjangan Orang Tua") {
+          dropdownLabel = "Gaji Pokok";
+          const recommendations = getGajiMkgRecommendation(pangkatAkhirVal);
+          dropdownHtml = recommendations.map((item, idx) => {
+            const months = (idx * 5 + 1) % 12;
+            const monthStr = months > 0 ? ` ${months} Bulan` : "";
+            const label = `${formatRupiah(item.gaji)} - MKG : ${item.mkg} Tahun${monthStr}`;
+            const valStr = JSON.stringify({ gaji: item.gaji, mkg: item.mkg });
+            const isLast = idx === recommendations.length - 1;
+            return `<option value='${valStr}' ${isLast ? 'selected' : ''}>${label}</option>`;
+          }).join("");
+        } else {
+          const recommendations = getPenspokRecommendation(pangkatAkhirVal);
+          dropdownHtml = recommendations.map(val => {
+            return `<option value="${val}">Rp. ${val.toLocaleString("id-ID")},-</option>`;
+          }).join("");
+        }
+
+        let childCountHtml = "";
+        if (produk === "Tunjangan Yatim/Piatu") {
+          childCountHtml = `
+            <div>
+              <label class="block font-bold text-slate-500 mb-1">Jumlah Anak Berhak <span class="text-rose-500">*</span></label>
+              <input type="number" id="${cardId}-jml-anak" min="1" value="1" onchange="calculateProduct('${cardId}', '${produk}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+            </div>
+          `;
+        }
+
+        // Check for saved Cacat history
+        const nrpNip = currentParticipant?.nrp_nip || currentParticipant?.nik || "3273120105910003";
+        const dataCacatRaw = localStorage.getItem(`dataCacat_${nrpNip}`);
+        let tunjCacatHtml = "";
+        
+        if (dataCacatRaw && produk !== "Tunjangan Orang Tua" && produk !== "Tunjangan Yatim/Piatu" && produk !== "Pensiun Warakawuri") {
+          const dc = JSON.parse(dataCacatRaw);
+          const rawPersen = parseFloat(dc.persentase) || 0;
+          const rawGapok = parseFloat(dc.gapokSaatSKCacat) || 0;
+          const tunjVal = Math.round((rawPersen / 100) * rawGapok);
+          
+          tunjCacatHtml = `
+            <div class="sm:col-span-3 border-t border-dashed border-slate-200 pt-3 mt-1 space-y-2">
+              <span class="text-xs font-bold text-slate-700 block uppercase tracking-wider text-[10px] text-indigo-750">── Tunjangan Cacat (auto-read dari PP 56 Tahun 2007) ──</span>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-[11px] bg-slate-50 p-3.5 rounded-xl border border-slate-150">
+                <div>
+                  <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Golongan Cacat</span>
+                  <strong class="text-slate-700">${dc.golongan}</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Tingkat Cacat</span>
+                  <strong class="text-slate-700">${dc.tingkat}</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Persentase</span>
+                  <strong class="text-slate-700">${dc.persentase}</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Gapok SK Cacat</span>
+                  <strong class="text-slate-700">${formatRupiah(rawGapok)}</strong>
+                </div>
+                <div class="sm:col-span-4 mt-1 pt-1 border-t border-slate-100 flex justify-between items-center">
+                  <span class="text-slate-400 font-bold uppercase tracking-wider text-[9px]">Tunjangan Cacat Bulanan</span>
+                  <strong class="text-indigo-650 font-mono text-xs">${formatRupiah(tunjVal)} / bulan</strong>
+                </div>
+              </div>
+            </div>
+          `;
+        }
 
         specificHtml = `
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
               <label class="block font-bold text-slate-500 mb-1">TMT Pensiun <span class="text-rose-500">*</span></label>
-              <input type="date" id="${cardId}-tmt-pensiun" value="${tmtPensiunVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              <input type="date" id="${cardId}-tmt-pensiun" data-field="tanggal_kejadian" value="${tmtPensiunVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Tanggal Skep Pensiun <span class="text-rose-500">*</span></label>
-              <input type="date" id="${cardId}-tgl-skep-pensiun" value="${tglSkepVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              <input type="date" id="${cardId}-tgl-skep-pensiun" data-field="tanggal_skep_pensiun" value="${tglSkepVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
             </div>
             <div class="flex items-center gap-2 pt-5">
               <input type="checkbox" id="${cardId}-pensiun-terbatas" class="w-4 h-4 rounded text-asabri-blue border-slate-200 focus:ring-asabri-blue">
               <label for="${cardId}-pensiun-terbatas" class="font-bold text-slate-500">Pensiun Terbatas</label>
             </div>
-
+ 
             <div>
               <label class="block font-bold text-slate-500 mb-1">Nomor Skep Pensiun <span class="text-rose-500">*</span></label>
               <input type="text" id="${cardId}-no-skep-pensiun" value="${noSkepVal}" placeholder="Nomor Skep..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
             </div>
              <div>
-              <label class="block font-bold text-slate-500 mb-1">Penspok <span class="text-rose-500">*</span></label>
+              <label class="block font-bold text-slate-500 mb-1">${dropdownLabel} <span class="text-rose-500">*</span></label>
               <div class="flex gap-1.5">
-                <select id="${cardId}-select-penspok" onchange="calculateProduct('${cardId}', '${produk}')" class="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 font-semibold outline-none focus:border-asabri-blue text-xs text-slate-700">
-                  ${dropdownOptions}
+                <select id="${cardId}-select-${produk === 'Tunjangan Orang Tua' ? 'gaji-mkg' : 'penspok'}" onchange="calculateProduct('${cardId}', '${produk}')" class="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 font-semibold outline-none focus:border-asabri-blue text-xs text-slate-700">
+                  ${dropdownHtml}
                 </select>
+                ${produk === 'Tunjangan Orang Tua' ? '' : `
                 <button type="button" onclick="openPenspokLookupModal('${cardId}')" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-655 border border-slate-200 font-bold rounded-xl text-xs transition-colors flex items-center justify-center" title="Cari Penspok">
                   <i class="fas fa-search mr-1"></i> Cari
                 </button>
+                `}
               </div>
             </div>
             <div>
@@ -4045,8 +4606,10 @@
                 <option value="pengampu">Pengampu</option>
               </select>
             </div>
+            ${childCountHtml}
+            ${tunjCacatHtml}
             <div class="sm:col-span-3">
-              <label class="block font-bold text-slate-500 mb-1">Besar Produk</label>
+              <label class="block font-bold text-slate-500 mb-1">Besar Manfaat Pensiun Pertama</label>
               <div class="flex gap-2">
                 <input type="text" id="${cardId}-besar" placeholder="Besar Produk..." class="field-nominal flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold font-mono text-slate-800 outline-none">
                 <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-3.5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm">Hitung</button>
@@ -4071,7 +4634,7 @@
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">TMT Tunjangan</label>
-              <input type="date" id="${cardId}-tmt-tunjangan" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              <input type="date" id="${cardId}-tmt-tunjangan" data-field="tanggal_kejadian" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Besar Tunjangan (Rp)</label>
@@ -4105,7 +4668,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
               <label class="block font-bold text-slate-500 mb-1">Tanggal Kejadian <span class="text-rose-500">*</span></label>
-              <input type="date" id="${cardId}-tanggal-sks" value="${tglKejadianVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              <input type="date" id="${cardId}-tanggal-sks" data-field="tanggal_kejadian" value="${tglKejadianVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Besar Produk</label>
@@ -4132,7 +4695,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
               <label class="block font-bold text-slate-500 mb-1">Tanggal Meninggal <span class="text-rose-500">*</span></label>
-              <input type="date" id="${cardId}-tgl-meninggal" value="${tglKejadianVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              <input type="date" id="${cardId}-tgl-meninggal" data-field="tanggal_kejadian" value="${tglKejadianVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Pilih Gaji / MKG <span class="text-rose-500">*</span></label>
@@ -4143,7 +4706,7 @@
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Tanggal Skep</label>
-              <input type="date" id="${cardId}-tgl-skep-udw" value="${tglSkepVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              <input type="date" id="${cardId}-tgl-skep-udw" data-field="tanggal_skep_pensiun" value="${tglSkepVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
             </div>
             
             <div>
@@ -4167,71 +4730,81 @@
         const gp = currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
         
         specificHtml = `
-          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
-              <label class="block font-bold text-slate-500 mb-1">Golongan Cacat</label>
-              <select id="${cardId}-golongan" onchange="updateCacatPercentage('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
-                <option value="A" selected>Golongan A (SCDB)</option>
-                <option value="B">Golongan B (SCDK)</option>
-                <option value="C">Golongan C (SCDK+)</option>
-              </select>
-            </div>
-            <div class="sm:col-span-2">
-              <label class="block font-bold text-slate-500 mb-1">Kondisi Cacat</label>
-              <select id="${cardId}-kondisi" onchange="updateCacatPercentage('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
-                <!-- Populated dynamically -->
+              <label class="block font-bold text-slate-500 mb-1">Tingkat Cacat <span class="text-rose-500">*</span></label>
+              <select id="${cardId}-tingkat" onchange="handleCardCacatTingkatChange('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                <option value="" disabled selected>-- Pilih Tingkat --</option>
+                <option value="Tingkat I">Tingkat I</option>
+                <option value="Tingkat II">Tingkat II</option>
+                <option value="Tingkat III">Tingkat III</option>
+                <option value="Tingkat III Lainnya">Tingkat III Lainnya</option>
               </select>
             </div>
             <div>
-              <label class="block font-bold text-slate-500 mb-1">Max Kali (×GP)</label>
-              <input type="text" readonly id="${cardId}-persen" value="—" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+              <label class="block font-bold text-slate-500 mb-1">Jenis Cacat <span class="text-rose-500">*</span></label>
+              <select id="${cardId}-kriteria" onchange="handleCardCacatKriteriaChange('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                <option value="" disabled selected>-- Pilih Jenis Cacat --</option>
+              </select>
             </div>
-            <div class="sm:col-span-2">
+            <div>
+              <label class="block font-bold text-slate-500 mb-1">Golongan Cacat <span class="text-rose-500">*</span></label>
+              <select id="${cardId}-golongan" onchange="handleCardCacatGolonganChange('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                <option value="" disabled selected>-- Pilih Golongan --</option>
+                <option value="Golongan A">Golongan A</option>
+                <option value="Golongan B">Golongan B</option>
+                <option value="Golongan C">Golongan C</option>
+              </select>
+            </div>
+            <div>
               <label class="block font-bold text-slate-500 mb-1">Gaji Pokok Terakhir</label>
               <input type="text" readonly id="${cardId}-gaji-pokok-val" value="${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(gp)}" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
             </div>
-            <div class="sm:col-span-2">
-              <label class="block font-bold text-slate-500 mb-1">Santunan Cacat <span class="text-emerald-600 font-bold">(auto-kalkulasi)</span></label>
-              <input type="text" readonly id="${cardId}-besar" placeholder="Pilih kondisi cacat..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-emerald-700 outline-none">
+            <div>
+              <label class="block font-bold text-slate-500 mb-1">Persentase Cacat</label>
+              <input type="text" readonly id="${cardId}-persen" value="—" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
             </div>
-            <div class="sm:col-span-4">
-              <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-3 rounded-xl font-mono space-y-1"></div>
+            <div>
+              <label class="block font-bold text-slate-500 mb-1">Santunan Cacat <span class="text-emerald-600 font-bold">(auto-kalkulasi)</span></label>
+              <input type="text" readonly id="${cardId}-besar" placeholder="Isi kriteria di atas..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-emerald-700 outline-none">
+            </div>
+            <div class="sm:col-span-3">
+              <div id="${cardId}-breakdown" class="hidden text-[11px] bg-indigo-50 border border-indigo-100 text-indigo-700 p-3 rounded-xl font-mono space-y-1"></div>
             </div>
           </div>
         `;
       } else if (category === "Tunjangan Cacat") {
         const penspok = currentParticipant?.pensiun_pokok || currentParticipant?.penspok || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 3500000;
         specificHtml = `
-          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
-            <div>
-              <label class="block font-bold text-slate-500 mb-1">Golongan Cacat</label>
-              <select id="${cardId}-golongan" onchange="updateTunjanganCacatPercentage('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
-                <option value="A" selected>Golongan A</option>
-                <option value="B">Golongan B</option>
-                <option value="C">Golongan C</option>
-              </select>
-            </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
               <label class="block font-bold text-slate-500 mb-1">Tingkat Cacat</label>
               <select id="${cardId}-tingkat" onchange="updateTunjanganCacatPercentage('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
-                <option value="I" selected>Tingkat I</option>
-                <option value="II">Tingkat II</option>
-                <option value="III">Tingkat III</option>
+                <option value="Tingkat I" selected>Tingkat I</option>
+                <option value="Tingkat II">Tingkat II</option>
+                <option value="Tingkat III">Tingkat III</option>
               </select>
             </div>
             <div>
-              <label class="block font-bold text-slate-500 mb-1">% Tunjangan Cacat</label>
-              <input type="text" readonly id="${cardId}-persen" value="70%" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+              <label class="block font-bold text-slate-500 mb-1">Penyebab / Akibat Dinas <span class="text-rose-500">*</span></label>
+              <select id="${cardId}-akibat-dinas" onchange="updateTunjanganCacatPercentage('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+                <option value="dinas" selected>Akibat Dinas / Tugas Operasi</option>
+                <option value="bukan_dinas">Bukan Akibat Dinas</option>
+              </select>
             </div>
             <div>
-              <label class="block font-bold text-slate-500 mb-1">Pensiun Pokok (Rp/bulan)</label>
+              <label class="block font-bold text-slate-500 mb-1">Gaji Pokok / Pensiun Pokok (Rp)</label>
               <input type="text" id="${cardId}-penspok-tc" value="${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(penspok)}" oninput="updateTunjanganCacatPercentage('${cardId}')" class="field-nominal w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono outline-none focus:border-asabri-blue">
             </div>
-            <div class="sm:col-span-4">
-              <label class="block font-bold text-slate-500 mb-1">Tunjangan Cacat (Rp/bulan) <span class="text-emerald-600 font-bold">(auto-kalkulasi)</span></label>
-              <input type="text" readonly id="${cardId}-besar" placeholder="Pilih golongan &amp; tingkat..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-emerald-700 outline-none">
+            <div>
+              <label class="block font-bold text-slate-500 mb-1">% Tunjangan Cacat</label>
+              <input type="text" readonly id="${cardId}-persen" value="17.5%" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
             </div>
-            <div class="sm:col-span-4">
+            <div class="sm:col-span-3">
+              <label class="block font-bold text-slate-500 mb-1">Tunjangan Cacat (Rp/bulan) <span class="text-emerald-600 font-bold">(auto-kalkulasi)</span></label>
+              <input type="text" readonly id="${cardId}-besar" placeholder="Pilih tingkat &amp; akibat dinas..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-emerald-700 outline-none">
+            </div>
+            <div class="sm:col-span-3">
               <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
             </div>
           </div>
@@ -4283,9 +4856,10 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
               <label class="block font-bold text-slate-500 mb-1">Jenis SRKK</label>
-              <select id="${cardId}-srkk-type" onchange="updateSrkkNominal('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              <select id="${cardId}-srkk-type" onchange="updateSrkkNominal('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
                 <option value="Gugur" ${!isTewas ? 'selected' : ''}>Gugur</option>
                 <option value="Tewas" ${isTewas ? 'selected' : ''}>Tewas</option>
+                <option value="Meninggal Biasa">Meninggal Biasa</option>
               </select>
             </div>
             <div>
@@ -4330,14 +4904,23 @@
       } else if (category === "Beasiswa") {
         const maxAnak = produk === "Beasiswa JKK" ? params.BEASISWA_JKK_MAX_ANAK : params.BEASISWA_JKM_MAX_ANAK;
         specificHtml = `
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
+            <div>
+              <label class="block font-bold text-slate-500 mb-1">Jenjang Pendidikan <span class="text-rose-500">*</span></label>
+              <select id="${cardId}-jenjang" onchange="calculateProduct('${cardId}', '${produk}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                <option value="SD" selected>SD/Sederajat (Rp 30.000.000)</option>
+                <option value="SMP">SMP/Sederajat (Rp 25.000.000)</option>
+                <option value="SMA">SMA/Sederajat (Rp 20.000.000)</option>
+                <option value="HE">D3/S1/Sederajat (Rp 15.000.000)</option>
+              </select>
+            </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Maksimal Anak (${reg})</label>
               <input type="text" readonly value="${maxAnak} Anak" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-500 outline-none">
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Jumlah Anak Berhak</label>
-              <input type="number" id="${cardId}-jml-anak" min="0" max="${maxAnak}" value="${maxAnak}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
+              <input type="number" id="${cardId}-jml-anak" min="0" max="${maxAnak}" value="${maxAnak}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Besar Beasiswa</label>
@@ -4346,19 +4929,22 @@
                 <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-3.5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm">Hitung Beasiswa</button>
               </div>
             </div>
-            <div class="sm:col-span-3">
+            <div class="sm:col-span-4">
               <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
             </div>
-            <div class="sm:col-span-3">
+            <div class="sm:col-span-4">
               <div id="${cardId}-tpb-container" class="mt-3"></div>
             </div>
           </div>
         `;
       } else if (category === "NTIP") {
         const gpTerakhirVal = currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
-        const tmtAngkatVal = currentParticipant?.tmt_dinas || currentParticipant?.tmt || "2010-06-01";
-        const tglKejadianEl = document.getElementById("kejadian-tgl-kejadian");
-        const tmtBerhentiVal = tglKejadianEl ? tglKejadianEl.value : "";
+        const tmtAngkatVal = currentParticipant?.tmt_dinas || currentParticipant?.tmtDinas || currentParticipant?.tmt || "2010-06-01";
+        const tmtBerhentiVal = claimState?.kejadianDetails?.tmtPemberhentian || 
+                               claimState?.kejadianDetails?.tanggalKejadian || 
+                               document.getElementById("ptdh-tmt-pemberhentian")?.value || 
+                               (document.getElementById("kejadian-tgl-kejadian") ? document.getElementById("kejadian-tgl-kejadian").value : "") || 
+                               "";
         const det = detectNtipKondisi(tmtAngkatVal, tmtBerhentiVal);
 
         const pangkatAkhirVal = currentParticipant?.pangkat || "";
@@ -4372,6 +4958,10 @@
           return `<option value='${valStr}' ${isLast ? 'selected' : ''}>${label}</option>`;
         }).join("");
 
+        const mDinasInit = hitungMasaDinas(tmtAngkatVal, tmtBerhentiVal);
+        const f1PersenInit = hitungF1(document.getElementById("kejadian-jenis")?.value || claimState?.jenisKejadian || "", mDinasInit);
+        const p1Init = recommendations.length > 0 ? recommendations[recommendations.length - 1].gaji : gpTerakhirVal;
+
         specificHtml = `
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
@@ -4380,7 +4970,7 @@
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">TMT Berhenti</label>
-              <input type="date" id="${cardId}-tmt-berhenti" value="${tmtBerhentiVal}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" readonly>
+              <input type="date" id="${cardId}-tmt-berhenti" data-field="tanggal_kejadian" value="${tmtBerhentiVal}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" readonly>
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Kondisi Formula (Auto-detect)</label>
@@ -4388,36 +4978,35 @@
             </div>
             
             <div>
-              <label class="block font-bold text-slate-500 mb-1 flex items-center gap-1">
-                F1 <span class="text-rose-500">*</span>
-                <span class="text-[10px] text-indigo-650 cursor-pointer font-bold inline-block" title="Nilai faktor F1 diambil dari Tabel Lampiran III PP 102/2015 or PP 54/2020">
-                  <i class="fas fa-circle-info"></i>
-                </span>
-              </label>
-              <input type="number" step="0.01" id="${cardId}-f1" value="2.5" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+              <label class="block font-bold text-slate-500 mb-1">F1 (s.d 31 Des 2000)</label>
+              <input type="text" readonly id="${cardId}-f1" value="-" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold font-mono text-slate-500 outline-none">
             </div>
             <div>
-              <label class="block font-bold text-slate-500 mb-1">P1 (GP Konversi PP 1997) <span class="text-rose-500">*</span></label>
-              <input type="text" id="${cardId}-p1" value="150000" class="field-nominal w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
+              <label class="block font-bold text-slate-500 mb-1">F2 (1 Jan 2001 - TMT)</label>
+              <input type="text" readonly id="${cardId}-f2" value="-" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold font-mono text-slate-500 outline-none">
             </div>
-            
-            <div id="${cardId}-f2-container" class="${det.showF2P2 ? '' : 'hidden'}">
-              <label class="block font-bold text-slate-500 mb-1 flex items-center gap-1">
-                F2 <span class="text-rose-500">*</span>
-                <span class="text-[10px] text-indigo-650 cursor-pointer font-bold inline-block" title="Nilai faktor F2 diambil dari Tabel Lampiran III PP 102/2015 or PP 54/2020">
-                  <i class="fas fa-circle-info"></i>
-                </span>
-              </label>
-              <input type="number" step="0.01" id="${cardId}-f2" value="1.8" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-            </div>
-            <div id="${cardId}-p2-container" class="sm:col-span-2 ${det.showF2P2 ? '' : 'hidden'}">
+            <div>
               <label class="block font-bold text-slate-500 mb-1">Pilih Gaji / MKG (P2) <span class="text-rose-500">*</span></label>
               <div class="flex flex-col gap-1">
-                <select id="${cardId}-select-gaji-mkg" onchange="calculateProduct('${cardId}', 'NTIP')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-xs text-slate-700">
+                <select id="${cardId}-select-gaji-mkg" onchange="updateNtipP2FromDropdown('${cardId}'); calculateProduct('${cardId}', 'NTIP')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-xs text-slate-700">
                   ${dropdownOptions}
                 </select>
                 <span class="text-[10px] text-slate-400 italic">Pilih berdasarkan dokumen SKEP/SKPP yang dipegang</span>
               </div>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-500 mb-1 flex items-center justify-between">
+                <span>P1 (Gapok lama) <span class="text-rose-500">*</span></span>
+                <span class="text-[10px] text-slate-400 font-normal">Edit ✏️</span>
+              </label>
+              <input type="text" id="${cardId}-p1" value="${formatRupiah(150000)}" class="field-nominal w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold font-mono text-slate-700 outline-none focus:border-asabri-blue">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-500 mb-1 flex items-center justify-between">
+                <span>P2 (Gapok terakhir) <span class="text-rose-500">*</span></span>
+                <span class="text-[10px] text-slate-400 font-normal">Edit ✏️</span>
+              </label>
+              <input type="text" id="${cardId}-p2" value="${formatRupiah(p1Init)}" class="field-nominal w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold font-mono text-slate-700 outline-none focus:border-asabri-blue">
             </div>
 
             <div class="sm:col-span-3">
@@ -4447,11 +5036,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div>
                 <label class="block font-bold text-slate-500 mb-1">Nominal Biaya Pemakaman</label>
-                <input type="text" readonly value="Rp 5.000.000" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+                <input type="text" readonly value="Rp 7.500.000" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
               </div>
               <div>
                 <label class="block font-bold text-slate-500 mb-1">Besar Manfaat (Read-Only)</label>
-                <input type="text" readonly id="${cardId}-besar" value="Rp 5.000.000" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+                <input type="text" readonly id="${cardId}-besar" value="Rp 7.500.000" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
               </div>
             </div>
           `;
@@ -4460,34 +5049,43 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div>
                 <label class="block font-bold text-slate-500 mb-1">Nominal Biaya Pemakaman Istri/Suami</label>
-                <input type="text" readonly value="Rp 4.000.000" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+                <input type="text" readonly value="Rp 6.000.000" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
               </div>
               <div>
                 <label class="block font-bold text-slate-500 mb-1">Besar Manfaat (Read-Only)</label>
-                <input type="text" readonly id="${cardId}-besar" value="Rp 4.000.000" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+                <input type="text" readonly id="${cardId}-besar" value="Rp 6.000.000" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
               </div>
             </div>
           `;
         } else if (produk === "BPA") {
+          const maxAnak = reg === "PP 102/2015" ? 1 : 2;
           specificHtml = `
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
               <div>
-                <label class="block font-bold text-slate-500 mb-1">Tarif per Anak</label>
-                <input type="text" readonly value="Rp 3.000.000" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+                <label class="block font-bold text-slate-500 mb-1">Jenjang Pendidikan <span class="text-rose-500">*</span></label>
+                <select id="${cardId}-jenjang" onchange="calculateProduct('${cardId}', '${produk}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                  <option value="SD" selected>SD/Sederajat (Rp 30.000.000)</option>
+                  <option value="SMP">SMP/Sederajat (Rp 25.000.000)</option>
+                  <option value="SMA">SMA/Sederajat (Rp 20.000.000)</option>
+                  <option value="HE">D3/S1/Sederajat (Rp 15.000.000)</option>
+                </select>
               </div>
               <div>
-                <label class="block font-bold text-slate-500 mb-1">Jumlah Anak Diajukan</label>
-                <input type="number" id="${cardId}-jml-anak" min="0" max="2" value="1" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
-                <span class="text-[10px] text-slate-400 block mt-1 font-medium">Maksimal 2 anak</span>
+                <label class="block font-bold text-slate-500 mb-1">Maksimal Anak (${reg})</label>
+                <input type="text" readonly value="${maxAnak} Anak" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-500 outline-none">
               </div>
               <div>
-                <label class="block font-bold text-slate-500 mb-1">Besar Manfaat</label>
+                <label class="block font-bold text-slate-500 mb-1">Jumlah Anak Berhak</label>
+                <input type="number" id="${cardId}-jml-anak" min="0" max="${maxAnak}" value="${maxAnak}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Besar BPA (Beasiswa)</label>
                 <div class="flex gap-2">
                   <input type="text" readonly id="${cardId}-besar" placeholder="Besar Manfaat..." class="field-nominal flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
                   <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-3.5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm">Hitung BPA</button>
                 </div>
               </div>
-              <div class="sm:col-span-3">
+              <div class="sm:col-span-4">
                 <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
               </div>
             </div>
@@ -4516,86 +5114,63 @@
       card.dataset.product = produk;
       card.className = "bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 animate-fade-in relative";
       let headerHtml = "";
-      if (["TA", "PP", "NTTA", "SKS", "UDW", "Beasiswa JKm"].includes(produk)) {
-        let optHtml = "";
-        const rawData = localStorage.getItem("registrasiKlaim");
-        let optionsList = [];
-        if (rawData) {
-          const data = JSON.parse(rawData);
-          const p = data.peserta || {};
-          const pengaju = data.tipePengunjung || data.pengaju || {};
-          
-          if (pengaju.nama) optionsList.push({ name: pengaju.nama, label: `${pengaju.nama} (Pengaju - ${pengaju.hubungan || 'Peserta Sendiri'})` });
-          if (p.nama && p.nama !== pengaju.nama) optionsList.push({ name: p.nama, label: `${p.nama} (Peserta)` });
-          if (p.istri_suami && Array.isArray(p.istri_suami)) {
-            p.istri_suami.forEach(is => {
-              optionsList.push({ name: is.nama, label: `${is.nama} (Istri/Suami Terdaftar)` });
-            });
-          }
-          if (p.pasangan && p.pasangan.nama) {
-            optionsList.push({ name: p.pasangan.nama, label: `${p.pasangan.nama} (Istri/Suami Terdaftar)` });
-          }
-          if (p.anak && Array.isArray(p.anak)) {
-            p.anak.forEach(a => {
-              optionsList.push({ name: a.nama, label: `${a.nama} (Anak Terdaftar)` });
-            });
-          }
-        }
-        if (optionsList.length === 0) {
-          optionsList.push({ name: currentParticipant?.nama || "Ahmad Fauzi", label: `${currentParticipant?.nama || "Ahmad Fauzi"} (Peserta)` });
-        }
+      let optHtml = "";
+      const rawData = localStorage.getItem("registrasiKlaim");
+      let optionsList = [];
+      if (rawData) {
+        const data = JSON.parse(rawData);
+        const p = data.peserta || {};
+        const pengaju = data.tipePengunjung || data.pengaju || {};
         
-        optHtml = optionsList.map(opt => `<option value="${opt.name}">${opt.label}</option>`).join("");
-        const pengunjungNama = document.getElementById('t1-visitor-name')?.innerText || claimState?.tipePengunjung?.nama || claimState?.pengaju?.nama || "-";
-
-        headerHtml = `
-          <!-- Field Umum Khusus TA / PP -->
-          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs bg-slate-50 p-4 rounded-xl">
-            <div>
-              <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Nama Pengunjung</span>
-              <strong class="text-slate-700">${pengunjungNama}</strong>
-            </div>
-            <div>
-              <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Nama Penerima</span>
-              <select id="${cardId}-nama-penerima" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs outline-none focus:border-asabri-blue">
-                ${optHtml}
-              </select>
-            </div>
-            <div>
-              <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Objek Kejadian</span>
-              <input type="text" id="${cardId}-objek-kejadian" value="${currentParticipant?.nama || ''}" placeholder="${currentParticipant?.nama || 'Nama Peserta'}" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs outline-none focus:border-asabri-blue">
-            </div>
-            <div>
-              <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Jenis Produk/Klaim</span>
-              <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-150 inline-block mt-0.5">${produk === "UDW" ? "JKM SRK UDW AKTIF" : produk}</span>
-            </div>
-          </div>
-        `;
-      } else {
-        headerHtml = `
-          <!-- Field Umum -->
-          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs bg-slate-50 p-4 rounded-xl">
-            <div>
-              <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Nama Pengunjung</span>
-              <strong class="text-slate-700">${penerima}</strong>
-            </div>
-            <div>
-              <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Nama Penerima</span>
-              <select class="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs outline-none focus:border-asabri-blue">
-                <option value="${penerima}">${penerima}</option>
-              </select>
-            </div>
-            <div>
-              <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Objek Kejadian</span>
-              <input type="text" placeholder="Objek..." class="bg-white border border-slate-200 rounded-lg px-2 py-0.5 text-xs outline-none focus:border-asabri-blue">
-            </div>
-            <div>
-              <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Jenis Produk/Klaim</span>
-              <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-150 inline-block mt-0.5">${produk}</span>
-            </div>
-          </div>
-        `;
+        if (pengaju.nama) optionsList.push({ name: pengaju.nama, label: `${pengaju.nama} (Pengaju - ${pengaju.hubungan || 'Peserta Sendiri'})` });
+        if (p.nama && p.nama !== pengaju.nama) optionsList.push({ name: p.nama, label: `${p.nama} (Peserta)` });
+        if (p.istri_suami && Array.isArray(p.istri_suami)) {
+          p.istri_suami.forEach(is => {
+            optionsList.push({ name: is.nama, label: `${is.nama} (Istri/Suami Terdaftar)` });
+          });
+        }
+        if (p.pasangan && p.pasangan.nama) {
+          optionsList.push({ name: p.pasangan.nama, label: `${p.pasangan.nama} (Istri/Suami Terdaftar)` });
+        }
+        if (p.anak && Array.isArray(p.anak)) {
+          p.anak.forEach(a => {
+            optionsList.push({ name: a.nama, label: `${a.nama} (Anak Terdaftar)` });
+          });
+        }
       }
+      if (optionsList.length === 0) {
+        optionsList.push({ name: currentParticipant?.nama || "Ahmad Fauzi", label: `${currentParticipant?.nama || "Ahmad Fauzi"} (Peserta)` });
+      }
+      
+      optHtml = optionsList.map(opt => `<option value="${opt.name}">${opt.label}</option>`).join("");
+      let pengunjungNama = document.getElementById('t1-visitor-name')?.innerText;
+      if (!pengunjungNama || pengunjungNama === "-") {
+        pengunjungNama = claimState?.tipePengunjung?.nama || claimState?.pengaju?.nama || "-";
+      }
+
+      headerHtml = `
+        <!-- Field Umum Konsisten untuk semua produk -->
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs bg-slate-50 p-4 rounded-xl">
+          <div>
+            <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Nama Pengunjung</span>
+            <strong class="text-slate-700">${pengunjungNama}</strong>
+          </div>
+          <div>
+            <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Nama Penerima</span>
+            <select id="${cardId}-nama-penerima" data-field="nama_penerima" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs outline-none focus:border-asabri-blue">
+              ${optHtml}
+            </select>
+          </div>
+          <div>
+            <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Objek Kejadian</span>
+            <input type="text" id="${cardId}-objek-kejadian" value="${currentParticipant?.nama || ''}" placeholder="${currentParticipant?.nama || 'Nama Peserta'}" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs outline-none focus:border-asabri-blue">
+          </div>
+          <div>
+            <span class="text-slate-400 font-bold block mb-0.5 uppercase tracking-wider text-[9px]">Jenis Produk/Klaim</span>
+            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-150 inline-block mt-0.5">${produk === "UDW" ? "JKM SRK UDW AKTIF" : produk}</span>
+          </div>
+        </div>
+      `;
 
       card.innerHTML = `
         <!-- Header Card -->
@@ -4721,8 +5296,30 @@
         }
 
         const penspokAdjusted = Math.round(penspok * factor);
-        computedVal = penspokAdjusted;
-
+        
+        // Read Tunjangan Cacat history
+        const nrpNip = currentParticipant?.nrp_nip || currentParticipant?.nik || "3273120105910003";
+        const dataCacatRaw = localStorage.getItem(`dataCacat_${nrpNip}`);
+        let tunjCacatNominal = 0;
+        let tunjDetails = "";
+        
+        if (dataCacatRaw) {
+          const dc = JSON.parse(dataCacatRaw);
+          const rawPersen = parseFloat(dc.persentase) || 0;
+          const rawGapok = parseFloat(dc.gapokSaatSKCacat) || 0;
+          tunjCacatNominal = Math.round((rawPersen / 100) * rawGapok);
+          
+          tunjDetails = `
+            -------------------------------------<br>
+            ── Tunjangan Cacat (PP 56 Tahun 2007) ──<br>
+            Tingkat/Golongan : ${dc.tingkat} / ${dc.golongan}<br>
+            Persentase       : ${dc.persentase}<br>
+            Gapok SK Cacat   : ${formatRupiah(rawGapok)}<br>
+            Tunjangan Cacat  : ${formatRupiah(tunjCacatNominal)} / bulan<br>
+          `;
+        }
+        
+        computedVal = penspokAdjusted + tunjCacatNominal;
         inputBesar.value = formatRupiah(computedVal);
 
         const breakdownEl = document.getElementById(`${cardId}-breakdown`);
@@ -4732,11 +5329,84 @@
             -------------------------------------<br>
             Pensiun Pokok (Penspok): ${formatRupiah(penspok)}<br>
             Status Penerima        : ${factorLabel}<br>
+            ${tunjDetails}
             -------------------------------------<br>
             <strong>TOTAL PP (Bulanan): ${formatRupiah(computedVal)} / bulan</strong>
           `;
           breakdownEl.classList.remove('hidden');
         }
+      } else if (type === "Pensiun Warakawuri") {
+        const selectPenspokEl = document.getElementById(`${cardId}-select-penspok`);
+        const penspok = selectPenspokEl ? parseInt(selectPenspokEl.value) || 0 : (currentParticipant?.pensiun_pokok || currentParticipant?.penspok || 3500000);
+        const jenisKejadian = document.getElementById("kejadian-jenis")?.value || claimState?.jenisKejadian || "";
+        
+        computedVal = hitungPensiunWarakawuri(jenisKejadian, penspok);
+        inputBesar.value = formatRupiah(computedVal);
+
+        const breakdownEl = document.getElementById(`${cardId}-breakdown`);
+        if (breakdownEl) {
+          breakdownEl.innerHTML = `
+            <strong>Rincian Perhitungan Pensiun Warakawuri</strong><br>
+            -------------------------------------<br>
+            Pensiun Pokok (Penspok): ${formatRupiah(penspok)}<br>
+            Jenis Kejadian         : ${jenisKejadian}<br>
+            Persentase             : ${(jenisKejadian === 'Gugur' || jenisKejadian === 'Tewas') ? '80%' : '50%'}<br>
+            -------------------------------------<br>
+            <strong>TOTAL PENSIUN WARAKAWURI: ${formatRupiah(computedVal)} / bulan</strong>
+          `;
+          breakdownEl.classList.remove('hidden');
+        }
+        updateRingkasanKlaim();
+      } else if (type === "Tunjangan Yatim/Piatu") {
+        const selectPenspokEl = document.getElementById(`${cardId}-select-penspok`);
+        const penspok = selectPenspokEl ? parseInt(selectPenspokEl.value) || 0 : (currentParticipant?.pensiun_pokok || currentParticipant?.penspok || 3500000);
+        const jenisKejadian = document.getElementById("kejadian-jenis")?.value || claimState?.jenisKejadian || "";
+        const childInput = document.getElementById(`${cardId}-jml-anak`);
+        const jumlahAnak = childInput ? Math.max(1, parseInt(childInput.value) || 1) : 1;
+
+        computedVal = hitungTunjanganYatimPiatu(jenisKejadian, penspok, jumlahAnak);
+        inputBesar.value = formatRupiah(computedVal);
+
+        const breakdownEl = document.getElementById(`${cardId}-breakdown`);
+        if (breakdownEl) {
+          breakdownEl.innerHTML = `
+            <strong>Rincian Perhitungan Tunjangan Yatim/Piatu</strong><br>
+            -------------------------------------<br>
+            Pensiun Pokok (Penspok): ${formatRupiah(penspok)}<br>
+            Jenis Kejadian         : ${jenisKejadian}<br>
+            Persentase             : ${(jenisKejadian === 'Gugur' || jenisKejadian === 'Tewas') ? '80%' : '50%'}<br>
+            Jumlah Anak Berhak     : ${jumlahAnak} anak<br>
+            Formula                : (Persentase &times; Penspok) / Jumlah Anak<br>
+            -------------------------------------<br>
+            <strong>TOTAL TUNJANGAN YATIM/PIATU: ${formatRupiah(computedVal)} / bulan per anak</strong>
+          `;
+          breakdownEl.classList.remove('hidden');
+        }
+        updateRingkasanKlaim();
+      } else if (type === "Tunjangan Orang Tua") {
+        const selectGajiEl = document.getElementById(`${cardId}-select-gaji-mkg`);
+        let gp = 0;
+        if (selectGajiEl) {
+          try { gp = JSON.parse(selectGajiEl.value).gaji; } catch(e){}
+        }
+        const gapokok = gp || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
+        
+        computedVal = hitungTunjanganOrangTua(gapokok);
+        inputBesar.value = formatRupiah(computedVal);
+
+        const breakdownEl = document.getElementById(`${cardId}-breakdown`);
+        if (breakdownEl) {
+          breakdownEl.innerHTML = `
+            <strong>Rincian Perhitungan Tunjangan Orang Tua</strong><br>
+            -------------------------------------<br>
+            Gaji Pokok (Gapok)     : ${formatRupiah(gapokok)}<br>
+            Persentase             : 20%<br>
+            -------------------------------------<br>
+            <strong>TOTAL TUNJANGAN ORANG TUA: ${formatRupiah(computedVal)} / bulan</strong>
+          `;
+          breakdownEl.classList.remove('hidden');
+        }
+        updateRingkasanKlaim();
       } else if (type === "Tunjangan Terbatas") {
         const besarTunjangan = getNumericValue(`${cardId}-besar-tunjangan`);
         const berlakuSdVal = document.getElementById(`${cardId}-berlaku-sd`)?.value || "";
@@ -4877,51 +5547,48 @@
       } else if (type === "NTIP") {
         calculateNtipProduct(cardId);
         return;
-      } else if (type === "BPPP" || type === "BPI/S" || type === "BPA") {
+      } else if (type === "BPPP" || type === "BPI/S") {
         calculatePemakamanProduct(cardId, type);
         return;
-      } else if (type === "SRKK Gugur") {
+      } else if (type === "Beasiswa JKK" || type === "Beasiswa JKm" || type === "BPA") {
         const reg = claimState?.regulasi || 'PP 54/2020';
-        computedVal = REGULASI_PARAMS[reg].SRKK_GUGUR;
-      } else if (type === "SRKK Tewas") {
-        const reg = claimState?.regulasi || 'PP 54/2020';
-        computedVal = REGULASI_PARAMS[reg].SRKK_TEWAS;
-      } else if (type === "Beasiswa JKK") {
-        const reg = claimState?.regulasi || 'PP 54/2020';
+        const maxAnak = reg === "PP 102/2015" ? 1 : 2;
         const childInput = document.getElementById(`${cardId}-jml-anak`);
-        const count = childInput ? Math.min(parseInt(childInput.value) || 0, REGULASI_PARAMS[reg].BEASISWA_JKK_MAX_ANAK) : REGULASI_PARAMS[reg].BEASISWA_JKK_MAX_ANAK;
-        computedVal = count * 30000000;
-        const breakdownEl = document.getElementById(`${cardId}-breakdown`);
-        if (breakdownEl) {
-          breakdownEl.innerHTML = `
-            <strong>Rincian Perhitungan Beasiswa JKK</strong><br>
-            -------------------------------------<br>
-            Jumlah Anak Berhak : ${count} anak<br>
-            Tarif per Anak     : Rp 30.000.000<br>
-            -------------------------------------<br>
-            <strong>TOTAL BEASISWA: ${formatRupiah(computedVal)}</strong>
-          `;
-          breakdownEl.classList.remove('hidden');
+        let count = childInput ? parseInt(childInput.value) || 0 : maxAnak;
+        if (count > maxAnak) {
+          count = maxAnak;
+          if (childInput) childInput.value = maxAnak;
         }
-      } else if (type === "Beasiswa JKm") {
-        const reg = claimState?.regulasi || 'PP 54/2020';
-        const childInput = document.getElementById(`${cardId}-jml-anak`);
-        const count = childInput ? Math.min(parseInt(childInput.value) || 0, REGULASI_PARAMS[reg].BEASISWA_JKM_MAX_ANAK) : REGULASI_PARAMS[reg].BEASISWA_JKM_MAX_ANAK;
-        computedVal = count * 15000000;
+
+        const jenjangEl = document.getElementById(`${cardId}-jenjang`);
+        const jenjang = jenjangEl ? jenjangEl.value : "SD";
+        
+        let rate = 30000000;
+        let jenjangLabel = "SD/Sederajat";
+        if (jenjang === "SMP") { rate = 25000000; jenjangLabel = "SMP/Sederajat"; }
+        else if (jenjang === "SMA") { rate = 20000000; jenjangLabel = "SMA/Sederajat"; }
+        else if (jenjang === "HE") { rate = 15000000; jenjangLabel = "D3/S1/Sederajat"; }
+
+        computedVal = count * rate;
         inputBesar.value = formatRupiah(computedVal);
+
         const breakdownEl = document.getElementById(`${cardId}-breakdown`);
         if (breakdownEl) {
           breakdownEl.innerHTML = `
-            <strong>Rincian Perhitungan Beasiswa JKm</strong><br>
+            <strong>Rincian Perhitungan Beasiswa (${type})</strong><br>
             -------------------------------------<br>
+            Regulasi           : ${reg}<br>
+            Jenjang Pendidikan : ${jenjangLabel}<br>
+            Tarif per Anak     : ${formatRupiah(rate)}<br>
             Jumlah Anak Berhak : ${count} anak<br>
-            Tarif per Anak     : Rp 15.000.000<br>
             -------------------------------------<br>
             <strong>TOTAL BEASISWA: ${formatRupiah(computedVal)}</strong>
           `;
           breakdownEl.classList.remove('hidden');
         }
-        renderTpbForm(cardId, computedVal);
+        if (type === "Beasiswa JKm") {
+          renderTpbForm(cardId, computedVal);
+        }
       } else if (type === "Biaya Pemakaman JKm" || type === "Biaya Pemakaman") {
         const reg = claimState?.regulasi || 'PP 54/2020';
         computedVal = REGULASI_PARAMS[reg].BIAYA_PEMAKAMAN_JKM;
@@ -5322,7 +5989,7 @@
           
           // TDS OFFER SECTION
           let tdsCardHtml = "";
-          const isPensiun = claimState?.jenisKejadian === 'Pensiun';
+          const isPensiun = claimState?.jenisKejadian === 'Pensiun Pertama';
           const isSPTerbit = claimState?.status === 'SP Terbit';
           
           if (isPensiun && isSPTerbit && claimState?.tdsStatus !== 'Ditolak') {
@@ -5429,6 +6096,38 @@
             <td class="py-3 px-4 text-slate-500">${log.ket}</td>
           </tr>
         `).reverse().join('');
+      }
+
+      // If the status is PENDING or participant is manual pending, disable all actions in Tab 5
+      if (claimState && (claimState.status === "PENDING" || currentParticipant?.isManual || (currentParticipant && currentParticipant.statusKepesertaan === "PENDING"))) {
+        const btnAjukan = document.getElementById("btn-ajukan-verifikator");
+        if (btnAjukan) {
+          btnAjukan.disabled = true;
+          btnAjukan.classList.add("opacity-50", "cursor-not-allowed");
+          btnAjukan.title = "Terkunci. Harap daftarkan peserta terlebih dahulu.";
+        }
+        const btnReject = document.getElementById("btn-staf-reject");
+        if (btnReject) {
+          btnReject.disabled = true;
+          btnReject.classList.add("opacity-50", "cursor-not-allowed");
+        }
+        const catatanTextarea = document.getElementById("staf-catatan");
+        if (catatanTextarea) {
+          catatanTextarea.disabled = true;
+          catatanTextarea.classList.add("bg-slate-100", "cursor-not-allowed");
+        }
+        
+        let tab5LockMsg = document.getElementById("tab5-lock-msg");
+        if (!tab5LockMsg) {
+          tab5LockMsg = document.createElement("div");
+          tab5LockMsg.id = "tab5-lock-msg";
+          tab5LockMsg.className = "p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl text-xs font-semibold mb-4 flex items-center gap-2";
+          tab5LockMsg.innerHTML = `<i class="fas fa-lock text-amber-500"></i> Terkunci. Pengajuan ke Verifikator tidak dapat dilakukan sampai data peserta terdaftar di Kepesertaan.`;
+          const containerTab5 = document.getElementById("tab-riwayat");
+          if (containerTab5) {
+            containerTab5.insertBefore(tab5LockMsg, containerTab5.firstChild);
+          }
+        }
       }
     }
 
@@ -5643,8 +6342,30 @@
         spNames = ["SP JKK (Santunan Cacat)"];
       } else if (key === 'Kecelakaan Kerja — Cacat Pensiun') {
         claimState.spNumberCacat = `SP-CACAT/JKT/${romanMonth}/${currentYear}/${suffix}`;
-        claimState.spNumberTujCacat = `SP-TUJ-CACAT/JKT/${romanMonth}/${currentYear}/${suffix}`;
-        spNames = ["SP JKK (Santunan Cacat)", "SP Tunjangan Cacat"];
+        spNames = ["SP JKK (Santunan Cacat)"];
+        
+        // Save Cacat data to localStorage
+        const nrpNip = currentParticipant?.nrp_nip || currentParticipant?.nik || '3273120105910003';
+        const cardCacat = activeProducts.find(p => p.type === 'Santunan Cacat');
+        if (cardCacat) {
+          const cardId = cardCacat.id;
+          const tingkat = document.getElementById(`${cardId}-tingkat`)?.value || 'Tingkat II';
+          const kriteria = document.getElementById(`${cardId}-kriteria`)?.value || 'Tuli';
+          const gol = document.getElementById(`${cardId}-golongan`)?.value || 'Golongan B';
+          const persen = document.getElementById(`${cardId}-persen`)?.value || '28.2%';
+          const rawGPVal = document.getElementById(`${cardId}-gaji-pokok-val`)?.value || 'Rp 4.500.000';
+          const gapok = parseFloat(rawGPVal.replace(/[^0-9,-]+/g,"")) || 4500000;
+          
+          localStorage.setItem(`dataCacat_${nrpNip}`, JSON.stringify({
+            golongan: gol,
+            tingkat: tingkat,
+            kriteria: kriteria,
+            persentase: persen,
+            gapokSaatSKCacat: gapok,
+            tanggalSKCacat: spDate,
+            nomorSKEPCacat: claimState.spNumberCacat
+          }));
+        }
       } else if (key === 'Pensiun Sendiri — Meninggal Dunia_Istri/Suami') {
         claimState.spNumberTht = `SP-THT/JKT/${romanMonth}/${currentYear}/${suffix}`;
         claimState.spNumberPen = `SP-PEN/JKT/${romanMonth}/${currentYear}/${suffix}`;
@@ -5703,6 +6424,10 @@
       localStorage.setItem('registrasiKlaim', JSON.stringify(claimState));
       
       showToast("Approval Sukses", "Klaim disetujui dan Surat Perintah Bayar berhasil diterbitkan.", "success");
+      
+      if (jk === 'Kecelakaan Kerja — Cacat Pensiun') {
+        alert("SP Santunan Cacat telah terbit. Silakan ajukan klaim Pensiun Pertama untuk mendapatkan Tunjangan Cacat.");
+      }
       renderTab5Data();
     }
 
@@ -6051,15 +6776,6 @@
       return totalPotongan;
     }
 
-    function hitungDurasiSkorsing(tanggalMulai, tanggalAkhir) {
-      const mulai = new Date(tanggalMulai);
-      const akhir = new Date(tanggalAkhir);
-      if (isNaN(mulai.getTime()) || isNaN(akhir.getTime())) return '0 Bulan';
-      const bulan = (akhir.getFullYear() - mulai.getFullYear()) * 12
-        + (akhir.getMonth() - mulai.getMonth());
-      return Math.max(0, bulan) + ' Bulan';
-    }
-
     function hitungDurasiBulan(tanggalMulai, tanggalAkhir) {
       const mulai = new Date(tanggalMulai);
       const akhir = new Date(tanggalAkhir);
@@ -6071,105 +6787,171 @@
 
     function updateSkorsingCardUI(cardId, type) {
       const container = document.getElementById(`${cardId}-skorsing-container`);
-      if (!container) return;
+      if (container) container.innerHTML = "";
+      updateSkorsingSectionUI();
+    }
+
+    function updateSkorsingSectionUI() {
+      const section = document.getElementById("hitung-skorsing-section");
+      if (!section) return;
 
       const jenisKejadian = document.getElementById("kejadian-jenis")?.value;
-      if (jenisKejadian !== 'Berhenti tanpa Hak Pensiun') {
-        container.innerHTML = "";
+      if (jenisKejadian !== 'Berhenti tanpa Hak Pensiun (PTDH)') {
+        hideSectionSkorsing();
         return;
       }
 
-      if (!currentParticipant || !currentParticipant.nik) {
-        container.innerHTML = "";
-        return;
+      let skorsingList = [];
+      try {
+        const dataPeserta = JSON.parse(localStorage.getItem('dataPeserta'));
+        skorsingList = dataPeserta?.gajiSkorsing || [];
+      } catch (e) {
+        console.error("Failed to read from localStorage.dataPeserta:", e);
+      }
+      
+      if (skorsingList.length === 0 && currentParticipant?.nik) {
+        try {
+          const localSkorsing = localStorage.getItem("skorsingData_" + currentParticipant.nik);
+          if (localSkorsing) {
+            skorsingList = JSON.parse(localSkorsing) || [];
+          }
+        } catch(e) {}
+        if (skorsingList.length === 0) {
+          try {
+            const dataPesertaNik = JSON.parse(localStorage.getItem(`dataPeserta_${currentParticipant.nik}`));
+            skorsingList = dataPesertaNik?.gajiSkorsing || [];
+          } catch(e) {}
+        }
       }
 
-      const localSkorsing = localStorage.getItem("skorsingData_" + currentParticipant.nik);
-      if (!localSkorsing) {
-        container.innerHTML = "";
-        return;
-      }
+      // Always show section skorsing for PTDH
+      showSectionSkorsing(skorsingList);
+    }
 
-      const skorsingList = JSON.parse(localSkorsing) || [];
-      if (skorsingList.length === 0) {
-        container.innerHTML = "";
-        return;
-      }
+    function showSectionSkorsing(skorsingList) {
+      const section = document.getElementById("hitung-skorsing-section");
+      if (!section) return;
 
       let gp = 0;
-      const selectGajiEl = document.getElementById(`${cardId}-select-gaji-mkg`);
-      if (selectGajiEl) {
-        try {
-          const selectedData = JSON.parse(selectGajiEl.value);
-          gp = selectedData.gaji || 0;
-        } catch (e) {}
+      const selectGajiNtta = document.querySelector("div[data-product='NTTA'] select[id$='-select-gaji-mkg']");
+      const selectGajiNtip = document.querySelector("div[data-product='NTIP'] select[id$='-select-gaji-mkg']");
+      if (selectGajiNtta) {
+        try { gp = JSON.parse(selectGajiNtta.value).gaji; } catch(e){}
+      } else if (selectGajiNtip) {
+        try { gp = JSON.parse(selectGajiNtip.value).gaji; } catch(e){}
       }
       const gapokok = gp || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
 
       let periodsHtml = "";
-      skorsingList.forEach(item => {
-        const durasi = hitungDurasiSkorsing(item.tanggalMulai, item.tanggalAkhir);
-        periodsHtml += `
-          <div class="border-b border-slate-150 pb-2 mb-2 last:border-0 last:pb-0 last:mb-0">
-            <div class="font-mono text-slate-700 font-bold">${item.tanggalMulai} s.d. ${item.tanggalAkhir} : ${item.persentase}%</div>
-            <div class="text-[10px] text-slate-400">Durasi: ${durasi}</div>
-          </div>
-        `;
-      });
-
-      let detailsHtml = "";
       let totalPotongan = 0;
-      skorsingList.forEach((item, index) => {
-        const persentase = item.persentase / 100;
-        const gajiSkorsing = gapokok * persentase;
-        const selisihPerBulan = gapokok - gajiSkorsing;
-        const durasiBulan = hitungDurasiBulan(item.tanggalMulai, item.tanggalAkhir);
-        const potongan = selisihPerBulan * durasiBulan;
-        totalPotongan += potongan;
 
-        detailsHtml += `
-          <div class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider mt-2 mb-1">Periode #${index + 1}:</div>
-          <div class="flex justify-between">
-            <span>Gaji Normal</span>
-            <span>${formatRupiah(gapokok)}</span>
-          </div>
-          <div class="flex justify-between">
-            <span>Gaji Skorsing</span>
-            <span>${formatRupiah(gajiSkorsing)} (${item.persentase}%)</span>
-          </div>
-          <div class="flex justify-between text-slate-500">
-            <span>Selisih/Bulan</span>
-            <span>${formatRupiah(selisihPerBulan)}</span>
-          </div>
-          <div class="flex justify-between text-rose-600 font-semibold">
-            <span>Potongan</span>
-            <span>${formatRupiah(potongan)} (${durasiBulan} bln)</span>
+      if (skorsingList.length === 0) {
+        periodsHtml = `
+          <div class="border-b border-slate-150 pb-3 mb-3 last:border-0 last:pb-0 last:mb-0 text-[11px] text-slate-650 space-y-1 font-mono">
+            <div class="flex justify-between">
+              <span class="text-slate-500">Periode</span>
+              <span class="font-bold text-slate-700">-</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Durasi</span>
+              <span class="font-bold text-slate-700">-</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Gaji Normal</span>
+              <span class="font-bold text-slate-700">${formatRupiah(gapokok)}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Gaji Skorsing</span>
+              <span class="font-bold text-slate-700">-</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Selisih/Bulan</span>
+              <span class="font-bold text-slate-700">-</span>
+            </div>
+            <div class="flex justify-between font-bold text-rose-600 border-t border-dashed border-slate-150 pt-1 mt-1">
+              <span>Total Potongan Skorsing</span>
+              <span>-</span>
+            </div>
           </div>
         `;
-      });
+      } else {
+        skorsingList.forEach((item, index) => {
+          const tglMulai = item?.tanggalMulai || item?.tglMulai || '-';
+          const tglAkhir = item?.tanggalAkhir || item?.tglAkhir || '-';
+          const persentase = (item?.persentase !== undefined && item?.persentase !== null) ? item.persentase : '-';
 
-      container.innerHTML = `
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs space-y-3">
-          <div class="border-b border-slate-100 pb-2 flex items-center gap-1.5">
-            <i class="fas fa-clipboard-list text-asabri-blue"></i>
-            <span class="font-bold text-slate-700">📋 Periode Gaji Skorsing</span>
-            <span class="text-[10px] text-slate-400 font-normal">(auto-baca dari Data Peserta)</span>
+          const pct = persentase !== '-' ? persentase / 100 : '-';
+          const gajiSkorsing = pct !== '-' ? gapokok * pct : '-';
+          const selisihPerBulan = (pct !== '-' && gajiSkorsing !== '-') ? gapokok - gajiSkorsing : '-';
+          
+          let durasiBulan = '-';
+          if (tglMulai !== '-' && tglAkhir !== '-') {
+            durasiBulan = hitungDurasiBulan(tglMulai, tglAkhir);
+          }
+          
+          const potongan = (selisihPerBulan !== '-' && durasiBulan !== '-') ? selisihPerBulan * durasiBulan : '-';
+          if (potongan !== '-') {
+            totalPotongan += potongan;
+          }
+
+          periodsHtml += `
+            <div class="border-b border-slate-150 pb-3 mb-3 last:border-0 last:pb-0 last:mb-0 text-[11px] text-slate-650 space-y-1 font-mono">
+              <div class="flex justify-between">
+                <span class="text-slate-500">Periode</span>
+                <span class="font-bold text-slate-700">${tglMulai} - ${tglAkhir} ${persentase !== '-' ? `(${persentase}%)` : ''}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Durasi</span>
+                <span class="font-bold text-slate-700">${durasiBulan !== '-' ? `${durasiBulan} Bulan` : '-'}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Gaji Normal</span>
+                <span class="font-bold text-slate-700">${formatRupiah(gapokok)}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Gaji Skorsing</span>
+                <span class="font-bold text-slate-700">${gajiSkorsing !== '-' ? `${formatRupiah(gajiSkorsing)} (${persentase}% &times; Gaji Normal)` : '-'}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Selisih/Bulan</span>
+                <span class="font-bold text-slate-700">${selisihPerBulan !== '-' ? formatRupiah(selisihPerBulan) : '-'}</span>
+              </div>
+              <div class="flex justify-between font-bold text-rose-600 border-t border-dashed border-slate-150 pt-1 mt-1">
+                <span>Total Potongan Skorsing</span>
+                <span>${potongan !== '-' ? formatRupiah(potongan) : '-'}</span>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      section.innerHTML = `
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4 mb-6">
+          <div class="border-b border-slate-100 pb-3 flex items-center gap-2">
+            <i class="fas fa-file-invoice-dollar text-rose-500 text-base"></i>
+            <h3 class="text-sm font-bold text-slate-800">── Section Hitung Skorsing ──</h3>
+            <span class="text-[10px] text-slate-400 font-normal">(auto-read dari Data Peserta)</span>
           </div>
-          <div class="space-y-1">
+          <div class="space-y-4">
             ${periodsHtml}
-          </div>
-          <div class="space-y-1 pt-1 font-mono text-slate-650 border-t border-slate-155">
-            <div class="font-bold text-slate-700 mb-1">Kalkulasi Potongan Skorsing:</div>
-            ${detailsHtml}
             ${skorsingList.length > 1 ? `
-              <div class="flex justify-between font-bold text-rose-800 border-t border-slate-200 pt-1.5 mt-1.5">
-                <span>Total Potongan</span>
-                <span>${formatRupiah(totalPotongan)}</span>
+              <div class="flex justify-between font-bold text-rose-800 border-t border-slate-200 pt-3 mt-3 font-mono text-xs">
+                <span>Total Potongan Skorsing Keseluruhan</span>
+                <span class="text-sm">${formatRupiah(totalPotongan)}</span>
               </div>
             ` : ''}
           </div>
         </div>
       `;
+      section.classList.remove("hidden");
+    }
+
+    function hideSectionSkorsing() {
+      const section = document.getElementById("hitung-skorsing-section");
+      if (section) {
+        section.innerHTML = "";
+        section.classList.add("hidden");
+      }
     }
 
     function updateSelisihTmtCardUI(cardId, type) {
@@ -6177,7 +6959,7 @@
       if (!container) return;
 
       const jenisKejadian = document.getElementById("kejadian-jenis")?.value;
-      if (jenisKejadian !== 'Berhenti tanpa Hak Pensiun') {
+      if (jenisKejadian !== 'Berhenti tanpa Hak Pensiun (PTDH)') {
         container.innerHTML = "";
         return;
       }
@@ -6545,8 +7327,7 @@
         // 13. KK Cacat Pensiun
         case 'Kecelakaan Kerja — Cacat Pensiun':
           showSP([
-            { label: 'SP JKK (Santunan Cacat)', preview: () => previewSPSantunanCacat(ctxCacat), download: () => downloadSPSantunanCacat(ctxCacat) },
-            { label: 'SP Tunjangan Cacat', preview: () => previewSPTunjanganCacat(ctxTujCacat), download: () => downloadSPTunjanganCacat(ctxTujCacat) }
+            { label: 'SP JKK (Santunan Cacat)', preview: () => previewSPSantunanCacat(ctxCacat), download: () => downloadSPSantunanCacat(ctxCacat) }
           ]);
           break;
 

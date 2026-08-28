@@ -52,6 +52,15 @@ function enrichClaimsWithParticipant(claims) {
 }
 
 function saveClaims(claims) {
+  if (Array.isArray(claims)) {
+    claims.forEach(c => {
+      if (c.status === "Selesai" && !c.tanggalSelesai) {
+        c.tanggalSelesai = new Date().toLocaleDateString('id-ID');
+      } else if (c.status !== "Selesai" && c.status !== "Pembayaran Selesai") {
+        c.tanggalSelesai = "";
+      }
+    });
+  }
   localStorage.setItem("asabri_claims", JSON.stringify(claims));
 }
 
@@ -68,6 +77,12 @@ function updateClaimStatus(noReg, status, catatan) {
     const oldStatus = claims[index].status;
     claims[index].status = status;
     claims[index].catatan = catatan;
+    
+    if (status === "Selesai") {
+      claims[index].tanggalSelesai = new Date().toLocaleDateString('id-ID');
+    } else {
+      claims[index].tanggalSelesai = "";
+    }
     
     // Ensure audit trail exists
     if (!claims[index].auditTrail) {

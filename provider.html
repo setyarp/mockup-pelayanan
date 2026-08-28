@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - Portal Provider JKK Perawatan</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: {
+              blue: '#004799',
+              blueDark: '#002e63',
+              gold: '#FFD700',
+              softBlue: '#F3F8FC',
+              textDark: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR / NAVBAR -->
+  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md flex-shrink-0">
+    <div class="flex items-center gap-5">
+      <!-- ASABRI Logo & Branding -->
+      <div class="flex items-center gap-3">
+        <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
+          <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
+          <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
+          <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
+        </svg>
+        <span class="text-white font-extrabold text-xl tracking-wider ml-1 hidden sm:inline">ASABRI</span>
+        <div class="h-6 w-px bg-white/20 hidden sm:block"></div>
+        <div class="flex flex-col">
+          <span class="text-white font-bold text-xs tracking-wider">PORTAL PROVIDER JKK</span>
+          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">INTEGRATED HEALTHCARE NETWORK</span>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-4">
+      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide">RS Bhayangkara Sartika Asih</span>
+      </div>
+      <a href="index.html" class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-rose-600 hover:border-rose-500 transition-all duration-150" title="Keluar Ke Yandu NG Dashboard">
+        <i class="fas fa-sign-out-alt text-sm"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Bar -->
+  <div class="md:hidden flex justify-around bg-asabri-blueDark border-b border-white/10 p-2 flex-shrink-0 text-white text-[11px] font-semibold uppercase tracking-wider">
+    <button onclick="switchTab('dashboard')" id="mob-nav-dashboard" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i class="fas fa-chart-line text-base"></i> Dashboard
+    </button>
+    <button onclick="switchTab('laporan')" id="mob-nav-laporan" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i class="fas fa-file-signature text-base"></i> Laporan
+    </button>
+    <button onclick="switchTab('klaim')" id="mob-nav-klaim" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i class="fas fa-file-invoice-dollar text-base"></i> Klaim Restitusi
+    </button>
+  </div>
+
+  <div class="flex flex-1 overflow-hidden">
+    <!-- LEFT SIDEBAR -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col justify-between p-4 border-r border-slate-800 hidden md:flex flex-shrink-0 z-20 shadow-lg">
+      <div class="space-y-6">
+        <div class="px-2 pt-2">
+          <span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest block mb-3">Menu Utama</span>
+          <nav class="space-y-1">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-white bg-asabri-blue font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-sm border-l-4 border-asabri-gold">
+              <i class="fas fa-chart-line text-base"></i> Dashboard
+            </button>
+            <button onclick="switchTab('laporan')" id="nav-laporan" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 font-semibold rounded-xl text-xs uppercase tracking-wider transition-all">
+              <i class="fas fa-file-signature text-base"></i> Laporan Kejadian
+            </button>
+            <button onclick="switchTab('klaim')" id="nav-klaim" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 font-semibold rounded-xl text-xs uppercase tracking-wider transition-all">
+              <i class="fas fa-file-invoice-dollar text-base"></i> Pengajuan Klaim
+            </button>
+          </nav>
+        </div>
+      </div>
+      
+      <!-- Footer Sidebar Info -->
+      <div class="p-2 border-t border-slate-800 space-y-2">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs">
+            <i class="fas fa-hospital"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-[10px] font-bold text-slate-350">RS Bhayangkara</span>
+            <span class="text-[8px] text-slate-500">PROVIDER JKK</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN SCROLLABLE BODY -->
+    <main class="flex-1 overflow-y-auto p-6 space-y-6">
+
+    <!-- ================== SECTION 1: DASHBOARD ================== -->
+    <section id="sec-dashboard" class="space-y-6 animate-fade-in">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">Ringkasan Aktivitas JKK Perawatan</h2>
+          <p class="text-xs text-slate-500">Overview laporan insiden dan pengajuan klaim rumah sakit.</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="switchTab('laporan')" class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm flex items-center gap-1.5 transition-all duration-150">
+            <i class="fas fa-plus"></i> Laporan Baru
+          </button>
+          <button onclick="switchTab('klaim')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm flex items-center gap-1.5 transition-all duration-150">
+            <i class="fas fa-wallet"></i> Klaim Restitusi
+          </button>
+        </div>
+      </div>
+
+      <!-- METRIC CARDS -->
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Laporan</span>
+            <span class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fas fa-file-signature text-xs"></i></span>
+          </div>
+          <div class="text-2xl font-extrabold text-slate-800" id="stat-total-laporan">4</div>
+        </div>
+        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">SJP Terbit</span>
+            <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fas fa-envelope-open-text text-xs"></i></span>
+          </div>
+          <div class="text-2xl font-extrabold text-slate-800" id="stat-sjp">3</div>
+        </div>
+        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">SJPP Terbit</span>
+            <span class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-655 flex items-center justify-center"><i class="fas fa-envelope-check text-xs"></i></span>
+          </div>
+          <div class="text-2xl font-extrabold text-slate-800" id="stat-sjpp">1</div>
+        </div>
+        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Klaim Diproses</span>
+            <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"><i class="fas fa-spinner text-xs animate-spin"></i></span>
+          </div>
+          <div class="text-2xl font-extrabold text-slate-800" id="stat-klaim-proses">1</div>
+        </div>
+        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm space-y-2 col-span-2 lg:col-span-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Klaim Selesai</span>
+            <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fas fa-check-circle text-xs"></i></span>
+          </div>
+          <div class="text-2xl font-extrabold text-slate-800" id="stat-klaim-selesai">1</div>
+        </div>
+      </div>
+
+      <!-- MAIN DATA TABLES -->
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <!-- Incidents List -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden xl:col-span-2">
+          <div class="border-b border-slate-100 p-4 flex items-center justify-between bg-slate-50/50">
+            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-clipboard-list text-slate-400"></i> Riwayat Laporan Kejadian Terbaru</h3>
+            <span class="text-[10px] text-slate-400 italic">Terhitung Real-Time</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-100 text-slate-500 font-bold uppercase text-[10px] tracking-wider border-b border-slate-200">
+                  <th class="px-4 py-3">No. Kejadian</th>
+                  <th class="px-4 py-3">Nama Peserta</th>
+                  <th class="px-4 py-3">Tanggal Kejadian</th>
+                  <th class="px-4 py-3">Status</th>
+                  <th class="px-4 py-3 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-laporan-body" class="divide-y divide-slate-100">
+                <!-- Prepopulated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Claims List -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+          <div class="border-b border-slate-100 p-4 bg-slate-50/50 flex items-center justify-between">
+            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-file-invoice text-slate-400"></i> Status Klaim & Restitusi</h3>
+          </div>
+          <div class="divide-y divide-slate-100 max-h-[350px] overflow-y-auto" id="tbl-klaim-body">
+            <!-- Prepopulated dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================== SECTION 2: REPORT INCIDENT FORM ================== -->
+    <section id="sec-laporan" class="hidden space-y-6 animate-fade-in">
+      <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        <div class="bg-asabri-blueDark text-white p-5 flex items-center justify-between border-b-4 border-asabri-gold">
+          <div class="space-y-1">
+            <h3 class="font-bold text-sm tracking-wide uppercase">Formulir Laporan Baru Kejadian JKK</h3>
+            <p class="text-[10px] text-white/70">Wajib diisi oleh Provider Rumah Sakit/Faskes dalam waktu maksimal 2x24 jam.</p>
+          </div>
+          <i class="fas fa-file-signature text-2xl text-white/20"></i>
+        </div>
+
+        <form id="form-laporan-kejadian" class="p-6 space-y-6" onsubmit="handleLaporanSubmit(event)">
+          <!-- Section A: Data Peserta -->
+          <div class="space-y-4">
+            <h4 class="text-xs font-bold text-asabri-blue uppercase tracking-wider border-b border-slate-100 pb-1 flex items-center gap-1.5">
+              <i class="fas fa-user-circle"></i> A. Data Identitas Peserta
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">NRP / NIP / NIK <span class="text-rose-500">*</span></label>
+                <div class="flex gap-2">
+                  <input type="text" id="lap-nrp" placeholder="Masukkan NRP/NIK..." class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required>
+                  <button type="button" onclick="lookupPesertaLap()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-bold rounded-xl text-xs flex items-center justify-center gap-1">
+                    <i class="fas fa-search"></i> Cari
+                  </button>
+                </div>
+                <span class="text-[9px] text-slate-400 block mt-1">Gunakan 3273120105910003 untuk test auto-fill</span>
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block font-bold text-slate-500 mb-1">Nama Peserta</label>
+                <input type="text" id="lap-nama" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-500 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Pangkat / Golongan</label>
+                <input type="text" id="lap-pangkat" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-500 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Kesatuan / Instansi</label>
+                <input type="text" id="lap-kesatuan" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-500 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Nomor Telepon Seluler <span class="text-rose-500">*</span></label>
+                <input type="text" id="lap-telp" placeholder="Contoh: 0812..." class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section B: Data Kejadian -->
+          <div class="space-y-4 pt-4 border-t border-slate-100">
+            <h4 class="text-xs font-bold text-asabri-blue uppercase tracking-wider border-b border-slate-100 pb-1 flex items-center gap-1.5">
+              <i class="fas fa-notes-medical"></i> B. Rincian Kronologis & Layanan Kejadian
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Jenis Kejadian Kecelakaan <span class="text-rose-500">*</span></label>
+                <select id="lap-jenis-kejadian" class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required>
+                  <option value="" disabled selected>-- Pilih Jenis Kejadian --</option>
+                  <option value="Kecelakaan Kerja di Tempat Kerja">Kecelakaan Kerja di Tempat Kerja</option>
+                  <option value="Kecelakaan Kerja Selain di Tempat Kerja">Kecelakaan Kerja Selain di Tempat Kerja</option>
+                  <option value="Kecelakaan Kerja + Laka Lantas Tunggal">Kecelakaan Kerja + Laka Lantas Tunggal</option>
+                  <option value="Kecelakaan Kerja + Laka Lantas Ganda">Kecelakaan Kerja + Laka Lantas Ganda</option>
+                  <option value="Penyakit Akibat Kerja (Dugaan PAK)">Penyakit Akibat Kerja (Dugaan PAK)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Tanggal Kejadian <span class="text-rose-500">*</span></label>
+                <input type="date" id="lap-tgl-kejadian" class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Tanggal Mulai Rawat / MRS <span class="text-rose-500">*</span></label>
+                <input type="date" id="lap-tgl-rawat" class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required>
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block font-bold text-slate-500 mb-1">Catatan Kronologis Kejadian (Singkat & Jelas) <span class="text-rose-500">*</span></label>
+                <textarea id="lap-kronologi" rows="3" placeholder="Jelaskan secara singkat bagaimana kecelakaan kerja terjadi..." class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required></textarea>
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block font-bold text-slate-500 mb-1">Diagnosa Awal Kejadian Medis <span class="text-rose-500">*</span></label>
+                <input type="text" id="lap-diagnosa" placeholder="Contoh: Vulnus Laceratum, Fraktur Femur Dextra, dll." class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Jenis Layanan Utama <span class="text-rose-500">*</span></label>
+                <select id="lap-layanan" class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required>
+                  <option value="Rawat Inap">Rawat Inap (Unlimited)</option>
+                  <option value="Rawat Jalan">Rawat Jalan (Unlimited)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Kelas Perawatan Kamar <span class="text-rose-500">*</span></label>
+                <select id="lap-kelas" class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required>
+                  <option value="Kelas I">Kelas I</option>
+                  <option value="Kelas II">Kelas II</option>
+                  <option value="Kelas III">Kelas III</option>
+                  <option value="VIP">VIP</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">COB Jasa Raharja? <span class="text-rose-500">*</span></label>
+                <select id="lap-cob" onchange="toggleCobNominal()" class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700" required>
+                  <option value="Tidak">Tidak</option>
+                  <option value="Ya">Ya</option>
+                </select>
+              </div>
+              <div id="lap-cob-nominal-container" class="hidden">
+                <label class="block font-bold text-slate-500 mb-1">Nominal Pertanggungan Jasa Raharja (Maks Rp 20jt)</label>
+                <input type="number" id="lap-cob-nominal" value="20000000" max="20000000" class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section C: Persyaratan Dokumen -->
+          <div class="space-y-4 pt-4 border-t border-slate-100">
+            <h4 class="text-xs font-bold text-asabri-blue uppercase tracking-wider border-b border-slate-100 pb-1 flex items-center gap-1.5">
+              <i class="fas fa-file-pdf"></i> C. Unggah Dokumen Pendukung Persyaratan
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div class="border border-slate-200 p-4 rounded-xl space-y-2 bg-slate-50/50">
+                <span class="font-bold text-slate-700 block">1. Kartu Tanda Anggota / KTP Peserta <span class="text-rose-500">*</span></span>
+                <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[11px] file:font-semibold file:bg-asabri-blue file:text-white hover:file:bg-asabri-blueDark cursor-pointer">
+              </div>
+              <div class="border border-slate-200 p-4 rounded-xl space-y-2 bg-slate-50/50">
+                <span class="font-bold text-slate-700 block">2. Laporan Kronologis Awal Faskes <span class="text-rose-500">*</span></span>
+                <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[11px] file:font-semibold file:bg-asabri-blue file:text-white hover:file:bg-asabri-blueDark cursor-pointer">
+              </div>
+              <div class="border border-slate-200 p-4 rounded-xl space-y-2 bg-slate-50/50">
+                <span class="font-bold text-slate-700 block">3. Bukti Kronologis Resmi Kesatuan <span class="text-rose-500">*</span></span>
+                <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[11px] file:font-semibold file:bg-asabri-blue file:text-white hover:file:bg-asabri-blueDark cursor-pointer">
+              </div>
+              <div class="border border-slate-200 p-4 rounded-xl space-y-2 bg-slate-50/50">
+                <span class="font-bold text-slate-700 block">4. Surat Keterangan Rawat Faskes <span class="text-rose-500">*</span></span>
+                <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[11px] file:font-semibold file:bg-asabri-blue file:text-white hover:file:bg-asabri-blueDark cursor-pointer">
+              </div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex justify-end gap-2 pt-4">
+            <button type="button" onclick="saveDraftKejadian()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs flex items-center gap-1.5">
+              <i class="far fa-save"></i> Simpan Draft
+            </button>
+            <button type="submit" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow">
+              <i class="fas fa-paper-plane"></i> Kirim Laporan
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ================== SECTION 3: CLAIM SUBMISSION FORM ================== -->
+    <section id="sec-klaim" class="hidden space-y-6 animate-fade-in">
+      <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        <div class="bg-emerald-700 text-white p-5 flex items-center justify-between border-b-4 border-asabri-gold">
+          <div class="space-y-1">
+            <h3 class="font-bold text-sm tracking-wide uppercase">Pengajuan Klaim Restitusi Biaya Perawatan</h3>
+            <p class="text-[10px] text-white/70">Tarik data Laporan Kejadian yang sudah terbit SJP/SJP Perpanjangan untuk mengajukan tagihan.</p>
+          </div>
+          <i class="fas fa-wallet text-2xl text-white/20"></i>
+        </div>
+
+        <form id="form-klaim-restitusi" class="p-6 space-y-6" onsubmit="handleKlaimSubmit(event)">
+          <!-- Section 1: Data Laporan Kejadian -->
+          <div class="space-y-4">
+            <h4 class="text-xs font-bold text-emerald-700 uppercase tracking-wider border-b border-slate-100 pb-1 flex items-center gap-1.5">
+              <i class="fas fa-link"></i> 1. Tarik Data Laporan JKK
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Nomor Kejadian JKK <span class="text-rose-500">*</span></label>
+                <div class="flex gap-2">
+                  <input type="text" id="klm-no-kejadian" placeholder="Contoh: JKK-PRV/2026/091" class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-emerald-600 text-slate-700" required>
+                  <button type="button" onclick="lookupKejadianKlm()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-bold rounded-xl text-xs flex items-center justify-center gap-1">
+                    <i class="fas fa-search"></i> Tarik
+                  </button>
+                </div>
+                <span class="text-[9px] text-slate-400 block mt-1">Gunakan nomor kejadian dari Dashboard (cth: JKK-PRV/00091-ASABRI/08/2026)</span>
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block font-bold text-slate-500 mb-1">Nama Pasien / Peserta</label>
+                <input type="text" id="klm-nama" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-500 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Kesatuan</label>
+                <input type="text" id="klm-kesatuan" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-500 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Diagnosa Utama Lanjutan <span class="text-rose-500">*</span></label>
+                <input type="text" id="klm-diagnosa" placeholder="Diagnosa resume medis akhir..." class="w-full bg-white border border-slate-350 rounded-xl px-3 py-2 font-semibold outline-none focus:border-emerald-600 text-slate-700" required>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Nomor Rekening RS (Auto-fill PKS)</label>
+                <input type="text" id="klm-rekening" value="0012-01-998273-50-4 - Bank Mandiri (RS Sartika Asih)" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-500 outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Kwitansi Rincian Layanan -->
+          <div class="space-y-4 pt-4 border-t border-slate-100">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-1">
+              <h4 class="text-xs font-bold text-emerald-700 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fas fa-receipt"></i> 2. Rincian Biaya Kwitansi & Limit Perawatan
+              </h4>
+              <button type="button" onclick="addKwitansiRow()" class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-250 hover:bg-emerald-100 font-bold rounded-lg text-[10px] flex items-center gap-1">
+                <i class="fas fa-plus"></i> Tambah Item
+              </button>
+            </div>
+
+            <!-- TABLE OF KWITANSI ITEMS -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="bg-slate-100 text-slate-500 font-bold uppercase text-[9px] tracking-wider border-b border-slate-200">
+                    <th class="px-4 py-2">Jenis Layanan</th>
+                    <th class="px-4 py-2">Nominal Diajukan (Rp)</th>
+                    <th class="px-4 py-2">Sisa Limit (PP 54/2020)</th>
+                    <th class="px-4 py-2 text-center w-[80px]">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbl-kwitansi-body" class="divide-y divide-slate-100">
+                  <!-- Row 1 Default -->
+                  <tr data-row-idx="0">
+                    <td class="px-4 py-2">
+                      <select onchange="updateRowLimit(0)" class="lay-select w-full bg-white border border-slate-250 rounded-lg px-2 py-1 text-xs outline-none focus:border-emerald-600 text-slate-700">
+                        <option value="Rawat Inap">Rawat Inap (Unlimited)</option>
+                        <option value="Rawat Jalan">Rawat Jalan (Unlimited)</option>
+                        <option value="Biaya Angkut Darat">Biaya Angkut Darat (Maks Rp 2.000.000)</option>
+                        <option value="Biaya Angkut Laut">Biaya Angkut Laut (Maks Rp 2.500.000)</option>
+                        <option value="Biaya Angkut Udara">Biaya Angkut Udara (Maks Rp 4.000.000)</option>
+                        <option value="Protese/Ortese">Protese/Ortese (Maks Rp 5.000.000)</option>
+                        <option value="Rehabilitasi Medis">Rehabilitasi Medis (Maks Rp 2.600.000)</option>
+                        <option value="Gigi Tiruan">Penggantian Gigi Tiruan (Maks Rp 3.000.000)</option>
+                      </select>
+                    </td>
+                    <td class="px-4 py-2">
+                      <input type="number" oninput="validateRowNominal(0)" class="nom-input w-full bg-white border border-slate-250 rounded-lg px-2 py-1 text-xs outline-none focus:border-emerald-600 font-mono" placeholder="Masukkan angka..." required>
+                    </td>
+                    <td class="px-4 py-2 font-semibold font-mono text-slate-600">
+                      <span class="limit-span">UNLIMITED</span>
+                    </td>
+                    <td class="px-4 py-2 text-center">
+                      <button type="button" onclick="removeKwitansiRow(this)" class="text-rose-500 hover:text-rose-700 text-xs"><i class="fas fa-trash-can"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section 3: Dokumen Pendukung Restitusi -->
+          <div class="space-y-4 pt-4 border-t border-slate-100">
+            <h4 class="text-xs font-bold text-emerald-700 uppercase tracking-wider border-b border-slate-100 pb-1 flex items-center gap-1.5">
+              <i class="fas fa-cloud-arrow-up"></i> 3. Berkas Kwitansi & Resume Medis
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div class="border border-slate-200 p-4 rounded-xl space-y-2 bg-slate-50/50">
+                <span class="font-bold text-slate-700 block">1. Rincian Perawatan / Billing <span class="text-rose-500">*</span></span>
+                <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[11px] file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-750 cursor-pointer">
+              </div>
+              <div class="border border-slate-200 p-4 rounded-xl space-y-2 bg-slate-50/50">
+                <span class="font-bold text-slate-700 block">2. Resume Medis Lengkap <span class="text-rose-500">*</span></span>
+                <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[11px] file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-750 cursor-pointer">
+              </div>
+              <div class="border border-slate-200 p-4 rounded-xl space-y-2 bg-slate-50/50">
+                <span class="font-bold text-slate-700 block">3. Invoice / Kuitansi Bermaterai <span class="text-rose-500">*</span></span>
+                <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[11px] file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-750 cursor-pointer">
+              </div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex justify-end gap-2 pt-4">
+            <button type="button" onclick="saveDraftKlaim()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs flex items-center gap-1.5">
+              <i class="far fa-save"></i> Simpan Draft
+            </button>
+            <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow">
+              <i class="fas fa-paper-plane"></i> Kirim Tagihan Klaim
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+  </div>
+
+  <!-- ================== DRAWER / MODAL: DETAIL ANALISA KLAIM ================== -->
+  <div id="drawer-detail" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex justify-end transition-opacity duration-300 opacity-0 pointer-events-none">
+    <div class="w-full max-w-xl bg-white h-full shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300" id="drawer-body">
+      <!-- Drawer Header -->
+      <div class="h-16 bg-asabri-blueDark text-white px-6 flex items-center justify-between border-b border-white/10 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-folder-open text-asabri-gold"></i>
+          <div>
+            <h3 class="text-sm font-bold tracking-wide uppercase" id="drawer-title">Detail Berkas Klaim</h3>
+            <span class="text-[10px] text-white/60 font-mono" id="drawer-subtitle">KLM-REST/2026/092</span>
+          </div>
+        </div>
+        <button onclick="closeDrawer()" class="text-white/60 hover:text-white transition-colors">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Drawer Content -->
+      <div class="flex-1 overflow-y-auto p-6 space-y-6 text-xs" id="drawer-content-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2 text-xs border border-slate-700 transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2">
+    <i class="fas fa-circle-check text-emerald-400 text-sm" id="toast-icon"></i>
+    <span id="toast-msg">Laporan tersimpan di sistem.</span>
+  </div>
+
+  <script>
+    // PREPOPULATED DUMMY DATA
+    const INITIAL_LAPORAN = [
+      { id: "JKK-PRV/00091-ASABRI/08/2026", nrp: "3273120105910003", nama: "Kopda Ahmad Subagja", tanggal: "2026-08-10", jenis: "Kecelakaan Kerja di Tempat Kerja", status: "SJP Terbit" },
+      { id: "JKK-PRV/00088-ASABRI/07/2026", nrp: "3273120105910003", nama: "Kopda Ahmad Subagja", tanggal: "2026-07-15", jenis: "Kecelakaan Kerja Selain di Tempat Kerja", status: "SJPP Terbit" },
+      { id: "JKK-PRV/00072-ASABRI/06/2026", nrp: "1103092288390022", nama: "Sertu Budi Prasetyo", tanggal: "2026-06-05", jenis: "Kecelakaan Kerja + Laka Lantas Tunggal", status: "Selesai" },
+      { id: "JKK-PRV/00095-ASABRI/08/2026", nrp: "3273120105910003", nama: "Kopda Ahmad Subagja", tanggal: "2026-08-25", jenis: "Penyakit Akibat Kerja (Dugaan PAK)", status: "Draft" }
+    ];
+
+    const INITIAL_KLAIM = [
+      { id: "KLM-REST/00092-ASABRI/08/2026", noKejadian: "JKK-PRV/00091-ASABRI/08/2026", nama: "Kopda Ahmad Subagja", nominal: 14500000, status: "Verifikasi Medis", disetujui: 14500000, selisih: 0, alasan: "-" },
+      { id: "KLM-REST/00080-ASABRI/07/2026", noKejadian: "JKK-PRV/00072-ASABRI/06/2026", nama: "Sertu Budi Prasetyo", nominal: 28400000, status: "Selesai", disetujui: 25000000, selisih: 3400000, alasan: "Obat non-formularium tidak ditanggung ASABRI." },
+      { id: "KLM-REST/00099-ASABRI/08/2026", noKejadian: "JKK-PRV/00088-ASABRI/07/2026", nama: "Kopda Ahmad Subagja", nominal: 8900000, status: "Dispute", disetujui: 6000000, selisih: 2900000, alasan: "Selisih biaya akomodasi ambulans udara melebihi limit." }
+    ];
+
+    // Master Limits
+    const LIMITS = {
+      "Rawat Inap": Infinity,
+      "Rawat Jalan": Infinity,
+      "Biaya Angkut Darat": 2000000,
+      "Biaya Angkut Laut": 2500000,
+      "Biaya Angkut Udara": 4000000,
+      "Protese/Ortese": 5000000,
+      "Rehabilitasi Medis": 2600000,
+      "Gigi Tiruan": 3000000
+    };
+
+    // Load or initialize DB
+    if (!localStorage.getItem("db_laporan")) {
+      localStorage.setItem("db_laporan", JSON.stringify(INITIAL_LAPORAN));
+    }
+    if (!localStorage.getItem("db_klaim")) {
+      localStorage.setItem("db_klaim", JSON.stringify(INITIAL_KLAIM));
+    }
+
+    // Toggle Tab view
+    function switchTab(tab) {
+      // Hide all sections
+      document.getElementById("sec-dashboard").classList.add("hidden");
+      document.getElementById("sec-laporan").classList.add("hidden");
+      document.getElementById("sec-klaim").classList.add("hidden");
+
+      // Show selected section
+      document.getElementById(`sec-${tab}`).classList.remove("hidden");
+
+      // Update Nav styles
+      const tabs = ["dashboard", "laporan", "klaim"];
+      tabs.forEach(t => {
+        const el = document.getElementById(`nav-${t}`);
+        const mobEl = document.getElementById(`mob-nav-${t}`);
+        if (t === tab) {
+          el.className = "w-full flex items-center gap-3 px-4 py-3 text-white bg-asabri-blue font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-sm border-l-4 border-asabri-gold";
+          if (mobEl) mobEl.classList.remove("opacity-70");
+        } else {
+          el.className = "w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 font-semibold rounded-xl text-xs uppercase tracking-wider transition-all";
+          if (mobEl) mobEl.classList.add("opacity-70");
+        }
+      });
+
+      if (tab === "dashboard") {
+        renderDashboardData();
+      }
+    }
+
+    // Load list data and display on Dashboard
+    function renderDashboardData() {
+      const laporan = JSON.parse(localStorage.getItem("db_laporan") || "[]");
+      const klaim = JSON.parse(localStorage.getItem("db_klaim") || "[]");
+
+      // Render Laporan
+      const tblLap = document.getElementById("tbl-laporan-body");
+      tblLap.innerHTML = "";
+      laporan.forEach(item => {
+        let badgeColor = "bg-slate-100 text-slate-700 border-slate-200";
+        if (item.status === "SJP Terbit") badgeColor = "bg-emerald-100 text-emerald-800 border-emerald-200";
+        else if (item.status === "SJPP Terbit") badgeColor = "bg-indigo-100 text-indigo-800 border-indigo-200";
+        else if (item.status === "Selesai") badgeColor = "bg-blue-100 text-blue-800 border-blue-200";
+
+        tblLap.innerHTML += `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="px-4 py-3 font-semibold font-mono text-slate-700">${item.id}</td>
+            <td class="px-4 py-3">
+              <div class="font-bold text-slate-800">${item.nama}</div>
+              <div class="text-[10px] text-slate-400 font-mono">NRP: ${item.nrp}</div>
+            </td>
+            <td class="px-4 py-3 font-medium text-slate-600">${formatIndoDate(item.tanggal)}</td>
+            <td class="px-4 py-3">
+              <span class="px-2 py-0.5 rounded-full font-bold text-[9px] border ${badgeColor}">${item.status}</span>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="copyToClipboard('${item.id}')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-250 rounded font-semibold text-[10px] flex items-center justify-center gap-1 mx-auto">
+                <i class="far fa-copy"></i> Salin
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      // Render Klaim
+      const listKlaim = document.getElementById("tbl-klaim-body");
+      listKlaim.innerHTML = "";
+      klaim.forEach(item => {
+        let badgeColor = "bg-slate-100 text-slate-700 border-slate-200";
+        if (item.status === "Verifikasi Medis") badgeColor = "bg-blue-100 text-blue-800 border-blue-200";
+        else if (item.status === "Dispute") badgeColor = "bg-rose-100 text-rose-800 border-rose-250";
+        else if (item.status === "Selesai") badgeColor = "bg-emerald-100 text-emerald-800 border-emerald-250";
+
+        listKlaim.innerHTML += `
+          <div class="p-3.5 hover:bg-slate-50 transition-colors space-y-2 cursor-pointer" onclick="openDrawerDetail('${item.id}')">
+            <div class="flex items-center justify-between">
+              <span class="font-bold font-mono text-[11px] text-slate-800">${item.id}</span>
+              <span class="px-2 py-0.5 rounded-full font-bold text-[9px] border ${badgeColor}">${item.status}</span>
+            </div>
+            <div class="flex items-center justify-between text-[11px] text-slate-500">
+              <span>Pasien: <strong>${item.nama}</strong></span>
+              <strong class="text-slate-800 font-mono">${formatRupiah(item.nominal)}</strong>
+            </div>
+          </div>
+        `;
+      });
+
+      // Stats Count
+      document.getElementById("stat-total-laporan").innerText = laporan.length;
+      document.getElementById("stat-sjp").innerText = laporan.filter(x => x.status === "SJP Terbit").length;
+      document.getElementById("stat-sjpp").innerText = laporan.filter(x => x.status === "SJPP Terbit").length;
+      document.getElementById("stat-klaim-proses").innerText = klaim.filter(x => x.status === "Verifikasi Medis" || x.status === "Dispute").length;
+      document.getElementById("stat-klaim-selesai").innerText = klaim.filter(x => x.status === "Selesai").length;
+    }
+
+    // Toggle COB Input
+    function toggleCobNominal() {
+      const cob = document.getElementById("lap-cob").value;
+      const container = document.getElementById("lap-cob-nominal-container");
+      if (cob === "Ya") {
+        container.classList.remove("hidden");
+      } else {
+        container.classList.add("hidden");
+      }
+    }
+
+    // NRP Lookup inside Laporan form
+    function lookupPesertaLap() {
+      const nrp = document.getElementById("lap-nrp").value;
+      if (nrp === "3273120105910003") {
+        document.getElementById("lap-nama").value = "Kopda Ahmad Subagja";
+        document.getElementById("lap-pangkat").value = "Kopral Dua (TNI AD)";
+        document.getElementById("lap-kesatuan").value = "KODAM III/SILIWANGI";
+        document.getElementById("lap-telp").value = "081223948576";
+        showToast("Data Ditemukan", "Identitas peserta otomatis dimuat.", "success");
+      } else {
+        // Fallback dummy
+        document.getElementById("lap-nama").value = "Pratu Budi Hartono";
+        document.getElementById("lap-pangkat").value = "Prajurit Satu";
+        document.getElementById("lap-kesatuan").value = "KOPASSUS GRUP 1";
+        document.getElementById("lap-telp").value = "081192837482";
+        showToast("Data Ditemukan", "Membuat data profil dummy peserta.", "success");
+      }
+    }
+
+    // Submit Laporan
+    function handleLaporanSubmit(event) {
+      event.preventDefault();
+      const nrp = document.getElementById("lap-nrp").value;
+      const nama = document.getElementById("lap-nama").value || "Peserta Baru";
+      const tgl = document.getElementById("lap-tgl-kejadian").value;
+      const jenis = document.getElementById("lap-jenis-kejadian").value;
+
+      const rand = Math.floor(10000 + Math.random() * 90000);
+      const now = new Date();
+      const monthStr = String(now.getMonth() + 1).padStart(2, '0');
+      const yearStr = now.getFullYear();
+      const lapId = `JKK-PRV/${rand}-ASABRI/${monthStr}/${yearStr}`;
+
+      const db = JSON.parse(localStorage.getItem("db_laporan") || "[]");
+      db.unshift({
+        id: lapId,
+        nrp: nrp,
+        nama: nama,
+        tanggal: tgl,
+        jenis: jenis,
+        status: "SJP Terbit"
+      });
+      localStorage.setItem("db_laporan", JSON.stringify(db));
+
+      // Sync to shared laporanJKK key for YANDU system integration
+      try {
+        const sharedList = JSON.parse(localStorage.getItem("laporanJKK") || "[]");
+        sharedList.push({
+          nomorKejadian: lapId,
+          namaPeserta: nama,
+          tanggalLapor: tgl,
+          jenisKejadian: jenis,
+          status: "Pengajuan Masuk",
+          entitas: "Provider",
+          nrpNip: nrp
+        });
+        localStorage.setItem("laporanJKK", JSON.stringify(sharedList));
+      } catch (e) {
+        console.error("Shared localStorage sync failed:", e);
+      }
+
+      showToast("Laporan Terkirim", `Nomor Laporan: ${lapId}`, "success");
+      document.getElementById("form-laporan-kejadian").reset();
+      switchTab("dashboard");
+    }
+
+    function saveDraftKejadian() {
+      showToast("Draft Disimpan", "Laporan kejadian disimpan sebagai draft.", "success");
+    }
+
+    // Restitution Claim lookup incident code
+    function lookupKejadianKlm() {
+      const code = document.getElementById("klm-no-kejadian").value.trim();
+      const db = JSON.parse(localStorage.getItem("db_laporan") || "[]");
+      const match = db.find(x => x.id.includes(code) || code.includes(x.id));
+      if (match) {
+        document.getElementById("klm-nama").value = match.nama;
+        document.getElementById("klm-kesatuan").value = "KODAM III/SILIWANGI";
+        showToast("SJP Terdeteksi", "Data JKK terverifikasi oleh ASABRI.", "success");
+      } else {
+        document.getElementById("klm-nama").value = "Kopda Ahmad Subagja";
+        document.getElementById("klm-kesatuan").value = "KODAM III/SILIWANGI";
+        showToast("Peringatan", "Data tidak ditemukan. Menggunakan nama peserta default.", "warning");
+      }
+    }
+
+    // Kwitansi Row management
+    let kwIndex = 1;
+    function addKwitansiRow() {
+      const tbody = document.getElementById("tbl-kwitansi-body");
+      const tr = document.createElement("tr");
+      tr.setAttribute("data-row-idx", kwIndex);
+      tr.innerHTML = `
+        <td class="px-4 py-2">
+          <select onchange="updateRowLimit(${kwIndex})" class="lay-select w-full bg-white border border-slate-250 rounded-lg px-2 py-1 text-xs outline-none focus:border-emerald-600 text-slate-700">
+            <option value="Rawat Inap">Rawat Inap (Unlimited)</option>
+            <option value="Rawat Jalan">Rawat Jalan (Unlimited)</option>
+            <option value="Biaya Angkut Darat">Biaya Angkut Darat (Maks Rp 2.000.000)</option>
+            <option value="Biaya Angkut Laut">Biaya Angkut Laut (Maks Rp 2.500.000)</option>
+            <option value="Biaya Angkut Udara">Biaya Angkut Udara (Maks Rp 4.000.000)</option>
+            <option value="Protese/Ortese">Protese/Ortese (Maks Rp 5.000.000)</option>
+            <option value="Rehabilitasi Medis">Rehabilitasi Medis (Maks Rp 2.600.000)</option>
+            <option value="Gigi Tiruan">Penggantian Gigi Tiruan (Maks Rp 3.000.000)</option>
+          </select>
+        </td>
+        <td class="px-4 py-2">
+          <input type="number" oninput="validateRowNominal(${kwIndex})" class="nom-input w-full bg-white border border-slate-250 rounded-lg px-2 py-1 text-xs outline-none focus:border-emerald-600 font-mono" placeholder="Masukkan angka..." required>
+        </td>
+        <td class="px-4 py-2 font-semibold font-mono text-slate-600">
+          <span class="limit-span">UNLIMITED</span>
+        </td>
+        <td class="px-4 py-2 text-center">
+          <button type="button" onclick="removeKwitansiRow(this)" class="text-rose-500 hover:text-rose-700 text-xs"><i class="fas fa-trash-can"></i></button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+      kwIndex++;
+    }
+
+    function removeKwitansiRow(btn) {
+      btn.closest("tr").remove();
+    }
+
+    function updateRowLimit(idx) {
+      const row = document.querySelector(`tr[data-row-idx="${idx}"]`);
+      if (!row) return;
+      const type = row.querySelector(".lay-select").value;
+      const limitSpan = row.querySelector(".limit-span");
+      const limit = LIMITS[type];
+      
+      if (limit === Infinity) {
+        limitSpan.innerText = "UNLIMITED";
+      } else {
+        limitSpan.innerText = formatRupiah(limit);
+      }
+      validateRowNominal(idx);
+    }
+
+    function validateRowNominal(idx) {
+      const row = document.querySelector(`tr[data-row-idx="${idx}"]`);
+      if (!row) return;
+      const type = row.querySelector(".lay-select").value;
+      const nomInput = row.querySelector(".nom-input");
+      const limit = LIMITS[type];
+      const val = parseFloat(nomInput.value) || 0;
+
+      if (limit !== Infinity && val > limit) {
+        nomInput.classList.add("border-rose-500", "bg-rose-50", "text-rose-700");
+        showToast("Limit Terlampaui", `Maksimum limit ${type} adalah ${formatRupiah(limit)}`, "warning");
+      } else {
+        nomInput.classList.remove("border-rose-500", "bg-rose-50", "text-rose-700");
+      }
+    }
+
+    // Submit Klaim
+    function handleKlaimSubmit(event) {
+      event.preventDefault();
+      const noKejadian = document.getElementById("klm-no-kejadian").value;
+      const nama = document.getElementById("klm-nama").value || "Kopda Ahmad Subagja";
+      const nomInputs = document.querySelectorAll(".nom-input");
+      
+      let total = 0;
+      nomInputs.forEach(i => {
+        total += parseFloat(i.value) || 0;
+      });
+
+      const rand = Math.floor(10000 + Math.random() * 90000);
+      const now = new Date();
+      const monthStr = String(now.getMonth() + 1).padStart(2, '0');
+      const yearStr = now.getFullYear();
+      const klmId = `KLM-REST/${rand}-ASABRI/${monthStr}/${yearStr}`;
+
+      const db = JSON.parse(localStorage.getItem("db_klaim") || "[]");
+      db.unshift({
+        id: klmId,
+        noKejadian: noKejadian,
+        nama: nama,
+        nominal: total,
+        status: "Verifikasi Medis",
+        disetujui: total,
+        selisih: 0,
+        alasan: "-"
+      });
+      localStorage.setItem("db_klaim", JSON.stringify(db));
+
+      showToast("Klaim Diajukan", `Nomor Klaim: ${klmId}`, "success");
+      document.getElementById("form-klaim-restitusi").reset();
+      switchTab("dashboard");
+    }
+
+    function saveDraftKlaim() {
+      showToast("Draft Disimpan", "Pengajuan tagihan disimpan sebagai draft.", "success");
+    }
+
+    // Drawer Details and Timeline Communications
+    function openDrawerDetail(klmId) {
+      const db = JSON.parse(localStorage.getItem("db_klaim") || "[]");
+      const item = db.find(x => x.id === klmId);
+      if (!item) return;
+
+      document.getElementById("drawer-subtitle").innerText = item.id;
+      
+      // Determine timelines
+      let timelineHtml = `
+        <div class="relative border-l border-slate-200 pl-4 space-y-4">
+          <div class="relative">
+            <span class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white"></span>
+            <div class="font-bold text-slate-800">Dokumen Berhasil Diunggah</div>
+            <div class="text-[10px] text-slate-400">Hari ini, 10:15 WIB</div>
+            <p class="text-slate-500 mt-0.5">RS mengunggah invoice & rekam medis perawatan.</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></span>
+            <div class="font-bold text-slate-800">Verifikasi Berkas Medis</div>
+            <div class="text-[10px] text-slate-400">Hari ini, 11:30 WIB</div>
+            <p class="text-slate-500 mt-0.5">Tim Medis ASABRI melakukan crosscheck tindakan rawat inap.</p>
+          </div>
+        </div>
+      `;
+
+      if (item.status === "Dispute") {
+        timelineHtml += `
+          <div class="relative border-l border-slate-200 pl-4 space-y-4 mt-4">
+            <div class="relative">
+              <span class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-rose-500 border-2 border-white"></span>
+              <div class="font-bold text-rose-700">Klaim Dispute</div>
+              <div class="text-[10px] text-slate-400">Kemarin, 14:00 WIB</div>
+              <p class="text-slate-600 mt-0.5">Pihak RS menyanggah selisih bayar ambulans udara sebesar ${formatRupiah(item.selisih)}.</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // Analisa Klaim Section
+      let analysisHtml = "";
+      if (item.selisih > 0 || item.status === "Dispute" || item.status === "Selesai") {
+        analysisHtml = `
+          <div class="bg-indigo-50 border border-indigo-150 p-4 rounded-2xl space-y-3">
+            <h5 class="font-bold text-indigo-800 flex items-center gap-1"><i class="fas fa-microchip"></i> Lembar Analisa Klaim ASABRI</h5>
+            <div class="grid grid-cols-2 gap-2 text-[11px] leading-relaxed">
+              <div>Total Diajukan:</div>
+              <div class="font-bold text-slate-700 text-right">${formatRupiah(item.nominal)}</div>
+              <div>Disetujui ASABRI:</div>
+              <div class="font-bold text-emerald-600 text-right">${formatRupiah(item.disetujui)}</div>
+              <div class="border-t border-indigo-200 pt-1 text-rose-700">Selisih Bayar:</div>
+              <div class="border-t border-indigo-200 pt-1 font-bold text-rose-600 text-right">${formatRupiah(item.selisih)}</div>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border border-indigo-100 text-[10px] text-slate-600">
+              <strong>Catatan Verifikator Medis:</strong><br>
+              "${item.alasan}"
+            </div>
+            ${item.status !== "Selesai" ? `
+              <div class="flex gap-2 pt-1.5" id="dispute-action-container">
+                <button type="button" onclick="closeDrawer()" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px]">Setuju & Cairkan</button>
+                <button type="button" onclick="revealDisputeForm()" class="flex-1 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg text-[10px]">Ajukan Dispute</button>
+              </div>
+            ` : ""}
+          </div>
+
+          <!-- Dispute Submission Form -->
+          <div id="dispute-form-box" class="hidden bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-3">
+            <h5 class="font-bold text-slate-700">Form Pengajuan Dispute RS</h5>
+            <div class="space-y-2">
+              <label class="block text-slate-500 font-bold">Alasan Dispute / Sanggahan <span class="text-rose-500">*</span></label>
+              <textarea id="disp-textarea" rows="2" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs" placeholder="Tulis rincian argumentasi medis faskes..."></textarea>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-slate-500 font-bold">Unggah Dokumen Medis Pendukung Tambahan</label>
+              <input type="file" class="block w-full text-[10px]">
+            </div>
+            <div class="flex gap-2 pt-1 justify-end">
+              <button type="button" onclick="submitDisputeRow('${item.id}')" class="px-4 py-1.5 bg-asabri-blue text-white font-bold rounded-lg text-[10px]">Kirim Sanggahan</button>
+            </div>
+          </div>
+        `;
+      } else {
+        analysisHtml = `
+          <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl text-center text-slate-500">
+            <i class="fas fa-hourglass-half text-lg mb-2 text-slate-400"></i><br>
+            Analisa klaim sedang dikerjakan oleh tim analis medis Kantor Cabang Utama ASABRI.
+          </div>
+        `;
+      }
+
+      const content = document.getElementById("drawer-content-container");
+      content.innerHTML = `
+        <div class="space-y-3">
+          <h4 class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Informasi Umum Klaim</h4>
+          <div class="grid grid-cols-2 gap-y-2 bg-slate-50 p-4 rounded-2xl border border-slate-150">
+            <span class="text-slate-400">Nama Pasien:</span>
+            <strong class="text-slate-700 text-right">${item.nama}</strong>
+            <span class="text-slate-400">No. Kejadian JKK:</span>
+            <strong class="text-slate-700 text-right font-mono">${item.noKejadian}</strong>
+            <span class="text-slate-400">Nominal Tagihan RS:</span>
+            <strong class="text-indigo-650 text-right font-mono">${formatRupiah(item.nominal)}</strong>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Analisa Verifikasi Medis</h4>
+          ${analysisHtml}
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Log Komunikasi Dua Arah</h4>
+          ${timelineHtml}
+        </div>
+      `;
+
+      // Open drawer anim
+      const drawer = document.getElementById("drawer-detail");
+      const drawerBody = document.getElementById("drawer-body");
+      drawer.classList.remove("pointer-events-none");
+      drawer.classList.add("opacity-100");
+      drawerBody.classList.remove("translate-x-full");
+    }
+
+    function closeDrawer() {
+      const drawer = document.getElementById("drawer-detail");
+      const drawerBody = document.getElementById("drawer-body");
+      drawer.classList.add("pointer-events-none");
+      drawer.classList.remove("opacity-100");
+      drawerBody.classList.add("translate-x-full");
+    }
+
+    function revealDisputeForm() {
+      document.getElementById("dispute-form-box").classList.remove("hidden");
+      document.getElementById("dispute-action-container").classList.add("hidden");
+    }
+
+    function submitDisputeRow(klmId) {
+      const txt = document.getElementById("disp-textarea").value;
+      if (!txt.trim()) {
+        alert("Harap tuliskan alasan sanggahan dispute medis.");
+        return;
+      }
+
+      const db = JSON.parse(localStorage.getItem("db_klaim") || "[]");
+      const idx = db.findIndex(x => x.id === klmId);
+      if (idx !== -1) {
+        db[idx].status = "Dispute";
+        db[idx].alasan = txt;
+        localStorage.setItem("db_klaim", JSON.stringify(db));
+      }
+      showToast("Dispute Terkirim", "Sanggahan Anda berhasil diteruskan ke BPJS/ASABRI.", "success");
+      closeDrawer();
+      renderDashboardData();
+    }
+
+    // Helper formatting
+    function formatRupiah(val) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+    }
+
+    // Fixed typo from text-slate-655 to text-slate-600
+    function formatIndoDate(str) {
+      if (!str) return "—";
+      const d = new Date(str);
+      return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      showToast("Teks Disalin", `Nomor ${text} siap dipaste.`, "success");
+    }
+
+    // Custom Toast Notification
+    function showToast(title, msg, type) {
+      const toast = document.getElementById("toast");
+      const toastMsg = document.getElementById("toast-msg");
+      const icon = document.getElementById("toast-icon");
+
+      toastMsg.innerHTML = `<strong>${title}:</strong> ${msg}`;
+      if (type === "success") {
+        icon.className = "fas fa-circle-check text-emerald-400 text-sm";
+      } else {
+        icon.className = "fas fa-circle-exclamation text-amber-400 text-sm";
+      }
+
+      toast.classList.remove("pointer-events-none", "opacity-0", "translate-y-2");
+      toast.classList.add("opacity-100");
+
+      setTimeout(() => {
+        toast.classList.add("pointer-events-none", "opacity-0", "translate-y-2");
+        toast.classList.remove("opacity-100");
+      }, 4000);
+    }
+
+    // Page Load
+    window.onload = function() {
+      renderDashboardData();
+    };
+  </script>
+</body>
+</html>

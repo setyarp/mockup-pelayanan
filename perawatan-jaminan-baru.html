@@ -330,6 +330,41 @@
     }
 
     window.onload = function() {
+      // Sync reports from localStorage
+      try {
+        const rawLocal = localStorage.getItem("laporanJKK");
+        if (rawLocal) {
+          const listLocal = JSON.parse(rawLocal);
+          listLocal.forEach((item, idx) => {
+            if (!reportsData.some(x => x.nomor === item.nomorKejadian)) {
+              reportsData.unshift({
+                id: 100 + idx,
+                status: item.status || "Pengajuan",
+                tglPengajuan: item.tanggalLapor ? new Date(item.tanggalLapor).toISOString() : new Date().toISOString(),
+                jumlahKlaim: 1,
+                nomor: item.nomorKejadian,
+                cob: "-",
+                ktpa: item.nrpNip || "3273120105910003",
+                nrpNip: item.nrpNip || "3273120105910003",
+                nama: item.namaPeserta || "Kopda Ahmad Subagja",
+                unor: "TNI-AD",
+                provider: "RS Bhayangkara Sartika Asih",
+                cabang: "KANCAB BANDUNG",
+                tglKejadian: item.tanggalLapor || "2026-08-10",
+                tglRawat: item.tanggalLapor || "2026-08-10",
+                kejadian: item.jenisKejadian || "Laka Kerja",
+                provinsi: "Jawa Barat",
+                sepaNum: "SEPA-99823",
+                sepaDate: item.tanggalLapor || "2026-08-10",
+                jaminan: "Ya",
+                source: item.entitas || "Provider"
+              });
+            }
+          });
+        }
+      } catch (e) {
+        console.error("Failed to load local JKK reports:", e);
+      }
       applyFilters();
     };
   </script>

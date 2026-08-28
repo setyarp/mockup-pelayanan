@@ -336,37 +336,113 @@
                           <span class="text-slate-500 font-semibold col-span-1">Tempat/Tgl Lahir</span>
                           <input type="text" id="prof-ttl" readonly class="col-span-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-slate-500 outline-none">
                         </div>
+                        <!-- KTP Fields -->
                         <div class="grid grid-cols-3 gap-2 items-center text-xs">
-                          <span class="text-slate-500 font-semibold col-span-1">Alamat</span>
+                          <span class="text-slate-500 font-semibold col-span-1">Alamat KTP <span class="text-rose-500">*</span></span>
                           <div class="col-span-2 relative">
-                            <input type="text" id="prof-alamat" class="w-full bg-white border border-slate-250 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <input type="text" id="prof-alamat" class="w-full bg-white border border-slate-250 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue" required placeholder="Alamat sesuai KTP">
                             <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
                           </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 items-center text-xs">
-                          <span class="text-slate-500 font-semibold col-span-1">RT/RW</span>
-                          <input type="text" id="prof-rt-rw" readonly class="col-span-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-slate-500 outline-none">
+                          <span class="text-slate-500 font-semibold col-span-1">RT/RW KTP</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-rt-rw" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue" placeholder="000/000">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 items-center text-xs">
-                          <span class="text-slate-500 font-semibold col-span-1">Desa/Kelurahan</span>
-                          <input type="text" id="prof-desa" readonly class="col-span-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-slate-500 outline-none">
+                          <span class="text-slate-500 font-semibold col-span-1">Desa/Kelurahan KTP</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-desa" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 items-center text-xs">
-                          <span class="text-slate-500 font-semibold col-span-1">Kecamatan</span>
-                          <input type="text" id="prof-kecamatan" readonly class="col-span-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-slate-500 outline-none">
+                          <span class="text-slate-500 font-semibold col-span-1">Kecamatan KTP</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-kecamatan" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 items-center text-xs">
-                          <span class="text-slate-500 font-semibold col-span-1">Kota</span>
-                          <input type="text" id="prof-kota" readonly class="col-span-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-slate-500 outline-none">
+                          <span class="text-slate-500 font-semibold col-span-1">Kota KTP</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-kota" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 items-center text-xs">
-                          <span class="text-slate-500 font-semibold col-span-1">Provinsi</span>
-                          <input type="text" id="prof-provinsi" readonly class="col-span-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-slate-500 outline-none">
+                          <span class="text-slate-500 font-semibold col-span-1">Provinsi KTP</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-provinsi" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 items-center text-xs">
-                          <span class="text-slate-500 font-semibold col-span-1">Kode Pos</span>
+                          <span class="text-slate-500 font-semibold col-span-1">Kode Pos KTP</span>
                           <div class="col-span-2 relative">
                             <input type="text" id="prof-kodepos" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
+                        </div>
+
+                        <!-- Checkbox Sync -->
+                        <div class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1"></span>
+                          <label class="col-span-2 flex items-center gap-1.5 cursor-pointer font-bold text-[10px] text-slate-500">
+                            <input type="checkbox" id="prof-alamat-sama" onchange="syncAlamatDomisili()" class="rounded border-slate-300 text-asabri-blue focus:ring-asabri-blue/30 w-3.5 h-3.5">
+                            <span>Sama dengan Alamat KTP</span>
+                          </label>
+                        </div>
+
+                        <!-- Domisili Fields -->
+                        <div class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1">Alamat Domisili</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-alamat-domisili" class="w-full bg-white border border-slate-250 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue" placeholder="Alamat domisili saat ini">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1">RT/RW Domisili</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-rt-rw-domisili" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue" placeholder="000/000">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1">Desa/Kelurahan Domisili</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-desa-domisili" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1">Kecamatan Domisili</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-kecamatan-domisili" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1">Kota Domisili</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-kota-domisili" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1">Provinsi Domisili</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-provinsi-domisili" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                            <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
+                          </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1">Kode Pos Domisili</span>
+                          <div class="col-span-2 relative">
+                            <input type="text" id="prof-kodepos-domisili" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
                             <i class="fas fa-pencil text-[9px] text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2"></i>
                           </div>
                         </div>
@@ -462,8 +538,20 @@
                           </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 items-center text-xs">
-                          <span class="text-slate-500 font-semibold col-span-1">TMT Skep</span>
+                          <span class="text-slate-500 font-semibold col-span-1">TMT Pengangkatan</span>
                           <input type="text" id="prof-tmt-skep" readonly class="col-span-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-slate-500 outline-none">
+                        </div>
+                        <div id="prof-tmt-cpns-container" class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1">TMT Calon Pegawai (CPNS)</span>
+                          <div class="col-span-2 relative">
+                            <input type="date" id="prof-tmt-cpns" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                          </div>
+                        </div>
+                        <div id="prof-tmt-pns-container" class="grid grid-cols-3 gap-2 items-center text-xs">
+                          <span class="text-slate-500 font-semibold col-span-1">TMT Pegawai</span>
+                          <div class="col-span-2 relative">
+                            <input type="date" id="prof-tmt-pns" class="w-full bg-white border border-slate-255 rounded-lg pl-2.5 pr-7 py-1 text-slate-700 outline-none focus:border-asabri-blue">
+                          </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 items-center text-xs">
                           <span class="text-slate-500 font-semibold col-span-1 flex items-center gap-1">
@@ -725,7 +813,7 @@
                               <div class="text-xs font-bold text-slate-700">
                                 Total Skorsing Berlaku: <span id="total-skorsing-berlaku" class="text-asabri-blue font-extrabold">0 Bulan</span> <span class="text-slate-400 font-normal">(dari <span id="total-skorsing-terdaftar" class="font-bold">0</span> Total Periode Terdaftar)</span>
                               </div>
-                              <button type="button" id="btn-tambah-skorsing" class="px-3 py-1.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[10px] shadow-sm transition-all flex items-center gap-1">
+                              <button type="button" id="btn-tambah-skorsing" onclick="resetFormSkorsing(); openSkorsingModal()" class="px-3 py-1.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[10px] shadow-sm transition-all flex items-center gap-1">
                                 <i class="fas fa-plus-circle"></i> Tambah Periode Skorsing Baru
                               </button>
                             </div>
@@ -766,12 +854,14 @@
                         <table class="w-full text-xs text-left text-slate-650 border-collapse">
                           <thead class="bg-slate-800 text-white font-bold border-b border-slate-200">
                             <tr>
-                              <th class="py-2.5 px-3">Golongan Cacat</th>
-                              <th class="py-2.5 px-3">Kriteria Cacat</th>
-                              <th class="py-2.5 px-3">Tingkat Cacat</th>
+                              <th class="py-2.5 px-3">Golongan</th>
+                              <th class="py-2.5 px-3">Jenis/Macam</th>
+                              <th class="py-2.5 px-3">Tingkat</th>
                               <th class="py-2.5 px-3">Nomor SKEP</th>
-                              <th class="py-2.5 px-3">Tanggal SKEP</th>
-                              <th class="py-2.5 px-3">TMT SKEP</th>
+                              <th class="py-2.5 px-3">Tanggal Cacat</th>
+                              <th class="py-2.5 px-3">Tgl SKEP Cacat</th>
+                              <th class="py-2.5 px-3">Tgl Kejadian</th>
+                              <th class="py-2.5 px-3">Tempat Kejadian</th>
                               <th class="py-2.5 px-3">Persentase</th>
                               <th class="py-2.5 px-3 text-center">Aksi</th>
                             </tr>
@@ -935,11 +1025,58 @@
                       <div class="space-y-4">
                         <div>
                           <label class="block font-bold text-slate-600 mb-1">Daftar Produk Yang Pernah Diambil</label>
-                          <select class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
-                            <option value="TA">Tabungan Hari Tua (TA)</option>
-                            <option value="PP">Pensiun Pertama (PP)</option>
-                            <option value="SRKK">Santunan Risiko Kematian Kerja (SRKK)</option>
+                          <select id="kek-daftar-produk" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                            <!-- Peserta Aktif -->
+                            <option value="Tabungan Asuransi (TA)">Tabungan Asuransi (TA)</option>
+                            <option value="Nilai Tunai Tabungan Asuransi (NTTA)">Nilai Tunai Tabungan Asuransi (NTTA)</option>
+                            <option value="Nilai Tunai Iuran Pensiun (NTIP)">Nilai Tunai Iuran Pensiun (NTIP)</option>
+                            <option value="Pensiun Pertama (PP)">Pensiun Pertama (PP)</option>
+                            <option value="Tunjangan Terbatas">Tunjangan Terbatas</option>
+                            <option value="Santunan Kematian Sekaligus (SKS)">Santunan Kematian Sekaligus (SKS)</option>
+                            <option value="Uang Duka Wafat (UDW)">Uang Duka Wafat (UDW)</option>
+                            <option value="Beasiswa JKm">Beasiswa JKm</option>
+                            <option value="Bantuan Pemakaman Istri/Suami (BPI/S)">Bantuan Pemakaman Istri/Suami (BPI/S)</option>
+                            <option value="Bantuan Pemakaman Anak (BPA)">Bantuan Pemakaman Anak (BPA)</option>
+                            <option value="Santunan Risiko Kematian KK (SRKK)">Santunan Risiko Kematian KK (SRKK)</option>
+                            <option value="Masa Terusan Gaji">Masa Terusan Gaji</option>
+                            <option value="Beasiswa JKK">Beasiswa JKK</option>
+                            <option value="Santunan Cacat (SCDB/SCDK)">Santunan Cacat (SCDB/SCDK)</option>
+                            <option value="Tunjangan Cacat">Tunjangan Cacat</option>
+                            <option value="SJP (Surat Jaminan Perawatan)">SJP (Surat Jaminan Perawatan)</option>
+                            <option value="Restitusi Perawatan">Restitusi Perawatan</option>
+
+                            <!-- Peserta Pensiun -->
+                            <option value="Pensiun Warakawuri">Pensiun Warakawuri</option>
+                            <option value="Tunjangan Yatim/Piatu">Tunjangan Yatim/Piatu</option>
+                            <option value="Tunjangan Orang Tua">Tunjangan Orang Tua</option>
+                            <option value="Bantuan Biaya Pemakaman Pensiun (BPPP)">Bantuan Biaya Pemakaman Pensiun (BPPP)</option>
+                            <option value="Uang Duka Wafat Pensiun (UDW)">Uang Duka Wafat Pensiun (UDW)</option>
+                            <option value="Alih Status Tunjangan Yatim/Piatu">Alih Status Tunjangan Yatim/Piatu</option>
+                            <option value="Alih Status Tunjangan Orang Tua">Alih Status Tunjangan Orang Tua</option>
+
+                            <!-- UKP -->
+                            <option value="UKP Tanpa Perubahan Data">UKP Tanpa Perubahan Data</option>
+                            <option value="UKP Dengan Perubahan Data">UKP Dengan Perubahan Data</option>
+                            <option value="UKP Pembayaran Tunjangan Cacat">UKP Pembayaran Tunjangan Cacat</option>
+                            <option value="UKP Kelebihan Potong Hutang">UKP Kelebihan Potong Hutang</option>
                           </select>
+                        </div>
+                        <div>
+                          <label class="block font-bold text-slate-600 mb-1">Status Klaim <span class="text-rose-500">*</span></label>
+                          <div class="flex items-center gap-4 mt-2">
+                            <label class="flex items-center gap-1.5 cursor-pointer font-bold text-[10px] text-slate-550">
+                              <input type="radio" name="kek-status-klaim" value="Selesai" checked onchange="toggleKekuranganKlaimTextarea()" class="rounded-full border-slate-300 text-asabri-blue focus:ring-asabri-blue/30 w-3.5 h-3.5">
+                              <span>Berkas Lengkap → Selesai</span>
+                            </label>
+                            <label class="flex items-center gap-1.5 cursor-pointer font-bold text-[10px] text-slate-550">
+                              <input type="radio" name="kek-status-klaim" value="Belum Selesai" onchange="toggleKekuranganKlaimTextarea()" class="rounded-full border-slate-300 text-asabri-blue focus:ring-asabri-blue/30 w-3.5 h-3.5">
+                              <span>Berkas Kurang / Sisa → belum selesai</span>
+                            </label>
+                          </div>
+                        </div>
+                        <div id="kek-textarea-container" class="hidden">
+                          <label class="block font-bold text-slate-600 mb-1">Keterangan Kekurangan <span class="text-rose-500">*</span></label>
+                          <textarea id="kek-keterangan" rows="3" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="Rincian berkas yang kurang..."></textarea>
                         </div>
                         <div>
                           <label class="block font-bold text-slate-600 mb-1">Tanggal Proses</label>
@@ -1040,25 +1177,53 @@
                       <h3 class="text-sm font-bold text-slate-800">Manajemen Catatan Hutang / Piutang</h3>
                       <button type="button" onclick="openHutangModal()" class="px-3.5 py-1.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-lg text-[10px] font-bold shadow-sm"><i class="fas fa-plus mr-1"></i> Tambah Hutang/Piutang Baru</button>
                     </div>
-                    <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                      <table class="w-full text-xs text-left text-slate-650 border-collapse">
-                        <thead>
-                          <tr class="bg-slate-800 text-white font-bold border-b border-slate-200">
-                            <th class="py-2.5 px-3">TMT</th>
-                            <th class="py-2.5 px-3">No Hutang/Piutang</th>
-                            <th class="py-2.5 px-3">Jenis Hutang</th>
-                            <th class="py-2.5 px-3">Jumlah</th>
-                            <th class="py-2.5 px-3">Jumlah Dibayar</th>
-                            <th class="py-2.5 px-3">Jumlah DPS</th>
-                            <th class="py-2.5 px-3">Keterangan</th>
-                            <th class="py-2.5 px-3">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody id="hutang-tbody" class="divide-y divide-slate-150">
-                          <!-- Injected -->
-                        </tbody>
-                      </table>
+
+                    <!-- SECTION 1: Hutang Biasa -->
+                    <div class="space-y-2">
+                      <h4 class="text-xs font-bold text-slate-700 flex items-center gap-1.5"><i class="fas fa-wallet text-amber-500"></i> Section 1: Hutang Biasa (TGR, Non-TGR, PUM, Keterlanjuran Bayar)</h4>
+                      <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <table class="w-full text-xs text-left text-slate-650 border-collapse">
+                          <thead>
+                            <tr class="bg-slate-800 text-white font-bold border-b border-slate-200">
+                              <th class="py-2.5 px-3">TMT</th>
+                              <th class="py-2.5 px-3">Jenis Hutang</th>
+                              <th class="py-2.5 px-3">NOPENS</th>
+                              <th class="py-2.5 px-3">KTPA</th>
+                              <th class="py-2.5 px-3">Nominal</th>
+                              <th class="py-2.5 px-3">Status</th>
+                              <th class="py-2.5 px-3">Keterangan</th>
+                            </tr>
+                          </thead>
+                          <tbody id="hutang-biasa-tbody" class="divide-y divide-slate-150">
+                            <!-- Injected -->
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
+
+                    <!-- SECTION 2: Hutang Mitra (Flagging) -->
+                    <div class="space-y-2 pt-4 border-t border-slate-100">
+                      <h4 class="text-xs font-bold text-slate-700 flex items-center gap-1.5"><i class="fas fa-building-columns text-asabri-blue"></i> Section 2: Hutang Mitra (BUM KPR / Flagging)</h4>
+                      <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <table class="w-full text-xs text-left text-slate-650 border-collapse">
+                          <thead>
+                            <tr class="bg-slate-800 text-white font-bold border-b border-slate-200">
+                              <th class="py-2.5 px-3">TMT</th>
+                              <th class="py-2.5 px-3">Jenis Hutang</th>
+                              <th class="py-2.5 px-3">NOPENS</th>
+                              <th class="py-2.5 px-3">KTPA</th>
+                              <th class="py-2.5 px-3">Nominal</th>
+                              <th class="py-2.5 px-3">Status</th>
+                              <th class="py-2.5 px-3">Keterangan</th>
+                            </tr>
+                          </thead>
+                          <tbody id="hutang-mitra-tbody" class="divide-y divide-slate-150">
+                            <!-- Injected -->
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -1533,6 +1698,20 @@
       }
     }
 
+    function syncAlamatDomisili() {
+      const checkbox = document.getElementById("prof-alamat-sama");
+      if (!checkbox) return;
+      
+      const fields = ['alamat', 'rt-rw', 'desa', 'kecamatan', 'kota', 'provinsi', 'kodepos'];
+      fields.forEach(f => {
+        const ktpInput = document.getElementById(f === 'alamat' ? 'prof-alamat' : `prof-${f}`);
+        const domInput = document.getElementById(f === 'alamat' ? 'prof-alamat-domisili' : `prof-${f}-domisili`);
+        if (checkbox.checked && ktpInput && domInput) {
+          domInput.value = ktpInput.value;
+        }
+      });
+    }
+
     function populateProfilSubTab(p) {
       document.getElementById('prof-ktpa').value = p.no_ktpa || p.noPeserta || '-';
       document.getElementById('prof-nama').value = p.nama || '-';
@@ -1541,13 +1720,42 @@
       document.getElementById('prof-npwp').value = p.npwp || '09.234.567.8-012.000';
       document.getElementById('prof-tgl-daftar').value = p.tglDaftar || '12 Jan 2015';
       document.getElementById('prof-ttl').value = (p.tempat_lahir || 'Jakarta') + ', ' + (p.tanggal_lahir || '-');
+      
+      // Populate KTP
       document.getElementById('prof-alamat').value = p.alamat || 'Jl. Sudirman No. 45';
-      document.getElementById('prof-rt-rw').value = '002/005';
-      document.getElementById('prof-desa').value = 'Karet Semanggi';
-      document.getElementById('prof-kecamatan').value = 'Setiabudi';
-      document.getElementById('prof-kota').value = 'Jakarta Selatan';
-      document.getElementById('prof-provinsi').value = 'DKI Jakarta';
-      document.getElementById('prof-kodepos').value = '12930';
+      document.getElementById('prof-rt-rw').value = p.rt_rw || '002/005';
+      document.getElementById('prof-desa').value = p.desa || 'Karet Semanggi';
+      document.getElementById('prof-kecamatan').value = p.kecamatan || 'Setiabudi';
+      document.getElementById('prof-kota').value = p.kota || 'Jakarta Selatan';
+      document.getElementById('prof-provinsi').value = p.provinsi || 'DKI Jakarta';
+      document.getElementById('prof-kodepos').value = p.kodepos || '12930';
+
+      // Populate Domisili
+      document.getElementById('prof-alamat-domisili').value = p.alamatDomisili || p.alamat || 'Jl. Sudirman No. 45';
+      document.getElementById('prof-rt-rw-domisili').value = p.rt_rw_domisili || p.rt_rw || '002/005';
+      document.getElementById('prof-desa-domisili').value = p.desa_domisili || p.desa || 'Karet Semanggi';
+      document.getElementById('prof-kecamatan-domisili').value = p.kecamatan_domisili || p.kecamatan || 'Setiabudi';
+      document.getElementById('prof-kota-domisili').value = p.kota_domisili || p.kota || 'Jakarta Selatan';
+      document.getElementById('prof-provinsi-domisili').value = p.provinsi_domisili || p.provinsi || 'DKI Jakarta';
+      document.getElementById('prof-kodepos-domisili').value = p.kodepos_domisili || p.kodepos || '12930';
+
+      const isSama = p.alamatDomisili ? (p.alamatDomisili === p.alamat) : true;
+      document.getElementById('prof-alamat-sama').checked = isSama;
+      syncAlamatDomisili();
+
+      // Listen for KTP inputs typing to sync to domisili
+      const fields = ['alamat', 'rt-rw', 'desa', 'kecamatan', 'kota', 'provinsi', 'kodepos'];
+      fields.forEach(f => {
+        const inputId = f === 'alamat' ? 'prof-alamat' : `prof-${f}`;
+        document.getElementById(inputId)?.addEventListener("input", function() {
+          const checkbox = document.getElementById("prof-alamat-sama");
+          if (checkbox && checkbox.checked) {
+            const domInput = document.getElementById(f === 'alamat' ? 'prof-alamat-domisili' : `prof-${f}-domisili`);
+            if (domInput) domInput.value = this.value;
+          }
+        });
+      });
+
       document.getElementById('prof-status-ktpa').value = 'Aktif / Terverifikasi';
       document.getElementById('prof-status-pens').value = p.statusPensiun || 'Aktif';
       document.getElementById('prof-telp').value = p.no_telpon || p.noTelp || '0812-3456-7890';
@@ -1566,6 +1774,21 @@
       document.getElementById('prof-skep-pengangkatan').value = 'SKEP/405/VIII/2012';
       document.getElementById('prof-tgl-skep').value = '2012-08-15';
       document.getElementById('prof-tmt-skep').value = '01 Sep 2012';
+      document.getElementById('prof-tmt-cpns').value = p.tmtCpns || '2012-09-01';
+      document.getElementById('prof-tmt-pns').value = p.tmtPns || '2013-09-01';
+      
+      const statusPersonil = p.statusPersonil || p.status_personil || 'TNI/Polri';
+      const cpnsContainer = document.getElementById('prof-tmt-cpns-container');
+      const pnsContainer = document.getElementById('prof-tmt-pns-container');
+      if (cpnsContainer && pnsContainer) {
+        if (statusPersonil === 'ASN' || statusPersonil === 'PNS') {
+          cpnsContainer.classList.remove('hidden');
+          pnsContainer.classList.remove('hidden');
+        } else {
+          cpnsContainer.classList.add('hidden');
+          pnsContainer.classList.add('hidden');
+        }
+      }
       document.getElementById('prof-tmt-awal-iuran').value = p.tmtAwalIuran || '';
       document.getElementById('prof-tmt-akhir-iuran').value = p.tmtAkhirIuran || '';
       document.getElementById('prof-tmt-pensiun').value = '01 Aug 2026';
@@ -1754,20 +1977,47 @@
 
     function populateCacatSubTab(p) {
       const tbody = document.getElementById('cacat-table-body');
-      tbody.innerHTML = `
-        <tr class="hover:bg-slate-50">
-          <td class="py-2.5 px-3 font-bold text-slate-800">Golongan II - Cacat Sedang</td>
-          <td class="py-2.5 px-3">Cacat fungsi organ penglihatan</td>
-          <td class="py-2.5 px-3">Tingkat 2</td>
-          <td class="py-2.5 px-3 font-mono">SKEP-CACAT/09/IX/2022</td>
-          <td class="py-2.5 px-3 font-mono">15 Sep 2022</td>
-          <td class="py-2.5 px-3 font-mono">01 Oct 2022</td>
-          <td class="py-2.5 px-3 font-bold font-mono text-indigo-600">30%</td>
+      if (!tbody) return;
+      tbody.innerHTML = "";
+      const nik = p.nik || "3273120105910003";
+      const rawCacat = localStorage.getItem(`cacatData_${nik}`);
+      const listCacat = rawCacat ? JSON.parse(rawCacat) : [];
+      
+      // Seed default one if empty
+      if (listCacat.length === 0) {
+        listCacat.push({
+          gol: 'Golongan B',
+          kriteria: 'Tuli',
+          tingkat: 'Tingkat II',
+          skep: 'SKEP-CACAT/09/IX/2022',
+          tglSkep: '2022-09-15',
+          tglCacat: '2022-08-20',
+          tglKejadian: '2022-08-10',
+          tempatKejadian: 'Papua',
+          persen: '28.2%'
+        });
+        localStorage.setItem(`cacatData_${nik}`, JSON.stringify(listCacat));
+      }
+
+      listCacat.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50';
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-bold text-slate-800">${item.gol}</td>
+          <td class="py-2.5 px-3">${item.kriteria}</td>
+          <td class="py-2.5 px-3">${item.tingkat}</td>
+          <td class="py-2.5 px-3 font-mono">${item.skep}</td>
+          <td class="py-2.5 px-3 font-mono">${formatDateString(item.tglCacat || '')}</td>
+          <td class="py-2.5 px-3 font-mono">${formatDateString(item.tglSkep || '')}</td>
+          <td class="py-2.5 px-3 font-mono">${formatDateString(item.tglKejadian || '')}</td>
+          <td class="py-2.5 px-3 text-slate-600">${item.tempatKejadian || '-'}</td>
+          <td class="py-2.5 px-3 font-bold font-mono text-indigo-600">${item.persen}</td>
           <td class="py-2.5 px-3 text-center">
-            <button onclick="showToast('Detail Cacat', 'Menampilkan berkas SKEP Cacat...', 'info')" class="px-2 py-0.5 bg-asabri-blue text-white rounded text-[10px]">Detail</button>
+            <button onclick="removeCacatRow(${index}, '${nik}')" class="text-rose-600 hover:text-rose-800"><i class="fas fa-trash"></i></button>
           </td>
-        </tr>
-      `;
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     function populateDokumenSubTab(p) {
@@ -2007,48 +2257,57 @@
     }
 
     function populateHutangTab(p) {
+      const activeNopens = p ? (p.nopens || '800012345') : '800012345';
+      const activeKtpa = p ? (p.no_ktpa || p.noPeserta || 'KTPA-991283') : 'KTPA-991283';
+
       if (p && p.nik) {
         const localHutang = localStorage.getItem("hutangData_" + p.nik);
         if (localHutang) {
           hutangData = JSON.parse(localHutang);
         } else {
           hutangData = [
-            { tmt: '2026-09-01', nomor: 'H-2026-00912', jenis: 'Lainnya', jumlah: 2500000, dibayar: 2500000, dps: 0, status: 'Lunas', keterangan: 'Kelebihan Pembayaran Pensiun Pokok' },
-            { tmt: '2026-08-15', nomor: 'H-2026-00845', jenis: 'TGR', jumlah: 750000, dibayar: 0, dps: 750000, status: 'Belum Lunas', keterangan: 'Tuntutan Ganti Rugi Iuran THT' }
+            { tmt: '2026-09-01', nopens: activeNopens, ktpa: activeKtpa, jenis: 'Keterlanjuran Bayar', jumlah: 2500000, status: 'Lunas', keterangan: 'Kelebihan Pembayaran Pensiun Pokok' },
+            { tmt: '2026-08-15', nopens: activeNopens, ktpa: activeKtpa, jenis: 'TGR', jumlah: 750000, status: 'Belum Lunas', keterangan: 'Tuntutan Ganti Rugi Iuran THT' },
+            { tmt: '2026-07-10', nopens: activeNopens, ktpa: activeKtpa, jenis: 'BUM KPR', jumlah: 15000000, status: 'Belum Lunas', keterangan: 'Kredit Pemilikan Rumah Dinas' }
           ];
           localStorage.setItem("hutangData_" + p.nik, JSON.stringify(hutangData));
         }
       } else if (hutangData === null) {
         hutangData = [
-          { tmt: '2026-09-01', nomor: 'H-2026-00912', jenis: 'Lainnya', jumlah: 2500000, dibayar: 2500000, dps: 0, status: 'Lunas', keterangan: 'Kelebihan Pembayaran Pensiun Pokok' },
-          { tmt: '2026-08-15', nomor: 'H-2026-00845', jenis: 'TGR', jumlah: 750000, dibayar: 0, dps: 750000, status: 'Belum Lunas', keterangan: 'Tuntutan Ganti Rugi Iuran THT' }
+          { tmt: '2026-09-01', nopens: activeNopens, ktpa: activeKtpa, jenis: 'Keterlanjuran Bayar', jumlah: 2500000, status: 'Lunas', keterangan: 'Kelebihan Pembayaran Pensiun Pokok' },
+          { tmt: '2026-08-15', nopens: activeNopens, ktpa: activeKtpa, jenis: 'TGR', jumlah: 750000, status: 'Belum Lunas', keterangan: 'Tuntutan Ganti Rugi Iuran THT' },
+          { tmt: '2026-07-10', nopens: activeNopens, ktpa: activeKtpa, jenis: 'BUM KPR', jumlah: 15000000, status: 'Belum Lunas', keterangan: 'Kredit Pemilikan Rumah Dinas' }
         ];
       }
 
-      const tbody = document.getElementById('hutang-tbody');
-      tbody.innerHTML = hutangData.map(h => {
-        let badgeClass = '';
-        if (h.status === 'Lunas') {
-          badgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
-        } else if (h.status === 'Belum Lunas') {
-          badgeClass = 'bg-rose-50 text-rose-700 border-rose-200';
-        } else {
-          badgeClass = 'bg-amber-50 text-amber-700 border-amber-200';
+      const renderTable = (list, elementId) => {
+        const tbody = document.getElementById(elementId);
+        if (!tbody) return;
+        if (list.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" class="py-4 text-center text-slate-400 font-medium">Tidak ada data hutang pada kategori ini.</td></tr>`;
+          return;
         }
+        tbody.innerHTML = list.map(h => {
+          let badgeClass = h.status === 'Lunas' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200';
+          return `
+            <tr class="hover:bg-slate-50">
+              <td class="py-2.5 px-3 font-mono text-slate-500">${formatDateString(h.tmt)}</td>
+              <td class="py-2.5 px-3 font-bold text-slate-700">${h.jenis}</td>
+              <td class="py-2.5 px-3 font-mono text-slate-650">${h.nopens || '-'}</td>
+              <td class="py-2.5 px-3 font-mono text-slate-650">${h.ktpa || '-'}</td>
+              <td class="py-2.5 px-3 font-mono text-rose-650 font-bold">${formatRupiah(h.jumlah)}</td>
+              <td class="py-2.5 px-3"><span class="px-2 py-0.5 font-bold border rounded text-[10px] ${badgeClass}">${h.status}</span></td>
+              <td class="py-2.5 px-3 text-slate-500">${h.keterangan || '-'}</td>
+            </tr>
+          `;
+        }).join('');
+      };
 
-        return `
-          <tr class="hover:bg-slate-50">
-            <td class="py-2.5 px-3 font-mono text-slate-500">${formatDateString(h.tmt)}</td>
-            <td class="py-2.5 px-3 font-mono font-bold text-slate-700">${h.nomor}</td>
-            <td class="py-2.5 px-3">${h.jenis}</td>
-            <td class="py-2.5 px-3 font-mono text-rose-650">${formatRupiah(h.jumlah)}</td>
-            <td class="py-2.5 px-3 font-mono text-emerald-650">${formatRupiah(h.dibayar)}</td>
-            <td class="py-2.5 px-3 font-mono">${formatRupiah(h.dps)}</td>
-            <td class="py-2.5 px-3">${h.keterangan || '-'}</td>
-            <td class="py-2.5 px-3"><span class="px-2 py-0.5 font-bold border rounded ${badgeClass}">${h.status}</span></td>
-          </tr>
-        `;
-      }).join('');
+      const hutangBiasa = hutangData.filter(h => h.jenis !== 'BUM KPR');
+      const hutangMitra = hutangData.filter(h => h.jenis === 'BUM KPR');
+
+      renderTable(hutangBiasa, 'hutang-biasa-tbody');
+      renderTable(hutangMitra, 'hutang-mitra-tbody');
     }
 
     function closeParticipantProfile() {
@@ -2247,7 +2506,13 @@
           </td>
           <td class="py-2.5 px-3 font-mono text-slate-700">${item.tanggalMulai} s.d. ${item.tanggalAkhir}</td>
           <td class="py-2.5 px-3 text-slate-700">${durasi}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-800">${item.persentase}%</td>
+          <td class="py-2.5 px-3">
+            <div class="flex flex-col gap-0.5 text-[10px]">
+              <span>Gapok: <strong class="text-slate-850">${item.persentase}%</strong></span>
+              <span>Tunj. Pasangan: <strong class="text-slate-855">${item.persentaseIstri || 100}%</strong></span>
+              <span>Anak: <strong class="text-slate-855">${item.persentaseAnak || 100}%</strong></span>
+            </div>
+          </td>
           <td class="py-2.5 px-3 font-mono text-slate-600">${item.nomorSkep}</td>
           <td class="py-2.5 px-3 text-slate-600">
             <div class="flex flex-col gap-0.5">
@@ -2271,6 +2536,8 @@
       document.getElementById('tanggal-mulai-skorsing').value = '';
       document.getElementById('tanggal-akhir-skorsing').value = '';
       document.getElementById('persentase-skorsing').value = '75';
+      document.getElementById('persentase-skorsing-istri').value = '100';
+      document.getElementById('persentase-skorsing-anak').value = '100';
       document.getElementById('nomor-skep-skorsing').value = '';
       document.getElementById('landasan-skorsing').value = '';
       const fileInput = document.getElementById('berkas-skorsing');
@@ -2282,6 +2549,8 @@
       const tanggalMulai = document.getElementById('tanggal-mulai-skorsing').value;
       const tanggalAkhir = document.getElementById('tanggal-akhir-skorsing').value;
       const persentase = parseFloat(document.getElementById('persentase-skorsing').value);
+      const persentaseIstri = parseFloat(document.getElementById('persentase-skorsing-istri').value) || 100;
+      const persentaseAnak = parseFloat(document.getElementById('persentase-skorsing-anak').value) || 100;
       const nomorSkep = document.getElementById('nomor-skep-skorsing').value;
       const landasan = document.getElementById('landasan-skorsing').value;
       
@@ -2298,12 +2567,30 @@
         return;
       }
 
-      if (persentase < 0 || persentase > 100) {
+      if (persentase < 0 || persentase > 100 || persentaseIstri < 0 || persentaseIstri > 100 || persentaseAnak < 0 || persentaseAnak > 100) {
         showToast("Error", "Persentase harus antara 0-100", "danger");
         return;
       }
 
-      const item = { tanggalMulai, tanggalAkhir, persentase, nomorSkep, berkasName, landasan };
+      // Check for overlap
+      const newStart = new Date(tanggalMulai);
+      const newEnd = new Date(tanggalAkhir);
+      if (newEnd < newStart) {
+        showToast("Error", "Tanggal akhir tidak boleh mendahului tanggal mulai.", "danger");
+        return;
+      }
+
+      for (let i = 0; i < skorsingData.length; i++) {
+        if (i === editSkorsingIndex) continue;
+        const sStart = new Date(skorsingData[i].tanggalMulai);
+        const sEnd = new Date(skorsingData[i].tanggalAkhir);
+        if (newStart <= sEnd && newEnd >= sStart) {
+          showToast("Error", "Periode skorsing tumpang tindih dengan periode yang sudah terdaftar!", "danger");
+          return;
+        }
+      }
+
+      const item = { tanggalMulai, tanggalAkhir, persentase, persentaseIstri, persentaseAnak, nomorSkep, berkasName, landasan };
 
       if (editSkorsingIndex === -1) {
         skorsingData.push(item);
@@ -2334,6 +2621,8 @@
       document.getElementById("tanggal-mulai-skorsing").value = item.tanggalMulai;
       document.getElementById("tanggal-akhir-skorsing").value = item.tanggalAkhir;
       document.getElementById("persentase-skorsing").value = item.persentase;
+      document.getElementById("persentase-skorsing-istri").value = item.persentaseIstri || 100;
+      document.getElementById("persentase-skorsing-anak").value = item.persentaseAnak || 100;
       document.getElementById("nomor-skep-skorsing").value = item.nomorSkep;
       document.getElementById("landasan-skorsing").value = item.landasan || '';
       
@@ -2362,40 +2651,220 @@
       setTimeout(() => el.classList.add('hidden'), 350);
     }
 
-    function openKeluargaModal() { openModalHelper('modal-tambah-keluarga'); }
+    function openKeluargaModal() { 
+      const fields = [
+        'nama', 'nik', 'hubungan', 'tgl-lahir', 'tgl-menikah', 
+        'alamat-ktp', 'rt-rw-ktp', 'desa-ktp', 'kecamatan-ktp', 'kota-ktp', 'provinsi-ktp', 'kodepos-ktp',
+        'alamat-domisili', 'rt-rw-domisili', 'desa-domisili', 'kecamatan-domisili', 'kota-domisili', 'provinsi-domisili', 'kodepos-domisili',
+        'tgl-mulai-kuliah', 'tgl-selesai-kuliah', 'tgl-meninggal', 'tgl-cerai',
+        'no-identitas', 'pekerjaan-lainnya'
+      ];
+      fields.forEach(f => {
+        const el = document.getElementById(`fam-add-${f}`);
+        if (el) el.value = '';
+      });
+
+      // Reset dropdown values
+      const statusPerkawinanSelect = document.getElementById('fam-add-status-perkawinan');
+      if (statusPerkawinanSelect) statusPerkawinanSelect.value = 'Menikah';
+      
+      const pekerjaanSelect = document.getElementById('fam-add-pekerjaan');
+      if (pekerjaanSelect) pekerjaanSelect.value = 'ASN';
+
+      // Reset radio buttons
+      const genderRadios = document.getElementsByName('fam-gender');
+      if (genderRadios.length > 0) genderRadios[0].checked = true;
+
+      const aktaRadios = document.getElementsByName('fam-akta-type');
+      if (aktaRadios.length > 0) aktaRadios[0].checked = true;
+
+      // Update toggles
+      toggleFamStatusDates();
+      toggleFamPekerjaanLainnya();
+
+      const check = document.getElementById('fam-add-alamat-sama');
+      if (check) check.checked = false;
+      const warn = document.getElementById('fam-nik-warning');
+      if (warn) warn.classList.add('hidden');
+
+      openModalHelper('modal-tambah-keluarga'); 
+    }
     function closeKeluargaModal() { closeModalHelper('modal-tambah-keluarga'); }
     function openRequestKeluargaModal() { openModalHelper('modal-request-keluarga'); }
     function closeRequestKeluargaModal() { closeModalHelper('modal-request-keluarga'); }
 
+    function syncFamAlamatDomisili() {
+      const checkbox = document.getElementById("fam-add-alamat-sama");
+      if (!checkbox) return;
+      
+      const fields = ['alamat-ktp', 'rt-rw-ktp', 'desa-ktp', 'kecamatan-ktp', 'kota-ktp', 'provinsi-ktp', 'kodepos-ktp'];
+      fields.forEach(f => {
+        const ktpInput = document.getElementById(`fam-add-${f}`);
+        const domId = f.replace('-ktp', '-domisili');
+        const domInput = document.getElementById(`fam-add-${domId}`);
+        if (checkbox.checked && ktpInput && domInput) {
+          domInput.value = ktpInput.value;
+        }
+      });
+    }
+
+    // Bind family KTP typing listeners
+    setTimeout(() => {
+      const fields = ['alamat-ktp', 'rt-rw-ktp', 'desa-ktp', 'kecamatan-ktp', 'kota-ktp', 'provinsi-ktp', 'kodepos-ktp'];
+      fields.forEach(f => {
+        document.getElementById(`fam-add-${f}`)?.addEventListener("input", function() {
+          const checkbox = document.getElementById("fam-add-alamat-sama");
+          if (checkbox && checkbox.checked) {
+            const domId = f.replace('-ktp', '-domisili');
+            const domInput = document.getElementById(`fam-add-${domId}`);
+            if (domInput) domInput.value = this.value;
+          }
+        });
+      });
+    }, 500);
+
+    window.toggleFamStatusDates = function() {
+      const status = document.getElementById("fam-add-status-perkawinan").value;
+      const tglMeninggalContainer = document.getElementById("fam-tgl-meninggal-container");
+      const tglCeraiContainer = document.getElementById("fam-tgl-cerai-container");
+      if (!tglMeninggalContainer || !tglCeraiContainer) return;
+
+      if (status === "Janda/Duda Cerai") {
+        tglCeraiContainer.classList.remove("hidden");
+        tglMeninggalContainer.classList.add("hidden");
+        document.getElementById("fam-add-tgl-cerai").required = true;
+        document.getElementById("fam-add-tgl-meninggal").required = false;
+      } else if (status === "Janda/Duda Meninggal") {
+        tglMeninggalContainer.classList.remove("hidden");
+        tglCeraiContainer.classList.add("hidden");
+        document.getElementById("fam-add-tgl-meninggal").required = true;
+        document.getElementById("fam-add-tgl-cerai").required = false;
+      } else {
+        tglMeninggalContainer.classList.add("hidden");
+        tglCeraiContainer.classList.add("hidden");
+        document.getElementById("fam-add-tgl-meninggal").required = false;
+        document.getElementById("fam-add-tgl-cerai").required = false;
+      }
+    }
+
+    window.toggleFamPekerjaanLainnya = function() {
+      const pekerjaan = document.getElementById("fam-add-pekerjaan").value;
+      const container = document.getElementById("fam-pekerjaan-lainnya-container");
+      if (!container) return;
+      if (pekerjaan === "Lainnya") {
+        container.classList.remove("hidden");
+        document.getElementById("fam-add-pekerjaan-lainnya").required = true;
+      } else {
+        container.classList.add("hidden");
+        document.getElementById("fam-add-pekerjaan-lainnya").required = false;
+      }
+    }
+
+    window.toggleKekuranganKlaimTextarea = function() {
+      const radios = document.getElementsByName("kek-status-klaim");
+      let selectedVal = "";
+      for (const r of radios) {
+        if (r.checked) {
+          selectedVal = r.value;
+          break;
+        }
+      }
+      const container = document.getElementById("kek-textarea-container");
+      const textarea = document.getElementById("kek-keterangan");
+      if (!container || !textarea) return;
+
+      if (selectedVal === "Belum Selesai") {
+        container.classList.remove("hidden");
+        textarea.required = true;
+      } else {
+        container.classList.add("hidden");
+        textarea.required = false;
+        textarea.value = "";
+      }
+    }
+
+    function checkFamilyNik(nik) {
+      const warningDiv = document.getElementById("fam-nik-warning");
+      const warningText = document.getElementById("fam-nik-warning-text");
+      if (!warningDiv || !warningText) return;
+      if (nik.length === 16 && (nik === "3273120105910003" || nik.startsWith("327312"))) {
+        warningText.innerText = "NIK ini terdaftar sebagai peserta ASABRI (NRP: 3273120105910003 / KTPA: 800012345). Peserta tidak dapat saling menunjang tunjangan.";
+        warningDiv.classList.remove("hidden");
+      } else {
+        warningDiv.classList.add("hidden");
+      }
+    }
+
+    function addKeterlanjuranHutang(nama, sebab, months, nominal) {
+      const activeNopens = activeParticipant ? (activeParticipant.nopens || '800012345') : '800012345';
+      const activeKtpa = activeParticipant ? (activeParticipant.no_ktpa || activeParticipant.noPeserta || 'KTPA-991283') : 'KTPA-991283';
+      
+      const newDebt = {
+        tmt: new Date().toISOString().split('T')[0],
+        jenis: 'Keterlanjuran Bayar',
+        nopens: activeNopens,
+        ktpa: activeKtpa,
+        jumlah: nominal,
+        status: 'Belum Lunas',
+        keterangan: `Keterlanjuran tunjangan ${nama} karena ${sebab} (${months} bulan)`
+      };
+      
+      if (typeof hutangData === 'undefined' || hutangData === null) {
+        hutangData = [];
+      }
+      hutangData.unshift(newDebt);
+      if (activeParticipant && activeParticipant.nik) {
+        localStorage.setItem("hutangData_" + activeParticipant.nik, JSON.stringify(hutangData));
+      }
+      populateHutangTab(activeParticipant);
+      showToast("Manajemen Hutang", `Hutang keterlanjuran tunjangan ${nama} sebesar ${formatRupiah(nominal)} otomatis ditambahkan ke manajemen hutang.`, "info");
+    }
+
     function saveKeluargaData(e) {
       e.preventDefault();
       const nama = document.getElementById('fam-add-nama').value;
+      const NIK = document.getElementById('fam-add-nik').value;
       const hubungan = document.getElementById('fam-add-hubungan').value;
       const tglLahir = document.getElementById('fam-add-tgl-lahir').value;
       const tglMenikah = document.getElementById('fam-add-tgl-menikah').value || '-';
       const tglMulai = document.getElementById('fam-add-tgl-mulai-kuliah').value || '-';
       const tglSelesai = document.getElementById('fam-add-tgl-selesai-kuliah').value || '-';
-      const tglBerhenti = document.getElementById('fam-add-tgl-stop-tunjang').value || '-';
       const tglMeninggal = document.getElementById('fam-add-tgl-meninggal').value || '-';
+      const tglCerai = document.getElementById('fam-add-tgl-cerai').value || '';
+
+      // Trigger keterlanjuran bayar
+      const triggerDateStr = tglMeninggal !== '-' ? tglMeninggal : (tglCerai || '');
+      if (triggerDateStr) {
+        const triggerDate = new Date(triggerDateStr);
+        const today = new Date();
+        if (!isNaN(triggerDate.getTime()) && triggerDate < today) {
+          const diffTime = Math.abs(today - triggerDate);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          const months = Math.floor(diffDays / 30);
+          if (months > 0) {
+            const nominalHutang = months * 250000;
+            addKeterlanjuranHutang(nama, tglMeninggal !== '-' ? 'Meninggal Dunia' : 'Perceraian', months, nominalHutang);
+          }
+        }
+      }
 
       const tbody = document.getElementById('fam-table-body');
       const tr = document.createElement('tr');
       tr.className = 'hover:bg-slate-50';
       const dateNow = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
-      const randomNopen = '8000' + Math.floor(1000000 + Math.random() * 9000000);
 
       tr.innerHTML = `
         <td class="py-2 px-3 font-mono">${dateNow}</td>
         <td class="py-2 px-3 font-bold text-slate-800">${nama}</td>
-        <td class="py-2 px-3 font-mono">${randomNopen}</td>
+        <td class="py-2 px-3 font-mono">${NIK}</td>
         <td class="py-2 px-3">${hubungan}</td>
         <td class="py-2 px-3 font-mono">${tglLahir}</td>
         <td class="py-2 px-3 font-mono">${tglMenikah}</td>
         <td class="py-2 px-3 font-mono">${tglMulai}</td>
         <td class="py-2 px-3 font-mono">${tglSelesai}</td>
-        <td class="py-2 px-3 font-mono">${tglBerhenti}</td>
+        <td class="py-2 px-3 font-mono">${tglCerai || '-'}</td>
         <td class="py-2 px-3 font-mono">${tglMeninggal}</td>
-        <td class="py-2 px-3">-</td>
+        <td class="py-2 px-3">Tersimpan</td>
         <td class="py-2 px-3 text-center">
           <button onclick="this.closest('tr').remove(); showToast('Hapus Keluarga', 'Data keluarga berhasil dihapus.', 'warning')" class="px-2 py-0.5 bg-rose-600 text-white rounded text-[10px]">Hapus</button>
         </td>
@@ -2438,10 +2907,55 @@
       showToast("Data Request", "Request data keluarga berhasil disimpan (status Pending).", "success");
     }
 
-    function openPangkatRhsModal() { openModalHelper('modal-tambah-pangkat-rhs'); }
+    function toggleRhsPangkatOptions() {
+      const status = document.getElementById("rhs-add-status").value;
+      const select = document.getElementById("rhs-add-pangkat");
+      if (!select) return;
+      select.innerHTML = "";
+      
+      const pnsOptions = [
+        "Golongan I/a (Juru Muda)", "Golongan I/b (Juru Muda Tingkat I)", "Golongan I/c (Juru)", "Golongan I/d (Juru Tingkat I)",
+        "Golongan II/a (Pengatur Muda)", "Golongan II/b (Pengatur Muda Tingkat I)", "Golongan II/c (Pengatur)", "Golongan II/d (Pengatur Tingkat I)",
+        "Golongan III/a (Penata Muda)", "Golongan III/b (Penata Muda Tingkat I)", "Golongan III/c (Penata)", "Golongan III/d (Penata Tingkat I)",
+        "Golongan IV/a (Pembina)", "Golongan IV/b (Pembina Tingkat I)", "Golongan IV/c (Pembina Utama Muda)", "Golongan IV/d (Pembina Utama Madya)", "Golongan IV/e (Pembina Utama)"
+      ];
+      
+      const milOptions = [
+        "Prada / Kelasi Dua", "Pratu / Kelasi Satu", "Praka / Kelasi Kepala", "Kopda", "Koptu", "Kopka",
+        "Serda", "Sertu", "Serka", "Serma", "Pelda", "Peltu",
+        "Letda", "Lettu", "Kapten", "Mayor", "Letkol", "Kolonel",
+        "Brigjen / Laksma / Marsma", "Mayjen / Laksda / Marsda", "Letjen / Laksdya / Marsdya", "Jenderal / Laksamana / Marsekal"
+      ];
+      
+      const list = status === "PNS" ? pnsOptions : milOptions;
+      list.forEach(opt => {
+        const option = document.createElement("option");
+        option.value = opt;
+        option.text = opt;
+        select.appendChild(option);
+      });
+    }
+
+    function openPangkatRhsModal() { 
+      openModalHelper('modal-tambah-pangkat-rhs'); 
+      toggleRhsPangkatOptions();
+    }
     function closePangkatRhsModal() { closeModalHelper('modal-tambah-pangkat-rhs'); }
     function openSkorsingModal() { openModalHelper('modal-tambah-skorsing'); }
     function closeSkorsingModal() { closeModalHelper('modal-tambah-skorsing'); }
+    function openCacatModal() { 
+      document.getElementById('cacat-add-tingkat').value = '';
+      document.getElementById('cacat-add-kriteria').innerHTML = '<option value="" disabled selected>-- Pilih Jenis Cacat --</option>';
+      document.getElementById('cacat-add-golongan').value = '';
+      document.getElementById('cacat-add-persen').value = '';
+      document.getElementById('cacat-add-skep').value = '';
+      document.getElementById('cacat-add-tgl-cacat').value = '';
+      document.getElementById('cacat-add-tgl-skep').value = '';
+      document.getElementById('cacat-add-tgl-kejadian').value = '';
+      document.getElementById('cacat-add-tempat-kejadian').value = '';
+      openModalHelper('modal-tambah-cacat'); 
+    }
+    function closeCacatModal() { closeModalHelper('modal-tambah-cacat'); }
 
     function savePangkatRhsData(e) {
       e.preventDefault();
@@ -2527,187 +3041,231 @@
       showToast("Data Skorsing", "Data skorsing berhasil ditambahkan.", "success");
     }
 
-    const MASTER_CACAT = [
-      // TINGKAT III
-      { kode: 'C3-01', tingkat: 'III', kondisi: 'Kehilangan kedua anggota gerak bawah dari pangkal paha ke bawah', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-02', tingkat: 'III', kondisi: 'Kelumpuhan kedua anggota gerak bawah dari pangkal paha ke bawah', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-03', tingkat: 'III', kondisi: 'Kehilangan kedua anggota gerak atas dari sendi bahu ke bawah', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-04', tingkat: 'III', kondisi: 'Kelumpuhan kedua anggota gerak atas dari sendi bahu ke bawah', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-05', tingkat: 'III', kondisi: '1 anggota gerak bawah dari pangkal paha ke bawah dan 1 anggota gerak atas dari sendi bahu ke bawah (Kelumpuhan)', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-06', tingkat: 'III', kondisi: '1 anggota gerak bawah dari pangkal paha ke bawah dan 1 anggota gerak atas dari sendi bahu ke bawah (Kehilangan)', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-07', tingkat: 'III', kondisi: 'Kehilangan penglihatan kedua mata', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-08', tingkat: 'III', kondisi: 'Bisu dan tuli', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-09', tingkat: 'III', kondisi: 'Penyakit jiwa berat / hilangnya kemampuan kerja mental tetap', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-10', tingkat: 'III', kondisi: 'Cacat luas dari organ sistem syaraf, pernafasan, kardiovaskuler, pencernaan, atau urogenital', golA: 30.8, golB: 49.3, golC: 61.6 },
-      { kode: 'C3-11', tingkat: 'III', kondisi: 'Kehilangan kedua belah kaki dari mata kaki ke bawah', golA: 17.60, golB: 35.20, golC: 44.00 },
-      // TINGKAT II
-      { kode: 'C2-01', tingkat: 'II', kondisi: 'Penyakit jiwa sedang / hilangnya kemampuan kerja fisik 51%-70%', golA: 17.6, golB: 28.2, golC: 35.2 },
-      { kode: 'C2-02', tingkat: 'II', kondisi: 'Kehilangan 1 anggota gerak bawah dari pangkal paha ke bawah', golA: 15.4, golB: 24.6, golC: 30.8 },
-      { kode: 'C2-03', tingkat: 'II', kondisi: 'Kelumpuhan 1 anggota gerak bawah dari pangkal paha ke bawah', golA: 15.4, golB: 24.6, golC: 30.8 },
-      { kode: 'C2-04', tingkat: 'II', kondisi: 'Kehilangan 1 anggota gerak atas dari sendi bahu ke bawah', golA: 17.6, golB: 28.2, golC: 35.2 },
-      { kode: 'C2-05', tingkat: 'II', kondisi: 'Kelumpuhan 1 anggota gerak atas dari sendi bahu ke bawah', golA: 17.6, golB: 28.2, golC: 35.2 },
-      { kode: 'C2-06', tingkat: 'II', kondisi: 'Cacat sebagian organ sistem syaraf, pernafasan, kardiovaskuler, pencernaan, atau urogenital', golA: 14.2, golB: 22.7, golC: 28.3 },
-      { kode: 'C2-07', tingkat: 'II', kondisi: 'Kehilangan penglihatan 1 mata atau diplopia pada penglihatan dekat', golA: 15.4, golB: 24.6, golC: 30.9 },
-      { kode: 'C2-08', tingkat: 'II', kondisi: 'Kehilangan 1 jari telunjuk atau ibu jari tangan kanan', golA: 14.2, golB: 22.7, golC: 28.3 },
-      { kode: 'C2-09', tingkat: 'II', kondisi: 'Kehilangan 2 jari atau lebih tangan kanan', golA: 14.2, golB: 22.7, golC: 28.3 },
-      { kode: 'C2-10', tingkat: 'II', kondisi: 'Bisu', golA: 14.2, golB: 22.7, golC: 28.3 },
-      { kode: 'C2-11', tingkat: 'II', kondisi: 'Tuli', golA: 17.6, golB: 28.2, golC: 35.2 },
-      { kode: 'C2-12', tingkat: 'II', kondisi: 'Tangan kanan dari atau dari atas pergelangan ke bawah', golA: 13.03, golB: 26.07, golC: 32.59 },
-      { kode: 'C2-13', tingkat: 'II', kondisi: 'Tangan kiri dari atau dari atas pergelangan ke bawah', golA: 12.47, golB: 24.93, golC: 31.17 },
-      { kode: 'C2-14', tingkat: 'II', kondisi: 'Kehilangan sebelah kaki dari mata kaki ke bawah', golA: 8.80, golB: 17.60, golC: 22.00 },
-      { kode: 'C2-15', tingkat: 'II', kondisi: 'Lengan kiri dari atau dari atas siku ke bawah', golA: 10.56, golB: 21.12, golC: 26.40 },
-      { kode: 'C2-16', tingkat: 'II', kondisi: 'Kaki memendek 2 cm sampai kurang dari 5 cm', golA: 7.04, golB: 14.08, golC: 17.60 },
-      { kode: 'C2-17', tingkat: 'II', kondisi: 'Kaki memendek 5 cm atau lebih', golA: 10.56, golB: 21.12, golC: 26.40 },
-      { kode: 'C2-18', tingkat: 'II', kondisi: 'Hilangnya cuping hidung', golA: 10.56, golB: 21.12, golC: 26.40 },
-      { kode: 'C2-19', tingkat: 'II', kondisi: 'Impotensi', golA: 10.56, golB: 21.12, golC: 26.40 },
-      // TINGKAT I
-      { kode: 'C1-01', tingkat: 'I', kondisi: 'Kehilangan ibu jari tangan kiri', golA: 4.22, golB: 8.45, golC: 10.56 },
-      { kode: 'C1-02', tingkat: 'I', kondisi: 'Kehilangan ruas pertama telunjuk tangan kanan', golA: 3.77, golB: 7.55, golC: 9.43 },
-      { kode: 'C1-03', tingkat: 'I', kondisi: 'Kehilangan ruas pertama telunjuk tangan kiri', golA: 1.23, golB: 2.46, golC: 3.08 },
-      { kode: 'C1-04', tingkat: 'I', kondisi: 'Kehilangan ruas pertama jari lain tangan kanan', golA: 1.89, golB: 3.77, golC: 4.72 },
-      { kode: 'C1-05', tingkat: 'I', kondisi: 'Kehilangan ruas pertama jari lain tangan kiri', golA: 0.53, golB: 1.06, golC: 1.32 },
-      { kode: 'C1-06', tingkat: 'I', kondisi: 'Kaki memendek sebelah kurang dari 2 cm', golA: 3.52, golB: 7.04, golC: 8.80 },
-      { kode: 'C1-07', tingkat: 'I', kondisi: 'Penurunan daya dengar kedua belah telinga setiap 10 desibel', golA: 2.11, golB: 4.22, golC: 5.28 },
-      { kode: 'C1-08', tingkat: 'I', kondisi: 'Penurunan daya dengar sebelah telinga setiap 10 desibel', golA: 1.06, golB: 2.11, golC: 2.64 },
-      { kode: 'C1-09', tingkat: 'I', kondisi: 'Perforasi sekat rongga hidung', golA: 5.28, golB: 10.56, golC: 13.20 },
-      { kode: 'C1-10', tingkat: 'I', kondisi: 'Kehilangan daya penciuman', golA: 3.52, golB: 7.04, golC: 8.80 },
-      { kode: 'C1-11', tingkat: 'I', kondisi: 'Hilangnya kemampuan kerja fisik 10%-21% / gangguan kejiwaan ringan', golA: 1.76, golB: 3.52, golC: 4.40 },
-      { kode: 'C1-12', tingkat: 'I', kondisi: 'Kehilangan penglihatan warna', golA: 3.52, golB: 7.04, golC: 8.80 },
-      { kode: 'C1-13', tingkat: 'I', kondisi: 'Kehilangan kedua belah daun telinga', golA: 3.52, golB: 7.04, golC: 8.80 },
-      // CACAT LAINNYA
-      { kode: 'CL-01', tingkat: 'Lainnya', kondisi: 'Terkelupasnya kulit kepala', golA: '3.52-10.56', golB: '7.04-21.12', golC: '8.80-26.40' },
-    ];
+    const TABEL_CACAT_PP102 = {
+      'Tingkat III': {
+        'Kehilangan kedua anggota gerak bawah dari pangkal paha': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan kedua anggota gerak bawah dari pangkal paha': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan kedua anggota gerak atas dari sendi bahu': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan kedua anggota gerak atas dari sendi bahu': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan 1 anggota gerak bawah dan 1 anggota gerak atas': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan 1 anggota gerak bawah dan 1 anggota gerak atas': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan penglihatan kedua mata': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Bisu dan tuli': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Penyakit jiwa berat': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Cacat luas organ sistem syaraf/pernafasan/kardiovaskuler': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+      },
+      'Tingkat II': {
+        'Penyakit jiwa sedang': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Kehilangan 1 anggota gerak bawah dari pangkal paha': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kelumpuhan 1 anggota gerak bawah dari pangkal paha': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kehilangan 1 anggota gerak atas dari sendi bahu': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Kelumpuhan 1 anggota gerak atas dari sendi bahu': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Cacat sebagian organ sistem syaraf/pernafasan/kardiovaskuler': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Kehilangan penglihatan 1 mata atau diplopia': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kehilangan 1 jari telunjuk atau ibu jari tangan kanan': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Kehilangan 2 jari atau lebih tangan kanan': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Bisu': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Tuli': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Tangan kanan dari/atas pergelangan ke bawah': { 'Golongan A': 13.03, 'Golongan B': 26.07, 'Golongan C': 32.58 },
+        'Tangan kiri dari/atas pergelangan ke bawah': { 'Golongan A': 12.47, 'Golongan B': 24.93, 'Golongan C': 31.17 },
+        'Sebelah kaki dari mata kaki ke bawah': { 'Golongan A': 8.80, 'Golongan B': 17.60, 'Golongan C': 22.00 },
+        'Lengan kiri dari/atas siku ke bawah': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
+        'Kaki memendek 5 cm - kurang dari 7,5 cm': { 'Golongan A': 7.04, 'Golongan B': 14.08, 'Golongan C': 17.60 },
+        'Kaki memendek 7,5 cm atau lebih': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
+        'Cacat hilangnya cuping hidung': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
+        'Impotensi': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
+      },
+      'Tingkat I': {
+        'Gangguan kejiwaan ringan': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Kehilangan 1 jari tangan atau kaki': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Berkurangnya fungsi mata': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Kehilangan daun telinga': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Perubahan klasifikasi/fungsi organ tubuh': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Ibu jari tangan kiri': { 'Golongan A': 4.22, 'Golongan B': 8.45, 'Golongan C': 10.56 },
+        'Ruas pertama telunjuk tangan kanan': { 'Golongan A': 3.77, 'Golongan B': 7.55, 'Golongan C': 9.43 },
+        'Ruas pertama telunjuk tangan kiri': { 'Golongan A': 1.23, 'Golongan B': 2.46, 'Golongan C': 3.08 },
+        'Ruas pertama jari lain tangan kanan': { 'Golongan A': 1.89, 'Golongan B': 3.77, 'Golongan C': 4.72 },
+        'Ruas pertama jari lain tangan kiri': { 'Golongan A': 0.53, 'Golongan B': 1.06, 'Golongan C': 1.32 },
+        'Kaki memendek sebelah kurang dari 5 cm': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Penurunan daya dengar kedua telinga per 10 desibel': { 'Golongan A': 2.11, 'Golongan B': 4.22, 'Golongan C': 5.28 },
+        'Penurunan daya dengar sebelah telinga per 10 desibel': { 'Golongan A': 1.06, 'Golongan B': 2.11, 'Golongan C': 2.64 },
+        'Perforasi sekat rongga hidung': { 'Golongan A': 5.28, 'Golongan B': 10.56, 'Golongan C': 13.20 },
+        'Kehilangan daya penciuman': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Hilangnya kemampuan kerja fisik 10-25%': { 'Golongan A': 1.76, 'Golongan B': 3.52, 'Golongan C': 4.40 },
+        'Kehilangan penglihatan warna': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Kehilangan kedua belah daun telinga': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+      },
+      'Tingkat III Lainnya': {
+        'Kedua belah kaki dari mata kaki ke bawah': { 'Golongan A': 17.60, 'Golongan B': 35.20, 'Golongan C': 44.00 },
+      },
+    };
 
-    function openCacatModal() {
-      document.getElementById('cacat-add-golongan').value = "";
-      document.getElementById('cacat-add-tingkat').value = "";
-      document.getElementById('cacat-add-kriteria').innerHTML = '<option value="" disabled selected>-- Pilih Kriteria --</option>';
-      document.getElementById('cacat-add-persen').value = "";
-
-      document.getElementById('cacat-tingkat-container').classList.add('hidden');
-      document.getElementById('cacat-kriteria-container').classList.add('hidden');
-      document.getElementById('cacat-persen-container').classList.add('hidden');
-
-      document.getElementById('cacat-add-tingkat').removeAttribute('required');
-      document.getElementById('cacat-add-kriteria').removeAttribute('required');
-
-      document.getElementById('cacat-add-skep').value = "";
-      document.getElementById('cacat-add-tgl-skep').value = "";
-      document.getElementById('cacat-add-tmt').value = "";
-
-      openModalHelper('modal-tambah-cacat');
-    }
-    function closeCacatModal() { closeModalHelper('modal-tambah-cacat'); }
-
-    function handleCacatGolonganChange() {
-      const gol = document.getElementById('cacat-add-golongan').value;
-      const tingkatSelect = document.getElementById('cacat-add-tingkat');
-      const tingkatContainer = document.getElementById('cacat-tingkat-container');
-      const kriteriaContainer = document.getElementById('cacat-kriteria-container');
-      const persenContainer = document.getElementById('cacat-persen-container');
-
-      tingkatSelect.value = "";
-      document.getElementById('cacat-add-kriteria').innerHTML = '<option value="" disabled selected>-- Pilih Kriteria --</option>';
-      document.getElementById('cacat-add-persen').value = "";
-
-      if (gol) {
-        tingkatContainer.classList.remove('hidden');
-        tingkatSelect.setAttribute('required', 'required');
-      } else {
-        tingkatContainer.classList.add('hidden');
-        tingkatSelect.removeAttribute('required');
+    const TABEL_CACAT_PP54 = {
+      'Tingkat III': {
+        'Kehilangan kedua anggota gerak bawah dari pangkal paha ke bawah': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan kedua anggota gerak bawah dari pangkal paha ke bawah': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan kedua anggota gerak atas dari sendi bahu ke bawah': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kelumpuhan kedua anggota gerak atas dari sendi bahu ke bawah': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        '1 anggota gerak bawah dari pangkal paha ke bawah dan 1 anggota gerak atas dari sendi bahu ke bawah (Kelumpuhan)': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        '1 anggota gerak bawah dari pangkal paha ke bawah dan 1 anggota gerak atas dari sendi bahu ke bawah (Kehilangan)': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Kehilangan penglihatan kedua mata': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Bisu dan tuli': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Penyakit jiwa berat / hilangnya kemampuan kerja mental tetap': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 },
+        'Cacat luas dari organ sistem syaraf, pernafasan, kardiovaskuler, pencernaan, atau urogenital': { 'Golongan A': 30.8, 'Golongan B': 49.3, 'Golongan C': 61.6 }
+      },
+      'Tingkat III Lainnya': {
+        'Kedua belah kaki dari mata kaki ke bawah': { 'Golongan A': 17.60, 'Golongan B': 35.20, 'Golongan C': 44.00 }
+      },
+      'Tingkat II': {
+        'Penyakit jiwa sedang': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Kehilangan 1 anggota gerak bawah dari pangkal paha': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kelumpuhan 1 anggota gerak bawah dari pangkal paha': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kehilangan 1 anggota gerak atas dari sendi bahu': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Kelumpuhan 1 anggota gerak atas dari sendi bahu': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Cacat sebagian organ sistem syaraf/pernafasan/kardiovaskuler': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Kehilangan penglihatan 1 mata atau diplopia': { 'Golongan A': 15.4, 'Golongan B': 24.6, 'Golongan C': 30.8 },
+        'Kehilangan 1 jari telunjuk atau ibu jari tangan kanan': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Kehilangan 2 jari atau lebih tangan kanan': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Bisu': { 'Golongan A': 14.2, 'Golongan B': 22.7, 'Golongan C': 28.3 },
+        'Tuli': { 'Golongan A': 17.6, 'Golongan B': 28.2, 'Golongan C': 35.2 },
+        'Tangan kanan dari/atas pergelangan ke bawah': { 'Golongan A': 13.03, 'Golongan B': 26.07, 'Golongan C': 32.58 },
+        'Tangan kiri dari/atas pergelangan ke bawah': { 'Golongan A': 12.47, 'Golongan B': 24.93, 'Golongan C': 31.17 },
+        'Sebelah kaki dari mata kaki ke bawah': { 'Golongan A': 8.80, 'Golongan B': 17.60, 'Golongan C': 22.00 },
+        'Lengan kiri dari/atas siku ke bawah': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
+        'Kaki memendek 2-5 cm': { 'Golongan A': 7.04, 'Golongan B': 14.08, 'Golongan C': 17.60 },
+        'Kaki memendek 5 cm atau lebih': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
+        'Cacat hilangnya cuping hidung': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
+        'Impotensi': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 }
+      },
+      'Tingkat I': {
+        'Gangguan kejiwaan ringan': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Kehilangan 1 jari tangan atau kaki': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Berkurangnya fungsi mata': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Kehilangan daun telinga': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Perubahan klasifikasi/fungsi organ tubuh': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
+        'Ibu jari tangan kiri': { 'Golongan A': 4.22, 'Golongan B': 8.45, 'Golongan C': 10.56 },
+        'Ruas pertama telunjuk tangan kanan': { 'Golongan A': 3.77, 'Golongan B': 7.55, 'Golongan C': 9.43 },
+        'Ruas pertama telunjuk tangan kiri': { 'Golongan A': 1.23, 'Golongan B': 2.46, 'Golongan C': 3.08 },
+        'Ruas pertama jari lain tangan kanan': { 'Golongan A': 1.89, 'Golongan B': 3.77, 'Golongan C': 4.72 },
+        'Ruas pertama jari lain tangan kiri': { 'Golongan A': 0.53, 'Golongan B': 1.06, 'Golongan C': 1.32 },
+        'Kaki memendek sebelah kurang dari 2 cm': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Penurunan daya dengar kedua telinga per 10 desibel': { 'Golongan A': 2.11, 'Golongan B': 4.22, 'Golongan C': 5.28 },
+        'Penurunan daya dengar sebelah telinga per 10 desibel': { 'Golongan A': 1.06, 'Golongan B': 2.11, 'Golongan C': 2.64 },
+        'Perforasi sekat rongga hidung': { 'Golongan A': 5.28, 'Golongan B': 10.56, 'Golongan C': 13.20 },
+        'Kehilangan daya penciuman': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 },
+        'Hilangnya kemampuan kerja fisik 10-25%': { 'Golongan A': 1.76, 'Golongan B': 3.52, 'Golongan C': 4.40 },
+        'Kehilangan penglihatan warna': { 'Golongan A': 3.52, 'Golongan B': 7.04, 'Golongan C': 8.80 }
       }
-      kriteriaContainer.classList.add('hidden');
-      document.getElementById('cacat-add-kriteria').removeAttribute('required');
-      persenContainer.classList.add('hidden');
+    };
+
+    function getTabelCacat() {
+      const raw = localStorage.getItem("registrasiKlaim");
+      let tanggalKejadian = "";
+      if (raw) {
+        const data = JSON.parse(raw);
+        tanggalKejadian = data.tanggalKejadian || "";
+      }
+      if (!tanggalKejadian) {
+        return TABEL_CACAT_PP54; // default fallback
+      }
+      const tglKejadian = new Date(tanggalKejadian);
+      const tglCutoff = new Date('2020-09-30');
+      return tglKejadian < tglCutoff ? TABEL_CACAT_PP102 : TABEL_CACAT_PP54;
     }
 
     function handleCacatTingkatChange() {
       const tingkatDipilih = document.getElementById('cacat-add-tingkat').value;
       const kriteriaSelect = document.getElementById('cacat-add-kriteria');
-      const kriteriaContainer = document.getElementById('cacat-kriteria-container');
-      const persenContainer = document.getElementById('cacat-persen-container');
+      const golonganSelect = document.getElementById('cacat-add-golongan');
 
-      kriteriaSelect.innerHTML = '<option value="" disabled selected>-- Pilih Kriteria --</option>';
+      kriteriaSelect.innerHTML = '<option value="" disabled selected>-- Pilih Jenis Cacat --</option>';
+      golonganSelect.value = "";
       document.getElementById('cacat-add-persen').value = "";
-      persenContainer.classList.add('hidden');
-
-      if (tingkatDipilih) {
-        const filtered = MASTER_CACAT.filter(c => c.tingkat === tingkatDipilih);
-        filtered.forEach(item => {
+      
+      const currentTable = getTabelCacat();
+      if (tingkatDipilih && currentTable[tingkatDipilih]) {
+        const listKriteria = Object.keys(currentTable[tingkatDipilih]);
+        listKriteria.forEach(item => {
           const opt = document.createElement('option');
-          opt.value = item.kode;
-          opt.innerText = `${item.kode} — ${item.kondisi}`;
+          opt.value = item;
+          opt.innerText = item;
           kriteriaSelect.appendChild(opt);
         });
-        kriteriaContainer.classList.remove('hidden');
         kriteriaSelect.setAttribute('required', 'required');
       } else {
-        kriteriaContainer.classList.add('hidden');
         kriteriaSelect.removeAttribute('required');
       }
     }
 
     function handleCacatKriteriaChange() {
-      const gol = document.getElementById('cacat-add-golongan').value;
-      const kode = document.getElementById('cacat-add-kriteria').value;
-      const persenInput = document.getElementById('cacat-add-persen');
-      const persenContainer = document.getElementById('cacen-persen-container') || document.getElementById('cacat-persen-container');
+      const kriteriaDipilih = document.getElementById('cacat-add-kriteria').value;
+      const golonganSelect = document.getElementById('cacat-add-golongan');
 
-      const match = MASTER_CACAT.find(item => item.kode === kode);
-      if (match) {
-        let persen = gol === 'A' ? match.golA
-                     : gol === 'B' ? match.golB
-                     : match.golC;
-
-        if (typeof persen === 'number') {
-          persen = persen + '%';
-        } else if (typeof persen === 'string' && persen && !persen.endsWith('%')) {
-          persen = persen + '%';
-        }
-        persenInput.value = persen;
-        if (persenContainer) {
-          persenContainer.classList.remove('hidden');
-        }
+      golonganSelect.value = "";
+      document.getElementById('cacat-add-persen').value = "";
+      
+      if (kriteriaDipilih) {
+        golonganSelect.setAttribute('required', 'required');
       } else {
-        persenInput.value = "";
-        if (persenContainer) {
-          persenContainer.classList.add('hidden');
+        golonganSelect.removeAttribute('required');
+      }
+    }
+
+    function handleCacatGolonganChange() {
+      const tingkat = document.getElementById('cacat-add-tingkat').value;
+      const kriteria = document.getElementById('cacat-add-kriteria').value;
+      const gol = document.getElementById('cacat-add-golongan').value;
+      const persenInput = document.getElementById('cacat-add-persen');
+
+      persenInput.value = "";
+
+      const currentTable = getTabelCacat();
+      if (tingkat && kriteria && gol && currentTable[tingkat] && currentTable[tingkat][kriteria]) {
+        const val = currentTable[tingkat][kriteria][gol];
+        if (val !== undefined) {
+          persenInput.value = val + '%';
         }
       }
     }
 
     function saveCacatData(e) {
       e.preventDefault();
-      const gol = document.getElementById('cacat-add-golongan').value;
-      const kode = document.getElementById('cacat-add-kriteria').value;
-      const match = MASTER_CACAT.find(item => item.kode === kode);
-      const kriteriaText = match ? match.kondisi : '';
       const tingkat = document.getElementById('cacat-add-tingkat').value;
+      const kriteria = document.getElementById('cacat-add-kriteria').value;
+      const gol = document.getElementById('cacat-add-golongan').value;
       const skep = document.getElementById('cacat-add-skep').value;
       const tglSkep = document.getElementById('cacat-add-tgl-skep').value;
-      const tmt = document.getElementById('cacat-add-tmt').value;
+      const tglCacat = document.getElementById('cacat-add-tgl-cacat').value;
+      const tglKejadian = document.getElementById('cacat-add-tgl-kejadian').value;
+      const tempatKejadian = document.getElementById('cacat-add-tempat-kejadian').value;
       const persen = document.getElementById('cacat-add-persen').value;
 
-      const tbody = document.getElementById('cacat-table-body');
-      const tr = document.createElement('tr');
-      tr.className = 'hover:bg-slate-50';
-      tr.innerHTML = `
-        <td class="py-2.5 px-3 font-bold text-slate-800">Golongan ${gol}</td>
-        <td class="py-2.5 px-3">${kriteriaText}</td>
-        <td class="py-2.5 px-3">Tingkat ${tingkat}</td>
-        <td class="py-2.5 px-3 font-mono">${skep}</td>
-        <td class="py-2.5 px-3 font-mono">${tglSkep}</td>
-        <td class="py-2.5 px-3 font-mono">${tmt}</td>
-        <td class="py-2.5 px-3 font-bold font-mono text-indigo-600">${persen}</td>
-        <td class="py-2.5 px-3 text-center">
-          <button onclick="this.closest('tr').remove();" class="text-rose-600 hover:text-rose-800"><i class="fas fa-trash"></i></button>
-        </td>
-      `;
-      tbody.appendChild(tr);
+      // Get active participant NIK
+      const activePartRaw = localStorage.getItem('prefillPeserta');
+      const activeParticipant = activePartRaw ? JSON.parse(activePartRaw) : {};
+      const nik = activeParticipant.nik || "3273120105910003";
+
+      const rawCacat = localStorage.getItem(`cacatData_${nik}`);
+      const listCacat = rawCacat ? JSON.parse(rawCacat) : [];
+      listCacat.push({ tingkat, kriteria, gol, skep, tglSkep, tglCacat, tglKejadian, tempatKejadian, persen });
+      localStorage.setItem(`cacatData_${nik}`, JSON.stringify(listCacat));
+
+      populateCacatSubTab(activeParticipant);
       closeCacatModal();
       showToast("Data Cacat", "Kondisi cacat baru berhasil ditambahkan.", "success");
     }
+
+    window.removeCacatRow = function(index, nik) {
+      const rawCacat = localStorage.getItem(`cacatData_${nik}`);
+      if (rawCacat) {
+        const listCacat = JSON.parse(rawCacat);
+        listCacat.splice(index, 1);
+        localStorage.setItem(`cacatData_${nik}`, JSON.stringify(listCacat));
+        const activePartRaw = localStorage.getItem('prefillPeserta');
+        const activeParticipant = activePartRaw ? JSON.parse(activePartRaw) : {};
+        populateCacatSubTab(activeParticipant);
+      }
+    };
 
     function toggleSidebarAccordion(menuId, chevId) {
       const menu = document.getElementById(menuId);
@@ -2725,7 +3283,7 @@
 
   <!-- Modal 1: Tambah Data Keluarga -->
   <div id="modal-tambah-keluarga" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[150] flex items-center justify-center hidden opacity-0 transition-opacity duration-350">
-    <div class="bg-white rounded-3xl border border-slate-200 w-full max-w-md shadow-2xl overflow-hidden transform scale-95 transition-transform duration-350">
+    <div class="bg-white rounded-3xl border border-slate-200 w-full max-w-lg shadow-2xl overflow-hidden transform scale-95 transition-transform duration-350">
       <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
         <h3 class="text-xs font-bold text-slate-800 flex items-center gap-2">
           <i class="fas fa-users text-asabri-blue"></i> Tambah Data Keluarga
@@ -2734,11 +3292,47 @@
           <i class="fas fa-xmark"></i>
         </button>
       </div>
-      <form onsubmit="saveKeluargaData(event)" class="p-6 space-y-4 text-xs">
-        <div>
-          <label class="block font-bold text-slate-600 mb-1">Nama Lengkap <span class="text-rose-500">*</span></label>
-          <input type="text" id="fam-add-nama" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+      <form onsubmit="saveKeluargaData(event)" class="p-6 space-y-4 text-xs overflow-y-auto max-h-[75vh]">
+        <!-- Warning Banner for ASABRI NIK matching -->
+        <div id="fam-nik-warning" class="hidden bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl flex gap-2">
+          <i class="fas fa-triangle-exclamation text-rose-500 text-sm mt-0.5 animate-pulse"></i>
+          <div>
+            <span class="font-bold">Peringatan:</span>
+            <span id="fam-nik-warning-text">NIK ini terdaftar sebagai peserta ASABRI (NRP: 12345 / KTPA: 8000999). Peserta tidak dapat saling menunjang tunjangan.</span>
+          </div>
         </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Nama Lengkap <span class="text-rose-500">*</span></label>
+            <input type="text" id="fam-add-nama" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">NIK <span class="text-rose-500">*</span></label>
+            <input type="text" id="fam-add-nik" required oninput="checkFamilyNik(this.value)" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="16 digit NIK">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Nomor Identitas KTP/SIM</label>
+            <input type="text" id="fam-add-no-identitas" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="Masukkan nomor KTP/SIM">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Jenis Kelamin <span class="text-rose-500">*</span></label>
+            <div class="flex items-center gap-4 mt-2">
+              <label class="flex items-center gap-1.5 cursor-pointer">
+                <input type="radio" name="fam-gender" value="Laki-laki" checked class="rounded-full border-slate-300 text-asabri-blue focus:ring-asabri-blue/30 w-4 h-4">
+                <span>Laki-laki</span>
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer">
+                <input type="radio" name="fam-gender" value="Perempuan" class="rounded-full border-slate-300 text-asabri-blue focus:ring-asabri-blue/30 w-4 h-4">
+                <span>Perempuan</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        
         <div>
           <label class="block font-bold text-slate-600 mb-1">Hubungan Keluarga <span class="text-rose-500">*</span></label>
           <select id="fam-add-hubungan" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
@@ -2754,6 +3348,50 @@
             <option value="Anak Tiri">Anak Tiri</option>
           </select>
         </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Status Perkawinan <span class="text-rose-500">*</span></label>
+            <select id="fam-add-status-perkawinan" onchange="toggleFamStatusDates()" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+              <option value="Menikah">Menikah</option>
+              <option value="Janda/Duda Cerai">Janda/Duda Cerai</option>
+              <option value="Janda/Duda Meninggal">Janda/Duda Meninggal</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Pekerjaan <span class="text-rose-500">*</span></label>
+            <select id="fam-add-pekerjaan" onchange="toggleFamPekerjaanLainnya()" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+              <option value="ASN">ASN</option>
+              <option value="Pegawai Swasta">Pegawai Swasta</option>
+              <option value="Pegawai BUMN">Pegawai BUMN</option>
+              <option value="Mahasiswa">Mahasiswa</option>
+              <option value="Pelajar">Pelajar</option>
+              <option value="Ibu Rumah Tangga">Ibu Rumah Tangga</option>
+              <option value="TNI/Polri">TNI/Polri</option>
+              <option value="Tidak Bekerja">Tidak Bekerja</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+        </div>
+        <div id="fam-pekerjaan-lainnya-container" class="hidden p-3 bg-slate-50 border border-slate-200 rounded-2xl">
+          <label class="block font-bold text-slate-750 mb-1">Input Pekerjaan Manual <span class="text-rose-500">*</span></label>
+          <input type="text" id="fam-add-pekerjaan-lainnya" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="Masukkan pekerjaan manual (contoh: Wirausaha)">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">Tipe Dokumen Akta Kelahiran <span class="text-rose-500">*</span></label>
+          <div class="flex items-center gap-4 mt-2">
+            <label class="flex items-center gap-1.5 cursor-pointer">
+              <input type="radio" name="fam-akta-type" value="Dokumen Baru" checked class="rounded-full border-slate-300 text-asabri-blue focus:ring-asabri-blue/30 w-4 h-4">
+              <span>Dokumen Baru</span>
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer">
+              <input type="radio" name="fam-akta-type" value="Dokumen yang Sudah Ada" class="rounded-full border-slate-300 text-asabri-blue focus:ring-asabri-blue/30 w-4 h-4">
+              <span>Dokumen yang Sudah Ada</span>
+            </label>
+          </div>
+        </div>
+
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block font-bold text-slate-600 mb-1">Tanggal Lahir <span class="text-rose-500">*</span></label>
@@ -2764,6 +3402,85 @@
             <input type="date" id="fam-add-tgl-menikah" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
           </div>
         </div>
+
+        <!-- KTP Fields -->
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">Alamat KTP <span class="text-rose-500">*</span></label>
+          <input type="text" id="fam-add-alamat-ktp" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="Alamat sesuai KTP">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">RT/RW KTP</label>
+            <input type="text" id="fam-add-rt-rw-ktp" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="000/000">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Desa/Kelurahan KTP</label>
+            <input type="text" id="fam-add-desa-ktp" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Kecamatan KTP</label>
+            <input type="text" id="fam-add-kecamatan-ktp" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Kota KTP</label>
+            <input type="text" id="fam-add-kota-ktp" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Provinsi KTP</label>
+            <input type="text" id="fam-add-provinsi-ktp" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Kode Pos KTP</label>
+            <input type="text" id="fam-add-kodepos-ktp" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+        </div>
+
+        <!-- Checkbox Sync -->
+        <div class="flex items-center gap-1.5 cursor-pointer font-bold text-[10px] text-slate-500">
+          <input type="checkbox" id="fam-add-alamat-sama" onchange="syncFamAlamatDomisili()" class="rounded border-slate-300 text-asabri-blue focus:ring-asabri-blue/30 w-3.5 h-3.5">
+          <span>Sama dengan Alamat KTP</span>
+        </div>
+
+        <!-- Domisili Fields -->
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">Alamat Domisili</label>
+          <input type="text" id="fam-add-alamat-domisili" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="Alamat tinggal saat ini">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">RT/RW Domisili</label>
+            <input type="text" id="fam-add-rt-rw-domisili" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="000/000">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Desa/Kelurahan Domisili</label>
+            <input type="text" id="fam-add-desa-domisili" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Kecamatan Domisili</label>
+            <input type="text" id="fam-add-kecamatan-domisili" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Kota Domisili</label>
+            <input type="text" id="fam-add-kota-domisili" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Provinsi Domisili</label>
+            <input type="text" id="fam-add-provinsi-domisili" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Kode Pos Domisili</label>
+            <input type="text" id="fam-add-kodepos-domisili" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+        </div>
+
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block font-bold text-slate-600 mb-1">Tgl Mulai Kuliah</label>
@@ -2774,16 +3491,40 @@
             <input type="date" id="fam-add-tgl-selesai-kuliah" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
           </div>
         </div>
+
         <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">Tgl Berhenti Tunjangan</label>
-            <input type="date" id="fam-add-tgl-stop-tunjang" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">Tanggal Meninggal</label>
+          <div id="fam-tgl-meninggal-container" class="hidden">
+            <label class="block font-bold text-slate-600 mb-1">Tanggal Meninggal <span class="text-rose-500">*</span></label>
             <input type="date" id="fam-add-tgl-meninggal" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
           </div>
+          <div id="fam-tgl-cerai-container" class="hidden">
+            <label class="block font-bold text-slate-600 mb-1">Tanggal Cerai <span class="text-rose-500">*</span></label>
+            <input type="date" id="fam-add-tgl-cerai" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
         </div>
+
+        <div class="space-y-2 border-t border-slate-100 pt-3">
+          <span class="block font-bold text-slate-700 mb-1">Upload Dokumen Pendukung</span>
+          
+          <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-200">
+            <span class="font-medium text-slate-600">Surat Keterangan Meninggal</span>
+            <input type="file" id="fam-file-meninggal" class="hidden">
+            <button type="button" onclick="document.getElementById('fam-file-meninggal').click()" class="px-2 py-1 bg-asabri-blue text-white rounded text-[10px] font-bold hover:bg-asabri-blueDark transition-colors">Upload</button>
+          </div>
+          
+          <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-200">
+            <span class="font-medium text-slate-600">Surat Cerai</span>
+            <input type="file" id="fam-file-cerai" class="hidden">
+            <button type="button" onclick="document.getElementById('fam-file-cerai').click()" class="px-2 py-1 bg-asabri-blue text-white rounded text-[10px] font-bold hover:bg-asabri-blueDark transition-colors">Upload</button>
+          </div>
+
+          <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-200">
+            <span class="font-medium text-slate-600">Dokumen Pendukung Lainnya</span>
+            <input type="file" id="fam-file-lain" class="hidden">
+            <button type="button" onclick="document.getElementById('fam-file-lain').click()" class="px-2 py-1 bg-asabri-blue text-white rounded text-[10px] font-bold hover:bg-asabri-blueDark transition-colors">Upload</button>
+          </div>
+        </div>
+
         <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-slate-50 -mx-6 -mb-6 mt-4">
           <button type="button" onclick="closeKeluargaModal()" class="px-4 py-2 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded-xl transition-all text-xs">Batal</button>
           <button type="submit" class="px-5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl transition-all text-xs shadow-md">Simpan</button>
@@ -2876,8 +3617,17 @@
       </div>
       <form onsubmit="savePangkatRhsData(event)" class="p-6 space-y-4 text-xs">
         <div>
+          <label class="block font-bold text-slate-600 mb-1">Status Personil <span class="text-rose-500">*</span></label>
+          <select id="rhs-add-status" onchange="toggleRhsPangkatOptions()" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+            <option value="TNI/Polri">Militer (TNI / POLRI)</option>
+            <option value="PNS">Sipil (PNS / ASN)</option>
+          </select>
+        </div>
+        <div>
           <label class="block font-bold text-slate-600 mb-1">Pangkat / Golongan <span class="text-rose-500">*</span></label>
-          <input type="text" id="rhs-add-pangkat" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          <select id="rhs-add-pangkat" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+            <!-- Populated dynamically -->
+          </select>
         </div>
         <div>
           <label class="block font-bold text-slate-600 mb-1">TMT <span class="text-rose-500">*</span></label>
@@ -2916,8 +3666,16 @@
           <input type="date" id="tanggal-akhir-skorsing" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
         </div>
         <div>
-          <label class="block font-bold text-slate-600 mb-1">Persentase Skorsing (%) <span class="text-rose-500">*</span></label>
+          <label class="block font-bold text-slate-600 mb-1">Skor Gapok (%) <span class="text-rose-500">*</span></label>
           <input type="number" id="persentase-skorsing" required value="75" min="0" max="100" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">Skor Tunjangan Pasangan (%)</label>
+          <input type="number" id="persentase-skorsing-istri" value="100" min="0" max="100" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">Skor Tunj. Anak (%)</label>
+          <input type="number" id="persentase-skorsing-anak" value="100" min="0" max="100" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-bold">
         </div>
         <div>
           <label class="block font-bold text-slate-600 mb-1">Nomor SKEP Skorsing <span class="text-rose-500">*</span></label>
@@ -2952,46 +3710,64 @@
       </div>
       <form onsubmit="saveCacatData(event)" class="p-6 space-y-4 text-xs">
         <div>
-          <label class="block font-bold text-slate-600 mb-1">Golongan Cacat <span class="text-rose-500">*</span></label>
-          <select id="cacat-add-golongan" required onchange="handleCacatGolonganChange()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
-            <option value="" disabled selected>-- Pilih Golongan --</option>
-            <option value="A">A - Tugas Kedinasan Sehari-hari</option>
-            <option value="B">B - Tugas Operasi / Dinas Bukan Akibat Musuh</option>
-            <option value="C">C - Operasi Militer / Musuh / Tindak Kriminal</option>
-          </select>
-        </div>
-        <div id="cacat-tingkat-container" class="hidden">
           <label class="block font-bold text-slate-600 mb-1">Tingkat Cacat <span class="text-rose-500">*</span></label>
-          <select id="cacat-add-tingkat" onchange="handleCacatTingkatChange()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          <select id="cacat-add-tingkat" required onchange="handleCacatTingkatChange()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
             <option value="" disabled selected>-- Pilih Tingkat --</option>
-            <option value="I">Tingkat I</option>
-            <option value="II">Tingkat II</option>
-            <option value="III">Tingkat III</option>
-            <option value="Lainnya">Lainnya</option>
+            <option value="Tingkat I">Tingkat I</option>
+            <option value="Tingkat II">Tingkat II</option>
+            <option value="Tingkat III">Tingkat III</option>
+            <option value="Tingkat III Lainnya">Tingkat III Lainnya</option>
           </select>
         </div>
-        <div id="cacat-kriteria-container" class="hidden">
-          <label class="block font-bold text-slate-600 mb-1">Kriteria Cacat <span class="text-rose-500">*</span></label>
-          <select id="cacat-add-kriteria" onchange="handleCacatKriteriaChange()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
-            <option value="" disabled selected>-- Pilih Kriteria --</option>
+        <div id="cacat-kriteria-container" class="block">
+          <label class="block font-bold text-slate-600 mb-1">Jenis/Macam Cacat <span class="text-rose-500">*</span></label>
+          <select id="cacat-add-kriteria" onchange="handleCacatKriteriaChange()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" required>
+            <option value="" disabled selected>-- Pilih Jenis Cacat --</option>
           </select>
         </div>
-        <div id="cacat-persen-container" class="hidden">
+        <div id="cacat-golongan-container" class="block">
+          <label class="block font-bold text-slate-600 mb-1">Golongan Cacat <span class="text-rose-500">*</span></label>
+          <select id="cacat-add-golongan" onchange="handleCacatGolonganChange()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" required>
+            <option value="" disabled selected>-- Pilih Golongan --</option>
+            <option value="Golongan A">Golongan A</option>
+            <option value="Golongan B">Golongan B</option>
+            <option value="Golongan C">Golongan C</option>
+          </select>
+        </div>
+        <div id="cacat-persen-container" class="block">
           <label class="block font-bold text-slate-600 mb-1">Persentase</label>
           <input type="text" id="cacat-add-persen" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 outline-none text-slate-500 font-mono">
         </div>
         <div>
           <label class="block font-bold text-slate-600 mb-1">Nomor SKEP Cacat <span class="text-rose-500">*</span></label>
-          <input type="text" id="cacat-add-skep" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          <input type="text" id="cacat-add-skep" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="Nomor SKEP Cacat">
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block font-bold text-slate-600 mb-1">Tanggal SKEP <span class="text-rose-500">*</span></label>
-            <input type="date" id="cacat-add-tgl-skep" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+            <label class="block font-bold text-slate-600 mb-1">Tanggal Cacat <span class="text-rose-500">*</span></label>
+            <input type="date" id="cacat-add-tgl-cacat" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
           </div>
           <div>
-            <label class="block font-bold text-slate-600 mb-1">TMT SKEP <span class="text-rose-500">*</span></label>
-            <input type="date" id="cacat-add-tmt" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+            <label class="block font-bold text-slate-600 mb-1">Tanggal SKEP Cacat <span class="text-rose-500">*</span></label>
+            <input type="date" id="cacat-add-tgl-skep" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Tanggal Kejadian <span class="text-rose-500">*</span></label>
+            <input type="date" id="cacat-add-tgl-kejadian" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Tempat Kejadian <span class="text-rose-500">*</span></label>
+            <input type="text" id="cacat-add-tempat-kejadian" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue" placeholder="Contoh: Papua / Mako">
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">Upload Dokumen SKEP Cacat <span class="text-rose-500">*</span></label>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-200">
+            <span class="font-medium text-slate-600">SKEP Cacat.pdf</span>
+            <input type="file" id="cacat-file-skep" class="hidden">
+            <button type="button" onclick="document.getElementById('cacat-file-skep').click()" class="px-2.5 py-1 bg-asabri-blue text-white rounded text-[10px] font-bold hover:bg-asabri-blueDark transition-colors">Upload</button>
           </div>
         </div>
         <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-slate-50 -mx-6 -mb-6 mt-4">
@@ -3188,6 +3964,7 @@
             <option value="" disabled selected>-- Pilih Jenis --</option>
             <option value="TGR">TGR</option>
             <option value="Non-TGR">Non-TGR</option>
+            <option value="Keterlanjuran Bayar">Keterlanjuran Bayar</option>
             <option value="PUM KPR">PUM KPR</option>
             <option value="BUM KPR">BUM KPR</option>
             <option value="Lainnya">Lainnya</option>

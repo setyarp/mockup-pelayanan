@@ -151,22 +151,49 @@
                 <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Sumber Pengajuan</label>
                 <select id="filter-sumber" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 font-semibold text-slate-700 min-w-[150px]">
                   <option value="All">All</option>
-                  <option value="On the Spot">On the Spot</option>
-                  <option value="Ekspedisi/Pos">Ekspedisi/Pos</option>
-                  <option value="Klik ASABRI">Klik ASABRI</option>
-                  <option value="ASABRI Link">ASABRI Link</option>
-                  <option value="ASABRI Mobile">ASABRI Mobile</option>
+                  <option value="Klaim Online">Klaim Online</option>
+                  <option value="Klaim Offline">Klaim Offline</option>
+                  <option value="ASABRI-link">ASABRI-link</option>
+                  <option value="Kemenkeu">Kemenkeu</option>
                 </select>
               </div>
               <div class="flex flex-col gap-1.5">
                 <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kantor Cabang</label>
                 <select id="filter-kancab" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 font-semibold text-slate-700 min-w-[180px]">
                   <option value="All">All</option>
-                  <option value="KC Utama Jakarta">KC Utama Jakarta</option>
-                  <option value="KC Bandung">KC Bandung</option>
-                  <option value="KC Surabaya">KC Surabaya</option>
-                  <option value="KC Medan">KC Medan</option>
-                  <option value="KC Makassar">KC Makassar</option>
+                  <option value="KANCAB AMBON">KANCAB AMBON</option>
+                  <option value="KANCAB BALIKPAPAN">KANCAB BALIKPAPAN</option>
+                  <option value="KANCAB BANDA ACEH">KANCAB BANDA ACEH</option>
+                  <option value="KANCAB BANDUNG">KANCAB BANDUNG</option>
+                  <option value="KANCAB BANJARMASIN">KANCAB BANJARMASIN</option>
+                  <option value="KANCAB BATAM">KANCAB BATAM</option>
+                  <option value="KANCAB BENGKULU">KANCAB BENGKULU</option>
+                  <option value="KANCAB CIREBON">KANCAB CIREBON</option>
+                  <option value="KANCAB DENPASAR">KANCAB DENPASAR</option>
+                  <option value="KANCAB JAYAPURA">KANCAB JAYAPURA</option>
+                  <option value="KANCAB KENDARI">KANCAB KENDARI</option>
+                  <option value="KANCAB KUPANG">KANCAB KUPANG</option>
+                  <option value="KANCAB LAMPUNG">KANCAB LAMPUNG</option>
+                  <option value="KANCAB LHOKSEUMAWE">KANCAB LHOKSEUMAWE</option>
+                  <option value="KANCAB MADIUN">KANCAB MADIUN</option>
+                  <option value="KANCAB MAKASSAR">KANCAB MAKASSAR</option>
+                  <option value="KANCAB MALANG">KANCAB MALANG</option>
+                  <option value="KANCAB MANADO">KANCAB MANADO</option>
+                  <option value="KANCAB MATARAM">KANCAB MATARAM</option>
+                  <option value="KANCAB MEDAN">KANCAB MEDAN</option>
+                  <option value="KANCAB PADANG">KANCAB PADANG</option>
+                  <option value="KANCAB PALANGKARAYA">KANCAB PALANGKARAYA</option>
+                  <option value="KANCAB PALEMBANG">KANCAB PALEMBANG</option>
+                  <option value="KANCAB PALU">KANCAB PALU</option>
+                  <option value="KANCAB PEKANBARU">KANCAB PEKANBARU</option>
+                  <option value="KANCAB PONTIANAK">KANCAB PONTIANAK</option>
+                  <option value="KANCAB SEMARANG">KANCAB SEMARANG</option>
+                  <option value="KANCAB SERANG">KANCAB SERANG</option>
+                  <option value="KANCAB SORONG">KANCAB SORONG</option>
+                  <option value="KANCAB SURABAYA">KANCAB SURABAYA</option>
+                  <option value="KANCAB TERNATE">KANCAB TERNATE</option>
+                  <option value="KANCAB UTAMA JAKARTA">KANCAB UTAMA JAKARTA</option>
+                  <option value="KANCAB YOGYAKARTA">KANCAB YOGYAKARTA</option>
                 </select>
               </div>
               <div class="flex flex-col gap-1.5">
@@ -242,22 +269,22 @@
             </div>
           </div>
 
-          <!-- ROW 1: 2-Column Responsive Charts Grid (Diameter minimal 200px) -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- ROW 1: 3-Column Responsive Charts Grid -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             <!-- Card 1: Ringkasan Status Registrasi -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
-              <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Ringkasan Status Registrasi</h3>
-              <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 py-6 flex-1">
+              <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Ringkasan Status Klaim</h3>
+              <div class="flex flex-col items-center justify-center gap-4 py-4 flex-1">
                 <!-- Donut Chart Container Wrapper -->
-                <div class="relative w-48 h-48 md:w-52 md:h-52 xl:w-56 xl:h-56 flex-shrink-0">
+                <div class="relative w-36 h-36 flex-shrink-0">
                   <svg id="status-donut-svg" viewBox="0 0 100 100" class="w-full h-full -rotate-90">
                     <!-- Circles generated dynamically -->
                   </svg>
                   <!-- Donut Hole -->
                   <div class="absolute inset-[15%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner pointer-events-none">
-                    <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest leading-none">Total</span>
-                    <span class="text-2xl md:text-3xl font-black text-slate-800 mt-1" id="status-total-donut">0</span>
+                    <span class="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest leading-none">Total</span>
+                    <span class="text-xl font-black text-slate-800 mt-0.5" id="status-total-donut">0</span>
                   </div>
                   <!-- Tooltip Box -->
                   <div id="status-chart-tooltip" class="absolute bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-xl pointer-events-none opacity-0 transition-all duration-200 flex flex-col items-center whitespace-nowrap z-30" style="top: -45px; left: 50%; transform: translateX(-50%);">
@@ -268,26 +295,56 @@
                   </div>
                 </div>
                 <!-- Legend list -->
-                <div class="flex-1 w-full space-y-2.5" id="status-legend-list">
+                <div class="w-full space-y-1.5" id="status-legend-list">
                   <!-- Generated dynamically -->
                 </div>
               </div>
               <p class="text-[10px] text-slate-400 font-semibold border-t border-slate-100 pt-3"><i class="fas fa-circle-info text-slate-350 mr-1"></i> Arahkan kursor ke legend untuk rincian data</p>
             </div>
 
-            <!-- Card 2: Monitoring SLA -->
+            <!-- Card 2: Status Progress Klaim (Progress Berkas Diterima) -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+              <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Ringkasan Status Berkas</h3>
+              <div class="flex flex-col items-center justify-center gap-4 py-4 flex-1">
+                <!-- Donut Chart Container Wrapper -->
+                <div class="relative w-36 h-36 flex-shrink-0">
+                  <svg id="progress-donut-svg" viewBox="0 0 100 100" class="w-full h-full -rotate-90">
+                    <!-- Circles generated dynamically -->
+                  </svg>
+                  <!-- Donut Hole -->
+                  <div class="absolute inset-[15%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner pointer-events-none">
+                    <span class="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest leading-none">Total</span>
+                    <span class="text-xl font-black text-slate-800 mt-0.5" id="progress-total-donut">0</span>
+                  </div>
+                  <!-- Tooltip Box -->
+                  <div id="progress-chart-tooltip" class="absolute bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-xl pointer-events-none opacity-0 transition-all duration-200 flex flex-col items-center whitespace-nowrap z-30" style="top: -45px; left: 50%; transform: translateX(-50%);">
+                    <span>Label</span>
+                    <span class="text-asabri-gold mt-0.5 font-bold">Value</span>
+                    <!-- Down arrow -->
+                    <div class="w-1.5 h-1.5 bg-slate-900 rotate-45 absolute -bottom-0.5 left-1/2 -translate-x-1/2"></div>
+                  </div>
+                </div>
+                <!-- Legend list -->
+                <div class="w-full space-y-1.5" id="progress-legend-list">
+                  <!-- Generated dynamically -->
+                </div>
+              </div>
+              <p class="text-[10px] text-slate-400 font-semibold border-t border-slate-100 pt-3"><i class="fas fa-circle-info text-slate-350 mr-1"></i> Arahkan kursor ke legend untuk rincian data</p>
+            </div>
+
+            <!-- Card 3: Monitoring SLA -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
               <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Monitoring SLA</h3>
-              <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 py-6 flex-1">
+              <div class="flex flex-col items-center justify-center gap-4 py-4 flex-1">
                 <!-- Donut Chart Container Wrapper -->
-                <div class="relative w-48 h-48 md:w-52 md:h-52 xl:w-56 xl:h-56 flex-shrink-0">
+                <div class="relative w-36 h-36 flex-shrink-0">
                   <svg id="sla-donut-svg" viewBox="0 0 100 100" class="w-full h-full -rotate-90">
                     <!-- Circles generated dynamically -->
                   </svg>
                   <!-- Donut Hole -->
                   <div class="absolute inset-[15%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner pointer-events-none">
-                    <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest leading-none">Total</span>
-                    <span class="text-2xl md:text-3xl font-black text-slate-800 mt-1" id="sla-total-donut">0</span>
+                    <span class="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest leading-none">Total</span>
+                    <span class="text-xl font-black text-slate-800 mt-0.5" id="sla-total-donut">0</span>
                   </div>
                   <!-- Tooltip Box -->
                   <div id="sla-chart-tooltip" class="absolute bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-xl pointer-events-none opacity-0 transition-all duration-200 flex flex-col items-center whitespace-nowrap z-30" style="top: -45px; left: 50%; transform: translateX(-50%);">
@@ -298,13 +355,12 @@
                   </div>
                 </div>
                 <!-- Legend list -->
-                <div class="flex-1 w-full space-y-2.5" id="sla-legend-list">
+                <div class="w-full space-y-1.5" id="sla-legend-list">
                   <!-- Generated dynamically -->
                 </div>
               </div>
               <p class="text-[10px] text-slate-400 font-semibold border-t border-slate-100 pt-3"><i class="fas fa-circle-info text-slate-350 mr-1"></i> Arahkan kursor ke legend untuk rincian data</p>
             </div>
-
           </div>
 
           <!-- Real-Time JKK Notification Container (NEW) -->
@@ -318,19 +374,6 @@
             </div>
           </div>
 
-          <!-- ROW 1.5: Critical SLA Alerts (Full Width) -->
-          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-            <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3 flex justify-between items-center mb-4">
-              <span class="flex items-center gap-2"><i class="fas fa-triangle-exclamation text-amber-500"></i> Antrian Berkas Kritis (Mendekati / Melewati Batas SLA)</span>
-              <span class="text-[9px] bg-rose-55 text-rose-700 border border-rose-200 px-2 py-0.5 rounded font-mono font-bold animate-pulse" id="stat-sla-critical-count" style="background-color: #ffe4e6;">0 Berkas</span>
-            </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="sla-warning-list">
-              <!-- Injected dynamically via JS -->
-            </div>
-            <div class="text-center pt-4 border-t border-slate-100 mt-4">
-              <a href="riwayat.html?filterSla=active" class="text-xs text-asabri-blue font-bold hover:underline inline-flex items-center gap-1">Lihat Rincian Antrian SLA <i class="fas fa-chevron-right text-[9px]"></i></a>
-            </div>
-          </div>
 
           <!-- ROW 2: Antrian Klaim Terbaru Table -->
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
@@ -343,13 +386,15 @@
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr class="border-b border-slate-200 text-slate-400 uppercase text-[9px] font-bold tracking-wider bg-slate-50/30">
-                    <th class="py-3 px-6">Tanggal Registrasi<br>No. Registrasi</th>
-                    <th class="py-3 px-6">NIP/NRP</th>
+                    <th class="py-3 px-6">No</th>
+                    <th class="py-3 px-6">Nomor Registrasi</th>
+                    <th class="py-3 px-6">Kantor Cabang</th>
                     <th class="py-3 px-6">Nama Peserta</th>
                     <th class="py-3 px-6">Jenis Kejadian</th>
-                    <th class="py-3 px-6">Klaim yang didapatkan</th>
                     <th class="py-3 px-6">Sumber</th>
-                    <th class="py-3 px-6">Status Klaim</th>
+                    <th class="py-3 px-6">Status</th>
+                    <th class="py-3 px-6">Tgl Registrasi</th>
+                    <th class="py-3 px-6">Tgl Selesai</th>
                     <th class="py-3 px-6 text-center">Aksi</th>
                   </tr>
                 </thead>
@@ -416,14 +461,14 @@
       legendEl.innerHTML = data.map((item, idx) => {
         const percent = totalVal > 0 ? Math.round((item.value / totalVal) * 100) : 0;
         return `
-          <div class="flex items-center justify-between cursor-pointer hover:bg-slate-55 p-1.5 rounded-lg transition-colors" style="border-bottom: 1px solid #f1f5f9;"
+          <div class="flex items-center justify-between cursor-pointer hover:bg-slate-55 p-1 rounded-lg transition-colors" style="border-bottom: 1px solid #f1f5f9;"
                onmouseenter="showCustomTooltip('${tooltipId}', '${item.label}', '${item.value} (${percent}%)')" 
                onmouseleave="hideCustomTooltip('${tooltipId}')">
             <span class="flex items-center gap-2">
-              <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: ${item.color};"></span>
-              <span class="font-bold text-slate-700 text-xs sm:text-sm">${item.label}</span>
+              <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${item.color};"></span>
+              <span class="font-bold text-slate-700 text-[11px]">${item.label}</span>
             </span>
-            <span class="font-mono text-slate-500 text-xs sm:text-sm font-bold">${item.value} <span class="text-[10px] text-slate-400 font-normal">(${percent}%)</span></span>
+            <span class="font-mono text-slate-500 text-[11px] font-bold">${item.value} <span class="text-[9px] text-slate-400 font-normal">(${percent}%)</span></span>
           </div>
         `;
       }).join("");
@@ -545,9 +590,9 @@
       const prosBayarCount = claims.filter(c => c.status === "Proses Pembayaran" || c.status === "Keuangan").length;
       const selesaiCount = claims.filter(c => c.status === "Selesai").length;
 
-      const ditolakCount = claims.filter(c => c.status === "Ditolak").length;
-      const pendingCount = dokTerpendingCount;
-      const diterimaCount = dokDiterimaCount;
+      const pendingCount = claims.filter(c => (c.status || "").toLowerCase().includes("pending")).length;
+      const ditolakCount = claims.filter(c => (c.status || "").toLowerCase().includes("tolak")).length;
+      const diterimaCount = total - pendingCount - ditolakCount;
 
       const slaWarning = claims.filter(c => 
         ["Dokumen Diterima", "Diterima"].includes(c.status) && 
@@ -561,16 +606,19 @@
       document.getElementById("stat-pending").innerText = pendingCount;
       document.getElementById("stat-sla-warning").innerText = slaWarning;
       
-      // Ringkasan Status Registrasi - 10 categories
+      // Ringkasan Status Registrasi - 3 categories
       const statusData = [
-        { label: "Registrasi", value: registrasiCount, color: "#64748B" },
-        { label: "Dokumen Diterima", value: dokDiterimaCount, color: "#3B82F6" },
-        { label: "Dokumen Terpending 🟡", value: dokTerpendingCount, color: "#F59E0B" },
-        { label: "Kalkulasi Manfaat", value: kalkManfaatCount, color: "#10B981" },
+        { label: "Diterima", value: diterimaCount, color: "#3B82F6" },
+        { label: "Dipending", value: pendingCount, color: "#F59E0B" },
+        { label: "Ditolak", value: ditolakCount, color: "#EF4444" }
+      ];
+
+      // Status Progress Klaim (Progress Berkas Diterima) - 6 categories
+      const progressData = [
         { label: "Menunggu Verifikasi", value: menVerifCount, color: "#6366F1" },
         { label: "Terverifikasi", value: terverifikasiCount, color: "#8B5CF6" },
         { label: "Menunggu Approval", value: menApprCount, color: "#EC4899" },
-        { label: "SP Terbit ✅", value: spTerbitCount, color: "#14B8A6" },
+        { label: "SP Terbit", value: spTerbitCount, color: "#14B8A6" },
         { label: "Proses Pembayaran", value: prosBayarCount, color: "#F43F5E" },
         { label: "Selesai", value: selesaiCount, color: "#22C55E" }
       ];
@@ -589,12 +637,15 @@
       renderDonutChart("status-donut-svg", "status-total-donut", "status-chart-tooltip", statusData);
       renderLegend("status-legend-list", statusData, total, "status-chart-tooltip");
 
+      const progressTotal = menVerifCount + terverifikasiCount + menApprCount + spTerbitCount + prosBayarCount + selesaiCount;
+      renderDonutChart("progress-donut-svg", "progress-total-donut", "progress-chart-tooltip", progressData);
+      renderLegend("progress-legend-list", progressData, progressTotal, "progress-chart-tooltip");
+
       const totalSla = slaNormal + slaMendekati + slaMelewati;
       renderDonutChart("sla-donut-svg", "sla-total-donut", "sla-chart-tooltip", slaData);
       renderLegend("sla-legend-list", slaData, totalSla, "sla-chart-tooltip");
       
       renderAntrianTerbaru();
-      renderSlaWarnings();
     }
 
     function renderAntrianTerbaru() {
@@ -610,10 +661,25 @@
       let filtered = claims;
       
       if (filterSumber !== "All") {
-        filtered = filtered.filter(c => c.sumber === filterSumber);
+        filtered = filtered.filter(c => {
+          const cRaw = (c.sumber || c.sumberPengajuan || "Klaim Offline").toLowerCase();
+          let cCategory = "Klaim Offline";
+          if (cRaw.includes("online") || cRaw.includes("mobile") || cRaw.includes("klik")) {
+            cCategory = "Klaim Online";
+          } else if (cRaw.includes("link") || cRaw.includes("asabri-link")) {
+            cCategory = "ASABRI-link";
+          } else if (cRaw.includes("kemenkeu") || cRaw.includes("kementerian")) {
+            cCategory = "Kemenkeu";
+          }
+          return cCategory === filterSumber;
+        });
       }
       if (filterKancab !== "All") {
-        filtered = filtered.filter(c => c.kantorCabang === filterKancab);
+        filtered = filtered.filter(c => {
+          const cKancab = (c.kantorCabang || c.kancab || "").toLowerCase().replace("kc ", "").replace("kancab ", "").trim();
+          const fKancab = filterKancab.toLowerCase().replace("kc ", "").replace("kancab ", "").trim();
+          return cKancab === fKancab;
+        });
       }
       if (filterStart) {
         filtered = filtered.filter(c => {
@@ -642,7 +708,7 @@
         return;
       }
       
-      tbody.innerHTML = displayClaims.map(c => {
+      tbody.innerHTML = displayClaims.map((c, index) => {
         let statusBadge = "";
         const stat = (c.status || "").toLowerCase();
         if (stat.includes("pending")) {
@@ -673,6 +739,7 @@
 
         const NIP_NRP = c.peserta?.nrp_nip || c.participant?.nrp_nip || c.nrp || c.nrp_nip || c.nik || c.peserta?.nik || c.participant?.nik || '-';
         const namaPeserta = c.peserta?.nama || c.participant?.nama || c.namaPeserta || c.nama || '-';
+        const kancabVal = c.kantorCabang || c.kancab || '—';
         
         const JENIS_KEJADIAN_MAP = {
           "jkk": "Kecelakaan Kerja",
@@ -698,60 +765,17 @@
           }
         }
 
-        const isOnline = sumberStr.toLowerCase().includes("mobile") || sumberStr.toLowerCase().includes("klik") || sumberStr.toLowerCase().includes("link") || sumberStr.toLowerCase().includes("online");
-        const sourceBadge = isOnline
-          ? `<span class="bg-blue-50 border border-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-globe mr-1"></i>Online (${sumberStr})</span>`
-          : `<span class="bg-slate-100 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-building mr-1"></i>Offline (${sumberStr})</span>`;
-
-        let slaContent = "";
-        if (stat.includes("tolak")) {
-          slaContent = `<span class="text-slate-400 font-medium font-mono">—</span>`;
-        } else if (stat.includes("pending")) {
-          slaContent = `
-            <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-slate-200 bg-slate-100 text-slate-500 text-[9px] font-bold">
-              <i class="fas fa-snowflake text-[9px] text-slate-400"></i>
-              <span>FREEZE</span>
-            </div>
-          `;
-        } else if (stat.includes("proses") || stat.includes("selesai") || stat.includes("bayar")) {
-          const waktuVal = (c.sla && c.sla.waktu) ? c.sla.waktu : "—";
-          slaContent = `
-            <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-500 text-[9px] font-bold">
-              <i class="fas fa-circle-check text-[9px] text-slate-400"></i>
-              <span>${waktuVal}</span>
-            </div>
-          `;
+        const lowerSumber = sumberStr.toLowerCase();
+        let sourceBadge = "";
+        if (lowerSumber.includes("online") || lowerSumber.includes("mobile") || lowerSumber.includes("klik")) {
+          sourceBadge = `<span class="bg-orange-50 border border-orange-100 text-orange-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-globe mr-1"></i>Klaim Online</span>`;
+        } else if (lowerSumber.includes("link") || lowerSumber.includes("asabri-link")) {
+          sourceBadge = `<span class="bg-emerald-50 border border-emerald-150 text-emerald-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-network-wired mr-1"></i>ASABRI-link</span>`;
+        } else if (lowerSumber.includes("kemenkeu") || lowerSumber.includes("kementerian")) {
+          sourceBadge = `<span class="bg-purple-50 border border-purple-100 text-purple-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-landmark mr-1"></i>Kemenkeu</span>`;
         } else {
-          let minutes = 15;
-          let waktuStr = "15 menit";
-          if (c.sla && c.sla.waktu) {
-            waktuStr = c.sla.waktu;
-            minutes = parseInt(c.sla.waktu);
-            if (isNaN(minutes)) minutes = 15;
-          }
-
-          let slaColor = "text-emerald-700 bg-emerald-50 border-emerald-250";
-          let iconClass = "fa-clock";
-
-          if (minutes > 60) {
-            slaColor = "text-rose-700 bg-rose-50 border-rose-250 font-extrabold";
-            iconClass = "fa-triangle-exclamation text-rose-500 animate-pulse";
-          } else if (minutes > 35) {
-            slaColor = "text-amber-700 bg-amber-50 border-amber-200 animate-pulse";
-            iconClass = "fa-triangle-exclamation text-amber-500";
-          }
-
-          slaContent = `
-            <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-[9px] font-bold ${slaColor}">
-              <i class="fas ${iconClass} text-[9px]"></i>
-              <span>${waktuStr}</span>
-            </div>
-          `;
+          sourceBadge = `<span class="bg-blue-50 border border-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-semibold text-[10px]"><i class="fas fa-building mr-1"></i>Klaim Offline</span>`;
         }
-
-        const productsList = c.manfaatKlaim ? c.manfaatKlaim.split(/[&,]/).map(p => p.trim()).filter(Boolean) : [];
-        const pCount = productsList.length;
-        const pText = pCount > 0 ? `${pCount} Produk (${productsList.join(', ')})` : '—';
 
         const PENSIUN_EVENTS = [
           "Pensiun Sendiri — Meninggal Dunia",
@@ -767,18 +791,19 @@
           ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${jenisKejadian}</span>`
           : `<span class="bg-blue-50 text-blue-700 border border-blue-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${jenisKejadian}</span>`;
 
+        const tglSelesaiVal = c.tanggalSelesai || c.tglSelesai || '—';
+
         return `
           <tr class="hover:bg-slate-50/50 transition-colors border-b border-slate-100">
-            <td class="py-3 px-6">
-              <div class="font-mono font-bold text-slate-800 text-xs">${noAgendaVal}</div>
-              <div class="text-[9px] text-slate-400 font-mono mt-0.5">${dateVal}</div>
-            </td>
-            <td class="py-3 px-6 font-mono text-xs">${NIP_NRP}</td>
+            <td class="py-3 px-6 font-bold text-slate-800 text-xs">${index + 1}</td>
+            <td class="py-3 px-6 font-mono font-bold text-slate-800 text-xs">${noAgendaVal}</td>
+            <td class="py-3 px-6 font-semibold text-xs text-slate-700">${kancabVal}</td>
             <td class="py-3 px-6 font-semibold text-xs text-slate-700">${namaPeserta}</td>
             <td class="py-3 px-6">${eventBadge}</td>
-            <td class="py-3 px-6"><span class="bg-blue-50 text-blue-700 border border-blue-150 rounded px-1.5 py-0.5 font-bold text-[9px]">${pText}</span></td>
             <td class="py-3 px-6">${sourceBadge}</td>
             <td class="py-3 px-6">${statusBadge}</td>
+            <td class="py-3 px-6 font-mono text-slate-500 text-xs">${dateVal}</td>
+            <td class="py-3 px-6 font-mono text-slate-500 text-xs">${tglSelesaiVal}</td>
             <td class="py-3 px-6 text-center">
               <a href="detail-registrasi.html?noAgenda=${noAgendaVal}" class="px-2.5 py-1.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-lg font-bold text-[10px] transition-colors inline-flex items-center gap-1 shadow-sm">
                 <i class="fas fa-eye text-[9px]"></i> Lihat Detail
@@ -789,49 +814,6 @@
       }).join("");
     }
 
-    function renderSlaWarnings() {
-      const claims = getClaims();
-      const listDiv = document.getElementById("sla-warning-list");
-      if (!listDiv) return;
-      
-      const warningClaims = claims.filter(c => 
-        ["Registrasi", "Diproses", "Diterima"].includes(c.status) && 
-        c.sla && (c.sla.status === "mendekati" || c.sla.status === "melewati")
-      );
-      
-      const warningCountEl = document.getElementById("stat-sla-critical-count");
-      if (warningCountEl) {
-        warningCountEl.innerText = `${warningClaims.length} Berkas`;
-      }
-      
-      if (warningClaims.length === 0) {
-        listDiv.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400 font-medium bg-slate-50/20 rounded-xl">Tidak ada antrian berkas kritis saat ini.</div>`;
-        return;
-      }
-      
-      listDiv.innerHTML = warningClaims.map(c => {
-        let badgeClass = "bg-amber-50 text-amber-700 border-amber-250";
-        let icon = `<i class="fas fa-clock text-amber-500"></i>`;
-        if (c.sla.status === "melewati") {
-          badgeClass = "bg-rose-50 text-rose-700 border-rose-250 animate-pulse";
-          icon = `<i class="fas fa-triangle-exclamation text-rose-500"></i>`;
-        }
-        return `
-          <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 flex items-center justify-between text-xs transition-all shadow-sm">
-            <div class="space-y-1 overflow-hidden">
-              <div class="flex items-center gap-2">
-                <span class="font-mono font-bold text-slate-800">${c.noRegistrasi}</span>
-                <span class="bg-slate-200 text-slate-700 px-1 py-0.2 rounded text-[8px] font-bold font-mono">${c.jenisKlaim}</span>
-              </div>
-              <span class="text-slate-500 font-semibold block truncate text-[11px]">${c.namaPeserta}</span>
-            </div>
-            <span class="border px-2.5 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 ${badgeClass}">
-              ${icon} ${c.sla.waktu}
-            </span>
-          </div>
-        `;
-      }).join("");
-    }
 
     function applyFilters() {
       updateMetrics();
