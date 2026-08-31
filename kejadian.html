@@ -7468,10 +7468,11 @@
 
       addClaimLog(role, 'Tolak', claimState.status, `Tab: ${tab}. Alasan: ${alasan}`);
 
-      if (role === 'KAKANCAB') {
+      const roleLower = role.toLowerCase().trim();
+      if (roleLower === 'kakancab') {
         setStatus('Menunggu Verifikasi');
         showNotifikasi('Klaim dikembalikan ke Verifikator');
-      } else if (role === 'Verifikator') {
+      } else if (roleLower === 'verifikator') {
         setStatus('Dokumen Diterima');
         showNotifikasi('Klaim dikembalikan ke Officer');
       } else {
@@ -7500,14 +7501,15 @@
 
     function renderTabRejectionButtons() {
       const currentRole = localStorage.getItem('currentRole') || 'Staf KANCAB';
-      const isStaf = currentRole === 'Staf KANCAB';
+      const currentRoleLower = currentRole.toLowerCase().trim();
+      const isStaf = currentRoleLower === 'staf kancab' || currentRoleLower === 'staf-kancab';
 
       // 1. Tab 1 (Data Peserta)
       const t1Container = document.getElementById("tab-1-action-buttons");
       if (t1Container) {
         if (isStaf) {
           t1Container.innerHTML = `
-            <button type="button" onclick="handleTolak('Staf KANCAB', 'Data Peserta')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5">
+            <button type="button" onclick="handleTolak('Staf KANCAB', 'Data Peserta')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5 animate-fade-in">
               <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
             </button>
           `;
@@ -7521,7 +7523,7 @@
       if (t2Container) {
         if (isStaf) {
           t2Container.innerHTML = `
-            <button type="button" onclick="handleTolak('Staf KANCAB', 'Data Kejadian')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5">
+            <button type="button" onclick="handleTolak('Staf KANCAB', 'Data Kejadian')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5 animate-fade-in">
               <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
             </button>
           `;
@@ -7541,7 +7543,7 @@
       if (t4Container) {
         if (isStaf) {
           t4Container.innerHTML = `
-            <button type="button" onclick="handleTolak('Staf KANCAB', 'Hak Produk')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5">
+            <button type="button" onclick="handleTolak('Staf KANCAB', 'Hak Produk')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5 animate-fade-in">
               <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
             </button>
           `;
