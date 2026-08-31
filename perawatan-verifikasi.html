@@ -8,27 +8,21 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts Outfit -->
+  <!-- Google Fonts Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            asabri: {
-              blue: '#004799',
-              blueDark: '#002e63',
-              gold: '#FFD700',
-              softBlue: '#F3F8FC',
-              textDark: '#1E293B'
-            }
+            asabri: { blue: '#0141A8', blueDark: '#01358C', gold: '#FFDE24', softBlue: '#F8FAFC', textDark: '#0F172A' }
           },
           fontFamily: {
-            sans: ['Outfit', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
+            sans: ['Plus Jakarta Sans','ui-sans-serif','system-ui','sans-serif'],
+            mono: ['Plus Jakarta Sans','ui-sans-serif','system-ui','sans-serif']
           }
         }
       }
@@ -57,34 +51,29 @@
       to { opacity: 1; transform: scale(1); }
     }
   </style>
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
 
   <!-- TOPBAR -->
-  <header class="h-16 bg-asabri-blue flex items-center justify-between px-6 border-b-4 border-asabri-gold z-50 shadow-md">
+  <header class="app-topbar h-16 flex items-center justify-between px-6 z-50">
     <div class="flex items-center gap-5">
       <div class="flex items-center gap-3">
         <div class="flex items-center">
-          <svg class="h-9 w-auto" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 25 C15 15, 25 12, 35 18 C30 22, 22 23, 15 27 Z" fill="#FFD700" />
-            <path d="M60 25 C55 15, 45 12, 35 18 C40 22, 48 23, 55 27 Z" fill="#FFD700" />
-            <path d="M28 15 H42 L45 28 C45 35, 35 40, 35 40 C35 40, 25 35, 25 28 Z" fill="#0A58CA" stroke="#FFFFFF" stroke-width="2" />
-            <polygon points="35,21 37.5,26.5 43.5,26.5 38.5,29.5 40.5,35 35,32 29.5,35 31.5,29.5 26.5,26.5 32.5,26.5" fill="#FFD700" />
-          </svg>
-          <span class="text-white font-extrabold text-xl tracking-wider ml-2">ASABRI</span>
+          <img src="logo-asabri-white.png" alt="Logo ASABRI" class="h-10 w-auto shrink-0">
         </div>
-        <div class="h-6 w-px bg-white/20"></div>
-        <button id="sidebar-toggle" class="text-white/80 hover:text-white transition-colors duration-150 text-lg">
+        <div class="h-8 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="p-2 rounded-lg text-white hover:bg-white/10 transition-colors text-base">
           <i class="fas fa-bars"></i>
         </button>
         <div class="flex flex-col ml-1">
-          <span class="text-white font-bold text-xs tracking-wider">YANDU NG</span>
-          <span class="text-white/60 text-[9px] font-medium tracking-widest leading-none">HIGH DENSITY SYSTEM</span>
+          <span class="brand-title">YANDU <b>NEXTGEN</b> ASABRI</span>
+          <span class="brand-sub">HIGH DENSITY MANAGEMENT SYSTEM</span>
         </div>
       </div>
     </div>
     <div class="flex items-center gap-4">
-      <div class="bg-white/10 border border-white/15 px-3 py-1 rounded-full flex items-center gap-2">
+      <div class="bg-blue-950/20 border border-blue-400/30 px-3 py-1.5 rounded-lg flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span class="text-xs font-semibold text-white tracking-wide mr-1">ROLE :</span>
         <select id="role-switcher" onchange="changeRole()" class="bg-transparent text-white font-semibold text-xs border-0 outline-none cursor-pointer focus:ring-0">
@@ -94,12 +83,12 @@
           <option value="Kabid/Kadiv Layanan" class="text-slate-800">Kabid/Kadiv Layanan</option>
         </select>
       </div>
-      <div class="h-8 w-px bg-white/10"></div>
+      <div class="h-8 w-px bg-white/20"></div>
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-asabri-gold text-asabri-blueDark font-bold flex items-center justify-center text-sm shadow-inner">SK</div>
+        <div class="w-8 h-8 shrink-0 rounded-full bg-white/20 border border-white/60 text-white font-black flex items-center justify-center text-xs shadow-inner">SK</div>
         <div class="flex flex-col">
           <span class="text-xs font-semibold text-white">SK | Administrator Utama</span>
-          <span class="text-[9px] text-white/60 leading-none">NIP. 19930708001</span>
+          <span class="text-[9px] text-blue-200 leading-none font-mono">NIP. 19930708001</span>
         </div>
       </div>
     </div>
@@ -107,93 +96,86 @@
 
   <!-- MAIN CONTAINER -->
   <div class="flex flex-1 overflow-hidden">
-    <aside id="sidebar-nav" class="w-80 bg-asabri-softBlue border-r border-slate-200 flex flex-col flex-shrink-0 transition-all duration-300">
-      <div class="p-5 border-b border-slate-200 bg-white/50">
-        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Menu Layanan</h2>
-      </div>
-      <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-        <a href="index.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+    <aside id="sidebar-nav" class="w-64 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 transition-all duration-300">
+      
+      <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+        <p class="nav-section px-2.5 pt-1 pb-2">Menu Layanan</p>
+        <a href="index.html" class="nav-link">
           <div class="flex items-center gap-2.5">
-            <i class="fas fa-chart-pie text-base text-asabri-blue"></i>
+            <i class="nav-ico fas fa-chart-pie"></i>
             <span>1. Dashboard</span>
           </div>
         </a>
-        <a href="registrasi.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+        <a href="registrasi.html" class="nav-link">
           <div class="flex items-center gap-2.5">
-            <i class="fas fa-pen-to-square text-base text-asabri-blue"></i>
+            <i class="nav-ico fas fa-pen-to-square"></i>
             <span>2. Pelayanan Registrasi Klaim Peserta</span>
           </div>
         </a>
-        <a href="data-peserta.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+        <a href="data-peserta.html" class="nav-link">
           <div class="flex items-center gap-2.5">
-            <i class="fas fa-search text-base text-asabri-blue"></i>
+            <i class="nav-ico fas fa-search"></i>
             <span>3. Data Peserta</span>
           </div>
         </a>
-        <a href="riwayat.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+        <a href="riwayat.html" class="nav-link">
           <div class="flex items-center gap-2.5">
-            <i class="fas fa-clock-rotate-left text-base text-asabri-blue"></i>
+            <i class="nav-ico fas fa-clock-rotate-left"></i>
             <span>4. Riwayat Transaksi Klaim</span>
           </div>
         </a>
-        <a href="kejadian.html" class="flex w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+        <a href="kejadian.html" class="nav-link">
           <div class="flex items-center gap-2.5">
-            <i class="fas fa-file-invoice text-base text-asabri-blue"></i>
+            <i class="nav-ico fas fa-file-invoice"></i>
             <span>5. Pelayanan Klaim</span>
           </div>
         </a>
         <!-- 6. Perawatan JKK -->
         <div class="space-y-1">
-          <button type="button" onclick="toggleSidebarAccordion('submenu-perawatan','chevron-perawatan')" class="w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-perawatan','chevron-perawatan')" class="nav-link">
             <div class="flex items-center gap-2.5">
-              <i class="fas fa-hand-holding-medical text-base text-asabri-blue"></i>
+              <i class="nav-ico fas fa-hand-holding-medical"></i>
               <span>6. Perawatan JKK</span>
             </div>
-            <i id="chevron-perawatan" class="fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200"></i>
+            <i id="chevron-perawatan" class="nav-chev fas fa-chevron-down"></i>
           </button>
-          <div id="submenu-perawatan" class="pl-6 py-2 space-y-2 relative">
-            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
-            <a href="perawatan-kejadian.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
-              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-              <i class="fas fa-notes-medical w-4 text-slate-400"></i>
+          <div id="submenu-perawatan" class="nav-sub space-y-0.5">
+            <a href="perawatan-kejadian.html" class="nav-sublink">
+              <span class="dot"></span>
               <span>Laporan Kejadian</span>
             </a>
-            <a href="perawatan-klaim.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
-              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-              <i class="fas fa-file-medical w-4 text-slate-400"></i>
+            <a href="perawatan-klaim.html" class="nav-sublink">
+              <span class="dot"></span>
               <span>Pengajuan Klaim</span>
             </a>
-            <a href="perawatan-verifikasi.html" class="relative pl-5 py-1 text-xs font-semibold text-asabri-blue flex items-center gap-2 transition-colors">
-              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-asabri-blue"></span>
+            <a href="perawatan-verifikasi.html" class="nav-sublink">
+              <span class="dot"></span>
               <i class="fas fa-user-shield w-4 text-asabri-blue"></i>
               <span>Verifikasi Klaim</span>
             </a>
           </div>
         </div>
         <div class="space-y-1">
-          <button type="button" onclick="toggleSidebarAccordion('submenu-kominfo','chevron-kominfo')" class="w-full bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-center justify-between font-semibold text-xs text-slate-700 transition-all">
+          <button type="button" onclick="toggleSidebarAccordion('submenu-kominfo','chevron-kominfo')" class="nav-link">
             <div class="flex items-center gap-2.5">
-              <i class="fas fa-comments text-base text-asabri-blue"></i>
+              <i class="nav-ico fas fa-comments"></i>
               <span>7. Pelayanan Komunikasi Pelanggan</span>
             </div>
-            <i id="chevron-kominfo" class="fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200"></i>
+            <i id="chevron-kominfo" class="nav-chev fas fa-chevron-right"></i>
           </button>
-          <div id="submenu-kominfo" class="hidden pl-6 py-2 space-y-2 relative">
-            <div class="absolute left-[13px] top-0 bottom-2.5 w-px bg-slate-300"></div>
-            <a href="komunikasi-dashboard.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
-              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-              <i class="fas fa-gauge w-4 text-slate-400"></i>
+          <div id="submenu-kominfo" class="nav-sub space-y-0.5 hidden">
+            <a href="komunikasi-dashboard.html" class="nav-sublink">
+              <span class="dot"></span>
               <span>Dashboard</span>
             </a>
-            <a href="komunikasi-riwayat.html" class="relative pl-5 py-1 text-xs font-medium text-slate-500 hover:text-asabri-blue flex items-center gap-2 transition-colors">
-              <span class="absolute left-[0.5px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-              <i class="fas fa-clock-rotate-left w-4 text-slate-400"></i>
+            <a href="komunikasi-riwayat.html" class="nav-sublink">
+              <span class="dot"></span>
               <span>Riwayat Interaksi</span>
             </a>
           </div>
         </div>
       </nav>
-      <div class="p-4 border-t border-slate-250 bg-slate-100 text-[10px] text-slate-400 font-mono text-center">ASABRI YANDU NG v1.2.0</div>
+      <div class="sidebar-foot">ASABRI YANDU NG v1.2.0</div>
     </aside>
 
     <!-- CONTENT -->
