@@ -525,6 +525,19 @@
                         <span class="text-[10px] text-slate-400">Tanggal meninggal dunia istri/suami sesuai Surat Kematian</span>
                         <span id="error-istri-suami-wafat-tgl" class="text-rose-500 text-[10px] hidden font-semibold">TMT Meninggal Dunia Istri/Suami wajib diisi</span>
                       </div>
+                      <!-- Banner warning flagging pinjaman -->
+                      <div id="banner-flagging-pinjaman" class="hidden p-3.5 bg-amber-50 border border-amber-200 text-amber-800 text-[11px] rounded-xl flex items-start gap-2 font-bold mb-3">
+                        <i class="fas fa-triangle-exclamation mt-0.5 text-amber-600"></i>
+                        <span>⚠️ Peserta memiliki flagging pinjaman aktif. Pembayaran hanya dapat dilakukan ke rekening yang di-flag.</span>
+                      </div>
+
+                      <div class="flex flex-col gap-1.5">
+                        <label class="font-bold text-slate-650">Pilih Rekening Pembayaran <span class="text-rose-500">*</span></label>
+                        <select id="pilih-rekening-dropdown" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
+                          <!-- Populated dynamically -->
+                        </select>
+                      </div>
+                      
                       <div class="flex flex-col gap-1.5">
                         <label class="font-bold text-slate-650">Atas Nama Rekening</label>
                         <input type="text" id="bayar-an" placeholder="Masukkan nama pemilik rekening..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
@@ -3227,20 +3240,7 @@
             }
 
             // 3. Prefill Sarana Bayar
-            const kb = currentParticipant?.kantor_bayar || {};
-            const inputAN = document.getElementById("bayar-an");
-            const inputNorek = document.getElementById("bayar-norek");
-            const inputMitra = document.getElementById("bayar-mitra");
-            
-            if (inputAN && !inputAN.value) {
-              inputAN.value = pengaju.nama || currentParticipant?.nama || '';
-            }
-            if (inputNorek && !inputNorek.value) {
-              inputNorek.value = kb.no_rekening || '';
-            }
-            if (inputMitra && !inputMitra.value) {
-              inputMitra.value = kb.bank || '';
-            }
+            initRekeningDropdown();
 
             // Prefill Tanggal Kejadian if exists in state or details
             const tglKejadianEl = document.getElementById("kejadian-tgl-kejadian");
@@ -7451,7 +7451,88 @@
             </div>
           </div>
         `;
-      }).join('');
+    }
+
+    function getRekeningPeserta() {
+      if (!currentParticipant || !currentParticipant.nik) return [];
+      const localData = localStorage.getItem("rekeningData_" + currentParticipant.nik);
+      if (localData) {
+        return JSON.parse(localData);
+      }
+      return [
+        { bank: 'Bank Mandiri', nomorRekening: '1234567890', atasNama: currentParticipant.nama, cabang: 'Jakarta Utama', statusFlagging: '-' }
+      ];
+    }
+
+    function initRekeningDropdown() {
+      const rekeningDropdown = document.getElementById("pilih-rekening-dropdown");
+      const bannerFlagging = document.getElementById("banner-flagging-pinjaman");
+      if (!rekeningDropdown) return;
+
+      const rekeningList = getRekeningPeserta();
+      const activeFlagging = rekeningList.find(r => r.statusFlagging === 'Aktif');
+      const lunasFlagging = rekeningList.find(r => r.statusFlagging === 'Lunas');
+
+      // Clear existing options
+      rekeningDropdown.innerHTML = '';
+
+      // Populate options
+      rekeningList.forEach(r => {
+        const opt = document.createElement("option");
+        opt.value = r.nomorRekening || r.noRek;
+        opt.innerText = `${r.bank || r.mitra} - ${r.nomorRekening || r.noRek} a.n. ${r.atasNama || r.namaRek} (${r.statusFlagging === '-' ? 'Normal' : 'Flagging: ' + r.statusFlagging})`;
+        rekeningDropdown.appendChild(opt);
+      });
+
+      // Change handler to autofill input fields
+      rekeningDropdown.onchange = function() {
+        const selectedNorek = rekeningDropdown.value;
+        const selected = rekeningList.find(r => (r.nomorRekening === selectedNorek || r.noRek === selectedNorek));
+        if (selected) {
+          document.getElementById("bayar-an").value = selected.atasNama || selected.namaRek || '';
+          document.getElementById("bayar-norek").value = selected.nomorRekening || selected.noRek || '';
+          document.getElementById("bayar-mitra").value = selected.bank || selected.mitra || '';
+          document.getElementById("bayar-cabang").value = selected.cabang || '';
+        }
+      };
+
+      // Jika ada flagging aktif:
+      // → Terkunci ke rekening flagging
+      if (activeFlagging) {
+        rekeningDropdown.value = activeFlagging.nomorRekening || activeFlagging.noRek;
+        rekeningDropdown.disabled = true;
+
+        // Tampilkan banner
+        if (bannerFlagging) {
+          bannerFlagging.classList.remove('hidden');
+        }
+        
+        // Trigger auto-fill of text inputs immediately
+        rekeningDropdown.onchange();
+      } else {
+        // Tidak ada flagging aktif
+        if (bannerFlagging) {
+          bannerFlagging.classList.add('hidden');
+        }
+        
+        if (lunasFlagging) {
+          // Jika flagging sudah lunas:
+          // → Rekening tetap di bank flagging
+          // → Tidak auto-pindah ke rekening lama
+          // → Peserta harus ajukan pindah rekening manual
+          rekeningDropdown.value = lunasFlagging.nomorRekening || lunasFlagging.noRek;
+          rekeningDropdown.disabled = false;
+          
+          // Trigger auto-fill of text inputs immediately
+          rekeningDropdown.onchange();
+        } else {
+          rekeningDropdown.disabled = false;
+          // Default to first option
+          if (rekeningList.length > 0) {
+            rekeningDropdown.onchange();
+          }
+        }
+      }
     }
   </script>
 

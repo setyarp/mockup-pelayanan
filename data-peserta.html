@@ -1128,14 +1128,14 @@
                     <div class="overflow-x-auto border border-slate-200 rounded-xl">
                       <table class="w-full text-xs text-left text-slate-650 border-collapse">
                         <thead>
-                          <tr class="bg-slate-800 text-white font-bold border-b border-slate-200">
-                            <th class="py-2.5 px-3">Hub. Keluarga</th>
-                            <th class="py-2.5 px-3">Nama Rekening</th>
+                          <tr class="bg-slate-800 text-white font-bold border-b border-slate-200 text-center">
+                            <th class="py-2.5 px-3 w-12 text-center">No</th>
+                            <th class="py-2.5 px-3 text-left">Bank</th>
                             <th class="py-2.5 px-3">Nomor Rekening</th>
-                            <th class="py-2.5 px-3">Mitra Bayar</th>
-                            <th class="py-2.5 px-3">Cabang</th>
-                            <th class="py-2.5 px-3">Dapem</th>
-                            <th class="py-2.5 px-3 text-center">Aksi</th>
+                            <th class="py-2.5 px-3 text-left">Atas Nama</th>
+                            <th class="py-2.5 px-3 text-left">Cabang</th>
+                            <th class="py-2.5 px-3">Status Flagging</th>
+                            <th class="py-2.5 px-3 w-28 text-center">Aksi</th>
                           </tr>
                         </thead>
                         <tbody id="rek-daftar-tbody" class="divide-y divide-slate-150">
@@ -1342,6 +1342,7 @@
       document.getElementById('rek-mitra').value = '';
       document.getElementById('rek-cabang').value = '';
       document.getElementById('rek-dapem').checked = false;
+      document.getElementById('rek-flagging').value = '-';
       openModalHelper('modal-tambah-rekening');
     }
     function closeRekeningModal() {
@@ -1352,9 +1353,9 @@
       const hub = document.getElementById('rek-hub').value;
       const nama = document.getElementById('rek-nama').value;
       const nomor = document.getElementById('rek-nomor').value;
-      const mitra = document.getElementById('rek-mitra').value;
+      const bank = document.getElementById('rek-mitra').value;
       const cabang = document.getElementById('rek-cabang').value || '-';
-      const dapem = document.getElementById('rek-dapem').checked ? 'Ya' : 'Tidak';
+      const flagging = document.getElementById('rek-flagging').value || '-';
 
       if (rekeningDaftarData === null) {
         rekeningDaftarData = [];
@@ -1362,12 +1363,16 @@
 
       rekeningDaftarData.push({
         hubKeluarga: hub,
-        namaRek: nama,
-        noRek: nomor,
-        mitra: mitra,
+        atasNama: nama,
+        nomorRekening: nomor,
+        bank: bank,
         cabang: cabang,
-        dapem: dapem
+        statusFlagging: flagging
       });
+
+      if (activeParticipant && activeParticipant.nik) {
+        localStorage.setItem("rekeningData_" + activeParticipant.nik, JSON.stringify(rekeningDaftarData));
+      }
 
       populateRekeningTab(activeParticipant);
       closeRekeningModal();
@@ -1454,6 +1459,22 @@
 
       if (activeParticipant && activeParticipant.nik) {
         localStorage.setItem("hutangData_" + activeParticipant.nik, JSON.stringify(hutangData));
+        
+        // Auto-sync loan flagging to rekening
+        if (jenis === 'BUM KPR') {
+          const flaggingData = {
+            bank: 'Bank Mandiri',
+            nomorRekening: '1234567890',
+            atasNama: activeParticipant.nama,
+            cabang: 'Jakarta Utama',
+            hubKeluarga: 'Peserta Sendiri'
+          };
+          if (status === 'Belum Lunas') {
+            syncFlaggingToRekening(flaggingData);
+          } else if (status === 'Lunas') {
+            onFlaggingLunas(flaggingData);
+          }
+        }
       }
 
       populateHutangTab(activeParticipant);
@@ -2214,32 +2235,55 @@
     }
 
     function populateRekeningTab(p) {
-      if (rekeningDaftarData === null) {
+      if (p && p.nik) {
+        const localData = localStorage.getItem("rekeningData_" + p.nik);
+        if (localData) {
+          rekeningDaftarData = JSON.parse(localData);
+        } else {
+          rekeningDaftarData = [
+            { hubKeluarga: 'Peserta Sendiri', atasNama: p.nama, nomorRekening: '1234567890', bank: 'Bank Mandiri', cabang: 'Jakarta Utama', statusFlagging: '-' }
+          ];
+          localStorage.setItem("rekeningData_" + p.nik, JSON.stringify(rekeningDaftarData));
+        }
+      } else if (rekeningDaftarData === null) {
         rekeningDaftarData = [
-          { hubKeluarga: 'Peserta Sendiri', namaRek: p.nama, noRek: '1234567890', mitra: 'Bank Mandiri', cabang: 'Jakarta Utama', dapem: 'Ya' }
+          { hubKeluarga: 'Peserta Sendiri', atasNama: p ? p.nama : 'MOCK PESERTA', nomorRekening: '1234567890', bank: 'Bank Mandiri', cabang: 'Jakarta Utama', statusFlagging: '-' }
         ];
       }
+      
       if (rekeningRequestData === null) {
         rekeningRequestData = [
-          { hubKeluarga: 'Istri', namaRek: p.nama + ' (Istri)', noRek: '0987654321', mitra: 'Bank Mandiri', cabang: 'Jakarta Barat' }
+          { hubKeluarga: 'Istri', namaRek: (p ? p.nama : 'MOCK') + ' (Istri)', noRek: '0987654321', mitra: 'Bank Mandiri', cabang: 'Jakarta Barat' }
         ];
       }
       
       const tbody = document.getElementById('rek-daftar-tbody');
-      tbody.innerHTML = rekeningDaftarData.map(r => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-2.5 px-3">${r.hubKeluarga}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-800">${r.namaRek}</td>
-          <td class="py-2.5 px-3 font-mono">${r.noRek}</td>
-          <td class="py-2.5 px-3">${r.mitra}</td>
-          <td class="py-2.5 px-3">${r.cabang}</td>
-          <td class="py-2.5 px-3 font-mono">${r.dapem}</td>
-          <td class="py-2.5 px-3 text-center">
-            <button onclick="showToast('Ubah Rekening', 'Membuka form edit rekening...', 'info')" class="px-2 py-0.5 bg-asabri-blue text-white rounded text-[10px]">Ubah</button>
-            <button onclick="showToast('Hapus Rekening', 'Rekening dihapus dari sistem.', 'warning')" class="px-2 py-0.5 bg-rose-600 text-white rounded text-[10px] ml-1">Hapus</button>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = rekeningDaftarData.map((r, index) => {
+        let badgeClass = 'bg-slate-50 text-slate-500 border border-slate-200';
+        if (r.statusFlagging === 'Aktif') {
+          badgeClass = 'bg-rose-50 text-rose-700 border-rose-200';
+        } else if (r.statusFlagging === 'Lunas') {
+          badgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+        }
+        
+        return `
+          <tr class="hover:bg-slate-50 text-xs border-b border-slate-100">
+            <td class="py-2.5 px-3 text-center font-semibold text-slate-500">${index + 1}</td>
+            <td class="py-2.5 px-3 font-bold text-slate-800">${r.bank || r.mitra || '-'}</td>
+            <td class="py-2.5 px-3 font-mono">${r.nomorRekening || r.noRek || '-'}</td>
+            <td class="py-2.5 px-3">${r.atasNama || r.namaRek || '-'}</td>
+            <td class="py-2.5 px-3">${r.cabang || '-'}</td>
+            <td class="py-2.5 px-3 text-center">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeClass}">
+                ${r.statusFlagging || '-'}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 text-center space-x-1">
+              <button onclick="deleteRekening(${index})" class="px-2 py-0.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-[10px] font-bold">Hapus</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
 
       const reqBody = document.getElementById('rek-req-tbody');
       reqBody.innerHTML = rekeningRequestData.map(r => `
@@ -2254,6 +2298,61 @@
           </td>
         </tr>
       `).join('');
+    }
+
+    function deleteRekening(index) {
+      if (confirm("Apakah Anda yakin ingin menghapus rekening ini?")) {
+        rekeningDaftarData.splice(index, 1);
+        if (activeParticipant && activeParticipant.nik) {
+          localStorage.setItem("rekeningData_" + activeParticipant.nik, JSON.stringify(rekeningDaftarData));
+        }
+        populateRekeningTab(activeParticipant);
+        showToast("Rekening Dihapus", "Rekening berhasil dihapus dari sistem.", "warning");
+      }
+    }
+
+    function syncFlaggingToRekening(flaggingData) {
+      if (rekeningDaftarData === null) {
+        rekeningDaftarData = [];
+      }
+      
+      const rekeningBaru = {
+        bank: flaggingData.bank,
+        nomorRekening: flaggingData.nomorRekening,
+        atasNama: flaggingData.atasNama,
+        cabang: flaggingData.cabang || '-',
+        statusFlagging: 'Aktif',
+        hubKeluarga: flaggingData.hubKeluarga || 'Peserta Sendiri'
+      };
+
+      const existing = rekeningDaftarData.find(r => r.nomorRekening === rekeningBaru.nomorRekening || r.noRek === rekeningBaru.nomorRekening);
+      if (!existing) {
+        rekeningDaftarData.push(rekeningBaru);
+      } else {
+        existing.statusFlagging = 'Aktif';
+        existing.bank = flaggingData.bank;
+        existing.mitra = flaggingData.bank;
+        existing.atasNama = flaggingData.atasNama;
+        existing.namaRek = flaggingData.atasNama;
+        existing.cabang = flaggingData.cabang || '-';
+      }
+
+      if (activeParticipant && activeParticipant.nik) {
+        localStorage.setItem("rekeningData_" + activeParticipant.nik, JSON.stringify(rekeningDaftarData));
+      }
+      populateRekeningTab(activeParticipant);
+    }
+
+    function onFlaggingLunas(flaggingData) {
+      if (!rekeningDaftarData) return;
+      const rekening = rekeningDaftarData.find(r => r.nomorRekening === flaggingData.nomorRekening || r.noRek === flaggingData.nomorRekening);
+      if (rekening) {
+        rekening.statusFlagging = 'Lunas';
+        if (activeParticipant && activeParticipant.nik) {
+          localStorage.setItem("rekeningData_" + activeParticipant.nik, JSON.stringify(rekeningDaftarData));
+        }
+        populateRekeningTab(activeParticipant);
+      }
     }
 
     function populateHutangTab(p) {
@@ -3855,6 +3954,14 @@
         <div class="flex items-center gap-2">
           <input type="checkbox" id="rek-dapem" value="Ya" class="rounded border-slate-350 text-asabri-blue focus:ring-asabri-blue">
           <label for="rek-dapem" class="font-bold text-slate-600">Dapem (Daftar Pembayaran)</label>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">Status Flagging</label>
+          <select id="rek-flagging" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-bold">
+            <option value="-">- (Tidak ada flagging)</option>
+            <option value="Aktif">Aktif (ada pinjaman aktif)</option>
+            <option value="Lunas">Lunas (pinjaman sudah lunas)</option>
+          </select>
         </div>
         <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-slate-50 -mx-6 -mb-6 mt-4">
           <button type="button" onclick="closeRekeningModal()" class="px-4 py-2 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded-xl transition-all text-xs">Batal</button>
