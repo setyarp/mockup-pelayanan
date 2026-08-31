@@ -403,6 +403,11 @@
                       </div>
                     </div>
                   </div>
+                  
+                  <!-- Footer Buttons -->
+                  <div class="border-t border-slate-200 pt-5 flex items-center justify-end mt-6">
+                    <div id="tab-1-action-buttons" class="flex gap-3"></div>
+                  </div>
 
                 </div>
                 <!-- TAB 2: Data Kejadian -->
@@ -550,6 +555,7 @@
                   <div class="border-t border-slate-250 pt-5 flex items-center justify-between mt-6">
                     <span class="text-[10px] font-mono text-slate-400"><span class="text-rose-500">*</span> Wajib diisi staf KANCAB</span>
                     <div class="flex gap-3">
+                      <div id="tab-2-reject-button" class="inline-flex gap-3"></div>
                       <button type="button" onclick="cancelKejadianForm()" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-600 transition-colors">
                         Batal
                       </button>
@@ -656,6 +662,9 @@
                       <button type="button" id="btn-pending-doc" onclick="processPendingDoc()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs shadow transition-all disabled:opacity-50 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed">
                         <i class="fas fa-circle-exclamation mr-1"></i> Pending
                       </button>
+                      <button type="button" id="btn-tolak-doc" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs shadow transition-all">
+                        <i class="fas fa-circle-xmark mr-1"></i> Tolak
+                      </button>
                       <button type="button" id="btn-teruskan-doc" onclick="processForwardDoc()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow transition-all disabled:opacity-50 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed">
                         <i class="fas fa-arrow-right mr-1"></i> Teruskan
                       </button>
@@ -707,9 +716,12 @@
                     <button type="button" onclick="skipProductCalculation()" class="px-4 py-2 border border-rose-250 hover:bg-rose-50 text-rose-600 rounded-xl text-xs font-bold transition-all">
                       Lewati
                     </button>
-                    <button type="button" onclick="saveProductCalculation()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
-                      <i class="fas fa-floppy-disk"></i> Simpan
-                    </button>
+                    <div class="flex gap-3">
+                      <div id="tab-4-reject-button" class="inline-flex gap-3"></div>
+                      <button type="button" onclick="saveProductCalculation()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                        <i class="fas fa-floppy-disk"></i> Simpan
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -2707,6 +2719,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       loadRegistrationData();
+      renderTabRejectionButtons();
       
       const currentRole = localStorage.getItem('currentRole') || 'Staf KANCAB';
       const roleSelect = document.getElementById("role-select");
@@ -3674,6 +3687,7 @@
         renderJkkExclusions();
         renderSjpContainer();
       }
+      renderTabRejectionButtons();
     }
 
     const PERSYARATAN_CONFIG = {
@@ -6136,6 +6150,7 @@
     function changeRole(role) {
       localStorage.setItem('currentRole', role);
       renderTab5Data();
+      renderTabRejectionButtons();
     }
 
     function stafRejectKlaim() {
@@ -7441,6 +7456,99 @@
           </div>
         `;
       }).join('');
+    }
+
+    function handleTolak(role, tab) {
+      const alasan = prompt('Isi alasan penolakan:');
+      if (alasan === null) return;
+      if (!alasan.trim()) {
+        alert('Alasan penolakan wajib diisi.');
+        return;
+      }
+
+      addClaimLog(role, 'Tolak', claimState.status, `Tab: ${tab}. Alasan: ${alasan}`);
+
+      if (role === 'KAKANCAB') {
+        setStatus('Menunggu Verifikasi');
+        showNotifikasi('Klaim dikembalikan ke Verifikator');
+      } else if (role === 'Verifikator') {
+        setStatus('Dokumen Diterima');
+        showNotifikasi('Klaim dikembalikan ke Officer');
+      } else {
+        setStatus('Ditolak');
+        showNotifikasi('Klaim ditolak. Alasan: ' + alasan);
+      }
+    }
+
+    function setStatus(status) {
+      claimState.status = status;
+      localStorage.setItem("registrasiKlaim", JSON.stringify(claimState));
+      
+      const noAgenda = claimState.noAgenda || claimState.noRegistrasi;
+      const claims = getClaims();
+      const idx = claims.findIndex(c => c.noAgenda === noAgenda || c.noRegistrasi === noAgenda);
+      if (idx !== -1) {
+        claims[idx].status = status;
+        saveClaims(claims);
+      }
+    }
+
+    function showNotifikasi(msg) {
+      showToast("Status Diperbarui", msg, "warning");
+      renderTab5Data();
+    }
+
+    function renderTabRejectionButtons() {
+      const currentRole = localStorage.getItem('currentRole') || 'Staf KANCAB';
+      const isStaf = currentRole === 'Staf KANCAB';
+
+      // 1. Tab 1 (Data Peserta)
+      const t1Container = document.getElementById("tab-1-action-buttons");
+      if (t1Container) {
+        if (isStaf) {
+          t1Container.innerHTML = `
+            <button type="button" onclick="handleTolak('Staf KANCAB', 'Data Peserta')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5">
+              <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
+            </button>
+          `;
+        } else {
+          t1Container.innerHTML = "";
+        }
+      }
+
+      // 2. Tab 2 (Data Kejadian)
+      const t2Container = document.getElementById("tab-2-reject-button");
+      if (t2Container) {
+        if (isStaf) {
+          t2Container.innerHTML = `
+            <button type="button" onclick="handleTolak('Staf KANCAB', 'Data Kejadian')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5">
+              <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
+            </button>
+          `;
+        } else {
+          t2Container.innerHTML = "";
+        }
+      }
+
+      // 3. Tab 3 (Persyaratan)
+      const btnTolakDoc = document.getElementById("btn-tolak-doc");
+      if (btnTolakDoc) {
+        btnTolakDoc.onclick = () => handleTolak(currentRole, 'Persyaratan');
+      }
+
+      // 4. Tab 4 (Hak / Produk)
+      const t4Container = document.getElementById("tab-4-reject-button");
+      if (t4Container) {
+        if (isStaf) {
+          t4Container.innerHTML = `
+            <button type="button" onclick="handleTolak('Staf KANCAB', 'Hak Produk')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5">
+              <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
+            </button>
+          `;
+        } else {
+          t4Container.innerHTML = "";
+        }
+      }
     }
 
     function getRekeningPeserta() {
