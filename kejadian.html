@@ -7444,12 +7444,16 @@
 
     function getRekeningPeserta() {
       if (!currentParticipant || !currentParticipant.nik) return [];
-      const localData = localStorage.getItem("rekeningData_" + currentParticipant.nik);
-      if (localData) {
-        return JSON.parse(localData);
+      try {
+        const localData = localStorage.getItem("rekeningData_" + currentParticipant.nik);
+        if (localData && localData !== "undefined" && localData !== "null") {
+          return JSON.parse(localData);
+        }
+      } catch (e) {
+        console.error("Error parsing rekeningData:", e);
       }
       return [
-        { bank: 'Bank Mandiri', nomorRekening: '1234567890', atasNama: currentParticipant.nama, cabang: 'Jakarta Utama', statusFlagging: '-' }
+        { bank: 'Bank Mandiri', nomorRekening: '1234567890', atasNama: currentParticipant.nama || '', cabang: 'Jakarta Utama', statusFlagging: '-' }
       ];
     }
 

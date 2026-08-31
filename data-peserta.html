@@ -2225,14 +2225,21 @@
 
     function populateRekeningTab(p) {
       if (p && p.nik) {
-        const localData = localStorage.getItem("rekeningData_" + p.nik);
-        if (localData) {
-          rekeningDaftarData = JSON.parse(localData);
-        } else {
+        try {
+          const localData = localStorage.getItem("rekeningData_" + p.nik);
+          if (localData && localData !== "undefined" && localData !== "null") {
+            rekeningDaftarData = JSON.parse(localData);
+          } else {
+            rekeningDaftarData = [
+              { hubKeluarga: 'Peserta Sendiri', atasNama: p.nama, nomorRekening: '1234567890', bank: 'Bank Mandiri', cabang: 'Jakarta Utama', statusFlagging: '-' }
+            ];
+            localStorage.setItem("rekeningData_" + p.nik, JSON.stringify(rekeningDaftarData));
+          }
+        } catch (e) {
+          console.error("Error parsing rekeningData:", e);
           rekeningDaftarData = [
             { hubKeluarga: 'Peserta Sendiri', atasNama: p.nama, nomorRekening: '1234567890', bank: 'Bank Mandiri', cabang: 'Jakarta Utama', statusFlagging: '-' }
           ];
-          localStorage.setItem("rekeningData_" + p.nik, JSON.stringify(rekeningDaftarData));
         }
       } else if (rekeningDaftarData === null) {
         rekeningDaftarData = [
