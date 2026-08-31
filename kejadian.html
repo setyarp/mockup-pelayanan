@@ -5827,14 +5827,10 @@
                     </h3>
                   </div>
                   <div class="space-y-4">
-                    <div class="space-y-2">
-                      <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Catatan / Alasan (Wajib untuk Tolak & Kembalikan)</label>
-                      <textarea id="staf-catatan" class="w-full text-xs p-3 border border-slate-255 focus:ring-1 focus:ring-asabri-blue/30 focus:border-asabri-blue rounded-xl bg-slate-50/50 resize-none h-20" placeholder="Tulis catatan atau alasan di sini..."></textarea>
-                    </div>
                     <div class="flex items-center gap-3">
-                      <button type="button" id="btn-staf-reject" onclick="stafRejectKlaim()" 
+                      <button type="button" id="btn-staf-reject" onclick="showPopupTolak('Staf KANCAB', 'Status & Riwayat')" 
                               class="px-5 py-2.5 bg-rose-600 hover:bg-rose-750 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
-                        <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
+                        <i class="fas fa-circle-xmark"></i> Tolak
                       </button>
                       <button type="button" id="btn-ajukan-verifikator" onclick="ajukanKeVerifikator()" 
                               class="px-5 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white rounded-xl text-xs font-bold transition-all shadow-md inline-flex items-center justify-center gap-1.5">
@@ -5891,7 +5887,7 @@
                     <textarea id="vf-catatan" class="w-full text-xs p-3 border border-slate-255 focus:ring-1 focus:ring-asabri-blue/30 focus:border-asabri-blue rounded-xl bg-slate-50/50 resize-none h-20" placeholder="Tulis catatan verifikasi..." ${verifikasiDisabled ? 'disabled' : ''}></textarea>
                   </div>
                   <div class="flex items-center gap-3">
-                    <button type="button" onclick="openVerifikatorRejectModal()" 
+                    <button type="button" onclick="showPopupTolak('Verifikator', 'Status & Riwayat')" 
                             class="px-5 py-2.5 bg-rose-600 hover:bg-rose-750 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
                             ${verifikasiDisabled ? 'disabled style="opacity: 0.4;"' : ''} title="${verifikasiTooltip}">
                       <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
@@ -5960,10 +5956,10 @@
                             ${approvalDisabled ? 'disabled style="opacity: 0.4;"' : ''} title="${approvalTooltip}">
                       <i class="fas fa-circle-check"></i> Approve
                     </button>
-                    <button type="button" id="btn-reject" onclick="rejectKlaimKakancab()" 
+                    <button type="button" id="btn-reject" onclick="showPopupTolak('KAKANCAB', 'Status & Riwayat')" 
                             class="px-5 py-2.5 bg-rose-600 hover:bg-rose-750 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
                             ${approvalDisabled ? 'disabled style="opacity: 0.4;"' : ''} title="${approvalTooltip}">
-                      <i class="fas fa-circle-xmark"></i> Tolak
+                      <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
                     </button>
                   </div>
                   ${approvalDisabled && approvalTooltip ? `
@@ -7458,27 +7454,69 @@
       }).join('');
     }
 
-    function handleTolak(role, tab) {
-      const alasan = prompt('Isi alasan penolakan:');
-      if (alasan === null) return;
-      if (!alasan.trim()) {
-        alert('Alasan penolakan wajib diisi.');
+    let activeRejectRole = "";
+    let activeRejectTab = "";
+
+    function showPopupTolak(role, tab) {
+      activeRejectRole = role;
+      activeRejectTab = tab;
+      
+      const modal = document.getElementById("custom-rejection-modal");
+      const modalContent = document.getElementById("rejection-modal-content");
+      const textarea = document.getElementById("alasan-tolak-textarea");
+      
+      if (modal && modalContent && textarea) {
+        textarea.value = "";
+        modal.classList.remove("hidden");
+        setTimeout(() => {
+          modalContent.classList.remove("scale-95", "opacity-0");
+          modalContent.classList.add("scale-100", "opacity-100");
+          textarea.focus();
+        }, 50);
+      }
+    }
+
+    function closeRejectionModal() {
+      const modal = document.getElementById("custom-rejection-modal");
+      const modalContent = document.getElementById("rejection-modal-content");
+      if (modal && modalContent) {
+        modalContent.classList.remove("scale-100", "opacity-100");
+        modalContent.classList.add("scale-95", "opacity-0");
+        setTimeout(() => {
+          modal.classList.add("hidden");
+        }, 150);
+      }
+    }
+
+    function confirmRejection() {
+      const textarea = document.getElementById("alasan-tolak-textarea");
+      const alasan = textarea ? textarea.value.trim() : "";
+      
+      if (!alasan) {
+        alert("Alasan penolakan wajib diisi.");
+        if (textarea) textarea.focus();
         return;
       }
-
+      
+      const role = activeRejectRole || localStorage.getItem('currentRole') || 'Staf KANCAB';
+      const tab = activeRejectTab || 'Umum';
+      
+      // Catat di log aktivitas
       addClaimLog(role, 'Tolak', claimState.status, `Tab: ${tab}. Alasan: ${alasan}`);
-
+      
       const roleLower = role.toLowerCase().trim();
       if (roleLower === 'kakancab') {
         setStatus('Menunggu Verifikasi');
-        showNotifikasi('Klaim dikembalikan ke Verifikator');
+        showNotifikasi('Dikembalikan ke Verifikator');
       } else if (roleLower === 'verifikator') {
         setStatus('Dokumen Diterima');
-        showNotifikasi('Klaim dikembalikan ke Officer');
+        showNotifikasi('Dikembalikan ke Officer');
       } else {
         setStatus('Ditolak');
         showNotifikasi('Klaim ditolak. Alasan: ' + alasan);
       }
+      
+      closeRejectionModal();
     }
 
     function setStatus(status) {
@@ -7506,8 +7544,8 @@
       const t1Container = document.getElementById("tab-1-action-buttons");
       if (t1Container) {
         t1Container.innerHTML = `
-          <button type="button" onclick="handleTolak('${currentRole}', 'Data Peserta')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5 animate-fade-in">
-            <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
+          <button type="button" onclick="showPopupTolak('${currentRole}', 'Data Peserta')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5 animate-fade-in">
+            <i class="fas fa-circle-xmark"></i> Tolak
           </button>
         `;
       }
@@ -7516,8 +7554,8 @@
       const t2Container = document.getElementById("tab-2-reject-button");
       if (t2Container) {
         t2Container.innerHTML = `
-          <button type="button" onclick="handleTolak('${currentRole}', 'Data Kejadian')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5 animate-fade-in">
-            <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
+          <button type="button" onclick="showPopupTolak('${currentRole}', 'Data Kejadian')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5 animate-fade-in">
+            <i class="fas fa-circle-xmark"></i> Tolak
           </button>
         `;
       }
@@ -7525,15 +7563,15 @@
       // 3. Tab 3 (Persyaratan)
       const btnTolakDoc = document.getElementById("btn-tolak-doc");
       if (btnTolakDoc) {
-        btnTolakDoc.onclick = () => handleTolak(currentRole, 'Persyaratan');
+        btnTolakDoc.onclick = () => showPopupTolak(currentRole, 'Persyaratan');
       }
 
       // 4. Tab 4 (Hak / Produk)
       const t4Container = document.getElementById("tab-4-reject-button");
       if (t4Container) {
         t4Container.innerHTML = `
-          <button type="button" onclick="handleTolak('${currentRole}', 'Hak Produk')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5 animate-fade-in">
-            <i class="fas fa-circle-xmark"></i> Tolak & Kembalikan
+          <button type="button" onclick="showPopupTolak('${currentRole}', 'Hak Produk')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center gap-1.5 animate-fade-in">
+            <i class="fas fa-circle-xmark"></i> Tolak
           </button>
         `;
       }
@@ -7814,39 +7852,30 @@
     </div>
   </div>
 
-  <!-- Modal: Reject & Kembalikan Verifikator -->
-  <div id="verifikator-reject-modal" class="fixed inset-0 z-[110] flex items-center justify-center hidden bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
-    <div class="bg-white rounded-3xl border border-slate-200 w-full max-w-md shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300">
-      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-        <h3 class="text-xs font-bold text-rose-800 flex items-center gap-2">
-          <i class="fas fa-triangle-exclamation"></i> Tolak & Kembalikan Klaim
+  <!-- Modal: Custom Rejection Popup -->
+  <div id="custom-rejection-modal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col transform transition-all duration-300 scale-95 opacity-0" id="rejection-modal-content">
+      <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <i class="fas fa-circle-xmark text-rose-500 text-base"></i> Alasan Penolakan
         </h3>
-        <button type="button" onclick="closeVerifikatorRejectModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
-          <i class="fas fa-xmark"></i>
+        <button onclick="closeRejectionModal()" class="w-6 h-6 rounded-full hover:bg-slate-150 flex items-center justify-center text-slate-450 hover:text-slate-700 transition-colors">
+          <i class="fas fa-times text-xs"></i>
         </button>
       </div>
-      <div class="p-6 space-y-4 text-xs">
-        <div>
-          <label class="block font-bold text-slate-600 mb-1.5">Tindakan</label>
-          <div class="space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
-              <input type="radio" name="vf-reject-action" value="staf" checked class="w-4 h-4 rounded text-asabri-blue border-slate-200 focus:ring-asabri-blue">
-              <span>Kembalikan ke Staf (untuk diperbaiki)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
-              <input type="radio" name="vf-reject-action" value="edit" class="w-4 h-4 rounded text-asabri-blue border-slate-200 focus:ring-asabri-blue">
-              <span>Edit langsung oleh Verifikator</span>
-            </label>
-          </div>
+      <div class="p-6 space-y-4 flex-1">
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-bold text-slate-450 uppercase tracking-wider block">Catatan / Alasan Penolakan <span class="text-rose-500">*</span></label>
+          <textarea id="alasan-tolak-textarea" placeholder="Masukkan alasan penolakan secara detail..." rows="4" class="w-full text-xs p-3 border border-slate-200 focus:ring-1 focus:ring-rose-500/30 focus:border-rose-500 rounded-xl bg-slate-50/30 resize-none font-semibold text-slate-700 outline-none" required></textarea>
         </div>
-        <div>
-          <label class="block font-bold text-slate-600 mb-1">Alasan Penolakan <span class="text-rose-500">*</span></label>
-          <textarea id="vf-reject-reason" required class="w-full text-xs p-3 border border-slate-250 focus:ring-1 focus:ring-asabri-blue/30 focus:border-asabri-blue rounded-xl bg-slate-50/50 resize-none h-24" placeholder="Tulis alasan penolakan..."></textarea>
-        </div>
-        <div class="flex items-center justify-end gap-3 pt-2">
-          <button type="button" onclick="closeVerifikatorRejectModal()" class="px-4 py-2 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded-xl transition-all text-xs">Batal</button>
-          <button type="button" onclick="confirmVerifikatorReject()" class="px-5 py-2 bg-rose-600 hover:bg-rose-755 text-white font-bold rounded-xl transition-all text-xs shadow-md">Konfirmasi</button>
-        </div>
+      </div>
+      <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-slate-50/50">
+        <button type="button" onclick="closeRejectionModal()" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 text-slate-650 font-bold rounded-xl text-xs transition-colors">
+          Batal
+        </button>
+        <button type="button" id="btn-confirm-rejection" onclick="confirmRejection()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs shadow-md transition-all">
+          Konfirmasi
+        </button>
       </div>
     </div>
   </div>
