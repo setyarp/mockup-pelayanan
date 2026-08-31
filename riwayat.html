@@ -163,30 +163,16 @@
               </div>
               <div class="flex items-center gap-3">
                 <input type="text" id="table-search-input" oninput="applyTableFilters()" placeholder="Cari NIP/NRP / NIK / Nama / No Reg..." class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs outline-none focus:border-asabri-blue w-64 font-medium shadow-inner">
+                <button onclick="handleExportExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+                  <i class="fas fa-file-excel"></i> Export Excel
+                </button>
               </div>
             </div>
             
             <!-- Table Sub-Header Filters -->
-            <div class="bg-slate-50/30 px-6 py-4 border-b border-slate-100 flex flex-wrap gap-4 items-center justify-between">
-              <div class="flex flex-wrap gap-4 items-center flex-1">
-                <div class="flex flex-col gap-1">
-                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Status Berkas</span>
-                  <select id="filter-status" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-semibold text-slate-700 min-w-[120px]">
-                    <option value="All">All</option>
-                    <option value="Diterima">Diterima</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Ditolak">Ditolak</option>
-                  </select>
-                </div>
-                <div class="flex flex-col gap-1">
-                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Sumber Pengajuan</span>
-                  <select id="filter-sumber" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-semibold text-slate-700 min-w-[130px]">
-                    <option value="All">Semua</option>
-                    <option value="Kantor Cabang">Kantor Cabang</option>
-                    <option value="ASABRI-link">ASABRI-link</option>
-                    <option value="Metadata Kemenkeu">Metadata Kemenkeu</option>
-                  </select>
-                </div>
+            <div class="bg-slate-50/30 px-6 py-4 border-b border-slate-100 space-y-4">
+              <!-- Baris 1: Periode Tanggal & Buttons -->
+              <div class="flex flex-wrap gap-4 items-center justify-between">
                 <div class="flex flex-col gap-1">
                   <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Periode Tanggal</span>
                   <div class="flex items-center gap-2">
@@ -195,11 +181,123 @@
                     <input type="date" id="filter-end-date" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-medium text-slate-700">
                   </div>
                 </div>
+                <div class="flex gap-2">
+                  <button onclick="resetTableFilters()" class="bg-slate-100 hover:bg-slate-200 border border-slate-250 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+                    <i class="fas fa-undo text-[10px]"></i> Reset
+                  </button>
+                  <button onclick="applyTableFilters()" class="bg-asabri-blue hover:bg-asabri-blueDark text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+                    <i class="fas fa-filter text-[10px]"></i> Terapkan
+                  </button>
+                </div>
               </div>
-              <div>
-                <button onclick="resetTableFilters()" class="bg-slate-100 hover:bg-slate-200 border border-slate-250 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
-                  <i class="fas fa-undo text-[10px]"></i> Reset
-                </button>
+
+              <!-- Baris 2: 5 Filter Baru -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                <!-- 1. Status Klaim -->
+                <div class="flex flex-col gap-1">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Status Klaim</span>
+                  <select id="filter-status-klaim" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-semibold text-slate-700 w-full">
+                    <option value="All">Semua</option>
+                    <option value="Registrasi">Registrasi</option>
+                    <option value="Dokumen Diterima">Dokumen Diterima</option>
+                    <option value="Dokumen Terpending">Dokumen Terpending</option>
+                    <option value="Kalkulasi Manfaat">Kalkulasi Manfaat</option>
+                    <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                    <option value="Terverifikasi">Terverifikasi</option>
+                    <option value="Menunggu Approval">Menunggu Approval</option>
+                    <option value="SP Terbit">SP Terbit</option>
+                    <option value="Proses Pembayaran">Proses Pembayaran</option>
+                    <option value="Selesai">Selesai</option>
+                  </select>
+                </div>
+
+                <!-- 2. Status Berkas -->
+                <div class="flex flex-col gap-1">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Status Berkas</span>
+                  <select id="filter-status-berkas" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-semibold text-slate-700 w-full">
+                    <option value="All">Semua</option>
+                    <option value="Diterima">Diterima</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Ditolak">Ditolak</option>
+                  </select>
+                </div>
+
+                <!-- 3. Jenis Kejadian -->
+                <div class="flex flex-col gap-1">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Jenis Kejadian</span>
+                  <select id="filter-jenis-kejadian" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-semibold text-slate-700 w-full">
+                    <option value="All">Semua</option>
+                    <option value="Pensiun Pertama">Pensiun Pertama</option>
+                    <option value="Berhenti dengan Hak Tunjangan">Berhenti dengan Hak Tunjangan</option>
+                    <option value="Berhenti tanpa Hak Pensiun (PTDH)">Berhenti tanpa Hak Pensiun (PTDH)</option>
+                    <option value="Istri/Suami Meninggal Dunia">Istri/Suami Meninggal Dunia</option>
+                    <option value="Anak Meninggal Dunia">Anak Meninggal Dunia</option>
+                    <option value="Meninggal Dunia dalam Dinas Aktif (JKm)">Meninggal Dunia dalam Dinas Aktif (JKm)</option>
+                    <option value="Kecelakaan Kerja — Meninggal (Gugur/Tewas)">Kecelakaan Kerja — Meninggal (Gugur/Tewas)</option>
+                    <option value="Kecelakaan Kerja — Cacat Tetap Bekerja">Kecelakaan Kerja — Cacat Tetap Bekerja</option>
+                    <option value="Kecelakaan Kerja — Cacat Pensiun">Kecelakaan Kerja — Cacat Pensiun</option>
+                    <option value="Pensiun Sendiri — Meninggal Dunia">Pensiun Sendiri — Meninggal Dunia</option>
+                    <option value="Pensiun Sendiri — Istri/Suami Meninggal Dunia">Pensiun Sendiri — Istri/Suami Meninggal Dunia</option>
+                    <option value="Pensiun Sendiri — Anak Meninggal Dunia">Pensiun Sendiri — Anak Meninggal Dunia</option>
+                    <option value="Pensiun Warakawuri — Meninggal Dunia">Pensiun Warakawuri — Meninggal Dunia</option>
+                    <option value="Tunjangan Yatim/Piatu — Meninggal Dunia">Tunjangan Yatim/Piatu — Meninggal Dunia</option>
+                    <option value="Tunjangan Yatim/Piatu — Dewasa">Tunjangan Yatim/Piatu — Dewasa</option>
+                    <option value="Tunjangan Orang Tua — Meninggal Dunia">Tunjangan Orang Tua — Meninggal Dunia</option>
+                  </select>
+                </div>
+
+                <!-- 4. Kantor Cabang -->
+                <div class="flex flex-col gap-1">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Kantor Cabang</span>
+                  <select id="filter-kantor-cabang" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-semibold text-slate-700 w-full">
+                    <option value="All">Semua</option>
+                    <option value="KANCAB AMBON">KANCAB AMBON</option>
+                    <option value="KANCAB BALIKPAPAN">KANCAB BALIKPAPAN</option>
+                    <option value="KANCAB BANDA ACEH">KANCAB BANDA ACEH</option>
+                    <option value="KANCAB BANDUNG">KANCAB BANDUNG</option>
+                    <option value="KANCAB BANJARMASIN">KANCAB BANJARMASIN</option>
+                    <option value="KANCAB BATAM">KANCAB BATAM</option>
+                    <option value="KANCAB BENGKULU">KANCAB BENGKULU</option>
+                    <option value="KANCAB CIREBON">KANCAB CIREBON</option>
+                    <option value="KANCAB DENPASAR">KANCAB DENPASAR</option>
+                    <option value="KANCAB JAYAPURA">KANCAB JAYAPURA</option>
+                    <option value="KANCAB KENDARI">KANCAB KENDARI</option>
+                    <option value="KANCAB KUPANG">KANCAB KUPANG</option>
+                    <option value="KANCAB LAMPUNG">KANCAB LAMPUNG</option>
+                    <option value="KANCAB LHOKSEUMAWE">KANCAB LHOKSEUMAWE</option>
+                    <option value="KANCAB MADIUN">KANCAB MADIUN</option>
+                    <option value="KANCAB MAKASSAR">KANCAB MAKASSAR</option>
+                    <option value="KANCAB MALANG">KANCAB MALANG</option>
+                    <option value="KANCAB MANADO">KANCAB MANADO</option>
+                    <option value="KANCAB MATARAM">KANCAB MATARAM</option>
+                    <option value="KANCAB MEDAN">KANCAB MEDAN</option>
+                    <option value="KANCAB PADANG">KANCAB PADANG</option>
+                    <option value="KANCAB PALANGKARAYA">KANCAB PALANGKARAYA</option>
+                    <option value="KANCAB PALEMBANG">KANCAB PALEMBANG</option>
+                    <option value="KANCAB PALU">KANCAB PALU</option>
+                    <option value="KANCAB PEKANBARU">KANCAB PEKANBARU</option>
+                    <option value="KANCAB PONTIANAK">KANCAB PONTIANAK</option>
+                    <option value="KANCAB SEMARANG">KANCAB SEMARANG</option>
+                    <option value="KANCAB SERANG">KANCAB SERANG</option>
+                    <option value="KANCAB SORONG">KANCAB SORONG</option>
+                    <option value="KANCAB SURABAYA">KANCAB SURABAYA</option>
+                    <option value="KANCAB TERNATE">KANCAB TERNATE</option>
+                    <option value="KANCAB UTAMA JAKARTA">KANCAB UTAMA JAKARTA</option>
+                    <option value="KANCAB YOGYAKARTA">KANCAB YOGYAKARTA</option>
+                  </select>
+                </div>
+
+                <!-- 5. Sumber Pengajuan -->
+                <div class="flex flex-col gap-1">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Sumber Pengajuan</span>
+                  <select id="filter-sumber" onchange="applyTableFilters()" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] outline-none font-semibold text-slate-700 w-full">
+                    <option value="All">Semua</option>
+                    <option value="Klaim Online">Klaim Online</option>
+                    <option value="Klaim Offline">Klaim Offline</option>
+                    <option value="ASABRI-link">ASABRI-link</option>
+                    <option value="Metadata Kemenkeu">Metadata Kemenkeu</option>
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -480,6 +578,7 @@
   </div>
 
   <!-- Shared JS Layer -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="data.js?v=1.0.1"></script>
   <script src="shared.js?v=1.0.1"></script>
   
@@ -909,7 +1008,10 @@
       const claims = getClaims();
       
       const search = document.getElementById("table-search-input").value.toLowerCase().trim();
-      const status = document.getElementById("filter-status").value;
+      const statusKlaim = document.getElementById("filter-status-klaim").value;
+      const statusBerkas = document.getElementById("filter-status-berkas").value;
+      const jenisKejadian = document.getElementById("filter-jenis-kejadian").value;
+      const kantorCabang = document.getElementById("filter-kantor-cabang").value;
       const sumber = document.getElementById("filter-sumber").value;
       const start = document.getElementById("filter-start-date").value;
       const end = document.getElementById("filter-end-date").value;
@@ -930,16 +1032,42 @@
         );
       }
       
-      if (status !== "All") {
-        if (status === "Diterima") {
-          filtered = filtered.filter(c => c.status === "Diterima" || c.status === "Selesai");
+      if (statusKlaim !== "All") {
+        if (statusKlaim === "Dokumen Terpending") {
+          filtered = filtered.filter(c => c.status === "Dokumen Terpending" || c.status === "PENDING" || c.status === "Pending");
+        } else if (statusKlaim === "Dokumen Diterima") {
+          filtered = filtered.filter(c => c.status === "Dokumen Diterima" || c.status === "Diterima");
         } else {
-          filtered = filtered.filter(c => c.status === status);
+          filtered = filtered.filter(c => c.status === statusKlaim);
         }
       }
 
+      if (statusBerkas !== "All") {
+        if (statusBerkas === "Pending") {
+          filtered = filtered.filter(c => (c.status || "").toLowerCase().includes("pending"));
+        } else if (statusBerkas === "Ditolak") {
+          filtered = filtered.filter(c => (c.status || "").toLowerCase().includes("tolak"));
+        } else if (statusBerkas === "Diterima") {
+          filtered = filtered.filter(c => !(c.status || "").toLowerCase().includes("pending") && !(c.status || "").toLowerCase().includes("tolak"));
+        }
+      }
+
+      if (jenisKejadian !== "All") {
+        filtered = filtered.filter(c => (c.jenisKejadian || c.jenisKlaim) === jenisKejadian);
+      }
+
+      if (kantorCabang !== "All") {
+        filtered = filtered.filter(c => (c.kantorCabang || c.kancab || "").toLowerCase() === kantorCabang.toLowerCase());
+      }
+
       if (sumber !== "All") {
-        filtered = filtered.filter(c => c.sumber === sumber);
+        filtered = filtered.filter(c => {
+          const sumberStr = c.sumber || c.sumberPengajuan || 'Kantor Cabang';
+          const isOnline = sumberStr.toLowerCase().includes("mobile") || sumberStr.toLowerCase().includes("klik") || sumberStr.toLowerCase().includes("link") || sumberStr.toLowerCase().includes("online");
+          if (sumber === "Klaim Online") return isOnline;
+          if (sumber === "Klaim Offline") return !isOnline;
+          return sumberStr === sumber;
+        });
       }
 
       if (start) {
@@ -956,6 +1084,7 @@
       }
 
       renderRiwayatTable(filtered);
+      window.lastFilteredClaims = filtered;
     }
 
     function resetTableFilters() {
@@ -965,7 +1094,10 @@
       window.history.pushState({}, '', url);
 
       document.getElementById("table-search-input").value = "";
-      document.getElementById("filter-status").value = "All";
+      document.getElementById("filter-status-klaim").value = "All";
+      document.getElementById("filter-status-berkas").value = "All";
+      document.getElementById("filter-jenis-kejadian").value = "All";
+      document.getElementById("filter-kantor-cabang").value = "All";
       document.getElementById("filter-sumber").value = "All";
       document.getElementById("filter-start-date").value = "";
       document.getElementById("filter-end-date").value = "";
@@ -1311,6 +1443,99 @@
         return new Date(year, month, day);
       }
       return new Date(dateStr);
+    }
+
+    function handleExportExcel() {
+      // Export mengikuti filter yang aktif
+      const exportData = (window.lastFilteredClaims && window.lastFilteredClaims.length > 0)
+        ? window.lastFilteredClaims  // jika ada filter aktif
+        : getClaims();               // jika tidak ada filter
+
+      // Kolom yang di-export
+      const EXPORT_COLUMNS = [
+        'KTPA',
+        'Nama Peserta',
+        'NRP/NIP',
+        'Nomor Registrasi',
+        'Kantor Cabang',
+        'Jenis Kejadian',
+        'Sumber Pengajuan',
+        'Status Berkas',
+        'Status Klaim',
+        'Tanggal Registrasi',
+        'Tanggal Selesai',
+        'Alasan Pending'
+      ];
+
+      // Generate file Excel
+      const today = new Date();
+      const formattedDate = `${today.getDate().toString().padStart(2, '0')}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getFullYear()}`;
+      const fileName = `Riwayat_Transaksi_${formattedDate}.xlsx`;
+      exportToExcel(exportData, EXPORT_COLUMNS, fileName);
+    }
+
+    function exportToExcel(data, columns, fileName) {
+      // Map data to column formats
+      const worksheetData = data.map(item => {
+        const p = item.participant || item.peserta || {};
+        const nama = p.nama || item.namaPeserta || item.nama || "-";
+        const nip = p.nrp_nip || p.nik || item.nik || item.nrp || "-";
+        const ktpa = p.noPeserta || p.no_ktpa || item.ktpa || "-";
+        
+        const statusBerkasVal = item.statusBerkas || (item.status && (item.status.toLowerCase().includes("pending") || item.status.toLowerCase().includes("tolak") || item.status.toLowerCase().includes("terima")) ? item.status : "Diterima");
+        
+        let statusBerkas = "Diterima";
+        if (statusBerkasVal.toLowerCase().includes("pending")) {
+          statusBerkas = "Pending";
+        } else if (statusBerkasVal.toLowerCase().includes("tolak")) {
+          statusBerkas = "Ditolak";
+        }
+        
+        const alasanPending = statusBerkas === "Pending" ? (item.catatan || item.alasanPending || "Dokumen belum lengkap / kurang tanda tangan") : "-";
+        
+        const row = {
+          'KTPA': ktpa,
+          'Nama Peserta': nama,
+          'NRP/NIP': nip,
+          'Nomor Registrasi': item.noRegistrasi || item.noReg || item.registrationNo || item.noAgenda || "-",
+          'Kantor Cabang': item.kantorCabang || item.kancab || "KC Utama Jakarta",
+          'Jenis Kejadian': item.jenisKejadian || item.jenisKlaim || "-",
+          'Sumber Pengajuan': item.sumber || item.sumberPengajuan || "Kantor Cabang",
+          'Status Berkas': statusBerkas,
+          'Status Klaim': item.status || "Registrasi",
+          'Tanggal Registrasi': item.tanggalRegistrasi || item.tanggal || "-",
+          'Tanggal Selesai': item.tanggalSelesai || "-",
+          'Alasan Pending': alasanPending
+        };
+        
+        return row;
+      });
+
+      // Use SheetJS to build workbook
+      const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+      
+      // Auto-fit column widths
+      const maxLens = {};
+      columns.forEach(col => {
+        maxLens[col] = col.length;
+      });
+      worksheetData.forEach(row => {
+        columns.forEach(col => {
+          const val = String(row[col] || '');
+          if (val.length > maxLens[col]) {
+            maxLens[col] = val.length;
+          }
+        });
+      });
+      const colWidths = columns.map(col => ({ wch: maxLens[col] + 3 }));
+      worksheet['!cols'] = colWidths;
+
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Riwayat Transaksi");
+      
+      // Trigger download
+      XLSX.writeFile(workbook, fileName);
+      showToast("Export Berhasil", `File ${fileName} berhasil diunduh.`);
     }
   </script>
 
