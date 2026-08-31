@@ -415,45 +415,10 @@
                   <input type="text" id="sumber-pengajuan" value="Kantor Cabang" disabled class="border border-slate-200 bg-slate-100 rounded-xl px-3 py-2 text-xs font-bold text-slate-500 cursor-not-allowed">
                 </div>
 
-                <!-- 2. Kantor Cabang ASABRI (Dropdown, wajib) -->
+                <!-- 2. Kantor Cabang ASABRI (auto-fill dari user yang login, disabled) -->
                 <div class="flex flex-col gap-1.5">
                   <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kantor Cabang ASABRI <span class="text-rose-500">*</span></label>
-                  <select id="kantor-cabang" class="border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
-                    <option value="" disabled selected>-- Pilih Kantor Cabang --</option>
-                    <option value="KANCAB AMBON">KANCAB AMBON</option>
-                    <option value="KANCAB BALIKPAPAN">KANCAB BALIKPAPAN</option>
-                    <option value="KANCAB BANDA ACEH">KANCAB BANDA ACEH</option>
-                    <option value="KANCAB BANDUNG">KANCAB BANDUNG</option>
-                    <option value="KANCAB BANJARMASIN">KANCAB BANJARMASIN</option>
-                    <option value="KANCAB BATAM">KANCAB BATAM</option>
-                    <option value="KANCAB BENGKULU">KANCAB BENGKULU</option>
-                    <option value="KANCAB CIREBON">KANCAB CIREBON</option>
-                    <option value="KANCAB DENPASAR">KANCAB DENPASAR</option>
-                    <option value="KANCAB JAYAPURA">KANCAB JAYAPURA</option>
-                    <option value="KANCAB KENDARI">KANCAB KENDARI</option>
-                    <option value="KANCAB KUPANG">KANCAB KUPANG</option>
-                    <option value="KANCAB LAMPUNG">KANCAB LAMPUNG</option>
-                    <option value="KANCAB LHOKSEUMAWE">KANCAB LHOKSEUMAWE</option>
-                    <option value="KANCAB MADIUN">KANCAB MADIUN</option>
-                    <option value="KANCAB MAKASSAR">KANCAB MAKASSAR</option>
-                    <option value="KANCAB MALANG">KANCAB MALANG</option>
-                    <option value="KANCAB MANADO">KANCAB MANADO</option>
-                    <option value="KANCAB MATARAM">KANCAB MATARAM</option>
-                    <option value="KANCAB MEDAN">KANCAB MEDAN</option>
-                    <option value="KANCAB PADANG">KANCAB PADANG</option>
-                    <option value="KANCAB PALANGKARAYA">KANCAB PALANGKARAYA</option>
-                    <option value="KANCAB PALEMBANG">KANCAB PALEMBANG</option>
-                    <option value="KANCAB PALU">KANCAB PALU</option>
-                    <option value="KANCAB PEKANBARU">KANCAB PEKANBARU</option>
-                    <option value="KANCAB PONTIANAK">KANCAB PONTIANAK</option>
-                    <option value="KANCAB SEMARANG">KANCAB SEMARANG</option>
-                    <option value="KANCAB SERANG">KANCAB SERANG</option>
-                    <option value="KANCAB SORONG">KANCAB SORONG</option>
-                    <option value="KANCAB SURABAYA">KANCAB SURABAYA</option>
-                    <option value="KANCAB TERNATE">KANCAB TERNATE</option>
-                    <option value="KANCAB UTAMA JAKARTA">KANCAB UTAMA JAKARTA</option>
-                    <option value="KANCAB YOGYAKARTA">KANCAB YOGYAKARTA</option>
-                  </select>
+                  <input type="text" id="kantor-cabang" disabled class="border border-slate-200 bg-slate-100 rounded-xl px-3 py-2 text-xs font-bold text-slate-500 cursor-not-allowed">
                   <span id="error-kancab" class="text-rose-500 text-[10px] hidden font-semibold mt-0.5">Kantor Cabang wajib dipilih</span>
                 </div>
                 
@@ -560,7 +525,26 @@
       "Tunjangan Orang Tua — Meninggal"
     ];
 
+    // Auto-fill Kantor Cabang dari user yang login
+    function getCurrentUser() {
+      return {
+        username: "staf_kancab",
+        kantorCabang: "KANCAB AMBON" // Contoh: "KANCAB AMBON"
+      };
+    }
+
+    function autoFillKantorCabang() {
+      const userKancab = getCurrentUser().kantorCabang;
+      const kantorCabangField = document.getElementById("kantor-cabang");
+      if (kantorCabangField) {
+        kantorCabangField.value = userKancab;
+        kantorCabangField.disabled = true;
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+      // Auto-fill Kantor Cabang
+      autoFillKantorCabang();
       // Handle query parameter NIP/NIK lookup
       const urlParams = new URLSearchParams(window.location.search);
       
@@ -1143,6 +1127,7 @@
         });
 
         document.querySelector("form").reset();
+        autoFillKantorCabang();
       }
     }
 
