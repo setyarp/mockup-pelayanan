@@ -1279,7 +1279,7 @@
         lbl.innerText = "Sudah Diunggah";
       } else {
         // Fallback for static mock files or missing files
-        if (claim.noRegistrasi && claim.noRegistrasi.startsWith("REG-2025-000")) {
+        if (claim.noRegistrasi && (claim.noRegistrasi.startsWith("REG-2025-000") || claim.noRegistrasi.startsWith("REG/"))) {
           box.className = "flex items-center gap-3 p-3 rounded-xl border border-emerald-200 bg-emerald-50/50 cursor-pointer hover:border-emerald-400 hover:shadow-sm transition-all";
           icon.className = "w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px]";
           icon.innerHTML = `<i class="fas fa-check"></i>`;
@@ -1319,7 +1319,7 @@
       let fileType = claim.uploadedTypes ? (claim.uploadedTypes[type] || claim.uploadedTypes[type.toUpperCase()]) : null;
 
       // Fallback for static mock files
-      if (!fileUrl && claim.noRegistrasi && claim.noRegistrasi.startsWith("REG-2025-000")) {
+      if (!fileUrl && claim.noRegistrasi && (claim.noRegistrasi.startsWith("REG-2025-000") || claim.noRegistrasi.startsWith("REG/"))) {
         fileUrl = "mock";
         fileType = "image/png";
       }

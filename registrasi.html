@@ -514,13 +514,7 @@
       "Tunjangan Orang Tua — Meninggal"
     ];
 
-    // Auto-fill Kantor Cabang dari user yang login
-    function getCurrentUser() {
-      return {
-        username: "staf_kancab",
-        kantorCabang: "KANCAB AMBON" // Contoh: "KANCAB AMBON"
-      };
-    }
+
 
     function autoFillKantorCabang() {
       const userKancab = getCurrentUser().kantorCabang;
@@ -1247,10 +1241,8 @@
       }
 
       // Generate registration code
-      const currentYear = new Date().getFullYear();
-      const claims = getClaims();
-      const nextId = claims.length + 80;
-      const regNo = `REG-${currentYear}-000${nextId}`;
+      const user = getCurrentUser();
+      const regNo = generateNomorRegistrasi(user.kodeKancab);
 
       // Assemble state data to save
       const registrationState = {

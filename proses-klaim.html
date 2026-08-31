@@ -2024,9 +2024,8 @@
       }
 
       if (generate) {
-        const claims = getClaims();
-        const nextId = claims.length + 81;
-        const newNoReg = `REG-2025-07-00${nextId}`;
+        const user = getCurrentUser();
+        const newNoReg = generateNomorRegistrasi(user.kodeKancab);
 
         const newTicket = {
           noRegistrasi: newNoReg,

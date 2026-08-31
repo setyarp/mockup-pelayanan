@@ -3,6 +3,40 @@
 // Database Methods
 const DATA_VERSION = "1.4"; // Increment this whenever MOCK_CLAIMS structure changes
 
+function getCurrentUser() {
+  return {
+    username: "staf_kancab",
+    kantorCabang: "KANCAB AMBON",
+    kodeKancab: "0123"
+  };
+}
+
+function getNextNomorUrut(kodeKancab, bulan, tahun) {
+  const key = `seq_${kodeKancab}_${bulan}_${tahun}`;
+  let currentSeq = parseInt(localStorage.getItem(key) || "0");
+  currentSeq += 1;
+  localStorage.setItem(key, currentSeq.toString());
+  return currentSeq;
+}
+
+function generateNomorRegistrasi(kodeKancab) {
+  const now = new Date();
+
+  // Bulan dalam format Romawi
+  const bulanRomawi = [
+    'I','II','III','IV','V','VI',
+    'VII','VIII','IX','X','XI','XII'
+  ];
+  const bulan = bulanRomawi[now.getMonth()];
+  const tahun = now.getFullYear();
+
+  // Nomor urut 6 digit, reset tiap bulan
+  const nomorUrut = getNextNomorUrut(kodeKancab, bulan, tahun)
+    .toString().padStart(6, '0');
+
+  return `REG/${kodeKancab}/${bulan}/${tahun}/${nomorUrut}`;
+}
+
 function getClaims() {
   const data = localStorage.getItem("asabri_claims");
   const storedVersion = localStorage.getItem("asabri_data_version");
