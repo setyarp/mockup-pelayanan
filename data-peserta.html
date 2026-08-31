@@ -2454,8 +2454,8 @@
         tanggalMulai: item.tanggalMulai || item.start || '',
         tanggalAkhir: item.tanggalAkhir || item.end || '',
         persentase: item.persentase !== undefined ? item.persentase : (item.percent !== undefined ? item.percent : 75),
-        persentaseIstri: item.persentaseIstri !== undefined ? item.persentaseIstri : 100,
-        persentaseAnak: item.persentaseAnak !== undefined ? item.persentaseAnak : 100,
+        persentaseIstri: item.persentaseIstri !== undefined ? item.persentaseIstri : 0,
+        persentaseAnak: item.persentaseAnak !== undefined ? item.persentaseAnak : 0,
         nomorSkep: item.nomorSkep || item.noSkep || 'SKEP/SKOR/MOCK/2026',
         berkasName: item.berkasName || 'file.pdf',
         landasan: item.landasan || ''
@@ -2527,8 +2527,8 @@
       document.getElementById('tanggal-mulai-skorsing').value = '';
       document.getElementById('tanggal-akhir-skorsing').value = '';
       document.getElementById('persentase-skorsing').value = '75';
-      document.getElementById('persentase-skorsing-istri').value = '100';
-      document.getElementById('persentase-skorsing-anak').value = '100';
+      document.getElementById('persentase-skorsing-istri').value = '0';
+      document.getElementById('persentase-skorsing-anak').value = '0';
       document.getElementById('nomor-skep-skorsing').value = '';
       document.getElementById('landasan-skorsing').value = '';
       const fileInput = document.getElementById('berkas-skorsing');
@@ -2540,8 +2540,8 @@
       const tanggalMulai = document.getElementById('tanggal-mulai-skorsing').value;
       const tanggalAkhir = document.getElementById('tanggal-akhir-skorsing').value;
       const persentase = parseFloat(document.getElementById('persentase-skorsing').value);
-      const persentaseIstri = parseFloat(document.getElementById('persentase-skorsing-istri').value) || 100;
-      const persentaseAnak = parseFloat(document.getElementById('persentase-skorsing-anak').value) || 100;
+      const persentaseIstri = parseFloat(document.getElementById('persentase-skorsing-istri').value) || 0;
+      const persentaseAnak = parseFloat(document.getElementById('persentase-skorsing-anak').value) || 0;
       const nomorSkep = document.getElementById('nomor-skep-skorsing').value;
       const landasan = document.getElementById('landasan-skorsing').value;
       
@@ -2612,8 +2612,8 @@
       document.getElementById("tanggal-mulai-skorsing").value = item.tanggalMulai;
       document.getElementById("tanggal-akhir-skorsing").value = item.tanggalAkhir;
       document.getElementById("persentase-skorsing").value = item.persentase;
-      document.getElementById("persentase-skorsing-istri").value = item.persentaseIstri || 100;
-      document.getElementById("persentase-skorsing-anak").value = item.persentaseAnak || 100;
+      document.getElementById("persentase-skorsing-istri").value = item.persentaseIstri !== undefined ? item.persentaseIstri : 0;
+      document.getElementById("persentase-skorsing-anak").value = item.persentaseAnak !== undefined ? item.persentaseAnak : 0;
       document.getElementById("nomor-skep-skorsing").value = item.nomorSkep;
       document.getElementById("landasan-skorsing").value = item.landasan || '';
       
@@ -3662,11 +3662,11 @@
         </div>
         <div>
           <label class="block font-bold text-slate-600 mb-1">Skorsing Tunjangan Pasangan (%)</label>
-          <input type="number" id="persentase-skorsing-istri" value="100" min="0" max="100" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-bold">
+          <input type="number" id="persentase-skorsing-istri" value="0" min="0" max="100" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-bold">
         </div>
         <div>
           <label class="block font-bold text-slate-600 mb-1">Skorsing Tunjangan Anak (%)</label>
-          <input type="number" id="persentase-skorsing-anak" value="100" min="0" max="100" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-bold">
+          <input type="number" id="persentase-skorsing-anak" value="0" min="0" max="100" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-asabri-blue font-bold">
         </div>
         <div>
           <label class="block font-bold text-slate-600 mb-1">Nomor SKEP Skorsing <span class="text-rose-500">*</span></label>
