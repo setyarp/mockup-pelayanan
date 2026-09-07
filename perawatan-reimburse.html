@@ -125,16 +125,136 @@
 
       <!-- VIEW CONTAINER (TABEL) -->
       <div id="view-tabel" class="flex-1 overflow-y-auto p-8 space-y-6">
-        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
-          <h3 class="text-sm font-bold text-slate-800 mb-2"><i class="fas fa-info-circle text-asabri-blue mr-2"></i> Halaman Mandiri: Reimburse Perawatan</h3>
-          <p class="text-xs text-slate-500">Halaman ini khusus mengelola Reimburse Perawatan oleh Peserta Mandiri (Data Kwitansi, No Rekening Peserta, Alur 4 Tab Verifikasi).</p>
+        <!-- Filter Card -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-end justify-between">
+          <div class="flex flex-wrap gap-4 items-center">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Status</label>
+              <select id="filter-status" onchange="applyFilters()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue text-slate-700 min-w-[170px]">
+                <option value="Semua">Semua Status</option>
+                <option value="Verifikasi Administrasi">Verifikasi Administrasi</option>
+                <option value="Verifikasi Medis & Substansi">Verifikasi Medis & Substansi</option>
+                <option value="Validasi Verifikasi">Validasi Verifikasi</option>
+                <option value="Approval KAKANCAB">Approval KAKANCAB</option>
+                <option value="Dibayarkan">Dibayarkan</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Cari Reimburse</label>
+              <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Cari no. reg, nama, NIP..." class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700 min-w-[240px]">
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-500 font-medium">Total: <b id="count-total" class="text-asabri-blue">0</b> Data Reimburse</span>
+          </div>
+        </div>
+
+        <!-- Tabel Reimburse -->
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-slate-150 bg-slate-50 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-hand-holding-dollar text-asabri-blue"></i>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Daftar Pengajuan Reimburse Perawatan Mandiri</h3>
+            </div>
+            <span class="px-3 py-1 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-full font-bold text-[10px]" id="data-count-badge">0 Data</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
+              <thead>
+                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
+                  <th class="py-3 px-3 text-center">No</th>
+                  <th class="py-3 px-3 font-mono">No Registrasi</th>
+                  <th class="py-3 px-3 font-mono">Tanggal Pengajuan</th>
+                  <th class="py-3 px-3">Status</th>
+                  <th class="py-3 px-3 font-mono">KTA</th>
+                  <th class="py-3 px-3 font-mono">NRP/NIP</th>
+                  <th class="py-3 px-3">Nama Peserta</th>
+                  <th class="py-3 px-3">Jenis Layanan</th>
+                  <th class="py-3 px-3">Provider / Faskes</th>
+                  <th class="py-3 px-3 font-mono text-right">Jumlah Diajukan</th>
+                  <th class="py-3 px-3 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tabel-tbody" class="divide-y divide-slate-100 bg-white font-medium text-slate-700">
+                <!-- Dynamic via JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
   </div>
 
   <script>
+    // --- MASTER DATA REIMBURSE PERAWATAN MANDIRI (5 DATA MANDATORI) ---
+    const listReimburseMaster = [
+      {
+        id: 1,
+        noReg: "REG/RMB/0123/IX/2026/00001",
+        tglPengajuan: "01 Sep 2026",
+        status: "Verifikasi Administrasi",
+        kta: "KTA-8899201992",
+        nrpNip: "199203108821",
+        namaPeserta: "KAPTEN INF BAMBANG KUSUMA",
+        provider: "RS Siloam Semanggi",
+        jenisLayanan: "Rawat Inap",
+        biayaDiajukan: 15500000
+      },
+      {
+        id: 2,
+        noReg: "REG/RMB/0123/IX/2026/00002",
+        tglPengajuan: "02 Sep 2026",
+        status: "Verifikasi Administrasi",
+        kta: "KTA-3171092801",
+        nrpNip: "3171092801890001",
+        namaPeserta: "BRIPKA WIRATA ATMAJA",
+        provider: "RS Pelni Jakarta",
+        jenisLayanan: "Biaya Angkut Darat",
+        biayaDiajukan: 1500000
+      },
+      {
+        id: 3,
+        noReg: "REG/RMB/0123/IX/2026/00003",
+        tglPengajuan: "03 Sep 2026",
+        status: "Verifikasi Medis & Substansi",
+        kta: "KTA-7008150199",
+        nrpNip: "524109881200",
+        namaPeserta: "SERDA AHMAD HIDAYAT",
+        provider: "RS RSPAD Gatot Soebroto",
+        jenisLayanan: "Protese/Ortese",
+        biayaDiajukan: 3800000
+      },
+      {
+        id: 4,
+        noReg: "REG/RMB/0123/IX/2026/00004",
+        tglPengajuan: "04 Sep 2026",
+        status: "Approval KAKANCAB",
+        kta: "KTA-7109200211",
+        nrpNip: "199401128009",
+        namaPeserta: "LTT INF HENDRA SUKMA",
+        provider: "RS Polri Kramat Jati",
+        jenisLayanan: "Rehabilitasi Medis",
+        biayaDiajukan: 2400000
+      },
+      {
+        id: 5,
+        noReg: "REG/RMB/0123/IX/2026/00005",
+        tglPengajuan: "05 Sep 2026",
+        status: "Dibayarkan",
+        kta: "KTA-7305100344",
+        nrpNip: "198905102211",
+        namaPeserta: "MAYOR LAUT SUGENG RIYADI",
+        provider: "RSAL Dr. Mintohardjo",
+        jenisLayanan: "Rawat Jalan",
+        biayaDiajukan: 850000
+      }
+    ];
+
+    let activeSubTabState = "pengajuan";
+
     function switchSubTab(sub) {
+      activeSubTabState = sub;
       const btnP = document.getElementById('btn-sub-pengajuan');
       const btnR = document.getElementById('btn-sub-riwayat');
       if (sub === 'pengajuan') {
@@ -144,7 +264,83 @@
         btnR.className = "px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all";
         btnP.className = "px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all";
       }
+      applyFilters();
     }
+
+    function applyFilters() {
+      const statusVal = document.getElementById("filter-status").value;
+      const searchVal = document.getElementById("filter-search").value.toLowerCase();
+
+      let filtered = listReimburseMaster;
+
+      if (activeSubTabState === 'pengajuan') {
+        filtered = filtered.filter(item => item.status !== "Dibayarkan");
+      } else {
+        filtered = filtered.filter(item => item.status === "Dibayarkan");
+      }
+
+      if (statusVal !== "Semua") {
+        filtered = filtered.filter(item => item.status === statusVal);
+      }
+
+      if (searchVal) {
+        filtered = filtered.filter(item =>
+          item.noReg.toLowerCase().includes(searchVal) ||
+          item.namaPeserta.toLowerCase().includes(searchVal) ||
+          item.nrpNip.toLowerCase().includes(searchVal) ||
+          item.provider.toLowerCase().includes(searchVal)
+        );
+      }
+
+      renderTabel(filtered);
+    }
+
+    function renderTabel(data) {
+      const tbody = document.getElementById('tabel-tbody');
+      tbody.innerHTML = "";
+      document.getElementById('count-total').innerText = data.length;
+      document.getElementById('data-count-badge').innerText = `${data.length} Data`;
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" class="py-8 text-center text-slate-400 italic">Tidak ada data Reimburse Perawatan yang sesuai</td></tr>`;
+        return;
+      }
+
+      data.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
+
+        let statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-amber-100 text-amber-800 border border-amber-200">${item.status}</span>`;
+        if (item.status === 'Dibayarkan') {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200">Dibayarkan</span>`;
+        }
+
+        tr.innerHTML = `
+          <td class="py-3 px-3 text-center font-bold text-slate-500">${index + 1}</td>
+          <td class="py-3 px-3 font-bold font-mono text-asabri-blue">${item.noReg}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.tglPengajuan}</td>
+          <td class="py-3 px-3">${statusBadge}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.kta}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.nrpNip}</td>
+          <td class="py-3 px-3 font-bold text-slate-800">${item.namaPeserta}</td>
+          <td class="py-3 px-3 font-bold text-asabri-blue">${item.jenisLayanan}</td>
+          <td class="py-3 px-3 font-semibold text-slate-700">${item.provider}</td>
+          <td class="py-3 px-3 font-mono font-bold text-slate-900 text-right">${formatRupiah(item.biayaDiajukan)}</td>
+          <td class="py-3 px-3 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button class="px-2.5 py-1 bg-asabri-blue text-white font-bold rounded-lg text-[10px] shadow-sm flex items-center gap-1">
+                <i class="fas fa-file-invoice"></i> Detail
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      applyFilters();
+    });
   </script>
 </body>
 </html>
