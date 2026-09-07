@@ -669,7 +669,13 @@
     let selectedItem = null;
 
     function initPage() {
-      applyFilters();
+      const urlParams = new URLSearchParams(window.location.search);
+      const subParam = urlParams.get('sub');
+      if (subParam === 'riwayat') {
+        switchSubTab('riwayat');
+      } else {
+        switchSubTab('pengajuan');
+      }
       renderPlafonTabel();
     }
 
@@ -680,17 +686,17 @@
       const filterSelect = document.getElementById('filter-status');
 
       if (sub === 'pengajuan') {
-        btnP.className = "px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all";
-        btnR.className = "px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all";
-        document.getElementById('breadcrumb-title').innerText = "Pengajuan Jaminan Perawatan (SJP)";
-        document.getElementById('table-title').innerText = "Daftar Pengajuan Jaminan Perawatan (SJP)";
-        filterSelect.innerHTML = `<option value="Semua">Semua Status</option><option value="Baru">Baru</option><option value="Proses">Proses</option>`;
+        if (btnP) btnP.className = "px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all";
+        if (btnR) btnR.className = "px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all";
+        if (document.getElementById('breadcrumb-title')) document.getElementById('breadcrumb-title').innerText = "Pengajuan Jaminan Perawatan (SJP)";
+        if (document.getElementById('table-title')) document.getElementById('table-title').innerText = "Daftar Pengajuan Jaminan Perawatan (SJP)";
+        if (filterSelect) filterSelect.innerHTML = `<option value="Semua">Semua Status</option><option value="Baru">Baru</option><option value="Proses">Proses</option>`;
       } else {
-        btnR.className = "px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all";
-        btnP.className = "px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all";
-        document.getElementById('breadcrumb-title').innerText = "Riwayat Jaminan Perawatan Selesai";
-        document.getElementById('table-title').innerText = "Daftar Riwayat Jaminan Perawatan Selesai";
-        filterSelect.innerHTML = `<option value="Semua">Semua Status (Selesai)</option><option value="Selesai">Selesai</option>`;
+        if (btnR) btnR.className = "px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all";
+        if (btnP) btnP.className = "px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all";
+        if (document.getElementById('breadcrumb-title')) document.getElementById('breadcrumb-title').innerText = "Riwayat Jaminan Perawatan Selesai";
+        if (document.getElementById('table-title')) document.getElementById('table-title').innerText = "Daftar Riwayat Jaminan Perawatan Selesai";
+        if (filterSelect) filterSelect.innerHTML = `<option value="Semua">Semua Status (Selesai)</option><option value="Selesai">Selesai</option>`;
       }
 
       showTabelView();
@@ -736,7 +742,8 @@
       tbody.innerHTML = "";
       document.getElementById('count-total').innerText = data.length;
       document.getElementById('data-count-badge').innerText = `${data.length} Data`;
-      document.getElementById('badge-count-JAM').innerText = listJaminanMaster.filter(d => d.status !== 'Selesai').length;
+      const badgeJAM = document.getElementById('badge-count-JAM');
+      if (badgeJAM) badgeJAM.innerText = listJaminanMaster.filter(d => d.status !== 'Selesai').length;
 
       if (data.length === 0) {
         tbody.innerHTML = `<tr><td colspan="11" class="py-8 text-center text-slate-400 italic">Tidak ada data Jaminan Perawatan yang sesuai</td></tr>`;
