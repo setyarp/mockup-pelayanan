@@ -552,7 +552,7 @@
   </div>
 
   <script>
-    // --- MASTER DATA PENGAJUAN KLAIM RESTITUSI (5 DATA MANDATORI) ---
+    // --- MASTER DATA PENGAJUAN KLAIM RESTITUSI (5 DATA MANDATORI DECK) ---
     const listRestitusiMaster = [
       {
         id: 1,
@@ -574,21 +574,18 @@
         noKwitansi: "KW/SILOAM/2026/09/1029",
         tglKwitansi: "01 Sep 2026",
         tglMasuk: "01 Sep 2026",
-        tglKeluar: "10 Sep 2026",
-        totalKwitansi: 45800000,
-        biayaDiajukan: 45800000,
-        keteranganKwitansi: "Biaya perawatan rawat inap fraktur clavicula dextra pasca operasi reduksi fiksasi internal.",
-        tidakDijaminList: [
-          { tgl: "05 Sep 2026", item: "Vitamin & Suplemen Herbal Non-JKK", ket: "Pengecualian Program JKK", qty: 2, biaya: 1500000 },
-          { tgl: "07 Sep 2026", item: "Upgrade Kamar Lebih Hak Kelas", ket: "Selisih Tarif Kamar", qty: 1, biaya: 2000000 }
-        ]
+        tglKeluar: "09 Sep 2026",
+        totalKwitansi: 4500000,
+        biayaDiajukan: 4500000,
+        keteranganKwitansi: "Biaya perawatan rawat inap fraktur clavicula dextra.",
+        tidakDijaminList: []
       },
       {
         id: 2,
         noReg: "REG/RST/0123/IX/2026/00002",
         tglPengajuan: "02 Sep 2026",
         sjpNo: "000892/SJP/JKK-ASABRI/IX/2026",
-        status: "Verifikasi Administrasi",
+        status: "Verifikasi Medis & Substansi",
         ktpa: "KTA-3171092801",
         kta: "KTA-3171092801",
         nrpNip: "3171092801890001",
@@ -604,9 +601,9 @@
         tglKwitansi: "02 Sep 2026",
         tglMasuk: "02 Sep 2026",
         tglKeluar: "02 Sep 2026",
-        totalKwitansi: 1800000,
-        biayaDiajukan: 1800000,
-        keteranganKwitansi: "Kwitansi sewa ambulans penanganan luka darurat dinas.",
+        totalKwitansi: 2000000,
+        biayaDiajukan: 2000000,
+        keteranganKwitansi: "Kwitansi sewa ambulans rujukan darurat.",
         tidakDijaminList: []
       },
       {
@@ -614,7 +611,7 @@
         noReg: "REG/RST/0123/IX/2026/00003",
         tglPengajuan: "03 Sep 2026",
         sjpNo: "000893/SJP/JKK-ASABRI/IX/2026",
-        status: "Verifikasi Medis & Substansi",
+        status: "Validasi Verifikasi",
         ktpa: "KTA-7008150199",
         kta: "KTA-7008150199",
         nrpNip: "524109881200",
@@ -630,9 +627,9 @@
         tglKwitansi: "03 Sep 2026",
         tglMasuk: "03 Sep 2026",
         tglKeluar: "03 Sep 2026",
-        totalKwitansi: 4800000,
-        biayaDiajukan: 4800000,
-        keteranganKwitansi: "Pembuatan tangan palsu protese digiti manus.",
+        totalKwitansi: 5000000,
+        biayaDiajukan: 5000000,
+        keteranganKwitansi: "Pembuatan alat bantu protese digiti manus.",
         tidakDijaminList: []
       },
       {
@@ -658,7 +655,7 @@
         tglKeluar: "04 Sep 2026",
         totalKwitansi: 2600000,
         biayaDiajukan: 2600000,
-        keteranganKwitansi: "Paket rehabilitasi medis pasca rekonstruksi ligamen.",
+        keteranganKwitansi: "Paket terapi rehabilitasi medis.",
         tidakDijaminList: []
       },
       {
@@ -677,14 +674,14 @@
         bankNama: "BANK BSI",
         bankRekening: "710-291-882-9",
         bankAn: "RSAL DR MINTOHARDJO",
-        jenisLayanan: "Rawat Jalan",
+        jenisLayanan: "Penggantian Gigi Tiruan",
         noKwitansi: "KW/RSAL/2026/09/0112",
         tglKwitansi: "05 Sep 2026",
         tglMasuk: "05 Sep 2026",
         tglKeluar: "05 Sep 2026",
-        totalKwitansi: 1200000,
-        biayaDiajukan: 1200000,
-        keteranganKwitansi: "Pengobatan rawat jalan ganti balut & obat-obatan.",
+        totalKwitansi: 3000000,
+        biayaDiajukan: 3000000,
+        keteranganKwitansi: "Penggantian gigi tiruan trauma fisik.",
         tidakDijaminList: []
       }
     ];
@@ -793,9 +790,19 @@
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
 
-        let statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-amber-100 text-amber-800 border border-amber-200">${item.status}</span>`;
-        if (item.status === 'Dibayarkan') {
+        let statusBadge = "";
+        if (item.status === 'Verifikasi Administrasi') {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-blue-100 text-blue-800 border border-blue-200">Verifikasi Administrasi</span>`;
+        } else if (item.status === 'Verifikasi Medis & Substansi') {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-amber-100 text-amber-800 border border-amber-200">Verifikasi Medis & Substansi</span>`;
+        } else if (item.status === 'Validasi Verifikasi') {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-purple-100 text-purple-800 border border-purple-200">Validasi Verifikasi</span>`;
+        } else if (item.status === 'Approval KAKANCAB' || item.status === 'Approval') {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-indigo-100 text-indigo-800 border border-indigo-200">Approval KAKANCAB</span>`;
+        } else if (item.status === 'Dibayarkan') {
           statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200">Dibayarkan</span>`;
+        } else {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-slate-100 text-slate-800 border border-slate-200">${item.status}</span>`;
         }
 
         tr.innerHTML = `

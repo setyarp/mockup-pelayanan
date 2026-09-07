@@ -619,7 +619,7 @@
         statusRs: "RS Swasta (Ada Limit)",
         tglMulaiRawat: "01 Sep 2026",
         diagnosa: "Fraktur Clavicula Dextra (ICD-10: S42.0)",
-        periodeJaminan: "01 Sep 2026 s.d 10 Sep 2026 (10 Hari Kalender)",
+        periodeJaminan: "01 Sep 2026 s.d 09 Sep 2026 (9 Hari Kalender)",
         cob: "PT Jasa Raharja (Plafon Rp 20.000.000)",
         sjpKe: "1 (Pertama)",
         jenisLayanan: "Rawat Inap",
@@ -651,7 +651,7 @@
         statusRs: "RS Swasta (Ada Limit)",
         tglMulaiRawat: "02 Sep 2026",
         diagnosa: "Trauma Otot Tungkai Bawah",
-        periodeJaminan: "02 Sep 2026 s.d 05 Sep 2026",
+        periodeJaminan: "02 Sep 2026 s.d 01 Okt 2026 (30 Hari Kalender)",
         cob: "Tidak Ada",
         sjpKe: "1 (Pertama)",
         jenisLayanan: "Biaya Angkut Darat",
@@ -683,7 +683,7 @@
         statusRs: "RS Pemerintah (Unlimited)",
         tglMulaiRawat: "03 Sep 2026",
         diagnosa: "Amputasi Traumatik Digiti Manus",
-        periodeJaminan: "03 Sep 2026 s.d 30 Sep 2026",
+        periodeJaminan: "03 Sep 2026 s.d 02 Okt 2026 (30 Hari Kalender)",
         cob: "Tidak Ada",
         sjpKe: "1 (Pertama)",
         jenisLayanan: "Protese/Ortese",
@@ -715,7 +715,7 @@
         statusRs: "RS Pemerintah (Unlimited)",
         tglMulaiRawat: "04 Sep 2026",
         diagnosa: "Post Operasi ACL Knee Dextra",
-        periodeJaminan: "04 Sep 2026 s.d 04 Okt 2026",
+        periodeJaminan: "04 Sep 2026 s.d 03 Okt 2026 (30 Hari Kalender)",
         cob: "Tidak Ada",
         sjpKe: "1 (Pertama)",
         jenisLayanan: "Rehabilitasi Medis",
@@ -747,7 +747,7 @@
         statusRs: "RS Pemerintah (Unlimited)",
         tglMulaiRawat: "05 Sep 2026",
         diagnosa: "Laceration Tendon Achiles",
-        periodeJaminan: "05 Sep 2026 s.d 15 Sep 2026",
+        periodeJaminan: "05 Sep 2026 s.d 04 Okt 2026 (30 Hari Kalender)",
         cob: "Tidak Ada",
         sjpKe: "1 (Pertama)",
         jenisLayanan: "Rawat Jalan",
@@ -968,15 +968,33 @@
       document.getElementById('view-detail').classList.remove('hidden');
     }
 
+    function hitungMasaBerlakuSjp(tglTerbitStr, jenisLayanan) {
+      const tgl = new Date(tglTerbitStr || Date.now());
+      // Tanggal terbit = hari ke-1
+      const tambahanHari = (jenisLayanan === 'Rawat Inap') ? (9 - 1) : (30 - 1);
+      tgl.setDate(tgl.getDate() + tambahanHari);
+
+      const d = String(tgl.getDate()).padStart(2, '0');
+      const mIdx = tgl.getMonth();
+      const y = tgl.getFullYear();
+      const mNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      return `${d} ${mNames[mIdx]} ${y}`;
+    }
+
     function renderRiwayatSjpTabel() {
       const tbody = document.getElementById('riwayat-sjp-tbody');
+      const tglTerbit = selectedItem ? selectedItem.tglPengajuan : '01 Sep 2026';
+      const jenis = selectedItem ? selectedItem.jenisLayanan : 'Rawat Inap';
+      const tglAkhir = hitungMasaBerlakuSjp(tglTerbit, jenis);
+      const labelHari = jenis === 'Rawat Inap' ? '(9 Hari Kalender)' : '(30 Hari Kalender)';
+
       tbody.innerHTML = `
         <tr class="border-b border-slate-100">
           <td class="py-2.5 px-3 font-bold">1</td>
           <td class="py-2.5 px-3 font-mono font-bold text-asabri-blue">SJP/JKK-PRW/2026/000891</td>
-          <td class="py-2.5 px-3 font-mono">07 Sep 2026</td>
-          <td class="py-2.5 px-3 font-mono text-emerald-700 font-bold">16 Sep 2026 (+9 Hari Kalender)</td>
-          <td class="py-2.5 px-3 font-semibold">Rawat Inap</td>
+          <td class="py-2.5 px-3 font-mono">${tglTerbit}</td>
+          <td class="py-2.5 px-3 font-mono text-emerald-700 font-bold">${tglAkhir} ${labelHari}</td>
+          <td class="py-2.5 px-3 font-semibold">${jenis}</td>
         </tr>
       `;
     }
