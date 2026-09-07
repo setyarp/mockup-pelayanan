@@ -408,7 +408,7 @@
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 flex justify-end">
-              <button onclick="switchProsesTab('tab-proses-2')" class="px-5 py-2.5 bg-asabri-blue text-white rounded-xl font-bold text-xs hover:bg-asabri-blueDark transition-colors flex items-center gap-2">
+              <button onclick="lanjutKeTab2()" class="px-5 py-2.5 bg-asabri-blue text-white rounded-xl font-bold text-xs hover:bg-asabri-blueDark transition-colors flex items-center gap-2 shadow-md">
                 Lanjut ke Tab 2: Dokumen & Verifikasi Kancab <i class="fas fa-arrow-right"></i>
               </button>
             </div>
@@ -961,6 +961,11 @@
       return role === 'KAKANCAB' ? 'Drs. Supriyadi (KAKANCAB Jakarta)' : 'SK | Staf Kancab Utama';
     }
 
+    function lanjutKeTab2() {
+      alert("[BERHASIL] Data Pengajuan Berhasil Disimpan!\n\nStatus Data Pengajuan telah diverifikasi. Melanjutkan ke Tab 2: Dokumen & Verifikasi Kancab.");
+      switchProsesTab('tab-proses-2');
+    }
+
     function setujuiVerifikasiKancab() {
       sessionStorage.setItem('status_verifikasi_kancab_jaminan', 'Disetujui');
       sessionStorage.removeItem('catatan_kancab_jaminan');
@@ -984,6 +989,8 @@
       document.getElementById('doc-card-no').innerText = "SJP/JKK-PRW/2026/000891";
       document.getElementById('btn-final-approval').className = "px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2 text-sm";
       document.getElementById('btn-final-approval').innerHTML = `<i class="fas fa-paper-plane"></i> TERBITKAN SJP & SIMPAN KEPUTUSAN FINAL`;
+
+      alert("[BERHASIL DISIMPAN] Data Berhasil Diverifikasi (Disetujui)!\n\nVerifikasi Administrasi Kancab disetujui. Melanjutkan ke Tab 3: Approval KAKANCAB.");
 
       switchProsesTab('tab-proses-3');
     }
@@ -1030,6 +1037,8 @@
       document.getElementById('doc-card-no').innerText = "SPJP/JKK-PRW/2026/000891";
       document.getElementById('btn-final-approval').className = "px-8 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2 text-sm";
       document.getElementById('btn-final-approval').innerHTML = `<i class="fas fa-paper-plane"></i> TERBITKAN SPJP & SIMPAN KEPUTUSAN FINAL`;
+
+      alert("[BERHASIL DISIMPAN] Data Berhasil Diverifikasi (Ditolak dengan Catatan)!\n\nCatatan penolakan tersimpan. Melanjutkan ke Tab 3: Approval KAKANCAB.");
 
       switchProsesTab('tab-proses-3');
     }
