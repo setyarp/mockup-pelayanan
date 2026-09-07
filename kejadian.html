@@ -439,6 +439,14 @@
                         </select>
                         <span id="error-kejadian-jenis" class="text-rose-500 text-[10px] hidden font-semibold">Jenis Kejadian wajib dipilih</span>
                       </div>
+                      <!-- Dropdown Jenis Kematian KK (Gugur / Tewas) -->
+                      <div id="jenis-kematian-kk-container" class="hidden flex-col gap-1.5 animate-fade-in">
+                        <label class="font-bold text-slate-650">Jenis Kematian (KK) <span class="text-rose-500">*</span></label>
+                        <select id="jenis-kematian-kk" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue focus:ring-1 focus:ring-asabri-blue/30 text-slate-700">
+                          <option value="Gugur" selected>Gugur</option>
+                          <option value="Tewas">Tewas</option>
+                        </select>
+                      </div>
                       <!-- Bintang Jasa info box (KK — Meninggal Dunia only) -->
                       <div id="bintang-jasa-container" class="hidden animate-fade-in">
                         <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 space-y-2">
@@ -1116,15 +1124,47 @@
       });
     }
 
+    const SKS_JKm = {
+      'PP 102/2015': {
+        'Tamtama/Bintara/PNS Gol I & II': 15500000,
+        'Perwira/Gol III & IV': 17500000,
+        'Biaya Pemakaman': 10000000,
+        'UDW': '3 × Gapok Terakhir'
+      },
+      'PP 54/2020': {
+        'Tamtama/Bintara/PNS Gol I & II': 27500000,
+        'Perwira/Gol III & IV': 30000000,
+        'UDW': '3 × Gapok Terakhir'
+      }
+    };
+
+    const SBP = {
+      'PP 102/2015': {
+        'SBP Peserta': 5000000,
+        'SBP Istri/Suami': 4000000,
+        'SBP Anak': 3000000
+      },
+      'PP 54/2020': {
+        // Menunggu konfirmasi Bu Nurul
+        // Sementara sama dengan PP 102
+        'SBP Peserta': 5000000,
+        'SBP Istri/Suami': 4000000,
+        'SBP Anak': 3000000
+      }
+    };
+
     const REGULASI_PARAMS = {
       'PP 102/2015': {
-        SKS_PERWIRA: 17000000,
+        SKS_PERWIRA: 17500000,
         SKS_BINTARA: 15500000,
         SRKK_GUGUR: 400000000,
         SRKK_TEWAS: 275000000,
         BEASISWA_JKK_MAX_ANAK: 1,
         BEASISWA_JKM_MAX_ANAK: 1,
         BIAYA_PEMAKAMAN_JKM: 10000000,
+        SBP_PESERTA: 5000000,
+        SBP_ISTRI_SUAMI: 4000000,
+        SBP_ANAK: 3000000,
       },
       'PP 54/2020': {
         SKS_PERWIRA: 30000000,
@@ -1134,6 +1174,9 @@
         BEASISWA_JKK_MAX_ANAK: 2,
         BEASISWA_JKM_MAX_ANAK: 2,
         BIAYA_PEMAKAMAN_JKM: 0, // DIHAPUS di PP 54
+        SBP_PESERTA: 5000000,
+        SBP_ISTRI_SUAMI: 4000000,
+        SBP_ANAK: 3000000,
       }
     };
 
@@ -1268,7 +1311,7 @@
         'Tangan kiri dari/atas pergelangan ke bawah': { 'Golongan A': 12.47, 'Golongan B': 24.93, 'Golongan C': 31.17 },
         'Sebelah kaki dari mata kaki ke bawah': { 'Golongan A': 8.80, 'Golongan B': 17.60, 'Golongan C': 22.00 },
         'Lengan kiri dari/atas siku ke bawah': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
-        'Kaki memendek 5 cm - kurang dari 7,5 cm': { 'Golongan A': 7.04, 'Golongan B': 14.08, 'Golongan C': 17.60 },
+        'Kaki memendek 5 cm sampai kurang dari 7,5 cm': { 'Golongan A': 7.04, 'Golongan B': 14.08, 'Golongan C': 17.60 },
         'Kaki memendek 7,5 cm atau lebih': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
         'Cacat hilangnya cuping hidung': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
         'Impotensi': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
@@ -1330,10 +1373,10 @@
         'Tangan kiri dari/atas pergelangan ke bawah': { 'Golongan A': 12.47, 'Golongan B': 24.93, 'Golongan C': 31.17 },
         'Sebelah kaki dari mata kaki ke bawah': { 'Golongan A': 8.80, 'Golongan B': 17.60, 'Golongan C': 22.00 },
         'Lengan kiri dari/atas siku ke bawah': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
-        'Kaki memendek 2-5 cm': { 'Golongan A': 7.04, 'Golongan B': 14.08, 'Golongan C': 17.60 },
-        'Kaki memendek 5 cm atau lebih': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
-        'Cacat hilangnya cuping hidung': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 },
-        'Impotensi': { 'Golongan A': 10.56, 'Golongan B': 21.2, 'Golongan C': 26.40 }
+        'Kaki memendek 2 cm sampai kurang dari 5 cm': { 'Golongan A': 7.04, 'Golongan B': 14.08, 'Golongan C': 17.60 },
+        'Kaki memendek 5 cm atau lebih': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
+        'Cacat hilangnya cuping hidung': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 },
+        'Impotensi': { 'Golongan A': 10.56, 'Golongan B': 21.12, 'Golongan C': 26.40 }
       },
       'Tingkat I': {
         'Gangguan kejiwaan ringan': { 'Golongan A': 11.0, 'Golongan B': 17.0, 'Golongan C': 20.0 },
@@ -1482,9 +1525,8 @@
         const data = JSON.parse(rawReg);
         tanggalKejadian = data.tanggalKejadian || "";
       }
-      const tglKejadian = new Date(tanggalKejadian || Date.now());
-      const tglCutoff = new Date('2020-09-30');
-      const currentTable = tglKejadian < tglCutoff ? TABEL_CACAT_PP102 : TABEL_CACAT_PP54;
+      const regLabel = detectRegulasiCacat(tanggalKejadian);
+      const currentTable = regLabel === 'PP 102/2015' ? TABEL_CACAT_PP102 : TABEL_CACAT_PP54;
 
       if (tingkat && currentTable[tingkat]) {
         const listKriteria = Object.keys(currentTable[tingkat]);
@@ -1533,10 +1575,8 @@
         const data = JSON.parse(rawReg);
         tanggalKejadian = data.tanggalKejadian || "";
       }
-      const tglKejadian = new Date(tanggalKejadian || Date.now());
-      const tglCutoff = new Date('2020-09-30');
-      const currentTable = tglKejadian < tglCutoff ? TABEL_CACAT_PP102 : TABEL_CACAT_PP54;
-      const regLabel = tglKejadian < tglCutoff ? "PP 102/2015" : "PP 54/2020";
+      const regLabel = detectRegulasiCacat(tanggalKejadian);
+      const currentTable = regLabel === 'PP 102/2015' ? TABEL_CACAT_PP102 : TABEL_CACAT_PP54;
 
       if (tingkat && kriteria && gol && currentTable[tingkat] && currentTable[tingkat][kriteria]) {
         const matchGol = gol.includes("Golongan C") || gol === "C" || gol === "Golongan C" ? "Golongan C" 
@@ -1602,33 +1642,139 @@
       document.getElementById(`${cardId}-tunj-anak`).value = formatRupiah(tunjAnak);
     }
 
-    function hitungTunjanganCacat(tingkat, akibatDinas, gapok) {
-      let persentase = 0.175;
+    function hitungP(gapok, tunjIstri, tunjAnak) {
+      return (gapok || 0) + (tunjIstri || 0) + (tunjAnak || 0);
+    }
 
-      if (tingkat === 'Tingkat III') {
-        persentase = akibatDinas ? 1.00 : 0.75;
-      } else if (tingkat === 'Tingkat II') {
-        persentase = akibatDinas ? 0.625 : 0.40;
-      } else if (tingkat === 'Tingkat I') {
-        persentase = 0.175;
+    function getMaxAnakBeasiswa(regulasi) {
+      if (regulasi === 'PP 54/2020') {
+        return 2; // maks 2 anak
       }
+      return 1; // PP 102/2015 -> maks 1 anak
+    }
 
+    function simulasiKonfirmasiPusatUKP(cardId) {
+      if (!claimState) claimState = {};
+      claimState.ukpHutangConfirmed = true;
+      localStorage.setItem("registrasiKlaim", JSON.stringify(claimState));
+      showToast("Permohonan Terkirim", "Koordinasi dikirim ke Bidang Layanan Program 1 Kantor Pusat via YANDU NG.", "info");
+      setTimeout(() => {
+        showToast("Konfirmasi Diterima", "Kantor Pusat telah mengonfirmasi data kelebihan potongan hutang.", "success");
+        if (typeof autoRenderProducts === 'function') autoRenderProducts();
+      }, 1200);
+    }
+
+    const NOMINAL_BEASISWA = {
+      'SD'  : 30000000, // Rp 30.000.000
+      'SMP' : 25000000, // Rp 25.000.000
+      'SMA' : 20000000, // Rp 20.000.000
+      'HE'  : 15000000, // Rp 15.000.000 (D3/S1)
+    };
+
+    // Live preview: update nominal-per-anak field when jenjang dropdown changes
+    function onBeasiswaJenjangChange(cardId, produk) {
+      const jenjangEl = document.getElementById(`${cardId}-jenjang`);
+      const nominalEl = document.getElementById(`${cardId}-nominal-per-anak`);
+      if (jenjangEl && nominalEl) {
+        const rate = NOMINAL_BEASISWA[jenjangEl.value] || NOMINAL_BEASISWA['SD'];
+        nominalEl.value = formatRupiah(rate);
+        // Clear total so staf knows they must re-hitung
+        const besarEl = document.getElementById(`${cardId}-besar`);
+        if (besarEl) besarEl.value = '';
+        const breakdownEl = document.getElementById(`${cardId}-breakdown`);
+        if (breakdownEl) breakdownEl.classList.add('hidden');
+      }
+    }
+
+    /**
+     * Hitung usia anak pada tanggal acuan (misal: tanggal kejadian/meninggal)
+     * BUKAN dari hari ini — sesuai ketentuan ASABRI.
+     * @param {string} tanggalLahir - ISO date string 'YYYY-MM-DD'
+     * @param {string|Date} tanggalAcuan - tanggal orang tua meninggal
+     * @returns {number} usia dalam tahun penuh
+     */
+    function hitungUsiaAnak(tanggalLahir, tanggalAcuan) {
+      if (!tanggalLahir) return 0;
+      const lahir  = new Date(tanggalLahir);
+      const acuan  = tanggalAcuan ? new Date(tanggalAcuan) : new Date();
+      let usia = acuan.getFullYear() - lahir.getFullYear();
+      const bulan = acuan.getMonth() - lahir.getMonth();
+      if (bulan < 0 || (bulan === 0 && acuan.getDate() < lahir.getDate())) {
+        usia--;
+      }
+      return usia;
+    }
+
+    const PENSIUN_TERUSAN = {
+      'Meninggal Biasa'   : 4,  // 4 bulan
+      'Bintang Jasa'      : 6,  // 6 bulan
+      'Pahlawan Nasional' : 12, // 12 bulan
+    };
+
+    function hitungPensiunTerusan(kondisi, pensiunBulanan) {
+      const durasi = PENSIUN_TERUSAN[kondisi] || 4;
+      return durasi * pensiunBulanan;
+    }
+
+    function updateTunjangan2012(cardId) {
+      const gp = getNumericValue(`${cardId}-gp-2012`);
+      const anak = parseInt(document.getElementById(`${cardId}-jml-anak`).value) || 0;
+      document.getElementById(`${cardId}-tunj-istri-2012`).value = formatRupiah(Math.round(gp * 0.10));
+      document.getElementById(`${cardId}-tunj-anak-2012`).value = formatRupiah(Math.round(gp * 0.02 * anak));
+    }
+
+    function updateTunjanganPP(cardId) {
+      const penspok = getNumericValue(`${cardId}-penspok`);
+      const anak = parseInt(document.getElementById(`${cardId}-jml-anak`).value) || 0;
+      const tunjIstri = Math.round(penspok * 0.10);
+      const tunjAnak = Math.round(penspok * 0.02 * anak);
+      document.getElementById(`${cardId}-tunj-istri`).value = formatRupiah(tunjIstri);
+      document.getElementById(`${cardId}-tunj-anak`).value = formatRupiah(tunjAnak);
+    }
+
+    const TUNJANGAN_CACAT = {
+      'III/C': 100, // 100% × Gapok SK Cacat
+      'III/B': 75,  // 75% × Gapok SK Cacat
+      'III/A': 40,  // 40% × Gapok SK Cacat
+      'II/C' : 75,  // 75% × Gapok SK Cacat
+      'II/B' : 50,  // 50% × Gapok SK Cacat
+      'II/A' : 25,  // 25% × Gapok SK Cacat
+      'I/C'  : 0,   // Tidak dapat tunjangan cacat
+      'I/B'  : 0,   // Tidak dapat tunjangan cacat
+      'I/A'  : 0,   // Tidak dapat tunjangan cacat
+    };
+
+    function hitungTunjanganCacat(tingkat, golongan, gapokSKCacat) {
+      // Clean up tingkat (e.g. 'Tingkat III' -> 'III') and golongan ('Golongan C' -> 'C') if passed as full string
+      let tk = tingkat || '';
+      if (tk.startsWith('Tingkat ')) tk = tk.replace('Tingkat ', '').trim();
+      if (tk.includes('Lainnya')) tk = 'III';
+
+      let gol = golongan || '';
+      if (gol.startsWith('Golongan ')) gol = gol.replace('Golongan ', '').trim();
+
+      const key = `${tk}/${gol}`;
+      const persen = TUNJANGAN_CACAT[key] || 0;
       return {
-        persentase: persentase * 100,
-        nominal: Math.round(persentase * gapok)
+        persentase: persen,
+        nominal: Math.round((persen / 100) * (gapokSKCacat || 0))
       };
     }
 
     function updateTunjanganCacatPercentage(cardId) {
       const tingkat = document.getElementById(`${cardId}-tingkat`)?.value || "Tingkat I";
-      const akibatDinas = (document.getElementById(`${cardId}-akibat-dinas`)?.value === "dinas");
+      const golongan = document.getElementById(`${cardId}-golongan-tc`)?.value || document.getElementById(`${cardId}-golongan`)?.value || "Golongan A";
       const persenInput = document.getElementById(`${cardId}-persen`);
       
-      const penspokInput = document.getElementById(`${cardId}-penspok-tc`);
-      let gapok = penspokInput ? (parseInt(penspokInput.value.replace(/[^0-9]/g, '')) || 0) : 0;
-      if (!gapok) gapok = currentParticipant?.pensiun_pokok || currentParticipant?.penspok || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 3500000;
+      const gapokSKInput = document.getElementById(`${cardId}-gapok-sk-cacat`);
+      let gapokSK = gapokSKInput ? (parseInt(gapokSKInput.value.replace(/[^0-9]/g, '')) || 0) : 0;
+      if (!gapokSK) {
+        const legacyInput = document.getElementById(`${cardId}-penspok-tc`);
+        gapokSK = legacyInput ? (parseInt(legacyInput.value.replace(/[^0-9]/g, '')) || 0) : 0;
+      }
+      if (!gapokSK) gapokSK = currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 3500000;
 
-      const result = hitungTunjanganCacat(tingkat, akibatDinas, gapok);
+      const result = hitungTunjanganCacat(tingkat, golongan, gapokSK);
 
       if (persenInput) persenInput.value = `${result.persentase}%`;
 
@@ -1639,25 +1785,28 @@
     function autoHitungTunjanganCacat(cardId, pct) {
       const inputBesar = document.getElementById(`${cardId}-besar`);
       const breakdownEl = document.getElementById(`${cardId}-breakdown`);
-      const penspokInput = document.getElementById(`${cardId}-penspok-tc`);
+      const gapokSKInput = document.getElementById(`${cardId}-gapok-sk-cacat`);
+      const legacyInput = document.getElementById(`${cardId}-penspok-tc`);
       if (!inputBesar) return;
 
       let gapok = 0;
-      if (penspokInput) {
-        gapok = parseInt(penspokInput.value.replace(/[^0-9]/g, '')) || 0;
+      if (gapokSKInput) {
+        gapok = parseInt(gapokSKInput.value.replace(/[^0-9]/g, '')) || 0;
+      } else if (legacyInput) {
+        gapok = parseInt(legacyInput.value.replace(/[^0-9]/g, '')) || 0;
       }
-      if (!gapok) gapok = currentParticipant?.pensiun_pokok || currentParticipant?.penspok || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 3500000;
+      if (!gapok) gapok = currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 3500000;
 
       const computedVal = Math.round((pct / 100) * gapok);
       inputBesar.value = formatRupiah(computedVal);
 
       if (breakdownEl) {
         breakdownEl.innerHTML = `
-          <strong>Rincian Tunjangan Cacat (per bulan)</strong><br>
+          <strong>Rincian Tunjangan Cacat (per bulan) — PP 56/2007</strong><br>
           ------------------------------------------<br>
-          Tunjangan Cacat = % Cacat &times; Gaji/Pensiun Pokok<br>
+          Tunjangan Cacat = % Cacat &times; Gapok SK Cacat<br>
           % Tunjangan Cacat : ${pct}%<br>
-          Basis Gaji/Penspok: ${formatRupiah(gapok)}<br>
+          Gapok SK Cacat    : ${formatRupiah(gapok)}<br>
           ------------------------------------------<br>
           <strong>TOTAL TUNJANGAN CACAT: ${formatRupiah(computedVal)} / bulan</strong>
         `;
@@ -1713,17 +1862,19 @@
     }
 
     function updateSrkkNominal(cardId) {
-      const reg = claimState?.regulasi || 'PP 54/2020';
+      const reg = claimState?.regulasi || detectRegulasiCacat(claimState?.kejadianDetails?.tanggalKejadian || "") || 'PP 54/2020';
+      const tab2Kematian = document.getElementById('jenis-kematian-kk')?.value || claimState?.jenisKematianKk;
       const typeEl = document.getElementById(`${cardId}-srkk-type`);
-      const type = typeEl ? typeEl.value : 'Gugur';
+      if (typeEl && tab2Kematian && (typeEl.value !== tab2Kematian) && (tab2Kematian === 'Gugur' || tab2Kematian === 'Tewas')) {
+        typeEl.value = tab2Kematian;
+      }
+      const type = typeEl ? typeEl.value : (tab2Kematian || 'Gugur');
 
       let nominalSRKK = 0;
       if (type === 'Meninggal Biasa') {
         nominalSRKK = 225000000;
-      } else if (type === 'Gugur') {
-        nominalSRKK = reg === 'PP 54/2020' ? 450000000 : 400000000;
-      } else if (type === 'Tewas') {
-        nominalSRKK = reg === 'PP 54/2020' ? 350000000 : 275000000;
+      } else {
+        nominalSRKK = getSRKK(type, reg);
       }
 
       // Read bintangJasa from per-peserta localStorage
@@ -2053,6 +2204,230 @@
       });
     }
 
+    // ============================================
+    // DOKUMENTASI & FORMULA AKTUARIA TA/NTTA & NTIP
+    // ============================================
+
+    const TITIK_KRITIS = {
+      MP_IP_SPLIT  : '2012-12-31', // Pembagian MP vs IP
+      BUNGA_NTIP   : '2011-06-09', // Bunga 9% NTIP
+      FNT_SPLIT    : '2001-01-01', // FNT vs iuran riil
+      PEMBULATAN   : -2,           // ROUNDUP ke ratusan
+    };
+
+    const BUNGA_THT = [
+      { dari: '1971-08-01', sampai: '2018-05-31', epa: 0.0825, epm: 0.0066 },
+      { dari: '2018-06-01', sampai: '2021-06-30', epa: 0.0600, epm: 0.0049 },
+      { dari: '2021-07-01', sampai: '2021-12-31', epa: 0.0000, epm: 0.0000 },
+      { dari: '2022-01-01', sampai: '2022-12-31', epa: 0.0100, epm: 0.0008 },
+      { dari: '2023-01-01', sampai: '2023-12-31', epa: 0.0200, epm: 0.0017 },
+      { dari: '2024-01-01', sampai: '2024-12-31', epa: 0.0300, epm: 0.0025 },
+      { dari: '2025-01-01', sampai: '2025-12-31', epa: 0.0375, epm: 0.0031 },
+      { dari: '2026-01-01', sampai: '2026-12-31', epa: 0.0350, epm: 0.0029 },
+      { dari: '2027-01-01', sampai: '2027-12-31', epa: 0.0375, epm: 0.0031 },
+      { dari: '2028-01-01', sampai: '2028-12-31', epa: 0.0425, epm: 0.0035 },
+      { dari: '2029-01-01', sampai: '2029-12-31', epa: 0.0450, epm: 0.0037 },
+      { dari: '2030-01-01', sampai: '2030-12-31', epa: 0.0475, epm: 0.0039 },
+      { dari: '2031-01-01', sampai: '2031-12-31', epa: 0.0500, epm: 0.0041 },
+      { dari: '2032-01-01', sampai: '2032-12-31', epa: 0.0525, epm: 0.0043 },
+      { dari: '2033-01-01', sampai: null,          epa: 0.0550, epm: 0.0045 },
+    ];
+
+    const TARIF_IURAN_THT = [
+      { dari: null,         sampai: '1974-03-31', tarif: 0.0125 },
+      { dari: '1975-04-01', sampai: null,          tarif: 0.0325 },
+    ];
+
+    const TARIF_IURAN_PENSIUN = [
+      { dari: null,         sampai: '1977-03-31', tarif: 0.0400 },
+      { dari: '1977-04-01', sampai: null,          tarif: 0.0475 },
+    ];
+
+    // TABEL FNT (Faktor Nilai Tunai Iuran Pensiun)
+    // Dipakai untuk NTIP masa kerja < Jan 2001
+    // Baris = MI (Masa Iuran dalam tahun, 0-30)
+    // Kolom = Periode berhenti (0 s.d 7)
+    const TABEL_FNT = {
+      0:  [0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000],
+      1:  [0.614, 0.614, 0.614, 0.614, 0.614, 0.614, 0.614, 0.875],
+      5:  [2.889, 2.889, 2.889, 2.889, 2.889, 2.889, 2.889, 4.407],
+      10: [4.124, 4.124, 4.124, 4.124, 4.124, 4.124, 4.124, 8.398],
+      20: [4.124, 4.124, 4.124, 4.124, 4.124, 4.124, 4.124, 13.528],
+      30: [4.124, 4.124, 4.124, 4.124, 4.124, 4.124, 4.124, 15.805],
+    };
+
+    function getPeriodeFNT(tmtKlaim) {
+      if (!tmtKlaim) return 7;
+      const tgl = new Date(tmtKlaim);
+      if (isNaN(tgl)) return 7;
+      if (tgl < new Date('1985-05-01')) return 0;
+      if (tgl < new Date('1990-01-01')) return 1;
+      if (tgl < new Date('1993-01-01')) return 2;
+      if (tgl < new Date('1995-01-01')) return 3;
+      if (tgl < new Date('1997-01-01')) return 4;
+      if (tgl < new Date('1999-01-01')) return 5;
+      if (tgl < new Date('2001-01-01')) return 6;
+      return 7; // 01/01/2001 dst
+    }
+
+    function getFaktorFNT(miTahun, miBulan, periodeIndex) {
+      const knownKeys = Object.keys(TABEL_FNT).map(Number).sort((a, b) => a - b);
+      
+      let miBawah = knownKeys[0];
+      let miAtas = knownKeys[knownKeys.length - 1];
+
+      for (let i = 0; i < knownKeys.length - 1; i++) {
+        if (miTahun >= knownKeys[i] && miTahun < knownKeys[i + 1]) {
+          miBawah = knownKeys[i];
+          miAtas = knownKeys[i + 1];
+          break;
+        }
+      }
+
+      if (miTahun >= knownKeys[knownKeys.length - 1]) {
+        return TABEL_FNT[knownKeys[knownKeys.length - 1]]?.[periodeIndex] ?? 15.805;
+      }
+
+      const fBawah = TABEL_FNT[miBawah]?.[periodeIndex] ?? 0;
+      const fAtas = TABEL_FNT[miAtas]?.[periodeIndex] ?? fBawah;
+
+      const span = miAtas - miBawah;
+      const fraction = span > 0 ? (miTahun - miBawah + miBulan / 12) / span : 0;
+      return fBawah + fraction * (fAtas - fBawah);
+    }
+
+    function roundupToHundreds(val) {
+      return Math.ceil(val / 100) * 100;
+    }
+
+    function getBungaThtPerMonth(dateObj) {
+      const dateStr = dateObj.toISOString().split('T')[0];
+      for (let b of BUNGA_THT) {
+        const afterStart = !b.dari || dateStr >= b.dari;
+        const beforeEnd = !b.sampai || dateStr <= b.sampai;
+        if (afterStart && beforeEnd) return b.epm;
+      }
+      return 0.0031;
+    }
+
+    function getTarifThtPerMonth(dateObj) {
+      const dateStr = dateObj.toISOString().split('T')[0];
+      for (let t of TARIF_IURAN_THT) {
+        const afterStart = !t.dari || dateStr >= t.dari;
+        const beforeEnd = !t.sampai || dateStr <= t.sampai;
+        if (afterStart && beforeEnd) return t.tarif;
+      }
+      return 0.0325;
+    }
+
+    function hitungTA_NTTA(tmtMasukStr, tmtKlaimStr, gpVal, mkgYrs) {
+      const tmtMasuk = new Date(tmtMasukStr || '2010-06-01');
+      const tmtKlaim = new Date(tmtKlaimStr || '2026-08-19');
+
+      const date2000End = new Date('2000-12-31');
+      const date2012End = new Date('2012-12-31');
+      const date2013Start = new Date('2013-01-01');
+
+      // 1. Calculate MP (Manfaat Pasti) — periode < Jan 2013
+      let mi1 = 0; // s.d Des 2000
+      let mi2 = 0; // Jan 2001 - Des 2012
+
+      let current = new Date(tmtMasuk.getFullYear(), tmtMasuk.getMonth(), 1);
+      const endLimit = tmtKlaim < date2012End ? tmtKlaim : date2012End;
+
+      while (current <= endLimit) {
+        if (current <= date2000End) {
+          mi1++;
+        } else {
+          mi2++;
+        }
+        current.setMonth(current.getMonth() + 1);
+      }
+
+      const p1 = gpVal; // Penghasilan s.d Des 2000
+      const p2 = gpVal; // Penghasilan Jan 2001 - Des 2012
+
+      const mp1 = 0.6 * (mi1 / 12) * p1;
+      const mp2 = 0.6 * (mi2 / 12) * p2;
+      const totalMP = mp1 + mp2;
+
+      // 2. Calculate IP (Iuran Pasti) — periode >= Jan 2013
+      let akumulasi = 0;
+      current = new Date(tmtMasuk.getFullYear(), tmtMasuk.getMonth(), 1);
+      let akumulasi2012 = 0;
+
+      while (current <= tmtKlaim) {
+        const tarif = getTarifThtPerMonth(current);
+        const epm = getBungaThtPerMonth(current);
+        const iuranBulan = tarif * gpVal;
+        
+        akumulasi = (akumulasi + iuranBulan) * (1 + epm);
+
+        if (current.getFullYear() === 2012 && current.getMonth() === 11) {
+          akumulasi2012 = akumulasi;
+        }
+
+        current.setMonth(current.getMonth() + 1);
+      }
+
+      let totalIP = 0;
+      if (tmtKlaim >= date2013Start) {
+        totalIP = Math.max(0, akumulasi - akumulasi2012);
+      }
+
+      const totalRaw = totalMP + totalIP;
+      const finalTA = roundupToHundreds(totalRaw);
+
+      return {
+        mp: totalMP,
+        ip: totalIP,
+        rawTotal: totalRaw,
+        finalTotal: finalTA,
+        mi1Months: mi1,
+        mi2Months: mi2
+      };
+    }
+
+    function hitungNTIP(tmtMasukStr, tmtKlaimStr, jenisKejadian, f1Val, f2Val, p1Val, p2Val) {
+      const isKeluar = jenisKejadian.toLowerCase().includes('berhenti') ||
+                       jenisKejadian.toLowerCase().includes('keluar') ||
+                       jenisKejadian.toLowerCase().includes('ptdh');
+
+      if (!isKeluar) {
+        return {
+          valid: false,
+          reason: 'NTIP hanya berlaku untuk kejadian "Keluar" (Berhenti tanpa Hak Pensiun/PTDH).',
+          finalTotal: 0
+        };
+      }
+
+      const NTIP_MINIMUM = 500000;
+      const cutoffBunga = new Date('2011-06-09');
+      const tmtKlaim = new Date(tmtKlaimStr || '2026-08-19');
+      const tmtMasuk = new Date(tmtMasukStr || '2010-06-01');
+
+      const rawNTIP = (f1Val * p1Val) + (f2Val * (p2Val - p1Val));
+      let baseNTIP = Math.max(NTIP_MINIMUM, rawNTIP);
+
+      let bungaExtra = 0;
+      if (tmtKlaim <= cutoffBunga) {
+        const totalMonths = monthDiff(tmtMasukStr, tmtKlaimStr);
+        const rateFactor = Math.pow(1 + 0.09, totalMonths / 12) - 1;
+        bungaExtra = baseNTIP * rateFactor;
+      }
+
+      const totalRaw = baseNTIP + bungaExtra;
+      const finalNTIP = roundupToHundreds(totalRaw);
+
+      return {
+        valid: true,
+        baseNTIP: baseNTIP,
+        bungaExtra: bungaExtra,
+        rawTotal: totalRaw,
+        finalTotal: Math.max(NTIP_MINIMUM, finalNTIP)
+      };
+    }
+
     function calculateThtProduct(cardId, type) {
       const tmtBerhenti = claimState?.kejadianDetails?.tmtPemberhentian || document.getElementById("ptdh-tmt-pemberhentian")?.value || "";
       const tmtGajiTerakhir = claimState?.kejadianDetails?.tmtGajiTerakhir || document.getElementById("ptdh-tmt-gaji-terakhir")?.value || "";
@@ -2096,9 +2471,8 @@
         console.error("Failed to parse selected Gaji/MKG JSON:", e);
       }
       
-      const MI = Math.max(0, monthDiff(tmtAngkat, tmtPensiun) / 12);
-      const totalTA = gp * MI * 0.60;
-      const totalTARounded = Math.ceil(totalTA / 1000) * 1000;
+      const calcResult = hitungTA_NTTA(tmtAngkat, tmtPensiun, gp, mkgYrs);
+      const totalTARounded = calcResult.finalTotal;
       
       const inputBesar = document.getElementById(`${cardId}-besar`);
       if (inputBesar) {
@@ -2108,14 +2482,14 @@
       const breakdownEl = document.getElementById(`${cardId}-breakdown`);
       if (breakdownEl) {
         breakdownEl.innerHTML = `
-          <strong>Rincian Perhitungan ${type} (${type === 'TA' ? 'Tabungan Asuransi' : 'Nilai Tunai Tabungan Asuransi'})</strong><br>
+          <strong>Rincian Perhitungan Aktuaria ${type} (${type === 'TA' ? 'Tabungan Asuransi' : 'Nilai Tunai Tabungan Asuransi'})</strong><br>
           -------------------------------------<br>
           TMT Pengangkatan : ${formatIndoDate(tmtAngkat)}<br>
-          TMT Pensiun      : ${formatIndoDate(tmtPensiun)}<br>
-          Masa Kerja Dinas : ${Math.floor(MI)} tahun ${Math.round((MI % 1) * 12)} bulan<br>
-          Pangkat / Golongan: ${document.getElementById(`${cardId}-pangkat-akhir`).value || '-'}<br>
-          Gaji Pokok Terpilih: ${formatRupiah(gp)} (MKG: ${mkgYrs} Tahun)<br>
-          Rumus            : Gaji Pokok &times; Masa Kerja &times; 0.60<br>
+          TMT Pensiun/Klaim: ${formatIndoDate(tmtPensiun)}<br>
+          Gaji Pokok       : ${formatRupiah(gp)} (MKG: ${mkgYrs} Thn)<br>
+          Manfaat Pasti (MP < 2013) : ${formatRupiah(calcResult.mp)}<br>
+          Iuran Pasti (IP >= 2013)  : ${formatRupiah(calcResult.ip)}<br>
+          Rumus Final       : MP + IP (ROUNDUP ke ratusan)<br>
           -------------------------------------<br>
           <strong>TOTAL MANFAAT ${type}: ${formatRupiah(totalTARounded)}</strong>
         `;
@@ -2128,7 +2502,7 @@
         }
         updateSkorsingCardUI(cardId, type);
       }
-      showToast(`Kalkulasi ${type} Selesai`, `Manfaat ${type} berhasil dihitung.`, "success");
+      showToast(`Kalkulasi ${type} Selesai`, `Manfaat ${type} berhasil dihitung secara aktuaria.`, "success");
       updateRingkasanKlaim();
     }
 
@@ -2228,26 +2602,70 @@
       // Min 20%, Maks 80%
     }
 
-    function hitungPensiunWarakawuri(jenisKejadian, penspok) {
-      if (jenisKejadian === 'Gugur' || jenisKejadian === 'Tewas' || jenisKejadian === 'Kecelakaan Kerja — Meninggal (Gugur/Tewas)') {
-        return 0.80 * penspok;
+    const PENSIUN_WARAKAWURI_CONFIG = {
+      'Meninggal Biasa': 0.35,  // 35% x GPT
+      'Gugur/Tewas': 0.50,      // 50% x GPT
+      'Pahlawan': 0.60,         // 60% x GPT
+    };
+
+    const TUNJANGAN_YATIM_CONFIG = {
+      'Meninggal Biasa': {
+        '2 Anak': 0.30,   // 30% x GPT
+        '1 Anak': 0.225,  // 22.5% x GPT
+      },
+      'Gugur/Tewas': {
+        '2 Anak': 0.45,   // 45% x GPT
+        '1 Anak': 0.30,   // 30% x GPT
+      },
+      'Pahlawan': {
+        '2 Anak': 0.45,    // 45% x GPT
+        '1 Anak': 0.3375,  // 33.75% x GPT
       }
-      return 0.50 * penspok;
+    };
+
+    const TUNJANGAN_ORANG_TUA_CONFIG = {
+      persentase: 0.25, // 25% x GPT
+      berlakuUntuk: ['Gugur/Tewas', 'Pahlawan']
+    };
+
+    function getKondisiKematian(jenisKejadian, bintangJasaStatus) {
+      if (bintangJasaStatus === 'Pahlawan' || bintangJasaStatus === 'Pahlawan Nasional') {
+        return 'Pahlawan';
+      }
+      if (jenisKejadian === 'Gugur' || jenisKejadian === 'Tewas' || jenisKejadian === 'Kecelakaan Kerja — Meninggal (Gugur/Tewas)' || jenisKejadian === 'Kecelakaan Kerja — Meninggal Dunia') {
+        return 'Gugur/Tewas';
+      }
+      return 'Meninggal Biasa';
     }
 
-    function hitungTunjanganYatimPiatu(jenisKejadian, penspok, jumlahAnak) {
-      const persentase = (jenisKejadian === 'Gugur' || jenisKejadian === 'Tewas' || jenisKejadian === 'Kecelakaan Kerja — Meninggal (Gugur/Tewas)') ? 0.80 : 0.50;
-      return (persentase * penspok) / jumlahAnak;
+    function hitungPensiunWarakawuri(jenisKejadian, gpt, kondisiKematian) {
+      const kondisi = kondisiKematian || getKondisiKematian(jenisKejadian);
+      const rate = PENSIUN_WARAKAWURI_CONFIG[kondisi] || 0.35;
+      return rate * gpt;
     }
 
-    function hitungTunjanganOrangTua(gapok) {
-      return 0.20 * gapok;
+    function hitungTunjanganYatimPiatu(jenisKejadian, gpt, jumlahAnak, kondisiKematian) {
+      const kondisi = kondisiKematian || getKondisiKematian(jenisKejadian);
+      const anakKey = jumlahAnak >= 2 ? '2 Anak' : '1 Anak';
+      const rates = TUNJANGAN_YATIM_CONFIG[kondisi] || TUNJANGAN_YATIM_CONFIG['Meninggal Biasa'];
+      const totalRate = rates[anakKey] || 0.225;
+      // Derived total monthly benefit per rules
+      return totalRate * gpt;
+    }
+
+    function hitungTunjanganOrangTua(gpt, jenisKejadian, kondisiKematian) {
+      const kondisi = kondisiKematian || getKondisiKematian(jenisKejadian);
+      if (!TUNJANGAN_ORANG_TUA_CONFIG.berlakuUntuk.includes(kondisi)) {
+        return 0;
+      }
+      return TUNJANGAN_ORANG_TUA_CONFIG.persentase * gpt;
     }
 
     function calculateNtipProduct(cardId) {
       const tmtBerhenti = claimState?.kejadianDetails?.tmtPemberhentian || document.getElementById("ptdh-tmt-pemberhentian")?.value || "";
       const tmtGajiTerakhir = claimState?.kejadianDetails?.tmtGajiTerakhir || document.getElementById("ptdh-tmt-gaji-terakhir")?.value || "";
-      const isSelisihTmt = (document.getElementById("kejadian-jenis")?.value === 'Berhenti tanpa Hak Pensiun (PTDH)') && tmtBerhenti && tmtGajiTerakhir && (tmtBerhenti !== tmtGajiTerakhir);
+      const jenisKejadian = document.getElementById("kejadian-jenis")?.value || claimState?.jenisKejadian || "";
+      const isSelisihTmt = (jenisKejadian === 'Berhenti tanpa Hak Pensiun (PTDH)') && tmtBerhenti && tmtGajiTerakhir && (tmtBerhenti !== tmtGajiTerakhir);
 
       if (isSelisihTmt) {
         const inputTotal = document.getElementById(`${cardId}-total-manual`);
@@ -2260,8 +2678,8 @@
         return;
       }
 
-      const tmtAngkat = document.getElementById(`${cardId}-tmt-angkat`).value;
-      const tmtBerhentiVal = document.getElementById(`${cardId}-tmt-berhenti`).value;
+      const tmtAngkat = document.getElementById(`${cardId}-tmt-angkat`)?.value || "2010-06-01";
+      const tmtBerhentiVal = document.getElementById(`${cardId}-tmt-berhenti`)?.value || tmtBerhenti || "2026-08-19";
       
       const nttaCard = activeProducts.find(p => p.type === "NTTA");
       
@@ -2285,35 +2703,52 @@
       const f2Input = document.getElementById(`${cardId}-f2`);
       if (f2Input) f2Input.value = f2Text;
 
-      // P1 (Gapok lama)
       const p1 = getNumericValue(`${cardId}-p1`);
-
-      // P2 (Gapok terakhir)
       const p2 = getNumericValue(`${cardId}-p2`);
 
-      const NTIP = (f1 * p1) + (f2 * (p2 - p1));
-
-      document.getElementById(`${cardId}-besar`).value = formatRupiah(NTIP);
+      const calcNTIP = hitungNTIP(tmtAngkat, tmtBerhentiVal, jenisKejadian, f1, f2, p1, p2);
 
       const breakdownEl = document.getElementById(`${cardId}-breakdown`);
+      const cardBesar = document.getElementById(`${cardId}-besar`);
+
+      if (!calcNTIP.valid) {
+        if (cardBesar) cardBesar.value = formatRupiah(0);
+        if (breakdownEl) {
+          breakdownEl.innerHTML = `
+            <strong class="text-rose-600">Rincian Perhitungan NTIP</strong><br>
+            -------------------------------------<br>
+            <span class="text-rose-600 font-bold">⚠️ ${calcNTIP.reason}</span><br>
+            -------------------------------------<br>
+            <strong>TOTAL NTIP: Rp 0</strong>
+          `;
+          breakdownEl.classList.remove('hidden');
+        }
+        updateRingkasanKlaim();
+        return;
+      }
+
+      if (cardBesar) cardBesar.value = formatRupiah(calcNTIP.finalTotal);
+
       if (breakdownEl) {
         const reg = claimState?.regulasi || 'PP 54/2020';
         breakdownEl.innerHTML = `
-          <strong>Rincian Perhitungan NTIP</strong><br>
+          <strong>Rincian Perhitungan Aktuaria NTIP</strong><br>
           -------------------------------------<br>
           Regulasi         : ${reg}<br>
           F1 (s.d 31 Des 2000)  : ${f1.toFixed(3)} Tahun<br>
           F2 (1 Jan 2001 - TMT) : ${f2.toFixed(3)} Tahun<br>
           P1 (Gapok lama)       : ${formatRupiah(p1)}<br>
           P2 (Gapok terakhir)   : ${formatRupiah(p2)}<br>
-          Formula          : (F1 &times; P1) + {F2 &times; (P2 - P1)}<br>
+          Base NTIP             : ${formatRupiah(calcNTIP.baseNTIP)}<br>
+          ${calcNTIP.bungaExtra > 0 ? `Bunga Tambahan (9%)    : ${formatRupiah(calcNTIP.bungaExtra)}<br>` : ''}
+          Pembulatan            : ROUNDUP ke ratusan (Min. Rp 500.000)<br>
           -------------------------------------<br>
-          <strong>TOTAL NTIP: ${formatRupiah(NTIP)}</strong>
+          <strong>TOTAL NTIP: ${formatRupiah(calcNTIP.finalTotal)}</strong>
         `;
         breakdownEl.classList.remove('hidden');
       }
       updateSkorsingCardUI(cardId, "NTIP");
-      showToast("Kalkulasi NTIP Selesai", "Nilai NTIP berhasil dihitung.", "success");
+      showToast("Kalkulasi NTIP Selesai", "Nilai NTIP berhasil dihitung secara aktuaria.", "success");
       updateRingkasanKlaim();
     }
 
@@ -2330,11 +2765,20 @@
       updateRingkasanKlaim();
     }
 
+    function detectRegulasiCacat(tanggalKejadian) {
+      if (!tanggalKejadian) return 'PP 54/2020';
+      const tgl = new Date(tanggalKejadian);
+      const cutoffPP102 = new Date('2015-07-01');
+      const cutoffPP54 = new Date('2020-09-30');
+
+      if (tgl < cutoffPP102) return 'PP 67/1991';
+      if (tgl < cutoffPP54) return 'PP 102/2015';
+      return 'PP 54/2020';
+    }
+
     function detectRegulasi(tanggalKejadian) {
       if (!tanggalKejadian) return null;
-      const cutoff = new Date('2020-09-30');
-      const tgl = new Date(tanggalKejadian);
-      return tgl < cutoff ? 'PP 102/2015' : 'PP 54/2020';
+      return detectRegulasiCacat(tanggalKejadian);
     }
 
     function renderJkkExclusions() {
@@ -2712,6 +3156,12 @@
       'Tunjangan Yatim/Piatu — Meninggal Dunia',
       'Tunjangan Yatim/Piatu — Dewasa',
       'Tunjangan Orang Tua — Meninggal Dunia',
+      'Beasiswa JKm',
+      'Beasiswa JKK',
+      'UKP Tanpa Perubahan Data',
+      'UKP Dengan Perubahan Data',
+      'UKP Pembayaran Tunjangan Cacat',
+      'UKP Kelebihan Potongan Hutang',
     ];
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -2917,6 +3367,30 @@
       }
     }
 
+    function getSRKK(jenisKematian, regulasi) {
+      if (regulasi === 'PP 102/2015') {
+        return jenisKematian === 'Gugur' ? 400000000 : 275000000;
+      }
+      if (regulasi === 'PP 54/2020') {
+        return jenisKematian === 'Gugur' ? 450000000 : 350000000;
+      }
+      return jenisKematian === 'Gugur' ? 450000000 : 350000000;
+    }
+
+    function toggleJenisKematianKkDropdown(jenisKejadian) {
+      const container = document.getElementById('jenis-kematian-kk-container');
+      if (!container) return;
+
+      const isMeninggalKK = (jenisKejadian === 'Kecelakaan Kerja — Meninggal (Gugur/Tewas)' || jenisKejadian === 'Kecelakaan Kerja — Meninggal Dunia');
+      if (isMeninggalKK) {
+        container.classList.remove('hidden');
+        container.classList.add('flex');
+      } else {
+        container.classList.add('hidden');
+        container.classList.remove('flex');
+      }
+    }
+
     // Show/hide Bintang Jasa info box for KK — Meninggal Dunia
     function toggleBintangJasaInfo(jenisKejadian) {
       const container = document.getElementById('bintang-jasa-container');
@@ -2943,8 +3417,9 @@
     }
 
     function toggleAhliWarisDropdown(val) {
-      // Also update Bintang Jasa info box
+      // Also update Bintang Jasa info box and Jenis Kematian KK dropdown
       toggleBintangJasaInfo(val);
+      toggleJenisKematianKkDropdown(val);
 
       const container = document.getElementById("ahli-waris-dropdown-container");
       if (!container) return;
@@ -3307,6 +3782,10 @@
             togglePTDHTMTFields(data.jenisKejadian);
             togglePensiunTMTField(data.jenisKejadian);
             toggleSpouseDeathTMTField(data.jenisKejadian);
+            toggleJenisKematianKkDropdown(data.jenisKejadian);
+            if (data.jenisKematianKk && document.getElementById("jenis-kematian-kk")) {
+              document.getElementById("jenis-kematian-kk").value = data.jenisKematianKk;
+            }
             checkPTDHTMTComparison();
 
             // Populate Tab 1: Data Peserta
@@ -3622,6 +4101,9 @@
           data.regulasi = detectRegulasi(tglKejadianEl.value);
           data.tanggalKejadian = tglKejadianEl.value;
           
+          const jenisKkEl = document.getElementById("jenis-kematian-kk");
+          data.jenisKematianKk = (jenisEl.value === 'Kecelakaan Kerja — Meninggal (Gugur/Tewas)' || jenisEl.value === 'Kecelakaan Kerja — Meninggal Dunia') && jenisKkEl ? jenisKkEl.value : "";
+          
           claimState = data; // Update global state
           localStorage.setItem("registrasiKlaim", JSON.stringify(data));
           
@@ -3690,224 +4172,358 @@
     const PERSYARATAN_CONFIG = {
 
       'Pensiun Pertama': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Formulir SP3R', wajib: false },
-        { nama: 'Asli Salinan Keputusan Pensiun', wajib: false },
-        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS', wajib: false },
-        { nama: 'Asli SKPP dari KPPN / e-SKPP', wajib: false, viewSkpp: true },
-        { nama: 'Asli Riwayat Hidup Singkat (RHS)', wajib: false },
-        { nama: 'Asli Surat Keterangan Kuliah (anak >21 s/d 25 tahun)', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK)', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU', wajib: false },
-        { nama: 'Fotokopi NPWP', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
-        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar (suami, istri)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Formulir SP3R' },
+        { nama: 'Asli Salinan Keputusan Pensiun' },
+        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS' },
+        { nama: 'Asli SKPP dari KPPN / e-SKPP', viewSkpp: true },
+        { nama: 'Asli Riwayat Hidup Singkat (RHS)' },
+        { nama: 'Asli Surat Keterangan Kuliah (anak >21 s/d 25 tahun)' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU' },
+        { nama: 'Fotokopi NPWP' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
+        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar (suami, istri)' },
       ],
 
       'Berhenti dengan Hak Tunjangan': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Formulir SP3R', wajib: false },
-        { nama: 'Asli Salinan Keputusan Tunjangan', wajib: false },
-        { nama: 'Asli SKPP dari KPPN / e-SKPP', wajib: false, viewSkpp: true },
-        { nama: 'Asli Riwayat Hidup Singkat (RHS)', wajib: false },
-        { nama: 'Asli Surat Keterangan Kuliah (anak >21 s/d 25 tahun)', wajib: false },
-        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK)', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU', wajib: false },
-        { nama: 'Fotokopi NPWP', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
-        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar (suami, istri)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Formulir SP3R' },
+        { nama: 'Asli Salinan Keputusan Tunjangan' },
+        { nama: 'Asli SKPP dari KPPN / e-SKPP', viewSkpp: true },
+        { nama: 'Asli Riwayat Hidup Singkat (RHS)' },
+        { nama: 'Asli Surat Keterangan Kuliah (anak >21 s/d 25 tahun)' },
+        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU' },
+        { nama: 'Fotokopi NPWP' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
+        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar (suami, istri)' },
       ],
 
       'Berhenti tanpa Hak Pensiun (PTDH)': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Asli Surat Pengantar dari Dan/Kasatker (Kesatuan Terakhir Dimana Diberhentikan)', wajib: false },
-        { nama: 'Asli dan Fotokopi Legalisir Keputusan Pemberhentian dari Satuan Terakhir', wajib: false },
-        { nama: 'Asli Riwayat Hidup Singkat (RHS)', wajib: false },
-        { nama: 'Asli SKPP dari KPPN / e-SKPP', wajib: false, viewSkpp: true },
-        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK)', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
-        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar (saat dinas aktif)', wajib: false },
-        { nama: 'Surat keterangan periode pembayaran gaji skorsing dari Juru Bayar (jika terkena Skorsing)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Asli Surat Pengantar dari Dan/Kasatker (Kesatuan Terakhir Dimana Diberhentikan)' },
+        { nama: 'Asli dan Fotokopi Legalisir Keputusan Pemberhentian dari Satuan Terakhir' },
+        { nama: 'Asli Riwayat Hidup Singkat (RHS)' },
+        { nama: 'Asli SKPP dari KPPN / e-SKPP', viewSkpp: true },
+        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
+        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar (saat dinas aktif)' },
+        { nama: 'Surat keterangan periode pembayaran gaji skorsing dari Juru Bayar (jika terkena Skorsing)' },
       ],
 
       'Istri/Suami Meninggal Dunia': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Fotokopi Daftar Susunan Keluarga dari Kesatuan atau KU 1', wajib: false },
-        { nama: 'Fotokopi Legalisir Perincian Gaji saat meninggal dari Pekas (DPP Gaji KU-107)', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK)', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Fotokopi Daftar Susunan Keluarga dari Kesatuan atau KU 1' },
+        { nama: 'Fotokopi Legalisir Perincian Gaji saat meninggal dari Pekas (DPP Gaji KU-107)' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
       ],
 
       'Anak Meninggal Dunia': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Fotokopi Daftar Susunan Keluarga dari Kesatuan atau KU 1', wajib: false },
-        { nama: 'Fotokopi Legalisir Perincian Gaji saat meninggal dari Pekas (DPP Gaji KU-107)', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK)', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Fotokopi Daftar Susunan Keluarga dari Kesatuan atau KU 1' },
+        { nama: 'Fotokopi Legalisir Perincian Gaji saat meninggal dari Pekas (DPP Gaji KU-107)' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
       ],
 
       'Meninggal Dunia dalam Dinas Aktif (JKm)': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Asli Riwayat Hidup Singkat (RHS)', wajib: false },
-        { nama: 'Asli Surat Keterangan Ahli Waris (Istri/Suami) / Surat Keterangan Kuasa Ahli Waris (Anak) disahkan Lurah/Kepala Desa', wajib: false },
-        { nama: 'Asli Surat Keterangan Sekolah/Kuliah', wajib: false },
-        { nama: 'Fotokopi Legalisir Keputusan Pemberhentian Dengan Hormat karena Meninggal Dunia dari PDW atau Fotokopi Legalisir (Usulan) Pemberhentian dengan Hormat dari Dan/Kasatker ke PDW', wajib: false },
-        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi Legalisir Perincian Gaji saat Meninggal Dunia dari Pekas (DPP Gaji KU-107)', wajib: false },
-        { nama: 'Fotokopi e-KTP Ahli Waris', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK)', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Asli Riwayat Hidup Singkat (RHS)' },
+        { nama: 'Asli Surat Keterangan Ahli Waris (Istri/Suami) / Surat Keterangan Kuasa Ahli Waris (Anak) disahkan Lurah/Kepala Desa' },
+        { nama: 'Asli Surat Keterangan Sekolah/Kuliah' },
+        { nama: 'Fotokopi Legalisir Keputusan Pemberhentian Dengan Hormat karena Meninggal Dunia dari PDW atau Fotokopi Legalisir (Usulan) Pemberhentian dengan Hormat dari Dan/Kasatker ke PDW' },
+        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi Legalisir Perincian Gaji saat Meninggal Dunia dari Pekas (DPP Gaji KU-107)' },
+        { nama: 'Fotokopi e-KTP Ahli Waris' },
+        { nama: 'Fotokopi Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
       ],
 
       'Kecelakaan Kerja — Dirawat': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Fotokopi e-KTP yang masih berlaku', wajib: false },
-        { nama: 'Fotokopi KTA TNI/POLRI', wajib: false },
-        { nama: 'Asli Surat Laporan Laka Kerja dari Dan/Satker (Form A dan B)', wajib: false },
-        { nama: 'Asli Kuitansi Tagihan Faskes bermaterai dan stempel Rumah Sakit', wajib: false },
-        { nama: 'Rincian biaya pelayanan rumah sakit', wajib: false },
-        { nama: 'Rincian biaya obat farmasi', wajib: false },
-        { nama: 'Resume Medis dan Laporan Operasi', wajib: false },
-        { nama: 'Fotokopi Hasil Pemeriksaan Penunjang (lab, rontgen, dll)', wajib: false },
-        { nama: 'Surat Keterangan Dokter (untuk pemakaian alat orthese)', wajib: false },
-        { nama: 'Formulir Biaya Pengangkutan Kecelakaan Kerja (untuk pengajuan biaya pengangkutan)', wajib: false },
-        { nama: 'Surat Penagihan Biaya Perawatan', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Fotokopi e-KTP yang masih berlaku' },
+        { nama: 'Fotokopi KTA TNI/POLRI' },
+        { nama: 'Asli Surat Laporan Laka Kerja dari Dan/Satker (Form A dan B)' },
+        { nama: 'Asli Kuitansi Tagihan Faskes bermaterai dan stempel Rumah Sakit' },
+        { nama: 'Rincian biaya pelayanan rumah sakit' },
+        { nama: 'Rincian biaya obat farmasi' },
+        { nama: 'Resume Medis dan Laporan Operasi' },
+        { nama: 'Fotokopi Hasil Pemeriksaan Penunjang (lab, rontgen, dll)' },
+        { nama: 'Surat Keterangan Dokter (untuk pemakaian alat orthese)' },
+        { nama: 'Formulir Biaya Pengangkutan Kecelakaan Kerja (untuk pengajuan biaya pengangkutan)' },
+        { nama: 'Surat Penagihan Biaya Perawatan' },
       ],
 
       'Kecelakaan Kerja — Meninggal (Gugur/Tewas)': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Asli Riwayat Hidup Singkat (RHS)', wajib: false },
-        { nama: 'Asli Surat Keterangan Ahli Waris (Istri/Suami) / Surat Keterangan Kuasa Ahli Waris (Anak) disahkan Lurah/Kepala Desa', wajib: false },
-        { nama: 'Asli Surat Keterangan Sekolah/Kuliah', wajib: false },
-        { nama: 'Fotokopi Legalisir Keputusan Gugur/Tewas dari Dan/Kasatker', wajib: false },
-        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi Legalisir Perincian Gaji saat meninggal dari Pekas (DPP Gaji KU-107)', wajib: false },
-        { nama: 'Fotokopi e-KTP Ahli Waris', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK)', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan (Mitra Bayar Asabri)', wajib: false },
-        { nama: 'Fotokopi Legalisir Sprin Tugas', wajib: false },
-        { nama: 'Fotokopi Legalisir Kronologis Kejadian', wajib: false },
-        { nama: 'Fotokopi Resume medis/Hasil Pemeriksaan Medis', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Asli Riwayat Hidup Singkat (RHS)' },
+        { nama: 'Asli Surat Keterangan Ahli Waris (Istri/Suami) / Surat Keterangan Kuasa Ahli Waris (Anak) disahkan Lurah/Kepala Desa' },
+        { nama: 'Asli Surat Keterangan Sekolah/Kuliah' },
+        { nama: 'Fotokopi Legalisir Keputusan Gugur/Tewas dari Dan/Kasatker' },
+        { nama: 'Fotokopi Keputusan Pengangkatan Pertama/CPNS' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi Legalisir Perincian Gaji saat meninggal dari Pekas (DPP Gaji KU-107)' },
+        { nama: 'Fotokopi e-KTP Ahli Waris' },
+        { nama: 'Fotokopi Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU' },
+        { nama: 'Fotokopi Buku Rekening Tabungan (Mitra Bayar Asabri)' },
+        { nama: 'Fotokopi Legalisir Sprin Tugas' },
+        { nama: 'Fotokopi Legalisir Kronologis Kejadian' },
+        { nama: 'Fotokopi Resume medis/Hasil Pemeriksaan Medis' },
       ],
 
       'Kecelakaan Kerja — Cacat Tetap Bekerja': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Fotokopi Legalisir Keputusan Cacat dari Panglima TNI/Kapolri', wajib: false },
-        { nama: 'Fotokopi Legalisir Perincian Gaji saat kejadian cacat dari Pekas (DPP Gaji KU-107)', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Sprin Tugas', wajib: false },
-        { nama: 'Fotokopi Kronologis Kejadian', wajib: false },
-        { nama: 'Foto Kondisi Anggota Badan yang mengalami cacat', wajib: false },
-        { nama: 'Fotokopi Resume medis/keterangan pendukung medis lainnya jika dibutuhkan', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Fotokopi Legalisir Keputusan Cacat dari Panglima TNI/Kapolri' },
+        { nama: 'Fotokopi Legalisir Perincian Gaji saat kejadian cacat dari Pekas (DPP Gaji KU-107)' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Sprin Tugas' },
+        { nama: 'Fotokopi Kronologis Kejadian' },
+        { nama: 'Foto Kondisi Anggota Badan yang mengalami cacat' },
+        { nama: 'Fotokopi Resume medis/keterangan pendukung medis lainnya jika dibutuhkan' },
       ],
 
       'Kecelakaan Kerja — Cacat Pensiun': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Fotokopi Legalisir Keputusan Cacat dari Panglima TNI/Kapolri', wajib: false },
-        { nama: 'Fotokopi Legalisir Perincian Gaji saat kejadian cacat dari Pekas (DPP Gaji KU-107)', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Sprin Tugas', wajib: false },
-        { nama: 'Fotokopi Kronologis Kejadian', wajib: false },
-        { nama: 'Foto Kondisi Anggota Badan yang mengalami cacat', wajib: false },
-        { nama: 'Fotokopi Resume medis/keterangan pendukung medis lainnya jika dibutuhkan', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Fotokopi Legalisir Keputusan Cacat dari Panglima TNI/Kapolri' },
+        { nama: 'Fotokopi Legalisir Perincian Gaji saat kejadian cacat dari Pekas (DPP Gaji KU-107)' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Sprin Tugas' },
+        { nama: 'Fotokopi Kronologis Kejadian' },
+        { nama: 'Foto Kondisi Anggota Badan yang mengalami cacat' },
+        { nama: 'Fotokopi Resume medis/keterangan pendukung medis lainnya jika dibutuhkan' },
       ],
 
       'Pensiun Sendiri — Meninggal Dunia': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Formulir SP3R', wajib: false },
-        { nama: 'Asli Surat Keterangan Ahli Waris (Istri/Suami) / Surat Keterangan Kuasa Ahli Waris (Anak) disahkan Lurah/Kepala Desa', wajib: false },
-        { nama: 'Fotokopi Keputusan Pensiun', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK)', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU/SPPI/FPI', wajib: false },
-        { nama: 'Fotokopi Bintang Jasa Nararya (Jika Ada)', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Formulir SP3R' },
+        { nama: 'Asli Surat Keterangan Ahli Waris (Istri/Suami) / Surat Keterangan Kuasa Ahli Waris (Anak) disahkan Lurah/Kepala Desa' },
+        { nama: 'Fotokopi Keputusan Pensiun' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU/SPPI/FPI' },
+        { nama: 'Fotokopi Bintang Jasa Nararya (Jika Ada)' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
       ],
 
       'Pensiun Sendiri — Istri/Suami Meninggal Dunia': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Formulir SP3R', wajib: false },
-        { nama: 'Asli Surat Keterangan Kuasa Ahli Waris disahkan Lurah/Kepala Desa', wajib: false },
-        { nama: 'Fotokopi Keputusan Pensiun', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK) Pengaju', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Formulir SP3R' },
+        { nama: 'Asli Surat Keterangan Kuasa Ahli Waris disahkan Lurah/Kepala Desa' },
+        { nama: 'Fotokopi Keputusan Pensiun' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Kartu Keluarga (KK) Pengaju' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
       ],
 
       'Pensiun Sendiri — Anak Meninggal Dunia': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Formulir SP3R', wajib: false },
-        { nama: 'Fotokopi Keputusan Pensiun', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK) Pengaju', wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU (kecuali untuk pengajuan BPA)', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Formulir SP3R' },
+        { nama: 'Fotokopi Keputusan Pensiun' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Kartu Keluarga (KK) Pengaju' },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU (kecuali untuk pengajuan BPA)' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
       ],
 
       'Pensiun Warakawuri — Meninggal Dunia': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Formulir SP3R', wajib: false },
-        { nama: 'Asli Surat Keterangan Kuasa Ahli Waris disahkan Lurah/Kepala Desa', wajib: false },
-        { nama: 'Fotokopi Keputusan Pensiun', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi e-KTP Pengaju', wajib: false },
-        { nama: 'Fotokopi Kartu Keluarga (KK) Pengaju', modifier: true, wajib: false },
-        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU', wajib: false },
-        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Formulir SP3R' },
+        { nama: 'Asli Surat Keterangan Kuasa Ahli Waris disahkan Lurah/Kepala Desa' },
+        { nama: 'Fotokopi Keputusan Pensiun' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi e-KTP Pengaju' },
+        { nama: 'Fotokopi Kartu Keluarga (KK) Pengaju', modifier: true },
+        { nama: 'Fotokopi Surat Nikah atau KPI/KPS/KARIS/KARSU' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju (Mitra Bayar Asabri)' },
       ],
 
       'Tunjangan Yatim/Piatu — Meninggal Dunia': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Formulir SP3R', wajib: false },
-        { nama: 'Asli dan Salinan Keputusan Pensiun (bagi peserta meninggal dalam dinas aktif)', wajib: false },
-        { nama: 'Asli SKPP dari KPPN / e-SKPP (bagi peserta meninggal dalam dinas aktif)', wajib: false, viewSkpp: true },
-        { nama: 'Asli Surat Keterangan Belum Menikah dan Belum Bekerja disahkan Lurah/Kepala Desa', wajib: false },
-        { nama: 'Asli Surat Keterangan Kuliah (anak >21 s/d 25 tahun)', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi Keterangan Pengampu/Perwalian dari Pengadilan (apabila Yatim Piatu masih di bawah umur)', wajib: false },
-        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Formulir SP3R' },
+        { nama: 'Asli dan Salinan Keputusan Pensiun (bagi peserta meninggal dalam dinas aktif)' },
+        { nama: 'Asli SKPP dari KPPN / e-SKPP (bagi peserta meninggal dalam dinas aktif)', viewSkpp: true },
+        { nama: 'Asli Surat Keterangan Belum Menikah dan Belum Bekerja disahkan Lurah/Kepala Desa' },
+        { nama: 'Asli Surat Keterangan Kuliah (anak >21 s/d 25 tahun)' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi Keterangan Pengampu/Perwalian dari Pengadilan (apabila Yatim Piatu masih di bawah umur)' },
+        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar' },
       ],
 
       'Tunjangan Yatim/Piatu — Dewasa': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Formulir SP3R', wajib: false },
-        { nama: 'Asli dan Salinan Keputusan Pensiun', wajib: false },
-        { nama: 'Asli SKPP dari KPPN / e-SKPP', wajib: false, viewSkpp: true },
-        { nama: 'Asli Surat Keterangan Belum Menikah dan Belum Bekerja disahkan Lurah/Kepala Desa', wajib: false },
-        { nama: 'Asli Surat Keterangan Kuliah (anak >21 s/d 25 tahun)', wajib: false },
-        { nama: 'Fotokopi Akta Kematian dari Dukcapil', wajib: false },
-        { nama: 'Fotokopi Keterangan Pengampu/Perwalian dari Pengadilan (apabila masih di bawah umur)', wajib: false },
-        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Formulir SP3R' },
+        { nama: 'Asli dan Salinan Keputusan Pensiun' },
+        { nama: 'Asli SKPP dari KPPN / e-SKPP', viewSkpp: true },
+        { nama: 'Asli Surat Keterangan Belum Menikah dan Belum Bekerja disahkan Lurah/Kepala Desa' },
+        { nama: 'Asli Surat Keterangan Kuliah (anak >21 s/d 25 tahun)' },
+        { nama: 'Fotokopi Akta Kematian dari Dukcapil' },
+        { nama: 'Fotokopi Keterangan Pengampu/Perwalian dari Pengadilan (apabila masih di bawah umur)' },
+        { nama: 'Pas Foto Ukuran 4x6 sebanyak 2 lembar' },
       ],
 
       'Tunjangan Orang Tua — Meninggal Dunia': [
-        { nama: 'Formulir Pengajuan', wajib: false },
-        { nama: 'Formulir SP3R', wajib: false },
-        { nama: 'Asli dan Salinan Keputusan Pensiun', wajib: false },
-        { nama: 'Asli SKPP dari KPPN', wajib: false, viewSkpp: true },
-        { nama: 'Pas Foto Pengaju Ukuran 4x6 sebanyak 2 lembar', wajib: false },
+        { nama: 'Formulir Pengajuan' },
+        { nama: 'Formulir SP3R' },
+        { nama: 'Asli dan Salinan Keputusan Pensiun' },
+        { nama: 'Asli SKPP dari KPPN', viewSkpp: true },
+        { nama: 'Pas Foto Pengaju Ukuran 4x6 sebanyak 2 lembar' },
+      ],
+
+      'Beasiswa JKm': [
+        { nama: 'Formulir Pengajuan Beasiswa JKm' },
+        { nama: 'Asli Surat Keterangan Sekolah/Kuliah (Aktif)' },
+        { nama: 'Fotokopi Akta Kelahiran Anak' },
+        { nama: 'Fotokopi e-KTP Pengaju / Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju' },
+      ],
+
+      'Beasiswa JKK': [
+        { nama: 'Formulir Pengajuan Beasiswa JKK' },
+        { nama: 'Asli Surat Keterangan Sekolah/Kuliah (Aktif)' },
+        { nama: 'Fotokopi Akta Kelahiran Anak' },
+        { nama: 'Fotokopi e-KTP Pengaju / Kartu Keluarga (KK)' },
+        { nama: 'Fotokopi Buku Rekening Tabungan Pengaju' },
       ],
     };
+
+    const DOKUMEN_MANDATORY = {
+
+      'Pensiun': [
+        'Asli Salinan Keputusan Pensiun',
+        'Asli SKPP dari KPPN/e-SKPP'
+      ],
+
+      'Berhenti dengan Hak Tunjangan': [
+        'Asli Salinan Keputusan Tunjangan'
+      ],
+
+      'Berhenti Tanpa Hak Pensiun': [
+        'Asli & Fotokopi Legalisir Keputusan Pemberhentian dari Satuan Terakhir'
+      ],
+
+      'Meninggal Dunia dalam Dinas Aktif': [
+        'Fotokopi Legalisir Keputusan Pemberhentian dengan Hormat karena Meninggal Dunia dari PDW atau Fotokopi Legalisir Usulan Pemberhentian dari Dan/Kasatker ke PDW'
+      ],
+
+      'Kecelakaan Kerja — Meninggal Dunia': [
+        'Fotokopi Legalisir Keputusan Gugur/Tewas dari Dan/Kasatker'
+      ],
+
+      'Istri/Suami Meninggal Dunia': [
+        'Fotokopi Akta Kematian dari Dukcapil'
+      ],
+
+      'Anak Meninggal Dunia': [
+        'Fotokopi Akta Kematian dari Dukcapil'
+      ],
+
+      'Pensiun Sendiri — Meninggal Dunia': [
+        'Fotokopi Akta Kematian dari Dukcapil'
+      ],
+
+      'Pensiun Warakawuri — Meninggal Dunia': [
+        'Fotokopi Akta Kematian dari Dukcapil'
+      ],
+
+      'Pensiun Sendiri — Istri/Suami Meninggal Dunia': [
+        'Fotokopi Akta Kematian dari Dukcapil'
+      ],
+
+      'Pensiun Sendiri — Anak Meninggal Dunia': [
+        'Fotokopi Akta Kematian dari Dukcapil'
+      ],
+
+      'Pensiun Wari/Janda/Duda (Dinas Aktif)': [
+        'Asli & Salinan Keputusan Pensiun',
+        'Asli SKPP dari KPPN/e-SKPP'
+      ],
+
+      'Tunjangan Yatim/Piatu — Meninggal': [
+        'Asli & Salinan Keputusan Pensiun'
+      ],
+
+      'Tunjangan Orang Tua — Meninggal': [
+        'Asli & Salinan Keputusan Pensiun'
+      ],
+
+      'Kecelakaan Kerja — Cacat Tetap Bekerja': [
+        'Fotokopi Legalisir Keputusan Cacat dari Panglima TNI/Kapolri'
+      ],
+
+      'Kecelakaan Kerja — Cacat Pensiun': [
+        'Fotokopi Legalisir Keputusan Cacat dari Panglima TNI/Kapolri'
+      ],
+
+      // Kejadian berikut TIDAK ada dokumen mandatory:
+      'Beasiswa JKm': [],
+      'Beasiswa JKK': [],
+      'UKP Tanpa Perubahan Data': [],
+      'UKP Dengan Perubahan Data': [],
+      'UKP Pembayaran Tunjangan Cacat': [],
+      'UKP Kelebihan Potongan Hutang': [],
+      'Alih Status Tunjangan': [],
+      'SP3R': [],
+    };
+
+    // Alias mapping for fallback/compatibility with any alternate naming in storage/UI
+    const ALIAS_DOKUMEN_MANDATORY = {
+      'Pensiun Pertama': 'Pensiun',
+      'Berhenti tanpa Hak Pensiun (PTDH)': 'Berhenti Tanpa Hak Pensiun',
+      'Berhenti tanpa Hak Pensiun': 'Berhenti Tanpa Hak Pensiun',
+      'Meninggal Dunia dalam Dinas Aktif (JKm)': 'Meninggal Dunia dalam Dinas Aktif',
+      'Kecelakaan Kerja — Meninggal (Gugur/Tewas)': 'Kecelakaan Kerja — Meninggal Dunia',
+      'Tunjangan Yatim/Piatu/Yatim-Piatu — Meninggal': 'Tunjangan Yatim/Piatu — Meninggal',
+      'Tunjangan Yatim/Piatu — Meninggal Dunia': 'Tunjangan Yatim/Piatu — Meninggal',
+      'Tunjangan Orang Tua — Meninggal Dunia': 'Tunjangan Orang Tua — Meninggal'
+    };
+
+    function getMandatoryDocs(jenisKejadian) {
+      if (!jenisKejadian) return [];
+      const key = ALIAS_DOKUMEN_MANDATORY[jenisKejadian] || jenisKejadian;
+      return DOKUMEN_MANDATORY[key] || [];
+    }
+
+    function isDocumentMandatory(jenisKejadian, docNama) {
+      const mandList = getMandatoryDocs(jenisKejadian);
+      if (!mandList || mandList.length === 0) return false;
+
+      const normDoc = docNama.toLowerCase().replace(/[^a-z0-9]/g, '');
+      return mandList.some(m => {
+        const normMand = m.toLowerCase().replace(/[^a-z0-9]/g, '');
+        return normDoc.includes(normMand) || normMand.includes(normDoc);
+      });
+    }
+
+    function getFullPersyaratanList(jenisKejadian) {
+      if (!jenisKejadian) return [];
+      const list = PERSYARATAN_CONFIG[jenisKejadian] || [];
+      const mappedKey = ALIAS_DOKUMEN_MANDATORY[jenisKejadian];
+      if (list.length === 0 && mappedKey && PERSYARATAN_CONFIG[mappedKey]) {
+        return PERSYARATAN_CONFIG[mappedKey];
+      }
+      return list;
+    }
 
     const DAFTAR_DOKUMEN_TAMBAHAN = [
       "Surat Keterangan Kematian",
@@ -3937,7 +4553,9 @@
       const counter = document.getElementById("persyaratan-counter");
       const notesContainer = document.getElementById("pending-notes-container");
       
-      if (!jenisKejadian || !PERSYARATAN_CONFIG[jenisKejadian]) {
+      const fullList = getFullPersyaratanList(jenisKejadian);
+      
+      if (!jenisKejadian) {
         if (container) container.classList.add("hidden");
         if (emptyState) emptyState.classList.remove("hidden");
         if (notesContainer) notesContainer.classList.add("hidden");
@@ -3950,55 +4568,75 @@
       if (notesContainer) notesContainer.classList.remove("hidden");
       if (tbody) tbody.innerHTML = "";
       
-      const config = PERSYARATAN_CONFIG[jenisKejadian];
-      totalRequired = config.length;
+      totalRequired = fullList.length;
       uploadedCount = 0;
-      if (counter) counter.innerText = `0 / ${totalRequired} Terpenuhi`;
       
-      config.forEach((item, index) => {
+      const mandList = getMandatoryDocs(jenisKejadian);
+      let mandCount = 0;
+
+      if (fullList.length === 0) {
         const tr = document.createElement("tr");
-        tr.className = "odd:bg-asabri-softBlue/30 hover:bg-slate-50";
-        
-        let fileColHtml = "";
-        if (item.viewSkpp) {
-          fileColHtml = `
-            <div class="flex items-center">
-              <button type="button" class="px-3 py-1 bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-lg hover:bg-rose-200 transition-all text-xs" onclick="viewSkppDoc()">
-                <i class="fas fa-eye mr-1"></i> View SKPP
-              </button>
-            </div>
-          `;
-        } else {
-          fileColHtml = `
-            <div class="flex items-center gap-2">
-              <select class="border border-slate-200 rounded-lg px-2 py-1 text-xs bg-white outline-none focus:border-asabri-blue" onchange="updatePersyaratanUpload(${index}, this)">
-                <option value="">-- Pilih --</option>
-                <option value="Dokumen Baru">Dokumen Baru</option>
-              </select>
-              <input type="file" id="file-main-${index}" class="hidden" onchange="handleMainFileChange(${index}, this)">
-              <button type="button" class="px-2.5 py-1 bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold rounded-lg border border-slate-200 text-[11px]" onclick="document.getElementById('file-main-${index}').click()">Pilih File</button>
-              <span id="file-label-${index}" class="text-[10px] text-slate-500 font-mono hidden max-w-[120px] truncate"></span>
-            </div>
-          `;
-        }
-        
         tr.innerHTML = `
-          <td class="px-4 py-3 text-center">
-            <input type="checkbox" class="doc-verify-checkbox w-4 h-4 text-asabri-blue rounded cursor-pointer" onchange="runDocVerificationCheck()">
-          </td>
-          <td class="px-4 py-3 font-semibold text-slate-700">${item.nama}</td>
-          <td class="px-4 py-3">
-            <input type="text" placeholder="Nomor dokumen..." class="w-full bg-white border border-slate-250 rounded-lg px-2 py-1 text-xs outline-none focus:border-asabri-blue">
-          </td>
-          <td class="px-4 py-3">
-            <input type="date" data-doc-name="${item.nama}" class="persyaratan-date-input bg-white border border-slate-250 rounded-lg px-2 py-1 text-xs outline-none focus:border-asabri-blue" onchange="runSlaValidation()">
-          </td>
-          <td class="px-4 py-3">
-            ${fileColHtml}
+          <td colspan="5" class="px-4 py-4 text-center text-slate-500 italic bg-slate-50">
+            Tidak ada daftar dokumen standar untuk jenis kejadian ini. Anda dapat mengunggah dokumen opsional/tambahan jika diperlukan.
           </td>
         `;
         if (tbody) tbody.appendChild(tr);
-      });
+      } else {
+        fullList.forEach((item, index) => {
+          const isMandatory = isDocumentMandatory(jenisKejadian, item.nama);
+          if (isMandatory) mandCount++;
+
+          const tr = document.createElement("tr");
+          tr.className = "odd:bg-asabri-softBlue/30 hover:bg-slate-50";
+          
+          let fileColHtml = "";
+          if (item.viewSkpp) {
+            fileColHtml = `
+              <div class="flex items-center">
+                <button type="button" class="px-3 py-1 bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-lg hover:bg-rose-200 transition-all text-xs" onclick="viewSkppDoc()">
+                  <i class="fas fa-eye mr-1"></i> View SKPP
+                </button>
+              </div>
+            `;
+          } else {
+            fileColHtml = `
+              <div class="flex items-center gap-2">
+                <select class="border border-slate-200 rounded-lg px-2 py-1 text-xs bg-white outline-none focus:border-asabri-blue" onchange="updatePersyaratanUpload(${index}, this)">
+                  <option value="">-- Pilih --</option>
+                  <option value="Dokumen Baru">Dokumen Baru</option>
+                </select>
+                <input type="file" id="file-main-${index}" class="hidden" onchange="handleMainFileChange(${index}, this)">
+                <button type="button" class="px-2.5 py-1 bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold rounded-lg border border-slate-200 text-[11px]" onclick="document.getElementById('file-main-${index}').click()">Pilih File</button>
+                <span id="file-label-${index}" class="text-[10px] text-slate-500 font-mono hidden max-w-[120px] truncate"></span>
+              </div>
+            `;
+          }
+          
+          tr.innerHTML = `
+            <td class="px-4 py-3 text-center">
+              <input type="checkbox" class="doc-verify-checkbox w-4 h-4 text-asabri-blue rounded cursor-pointer" onchange="runDocVerificationCheck()">
+            </td>
+            <td class="px-4 py-3 font-semibold text-slate-700">
+              ${item.nama} ${isMandatory ? '<span class="text-rose-500 font-bold" title="Dokumen Mandatory">*</span>' : ''}
+            </td>
+            <td class="px-4 py-3">
+              <input type="text" id="doc-num-${index}" data-mandatory="${isMandatory}" placeholder="${isMandatory ? 'Nomor dokumen (wajib)...' : 'Nomor dokumen (opsional)...'}" class="doc-num-input w-full bg-white border border-slate-250 rounded-lg px-2 py-1 text-xs outline-none focus:border-asabri-blue" oninput="runDocVerificationCheck()">
+              <span id="err-doc-num-${index}" class="text-rose-500 text-[10px] hidden font-semibold">Nomor wajib diisi</span>
+            </td>
+            <td class="px-4 py-3">
+              <input type="date" id="doc-date-${index}" data-mandatory="${isMandatory}" data-doc-name="${item.nama}" class="doc-date-input persyaratan-date-input bg-white border border-slate-250 rounded-lg px-2 py-1 text-xs outline-none focus:border-asabri-blue" onchange="runSlaValidation(); runDocVerificationCheck();">
+              <span id="err-doc-date-${index}" class="text-rose-500 text-[10px] hidden font-semibold">Tanggal wajib diisi</span>
+            </td>
+            <td class="px-4 py-3">
+              ${fileColHtml}
+            </td>
+          `;
+          if (tbody) tbody.appendChild(tr);
+        });
+      }
+
+      if (counter) counter.innerText = `0 / ${fullList.length} Terpenuhi (${mandCount} Mandatory)`;
 
       recalculateProgress();
       runSlaValidation();
@@ -4007,14 +4645,32 @@
     }
 
     function runDocVerificationCheck() {
+      const selectJenis = document.getElementById("kejadian-jenis");
+      const currentJenis = selectJenis ? selectJenis.value : (claimState?.jenisKejadian || "");
+      const fullList = getFullPersyaratanList(currentJenis);
+
+      const btnPending = document.getElementById('btn-pending-doc');
+      const btnTeruskan = document.getElementById('btn-teruskan-doc');
+
       const checkboxes = document.querySelectorAll('.doc-verify-checkbox');
       const allChecked = checkboxes.length > 0 && Array.from(checkboxes).every(cb => cb.checked);
       
-      const btnPending = document.getElementById('btn-pending-doc');
-      const btnTeruskan = document.getElementById('btn-teruskan-doc');
-      
+      let allMandatoryFilled = true;
+      fullList.forEach((item, idx) => {
+        const isMandatory = isDocumentMandatory(currentJenis, item.nama);
+        if (isMandatory) {
+          const numVal = document.getElementById(`doc-num-${idx}`)?.value.trim();
+          const dateVal = document.getElementById(`doc-date-${idx}`)?.value;
+          if (!numVal || !dateVal) {
+            allMandatoryFilled = false;
+          }
+        }
+      });
+
+      const canForward = (checkboxes.length === 0 || allChecked) && allMandatoryFilled;
+
       if (btnPending && btnTeruskan) {
-        if (allChecked) {
+        if (canForward) {
           btnTeruskan.disabled = false;
           btnTeruskan.classList.remove('opacity-50', 'cursor-not-allowed');
           btnPending.disabled = true;
@@ -4026,6 +4682,8 @@
           btnPending.classList.remove('opacity-50', 'cursor-not-allowed');
         }
       }
+
+      return canForward;
     }
 
     function processPendingDoc() {
@@ -4059,6 +4717,44 @@
     }
 
     function processForwardDoc() {
+      const selectJenis = document.getElementById("kejadian-jenis");
+      const currentJenis = selectJenis ? selectJenis.value : (claimState?.jenisKejadian || "");
+      const fullList = getFullPersyaratanList(currentJenis);
+
+      let isValid = true;
+      fullList.forEach((item, idx) => {
+        const isMandatory = isDocumentMandatory(currentJenis, item.nama);
+        if (isMandatory) {
+          const numEl = document.getElementById(`doc-num-${idx}`);
+          const dateEl = document.getElementById(`doc-date-${idx}`);
+          const errNum = document.getElementById(`err-doc-num-${idx}`);
+          const errDate = document.getElementById(`err-doc-date-${idx}`);
+
+          if (numEl && !numEl.value.trim()) {
+            numEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+            if (errNum) errNum.classList.remove("hidden");
+            isValid = false;
+          } else if (numEl) {
+            numEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+            if (errNum) errNum.classList.add("hidden");
+          }
+
+          if (dateEl && !dateEl.value) {
+            dateEl.classList.add("border-rose-500", "focus:ring-rose-500/30");
+            if (errDate) errDate.classList.remove("hidden");
+            isValid = false;
+          } else if (dateEl) {
+            dateEl.classList.remove("border-rose-500", "focus:ring-rose-500/30");
+            if (errDate) errDate.classList.add("hidden");
+          }
+        }
+      });
+
+      if (!isValid) {
+        showToast("Dokumen Mandatory Belum Lengkap", "Nomor dan Tanggal dokumen mandatory (*) wajib diisi!", "danger");
+        return;
+      }
+
       claimState.status = "Kalkulasi Manfaat";
       localStorage.setItem("registrasiKlaim", JSON.stringify(claimState));
       
@@ -4102,11 +4798,10 @@
     function recalculateProgress() {
       let count = 0;
       const selectJenis = document.getElementById("kejadian-jenis");
-      if (!selectJenis) return;
-      const config = PERSYARATAN_CONFIG[selectJenis.value];
-      if (!config) return;
+      const currentJenis = selectJenis ? selectJenis.value : (claimState?.jenisKejadian || "");
+      const fullList = getFullPersyaratanList(currentJenis);
       
-      config.forEach((item, index) => {
+      fullList.forEach((item, index) => {
         if (item.viewSkpp) {
           count++; 
         } else {
@@ -4117,7 +4812,7 @@
         }
       });
       const counter = document.getElementById("persyaratan-counter");
-      if (counter) counter.innerText = `${count} / ${totalRequired} Terpenuhi`;
+      if (counter) counter.innerText = `${count} / ${fullList.length} Terpenuhi`;
     }
 
     function addTambahanRow() {
@@ -4226,6 +4921,12 @@
       'Tunjangan Yatim/Piatu — Meninggal Dunia': ['Alih Status Tunjangan Yatim-Piatu'],
       'Tunjangan Yatim/Piatu — Dewasa': ['Alih Status Tunjangan Yatim-Piatu'],
       'Tunjangan Orang Tua — Meninggal Dunia': ['Alih Status Tunjangan Orang Tua'],
+      'Beasiswa JKm': ['Beasiswa JKm'],
+      'Beasiswa JKK': ['Beasiswa JKK'],
+      'UKP Tanpa Perubahan Data': ['UKP Tanpa Perubahan Data'],
+      'UKP Dengan Perubahan Data': ['UKP Dengan Perubahan Data'],
+      'UKP Pembayaran Tunjangan Cacat': ['UKP Pembayaran Tunjangan Cacat'],
+      'UKP Kelebihan Potongan Hutang': ['UKP Kelebihan Potongan Hutang'],
     };
 
     const KEJADIAN_AHLIWARIS_PRODUK_MAP = {
@@ -4303,6 +5004,19 @@
         mappedProducts.forEach(prodCode => {
           addProductCard(recipientName, prodCode, true);
         });
+      }
+
+      // If jenisKejadian is Beasiswa JKm or Beasiswa JKK -> filter cards so ONLY Beasiswa card remains
+      if (jenisKejadian === 'Beasiswa JKm' || jenisKejadian === 'Beasiswa JKK') {
+        const cards = container ? container.querySelectorAll('[id^="prod-card-"]') : [];
+        cards.forEach(card => {
+          const titleEl = card.querySelector('h4, span, div');
+          const isBeasiswaCard = card.innerText.includes('Beasiswa') || card.getAttribute('data-product-type')?.includes('Beasiswa');
+          if (!isBeasiswaCard) {
+            card.remove();
+          }
+        });
+        activeProducts = activeProducts.filter(p => p.type && p.type.includes('Beasiswa'));
       }
 
       if (activeProducts.length === 0) {
@@ -4409,6 +5123,7 @@
       else if (produk.startsWith("SRKK")) category = "SRKK";
       else if (produk === "Beasiswa JKK" || produk === "Beasiswa JKm") category = "Beasiswa";
       else if (produk === "NTIP") category = "NTIP";
+      else if (produk.startsWith("UKP")) category = "UKP";
       else if (produk === "BPPP" || produk === "BPI/S" || produk === "BPA") category = "Pemakaman";
 
       // Render the specific form HTML
@@ -4498,8 +5213,8 @@
         
         let dropdownHtml = "";
         let dropdownLabel = "Penspok";
-        if (produk === "Tunjangan Orang Tua") {
-          dropdownLabel = "Gaji Pokok";
+        if (produk === "Tunjangan Orang Tua" || produk === "Pensiun Warakawuri" || produk === "Tunjangan Yatim/Piatu") {
+          dropdownLabel = "Gaji Pokok Terakhir (GPT)";
           const recommendations = getGajiMkgRecommendation(pangkatAkhirVal);
           dropdownHtml = recommendations.map((item, idx) => {
             const months = (idx * 5 + 1) % 12;
@@ -4588,10 +5303,10 @@
              <div>
               <label class="block font-bold text-slate-500 mb-1">${dropdownLabel} <span class="text-rose-500">*</span></label>
               <div class="flex gap-1.5">
-                <select id="${cardId}-select-${produk === 'Tunjangan Orang Tua' ? 'gaji-mkg' : 'penspok'}" onchange="calculateProduct('${cardId}', '${produk}')" class="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 font-semibold outline-none focus:border-asabri-blue text-xs text-slate-700">
+                <select id="${cardId}-select-${(produk === 'Tunjangan Orang Tua' || produk === 'Pensiun Warakawuri' || produk === 'Tunjangan Yatim/Piatu') ? 'gaji-mkg' : 'penspok'}" onchange="calculateProduct('${cardId}', '${produk}')" class="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 font-semibold outline-none focus:border-asabri-blue text-xs text-slate-700">
                   ${dropdownHtml}
                 </select>
-                ${produk === 'Tunjangan Orang Tua' ? '' : `
+                ${(produk === 'Tunjangan Orang Tua' || produk === 'Pensiun Warakawuri' || produk === 'Tunjangan Yatim/Piatu') ? '' : `
                 <button type="button" onclick="openPenspokLookupModal('${cardId}')" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-655 border border-slate-200 font-bold rounded-xl text-xs transition-colors flex items-center justify-center" title="Cari Penspok">
                   <i class="fas fa-search mr-1"></i> Cari
                 </button>
@@ -4607,7 +5322,25 @@
               </select>
             </div>
             ${childCountHtml}
-            ${tunjCacatHtml}
+            <div class="sm:col-span-3 border-t border-slate-200 pt-3 mt-1 bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+              <span class="text-xs font-bold text-slate-700 block uppercase tracking-wider text-[10px]">── Kalkulasi Pensiun Terusan ──</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Kondisi Pensiun Terusan</label>
+                  <select id="${cardId}-kondisi-terusan" onchange="calculateProduct('${cardId}', '${produk}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                    <option value="Meninggal Biasa" selected>Meninggal Biasa (4 bulan)</option>
+                    <option value="Bintang Jasa">Bintang Jasa (6 bulan)</option>
+                    <option value="Pahlawan Nasional">Pahlawan Nasional (12 bulan)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Total Pensiun Terusan <span class="text-emerald-600 font-bold">(auto-kalkulasi)</span></label>
+                  <input type="text" readonly id="${cardId}-total-terusan" placeholder="Kalkulasi Terusan..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 font-semibold font-mono text-emerald-700 outline-none">
+                  <span class="text-[10px] text-slate-400 italic block mt-0.5">Catatan: Tidak termasuk Tunjangan Cacat</span>
+                </div>
+              </div>
+            </div>
+
             <div class="sm:col-span-3">
               <label class="block font-bold text-slate-500 mb-1">Besar Manfaat Pensiun Pertama</label>
               <div class="flex gap-2">
@@ -4663,22 +5396,37 @@
         `;
       } else if (category === "SKS") {
         const tglKejadianVal = claimState?.tanggalKejadian || claimState?.kejadianDetails?.tanggalKejadian || "";
-        
-        specificHtml = `
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div>
-              <label class="block font-bold text-slate-500 mb-1">Tanggal Kejadian <span class="text-rose-500">*</span></label>
-              <input type="date" id="${cardId}-tanggal-sks" data-field="tanggal_kejadian" value="${tglKejadianVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+        const regSks = detectRegulasiCacat(tglKejadianVal);
+
+        if (regSks === 'PP 67/1991') {
+          specificHtml = `
+            <div class="sm:col-span-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-xs space-y-1">
+              <div class="flex items-center gap-2 font-bold text-amber-900">
+                <i class="fas fa-info-circle text-base"></i>
+                <span>Ketentuan Kejadian Sebelum 1 Juli 2015 (PP 67/1991)</span>
+              </div>
+              <p class="leading-relaxed">
+                Kejadian sebelum 1 Juli 2015 tidak diproses di ASABRI (tidak memperoleh SKS). Peserta hanya mendapat <strong>SNTA &amp; SRK</strong> dari Program THT.
+              </p>
             </div>
-            <div>
-              <label class="block font-bold text-slate-500 mb-1">Besar Produk</label>
-              <div class="flex gap-2">
-                <input type="text" id="${cardId}-besar" placeholder="Besar Produk..." class="field-nominal flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold font-mono text-slate-800 outline-none">
-                <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-3.5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm">Hitung SKS</button>
+          `;
+        } else {
+          specificHtml = `
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Tanggal Kejadian <span class="text-rose-500">*</span></label>
+                <input type="date" id="${cardId}-tanggal-sks" data-field="tanggal_kejadian" value="${tglKejadianVal}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Besar Produk</label>
+                <div class="flex gap-2">
+                  <input type="text" id="${cardId}-besar" placeholder="Besar Produk..." class="field-nominal flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold font-mono text-slate-800 outline-none">
+                  <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-3.5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm">Hitung SKS</button>
+                </div>
               </div>
             </div>
-          </div>
-        `;
+          `;
+        }
       } else if (category === "UDW") {
         const tglKejadianVal = claimState?.tanggalKejadian || claimState?.kejadianDetails?.tanggalKejadian || "";
         const tglSkepVal = claimState?.kejadianDetails?.tanggalSkep || currentParticipant?.tanggal_skep || "";
@@ -4727,18 +5475,46 @@
           </div>
         `;
       } else if (category === "Cacat") {
+        const pangkatAkhirVal = claimState?.kejadianDetails?.pangkatAkhir || currentParticipant?.pangkat || "";
+        const recommendations = getGajiMkgRecommendation(pangkatAkhirVal);
+        const dropdownOptions = recommendations.map((item, idx) => {
+          const months = (idx * 5 + 1) % 12;
+          const monthStr = months > 0 ? ` ${months} Bulan` : "";
+          const label = `${formatRupiah(item.gaji)} - MKG : ${item.mkg} Tahun${monthStr}`;
+          const valStr = JSON.stringify({ gaji: item.gaji, mkg: item.mkg });
+          const isLast = idx === recommendations.length - 1;
+          return `<option value='${valStr}' ${isLast ? 'selected' : ''}>${label}</option>`;
+        }).join("");
+
         const gp = currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
-        
+        const currentJenisKejadian = claimState?.jenisKejadian || document.getElementById("kejadian-jenis")?.value || "";
+
+        function getAvailableTingkatCacat(jenisKejadian) {
+          if (jenisKejadian === 'Kecelakaan Kerja — Cacat Tetap Bekerja') {
+            return ['I']; // hanya Tingkat I
+          }
+          if (jenisKejadian === 'Kecelakaan Kerja — Cacat Pensiun') {
+            return ['II', 'III']; // hanya Tingkat II & III
+          }
+          return ['I', 'II', 'III'];
+        }
+
+        const availableTingkat = getAvailableTingkatCacat(currentJenisKejadian);
+        const tingkatOptionMap = {
+          'I': '<option value="Tingkat I">Tingkat I</option>',
+          'II': '<option value="Tingkat II">Tingkat II</option>',
+          'III': '<option value="Tingkat III">Tingkat III</option>\n                <option value="Tingkat III Lainnya">Tingkat III Lainnya</option>'
+        };
+
+        const filteredTingkatOptions = availableTingkat.map(t => tingkatOptionMap[t]).filter(Boolean).join('\n                ');
+
         specificHtml = `
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
               <label class="block font-bold text-slate-500 mb-1">Tingkat Cacat <span class="text-rose-500">*</span></label>
               <select id="${cardId}-tingkat" onchange="handleCardCacatTingkatChange('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
                 <option value="" disabled selected>-- Pilih Tingkat --</option>
-                <option value="Tingkat I">Tingkat I</option>
-                <option value="Tingkat II">Tingkat II</option>
-                <option value="Tingkat III">Tingkat III</option>
-                <option value="Tingkat III Lainnya">Tingkat III Lainnya</option>
+                ${filteredTingkatOptions}
               </select>
             </div>
             <div>
@@ -4756,15 +5532,25 @@
                 <option value="Golongan C">Golongan C</option>
               </select>
             </div>
-            <div>
-              <label class="block font-bold text-slate-500 mb-1">Gaji Pokok Terakhir</label>
-              <input type="text" readonly id="${cardId}-gaji-pokok-val" value="${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(gp)}" class="field-nominal w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+            <div class="sm:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Gapok Pensiun (bulan terakhir dinas)</label>
+                <select id="${cardId}-select-gapok-pensiun" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                  ${dropdownOptions}
+                </select>
+                <span class="text-[10px] text-slate-400 italic">Auto-read dari data MKG / Gaji Pokok dinas</span>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Gapok Tunjangan Cacat (saat SK Cacat terbit)</label>
+                <input type="text" id="${cardId}-gapok-sk-cacat" value="${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(gp)}" oninput="calculateCacatProduct('${cardId}')" class="field-nominal w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-800 outline-none focus:border-asabri-blue">
+                <span class="text-[10px] text-slate-400 italic">Input manual staf sesuai dokumen SK Cacat</span>
+              </div>
             </div>
             <div>
               <label class="block font-bold text-slate-500 mb-1">Persentase Cacat</label>
               <input type="text" readonly id="${cardId}-persen" value="—" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
             </div>
-            <div>
+            <div class="sm:col-span-2">
               <label class="block font-bold text-slate-500 mb-1">Santunan Cacat <span class="text-emerald-600 font-bold">(auto-kalkulasi)</span></label>
               <input type="text" readonly id="${cardId}-besar" placeholder="Isi kriteria di atas..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-emerald-700 outline-none">
             </div>
@@ -4774,35 +5560,60 @@
           </div>
         `;
       } else if (category === "Tunjangan Cacat") {
+        const pangkatAkhirVal = claimState?.kejadianDetails?.pangkatAkhir || currentParticipant?.pangkat || "";
+        const recommendations = getGajiMkgRecommendation(pangkatAkhirVal);
+        const dropdownOptions = recommendations.map((item, idx) => {
+          const months = (idx * 5 + 1) % 12;
+          const monthStr = months > 0 ? ` ${months} Bulan` : "";
+          const label = `${formatRupiah(item.gaji)} - MKG : ${item.mkg} Tahun${monthStr}`;
+          const valStr = JSON.stringify({ gaji: item.gaji, mkg: item.mkg });
+          const isLast = idx === recommendations.length - 1;
+          return `<option value='${valStr}' ${isLast ? 'selected' : ''}>${label}</option>`;
+        }).join("");
+
         const penspok = currentParticipant?.pensiun_pokok || currentParticipant?.penspok || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 3500000;
+
         specificHtml = `
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
-              <label class="block font-bold text-slate-500 mb-1">Tingkat Cacat</label>
+              <label class="block font-bold text-slate-500 mb-1">Tingkat Cacat <span class="text-rose-500">*</span></label>
               <select id="${cardId}-tingkat" onchange="updateTunjanganCacatPercentage('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
-                <option value="Tingkat I" selected>Tingkat I</option>
+                <option value="Tingkat I">Tingkat I</option>
                 <option value="Tingkat II">Tingkat II</option>
-                <option value="Tingkat III">Tingkat III</option>
+                <option value="Tingkat III" selected>Tingkat III</option>
               </select>
             </div>
             <div>
-              <label class="block font-bold text-slate-500 mb-1">Penyebab / Akibat Dinas <span class="text-rose-500">*</span></label>
-              <select id="${cardId}-akibat-dinas" onchange="updateTunjanganCacatPercentage('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue">
-                <option value="dinas" selected>Akibat Dinas / Tugas Operasi</option>
-                <option value="bukan_dinas">Bukan Akibat Dinas</option>
+              <label class="block font-bold text-slate-500 mb-1">Golongan Cacat <span class="text-rose-500">*</span></label>
+              <select id="${cardId}-golongan-tc" onchange="updateTunjanganCacatPercentage('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                <option value="Golongan A">Golongan A (25%-40%)</option>
+                <option value="Golongan B">Golongan B (50%-75%)</option>
+                <option value="Golongan C" selected>Golongan C (75%-100%)</option>
               </select>
             </div>
             <div>
-              <label class="block font-bold text-slate-500 mb-1">Gaji Pokok / Pensiun Pokok (Rp)</label>
-              <input type="text" id="${cardId}-penspok-tc" value="${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(penspok)}" oninput="updateTunjanganCacatPercentage('${cardId}')" class="field-nominal w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono outline-none focus:border-asabri-blue">
+              <label class="block font-bold text-slate-500 mb-1">% Tunjangan Cacat (PP 56/2007)</label>
+              <input type="text" readonly id="${cardId}-persen" value="100%" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
             </div>
-            <div>
-              <label class="block font-bold text-slate-500 mb-1">% Tunjangan Cacat</label>
-              <input type="text" readonly id="${cardId}-persen" value="17.5%" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+            
+            <div class="sm:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Gapok Pensiun (bulan terakhir dinas)</label>
+                <select id="${cardId}-select-gapok-pensiun" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                  ${dropdownOptions}
+                </select>
+                <span class="text-[10px] text-slate-400 italic">Auto-read dari data MKG / Gaji Pokok dinas</span>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Gapok Tunjangan Cacat (saat SK Cacat terbit) <span class="text-rose-500">*</span></label>
+                <input type="text" id="${cardId}-gapok-sk-cacat" value="${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(penspok)}" oninput="updateTunjanganCacatPercentage('${cardId}')" class="field-nominal w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-800 outline-none focus:border-asabri-blue">
+                <span class="text-[10px] text-slate-400 italic">Input manual staf sesuai SK Cacat</span>
+              </div>
             </div>
+
             <div class="sm:col-span-3">
               <label class="block font-bold text-slate-500 mb-1">Tunjangan Cacat (Rp/bulan) <span class="text-emerald-600 font-bold">(auto-kalkulasi)</span></label>
-              <input type="text" readonly id="${cardId}-besar" placeholder="Pilih tingkat &amp; akibat dinas..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-emerald-700 outline-none">
+              <input type="text" readonly id="${cardId}-besar" placeholder="Pilih tingkat &amp; golongan..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-emerald-700 outline-none">
             </div>
             <div class="sm:col-span-3">
               <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
@@ -4836,11 +5647,10 @@
           </div>
         `;
       } else if (category === "SRKK") {
-        const reg = claimState?.regulasi || 'PP 54/2020';
-        const isTewas = produk === "SRKK Tewas";
-        const defaultNominalSRKK = isTewas
-          ? (reg === 'PP 102/2015' ? 275000000 : 350000000)
-          : (reg === 'PP 102/2015' ? 400000000 : 450000000);
+        const reg = claimState?.regulasi || detectRegulasiCacat(claimState?.kejadianDetails?.tanggalKejadian || "") || 'PP 54/2020';
+        const tab2Kematian = document.getElementById('jenis-kematian-kk')?.value || claimState?.jenisKematianKk;
+        const initialType = (tab2Kematian === 'Gugur' || tab2Kematian === 'Tewas') ? tab2Kematian : (produk === "SRKK Tewas" ? "Tewas" : "Gugur");
+        const defaultNominalSRKK = getSRKK(initialType, reg);
 
         // Read bintangJasa from per-peserta localStorage
         const nik = currentParticipant?.nik || currentParticipant?.nrp_nip || '';
@@ -4857,8 +5667,8 @@
             <div>
               <label class="block font-bold text-slate-500 mb-1">Jenis SRKK</label>
               <select id="${cardId}-srkk-type" onchange="updateSrkkNominal('${cardId}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
-                <option value="Gugur" ${!isTewas ? 'selected' : ''}>Gugur</option>
-                <option value="Tewas" ${isTewas ? 'selected' : ''}>Tewas</option>
+                <option value="Gugur" ${initialType === 'Gugur' ? 'selected' : ''}>Gugur</option>
+                <option value="Tewas" ${initialType === 'Tewas' ? 'selected' : ''}>Tewas</option>
                 <option value="Meninggal Biasa">Meninggal Biasa</option>
               </select>
             </div>
@@ -4902,41 +5712,395 @@
           </div>
         `;
       } else if (category === "Beasiswa") {
-        const maxAnak = produk === "Beasiswa JKK" ? params.BEASISWA_JKK_MAX_ANAK : params.BEASISWA_JKM_MAX_ANAK;
-        specificHtml = `
-          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
-            <div>
-              <label class="block font-bold text-slate-500 mb-1">Jenjang Pendidikan <span class="text-rose-500">*</span></label>
-              <select id="${cardId}-jenjang" onchange="calculateProduct('${cardId}', '${produk}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
-                <option value="SD" selected>SD/Sederajat (Rp 30.000.000)</option>
-                <option value="SMP">SMP/Sederajat (Rp 25.000.000)</option>
-                <option value="SMA">SMA/Sederajat (Rp 20.000.000)</option>
-                <option value="HE">D3/S1/Sederajat (Rp 15.000.000)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-bold text-slate-500 mb-1">Maksimal Anak (${reg})</label>
-              <input type="text" readonly value="${maxAnak} Anak" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-500 outline-none">
-            </div>
-            <div>
-              <label class="block font-bold text-slate-500 mb-1">Jumlah Anak Berhak</label>
-              <input type="number" id="${cardId}-jml-anak" min="0" max="${maxAnak}" value="${maxAnak}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
-            </div>
-            <div>
-              <label class="block font-bold text-slate-500 mb-1">Besar Beasiswa</label>
-              <div class="flex gap-2">
-                <input type="text" readonly id="${cardId}-besar" placeholder="Besar Beasiswa..." class="field-nominal flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
-                <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-3.5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm">Hitung Beasiswa</button>
+        const tglKejadian = claimState?.tanggalKejadian || claimState?.kejadianDetails?.tanggalKejadian || "";
+        const regBeasiswa = detectRegulasi(tglKejadian) || claimState?.regulasi || 'PP 54/2020';
+        const maxAnak = getMaxAnakBeasiswa(regBeasiswa);
+        
+        const nik = currentParticipant?.nik || currentParticipant?.nrp_nip || '';
+        const dataAnakList = currentParticipant?.anak || [
+          { nama: 'Budi Fauzi', usia: 20, jenjang: 'HE', suratSekolah: { status: true, no: '421.3/SK-S/2026/012', exp: '2026-12-31' } },
+          { nama: 'Ayu Fauzi', usia: 16, jenjang: 'SMA', suratSekolah: { status: true, no: '311.1/SK-S/2026/088', exp: '2027-06-30' } }
+        ];
+
+        let slotsHtml = '';
+        let countValid = 0;
+
+        for (let i = 1; i <= maxAnak; i++) {
+          const child = dataAnakList[i - 1] || { nama: `Anak ke-${i}`, tanggalLahir: null, jenjang: 'SMA', suratSekolah: { status: true, no: 'Doc-SK-00'+i, exp: '2026-12-31' } };
+          const childJenjang = child.jenjang || 'SMA';
+          const isKuliah = childJenjang === 'HE';
+
+          // Hitung usia anak PADA SAAT tanggal kejadian (bukan hari ini)
+          const usiaAnak = child.tanggalLahir
+            ? hitungUsiaAnak(child.tanggalLahir, tglKejadian)
+            : (child.usia || 0); // fallback ke field usia statis jika tidak ada tgl lahir
+          const batasUsia = isKuliah ? 25 : 21;
+
+          // Surat keterangan sekolah wajib hanya untuk jenjang D3/S1 (kuliah)
+          const isSuratValid = isKuliah
+            ? (child.suratSekolah && child.suratSekolah.status && (new Date(child.suratSekolah.exp) >= new Date()))
+            : true; // SD/SMP/SMA tidak butuh surat keterangan sekolah
+          const isUsiaValid = usiaAnak <= batasUsia;
+          const isValid = isSuratValid && isUsiaValid;
+          if (isValid) countValid++;
+
+          const suratInfo = isKuliah
+            ? (child.suratSekolah ? child.suratSekolah.no : 'Belum diinput')
+            : '—  (Tidak diperlukan untuk ' + childJenjang + ')';
+
+          const usiaLabel = child.tanggalLahir
+            ? `${usiaAnak} thn saat kejadian`
+            : `${usiaAnak} thn`;
+
+          slotsHtml += `
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-700 text-xs flex items-center gap-1.5">
+                  <i class="fas fa-child text-asabri-blue"></i> Slot Anak ${i}
+                </span>
+                <span class="px-2 py-0.5 rounded-full font-bold text-[10px] ${isValid ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                  ${isValid ? '✅ Memenuhi Syarat' : '❌ Terhenti / Invalid'}
+                </span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                <div>
+                  <label class="block font-semibold text-slate-500 text-[10px]">Pilih Anak</label>
+                  <select class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 font-semibold text-slate-700">
+                    ${dataAnakList.map((a, idx) => {
+                      const usiaSaatItu = a.tanggalLahir
+                        ? hitungUsiaAnak(a.tanggalLahir, tglKejadian)
+                        : (a.usia || 0);
+                      return `<option value="${a.nama}" ${idx === (i-1) ? 'selected' : ''}>${a.nama} (${usiaSaatItu} thn saat kejadian)</option>`;
+                    }).join('')}
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-500 text-[10px]">Surat Keterangan Sekolah ${isKuliah ? '<span class="text-rose-500">*</span>' : '<span class="text-slate-400 font-normal">(opsional)</span>'}</label>
+                  <input type="text" readonly value="${suratInfo}" class="w-full ${isKuliah ? 'bg-slate-100' : 'bg-slate-50 italic text-slate-400'} border border-slate-200 rounded-lg px-2.5 py-1.5 font-mono text-[11px] outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-500 text-[10px]">Status Validasi</label>
+                  <span class="block py-1.5 font-mono text-[11px] ${isValid ? 'text-emerald-700' : 'text-rose-600'} font-bold">
+                    ${isValid
+                      ? (isKuliah
+                          ? `Surat berlaku: ${child.suratSekolah.exp} | Usia ${usiaLabel} ≤ ${batasUsia} thn ✅`
+                          : `Usia ${usiaLabel} ≤ ${batasUsia} thn ✅`)
+                      : (!isSuratValid
+                          ? `Surat keterangan kuliah kedaluwarsa (usia ${usiaLabel})`
+                          : `Usia ${usiaLabel} > batas ${batasUsia} thn ❌`)}
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="sm:col-span-4">
-              <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
+          `;
+        }
+
+        specificHtml = `
+          <div class="space-y-3 text-xs">
+            <!-- Header Regulasi & Slot Anak -->
+            <div class="flex items-center justify-between bg-indigo-50 border border-indigo-100 p-3 rounded-xl">
+              <div>
+                <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider block">Ketentuan Regulasi Beasiswa</span>
+                <strong class="text-indigo-900 text-xs">${regBeasiswa} — Maksimal ${maxAnak} Anak Berhak</strong>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider block">Status Slot Terverifikasi</span>
+                <span class="text-xs font-mono font-bold text-emerald-700">${countValid} dari ${maxAnak} Slot memenuhi syarat</span>
+              </div>
             </div>
-            <div class="sm:col-span-4">
-              <div id="${cardId}-tpb-container" class="mt-3"></div>
+
+            <!-- List Slot Anak -->
+            <div class="space-y-2">
+              ${slotsHtml}
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 border-t border-slate-200 pt-3">
+              <div class="sm:col-span-2">
+                <label class="block font-bold text-slate-500 mb-1">Jenjang Pendidikan <span class="text-rose-500">*</span></label>
+                <select id="${cardId}-jenjang" onchange="onBeasiswaJenjangChange('${cardId}', '${produk}')" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+                  <option value="SD">SD/Sederajat</option>
+                  <option value="SMP">SMP/Sederajat</option>
+                  <option value="SMA">SMA/Sederajat</option>
+                  <option value="HE" selected>D3/S1/Perguruan Tinggi</option>
+                </select>
+                <span class="text-[10px] text-slate-400 italic mt-0.5 block">Surat keterangan sekolah <strong>wajib</strong> hanya untuk D3/S1 (kuliah)</span>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Nominal per Anak <span class="text-emerald-600 font-bold">(auto)</span></label>
+                <input type="text" readonly id="${cardId}-nominal-per-anak" value="Rp 15.000.000" class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-emerald-700 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Jumlah Anak Berhak</label>
+                <input type="number" id="${cardId}-jml-anak" min="0" max="${maxAnak}" value="${countValid}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block font-bold text-slate-500 mb-1">Maks Anak (${regBeasiswa})</label>
+                <input type="text" readonly value="${maxAnak} Anak" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-500 outline-none">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block font-bold text-slate-500 mb-1">Total Beasiswa <span class="text-emerald-600 font-bold">(auto-kalkulasi)</span></label>
+                <div class="flex gap-2">
+                  <input type="text" readonly id="${cardId}-besar" placeholder="Pilih jenjang lalu klik Hitung..." class="field-nominal flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold font-mono text-slate-500 outline-none">
+                  <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-3.5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm whitespace-nowrap">Hitung Beasiswa</button>
+                </div>
+              </div>
+              <div class="sm:col-span-4">
+                <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
+              </div>
+              <div class="sm:col-span-4">
+                <div id="${cardId}-tpb-container" class="mt-3"></div>
+              </div>
             </div>
           </div>
         `;
+      } else if (category === "UKP") {
+        if (produk === "UKP Tanpa Perubahan Data") {
+          specificHtml = `
+            <div class="space-y-3 text-xs">
+              <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl space-y-1 text-blue-900">
+                <span class="font-bold flex items-center gap-1 text-xs"><i class="fas fa-info-circle text-asabri-blue"></i> UKP Tanpa Perubahan Data</span>
+                <p class="text-[11px]">Proses pengajuan UKP dilakukan di Kantor Cabang tanpa mengubah data pokok pensiun.</p>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Objek UKP <span class="text-rose-500">*</span></label>
+                  <select id="${cardId}-ukp-objek" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                    <option value="Pensiun Pokok" selected>Pensiun Pokok (Penspok)</option>
+                    <option value="Tunjangan Istri/Suami">Tunjangan Istri/Suami</option>
+                    <option value="Tunjangan Anak">Tunjangan Anak</option>
+                    <option value="Tunjangan Cacat">Tunjangan Cacat</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Penerima UKP <span class="text-rose-500">*</span></label>
+                  <input type="text" id="${cardId}-ukp-penerima" value="${penerima}" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Periode Dapem (Bulan Bayar) <span class="text-rose-500">*</span></label>
+                  <input type="text" id="${cardId}-ukp-periode" placeholder="Contoh: Jan 2026 - Mar 2026" value="Jan 2026 - Mar 2026" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Sarana Bayar</label>
+                  <select class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                    <option value="Transfer Bank" selected>Transfer Bank (SP2D/E-Payment)</option>
+                    <option value="Pos">PT Pos Indonesia</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Nomor Rekening</label>
+                  <input type="text" value="128000982310" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs font-mono">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Mitra Bayar</label>
+                  <input type="text" value="Bank Mandiri" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-1">
+                <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm flex items-center gap-1.5">
+                  <i class="fas fa-database"></i> Ambil Data &amp; Generate Bulan Bayar
+                </button>
+              </div>
+              <div class="sm:col-span-3">
+                <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Nominal UKP Tergenerate</label>
+                <input type="text" readonly id="${cardId}-besar" placeholder="Klik Ambil Data..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 font-semibold font-mono text-emerald-700 outline-none">
+              </div>
+            </div>
+          `;
+        } else if (produk === "UKP Dengan Perubahan Data") {
+          specificHtml = `
+            <div class="space-y-3 text-xs">
+              <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-1 text-amber-900">
+                <span class="font-bold flex items-center gap-1 text-xs"><i class="fas fa-edit text-amber-600"></i> UKP Dengan Perubahan Data</span>
+                <p class="text-[11px]">Proses pengajuan UKP di Kancab disertai perubahan data sifat pensiun, TMT, atau besaran Penspok.</p>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Sifat Pensiun Baru <span class="text-rose-500">*</span></label>
+                  <select id="${cardId}-ukp-sifat" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                    <option value="Pensiun Biasa">Pensiun Biasa</option>
+                    <option value="Pensiun Warakawuri" selected>Pensiun Warakawuri</option>
+                    <option value="Tunjangan Yatim/Piatu">Tunjangan Yatim/Piatu</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Tanggal Pensiun Baru <span class="text-rose-500">*</span></label>
+                  <input type="date" id="${cardId}-ukp-tmt-baru" value="2026-01-01" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Penspok Baru (Rp) <span class="text-rose-500">*</span></label>
+                  <input type="text" id="${cardId}-ukp-penspok-baru" value="3.750.000" class="field-nominal w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs font-mono">
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Objek UKP</label>
+                  <select id="${cardId}-ukp-objek" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                    <option value="Pensiun Pokok" selected>Pensiun Pokok (Penspok)</option>
+                    <option value="Selisih Hak Pensiun">Selisih Hak Pensiun</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Periode Dapem</label>
+                  <input type="text" id="${cardId}-ukp-periode" value="Jan 2026 - Mar 2026" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Mitra Bayar</label>
+                  <input type="text" value="PT Pos Indonesia" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-1">
+                <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm flex items-center gap-1.5">
+                  <i class="fas fa-database"></i> Ambil Data &amp; Hitung UKP
+                </button>
+              </div>
+              <div class="sm:col-span-3">
+                <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Nominal UKP Tergenerate</label>
+                <input type="text" readonly id="${cardId}-besar" placeholder="Klik Ambil Data..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 font-semibold font-mono text-emerald-700 outline-none">
+              </div>
+            </div>
+          `;
+        } else if (produk === "UKP Pembayaran Tunjangan Cacat") {
+          specificHtml = `
+            <div class="space-y-3 text-xs">
+              <div class="p-3 bg-purple-50 border border-purple-200 rounded-xl space-y-1 text-purple-900">
+                <span class="font-bold flex items-center gap-1 text-xs"><i class="fas fa-wheelchair text-purple-600"></i> UKP Pembayaran Tunjangan Cacat</span>
+                <p class="text-[11px]">Input detail SKEP Cacat &amp; data kecelakaan untuk menghitung UKP Tunjangan Cacat otomatis.</p>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Nomor SKEP Cacat <span class="text-rose-500">*</span></label>
+                  <input type="text" id="${cardId}-no-skep-cacat" value="SKEP/109/C/2025" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Tanggal SKEP Cacat <span class="text-rose-500">*</span></label>
+                  <input type="date" id="${cardId}-tgl-skep-cacat" value="2025-11-15" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Nomor SKEP Pensiun</label>
+                  <input type="text" id="${cardId}-no-skep-pensiun-cacat" value="SKEP/882/P/2025" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Tanggal Kejadian</label>
+                  <input type="date" id="${cardId}-tgl-kejadian-cacat" value="2025-08-10" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Tempat Kejadian</label>
+                  <input type="text" id="${cardId}-tempat-kejadian" value="Surabaya" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Tingkat Cacat</label>
+                  <select id="${cardId}-tingkat-cacat" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                    <option value="III" selected>Tingkat III (100% / Berat)</option>
+                    <option value="II">Tingkat II (Sedang)</option>
+                    <option value="I">Tingkat I (Ringan)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Golongan Cacat</label>
+                  <select id="${cardId}-golongan-cacat" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                    <option value="C" selected>Golongan C (100%)</option>
+                    <option value="B">Golongan B (75%)</option>
+                    <option value="A">Golongan A (40%)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Tahun GPT (Gaji Pokok Terakhir)</label>
+                  <input type="text" id="${cardId}-tahun-gpt" value="2025" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">MKD (Masa Kerja Dinas)</label>
+                  <input type="text" id="${cardId}-mkd-cacat" value="18 Tahun" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Penspok / Gapok SK Cacat (Rp)</label>
+                  <input type="text" id="${cardId}-penspok-cacat" value="4.200.000" class="field-nominal w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs font-mono">
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-1">
+                <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm flex items-center gap-1.5">
+                  <i class="fas fa-calculator"></i> Hitung Tunjangan Cacat
+                </button>
+              </div>
+              <div class="sm:col-span-3">
+                <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Nominal UKP Tunjangan Cacat</label>
+                <input type="text" readonly id="${cardId}-besar" placeholder="Klik Hitung..." class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 font-semibold font-mono text-emerald-700 outline-none">
+              </div>
+            </div>
+          `;
+        } else if (produk === "UKP Kelebihan Potongan Hutang") {
+          const isConfirmedPusat = claimState?.ukpHutangConfirmed || false;
+          specificHtml = `
+            <div class="space-y-3 text-xs">
+              <!-- Banner Hubungi Pusat YANDU NG -->
+              <div class="p-4 rounded-xl border ${isConfirmedPusat ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'} space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold flex items-center gap-2 text-xs">
+                    <i class="fas ${isConfirmedPusat ? 'fa-check-circle text-emerald-600' : 'fa-headset text-amber-600'} text-base"></i>
+                    <span>Proses Koordinasi Kantor Pusat (Bidang Layanan Program 1)</span>
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full font-black text-[10px] uppercase ${isConfirmedPusat ? 'bg-emerald-200 text-emerald-900' : 'bg-amber-200 text-amber-900'}">
+                    ${isConfirmedPusat ? '✅ Konfirmasi Pusat Selesai' : '⏳ Menunggu Konfirmasi Pusat'}
+                  </span>
+                </div>
+                <p class="text-[11px] leading-relaxed">
+                  UKP Kelebihan Potongan Hutang memerlukan klarifikasi data dari <strong>Bidang Layanan Program 1 Kantor Pusat</strong> via YANDU NG.
+                </p>
+                ${!isConfirmedPusat ? `
+                <div class="pt-1 flex items-center gap-2">
+                  <button type="button" onclick="simulasiKonfirmasiPusatUKP('${cardId}')" class="px-3.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-xs shadow-sm transition-all flex items-center gap-1.5">
+                    <i class="fas fa-paper-plane"></i> Kirim Permohonan Konfirmasi ke Pusat
+                  </button>
+                </div>
+                ` : ''}
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Jenis Potongan Hutang</label>
+                  <input type="text" readonly value="Kelebihan Potongan Angsuran Pinjaman" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Periode Kelebihan Potongan</label>
+                  <input type="text" id="${cardId}-periode-hutang" value="Nov 2025 - Jan 2026 (3 Bulan)" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">Mitra Bank / Koperasi</label>
+                  <input type="text" value="Bank Mandiri KCP Asabri" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-700 outline-none focus:border-asabri-blue text-xs">
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 pt-1">
+                <button type="button" onclick="calculateProduct('${cardId}', '${produk}')" ${!isConfirmedPusat ? 'disabled class="px-4 py-2 bg-slate-300 text-slate-500 font-bold rounded-xl text-xs cursor-not-allowed"' : 'class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-sm"'}>
+                  <i class="fas fa-calculator"></i> Generate Nominal UKP Potongan Hutang
+                </button>
+              </div>
+
+              <div class="sm:col-span-3">
+                <div id="${cardId}-breakdown" class="hidden text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 p-4 rounded-xl font-mono space-y-1"></div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">Total UKP Kelebihan Potongan Hutang</label>
+                <input type="text" readonly id="${cardId}-besar" placeholder="${isConfirmedPusat ? 'Klik Generate Nominal...' : 'Menunggu Konfirmasi Pusat...'}" class="field-nominal w-full bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 font-semibold font-mono text-emerald-700 outline-none">
+              </div>
+            </div>
+          `;
+        }
       } else if (category === "NTIP") {
         const gpTerakhirVal = currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
         const tmtAngkatVal = currentParticipant?.tmt_dinas || currentParticipant?.tmtDinas || currentParticipant?.tmt || "2010-06-01";
@@ -5319,38 +6483,59 @@
           `;
         }
         
+        // Calculate Pensiun Terusan (durasi × pensiun bulanan, tidak termasuk Tunjangan Cacat)
+        const kondisiTerusan = document.getElementById(`${cardId}-kondisi-terusan`)?.value || "Meninggal Biasa";
+        const durasiTerusan = PENSIUN_TERUSAN[kondisiTerusan] || 4;
+        const totalPensiunTerusan = hitungPensiunTerusan(kondisiTerusan, penspokAdjusted);
+
+        const elTotalTerusan = document.getElementById(`${cardId}-total-terusan`);
+        if (elTotalTerusan) {
+          elTotalTerusan.value = formatRupiah(totalPensiunTerusan);
+        }
+        
         computedVal = penspokAdjusted + tunjCacatNominal;
         inputBesar.value = formatRupiah(computedVal);
 
         const breakdownEl = document.getElementById(`${cardId}-breakdown`);
         if (breakdownEl) {
           breakdownEl.innerHTML = `
-            <strong>Rincian Perhitungan PP</strong><br>
+            <strong>Rincian Perhitungan PP &amp; Pensiun Terusan</strong><br>
             -------------------------------------<br>
-            Pensiun Pokok (Penspok): ${formatRupiah(penspok)}<br>
+            Pensiun Pokok (Penspok) : ${formatRupiah(penspok)}<br>
             Status Penerima        : ${factorLabel}<br>
-            ${tunjDetails}
+            ${tunjDetails}-------------------------------------<br>
+            <strong>TOTAL PP (Bulanan) : ${formatRupiah(computedVal)} / bulan</strong><br>
             -------------------------------------<br>
-            <strong>TOTAL PP (Bulanan): ${formatRupiah(computedVal)} / bulan</strong>
+            Kondisi Terusan        : ${kondisiTerusan} (${durasiTerusan} bulan)<br>
+            Rumus Terusan          : ${durasiTerusan} bulan &times; ${formatRupiah(penspokAdjusted)}<br>
+            <strong>TOTAL PENSIUN TERUSAN: ${formatRupiah(totalPensiunTerusan)}</strong>
           `;
           breakdownEl.classList.remove('hidden');
         }
       } else if (type === "Pensiun Warakawuri") {
-        const selectPenspokEl = document.getElementById(`${cardId}-select-penspok`);
-        const penspok = selectPenspokEl ? parseInt(selectPenspokEl.value) || 0 : (currentParticipant?.pensiun_pokok || currentParticipant?.penspok || 3500000);
+        const selectGajiEl = document.getElementById(`${cardId}-select-gaji-mkg`);
+        let gp = 0;
+        if (selectGajiEl) {
+          try { gp = JSON.parse(selectGajiEl.value).gaji; } catch(e){}
+        }
+        const gpt = gp || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
         const jenisKejadian = document.getElementById("kejadian-jenis")?.value || claimState?.jenisKejadian || "";
+        const kondisiTerusan = document.getElementById(`${cardId}-kondisi-terusan`)?.value || "Meninggal Biasa";
+        const kondisi = (kondisiTerusan === "Pahlawan Nasional" || kondisiTerusan === "Bintang Jasa") ? "Pahlawan" : getKondisiKematian(jenisKejadian);
         
-        computedVal = hitungPensiunWarakawuri(jenisKejadian, penspok);
+        computedVal = hitungPensiunWarakawuri(jenisKejadian, gpt, kondisi);
         inputBesar.value = formatRupiah(computedVal);
+
+        const ratePct = (PENSIUN_WARAKAWURI_CONFIG[kondisi] * 100).toFixed(0) + '%';
 
         const breakdownEl = document.getElementById(`${cardId}-breakdown`);
         if (breakdownEl) {
           breakdownEl.innerHTML = `
-            <strong>Rincian Perhitungan Pensiun Warakawuri</strong><br>
+            <strong>Rincian Perhitungan Pensiun Warakawuri (PP No. 36/1968)</strong><br>
             -------------------------------------<br>
-            Pensiun Pokok (Penspok): ${formatRupiah(penspok)}<br>
-            Jenis Kejadian         : ${jenisKejadian}<br>
-            Persentase             : ${(jenisKejadian === 'Gugur' || jenisKejadian === 'Tewas') ? '80%' : '50%'}<br>
+            Gaji Pokok Terakhir (GPT): ${formatRupiah(gpt)}<br>
+            Kondisi Kematian         : ${kondisi}<br>
+            Persentase               : ${ratePct} × GPT<br>
             -------------------------------------<br>
             <strong>TOTAL PENSIUN WARAKAWURI: ${formatRupiah(computedVal)} / bulan</strong>
           `;
@@ -5358,27 +6543,35 @@
         }
         updateRingkasanKlaim();
       } else if (type === "Tunjangan Yatim/Piatu") {
-        const selectPenspokEl = document.getElementById(`${cardId}-select-penspok`);
-        const penspok = selectPenspokEl ? parseInt(selectPenspokEl.value) || 0 : (currentParticipant?.pensiun_pokok || currentParticipant?.penspok || 3500000);
+        const selectGajiEl = document.getElementById(`${cardId}-select-gaji-mkg`);
+        let gp = 0;
+        if (selectGajiEl) {
+          try { gp = JSON.parse(selectGajiEl.value).gaji; } catch(e){}
+        }
+        const gpt = gp || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
         const jenisKejadian = document.getElementById("kejadian-jenis")?.value || claimState?.jenisKejadian || "";
         const childInput = document.getElementById(`${cardId}-jml-anak`);
         const jumlahAnak = childInput ? Math.max(1, parseInt(childInput.value) || 1) : 1;
+        const kondisiTerusan = document.getElementById(`${cardId}-kondisi-terusan`)?.value || "Meninggal Biasa";
+        const kondisi = (kondisiTerusan === "Pahlawan Nasional" || kondisiTerusan === "Bintang Jasa") ? "Pahlawan" : getKondisiKematian(jenisKejadian);
 
-        computedVal = hitungTunjanganYatimPiatu(jenisKejadian, penspok, jumlahAnak);
+        computedVal = hitungTunjanganYatimPiatu(jenisKejadian, gpt, jumlahAnak, kondisi);
         inputBesar.value = formatRupiah(computedVal);
+
+        const anakKey = jumlahAnak >= 2 ? '2 Anak' : '1 Anak';
+        const ratePct = ((TUNJANGAN_YATIM_CONFIG[kondisi]?.[anakKey] || 0.225) * 100).toString().replace('.', ',') + '%';
 
         const breakdownEl = document.getElementById(`${cardId}-breakdown`);
         if (breakdownEl) {
           breakdownEl.innerHTML = `
-            <strong>Rincian Perhitungan Tunjangan Yatim/Piatu</strong><br>
+            <strong>Rincian Perhitungan Tunjangan Yatim/Piatu (PP No. 36/1968)</strong><br>
             -------------------------------------<br>
-            Pensiun Pokok (Penspok): ${formatRupiah(penspok)}<br>
-            Jenis Kejadian         : ${jenisKejadian}<br>
-            Persentase             : ${(jenisKejadian === 'Gugur' || jenisKejadian === 'Tewas') ? '80%' : '50%'}<br>
-            Jumlah Anak Berhak     : ${jumlahAnak} anak<br>
-            Formula                : (Persentase &times; Penspok) / Jumlah Anak<br>
+            Gaji Pokok Terakhir (GPT): ${formatRupiah(gpt)}<br>
+            Kondisi Kematian         : ${kondisi}<br>
+            Jumlah Anak Berhak       : ${jumlahAnak} anak (${anakKey})<br>
+            Persentase               : ${ratePct} × GPT<br>
             -------------------------------------<br>
-            <strong>TOTAL TUNJANGAN YATIM/PIATU: ${formatRupiah(computedVal)} / bulan per anak</strong>
+            <strong>TOTAL TUNJANGAN YATIM/PIATU: ${formatRupiah(computedVal)} / bulan</strong>
           `;
           breakdownEl.classList.remove('hidden');
         }
@@ -5389,21 +6582,37 @@
         if (selectGajiEl) {
           try { gp = JSON.parse(selectGajiEl.value).gaji; } catch(e){}
         }
-        const gapokok = gp || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
+        const gpt = gp || currentParticipant?.gaji_pokok || currentParticipant?.gajiPokok || 4500000;
+        const jenisKejadian = document.getElementById("kejadian-jenis")?.value || claimState?.jenisKejadian || "";
+        const kondisiTerusan = document.getElementById(`${cardId}-kondisi-terusan`)?.value || "Gugur/Tewas";
+        const kondisi = (kondisiTerusan === "Pahlawan Nasional" || kondisiTerusan === "Bintang Jasa") ? "Pahlawan" : getKondisiKematian(jenisKejadian);
         
-        computedVal = hitungTunjanganOrangTua(gapokok);
+        computedVal = hitungTunjanganOrangTua(gpt, jenisKejadian, kondisi);
         inputBesar.value = formatRupiah(computedVal);
 
         const breakdownEl = document.getElementById(`${cardId}-breakdown`);
         if (breakdownEl) {
-          breakdownEl.innerHTML = `
-            <strong>Rincian Perhitungan Tunjangan Orang Tua</strong><br>
-            -------------------------------------<br>
-            Gaji Pokok (Gapok)     : ${formatRupiah(gapokok)}<br>
-            Persentase             : 20%<br>
-            -------------------------------------<br>
-            <strong>TOTAL TUNJANGAN ORANG TUA: ${formatRupiah(computedVal)} / bulan</strong>
-          `;
+          if (computedVal === 0) {
+            breakdownEl.innerHTML = `
+              <strong class="text-rose-600">Rincian Perhitungan Tunjangan Orang Tua (PP No. 36/1968)</strong><br>
+              -------------------------------------<br>
+              Gaji Pokok Terakhir (GPT): ${formatRupiah(gpt)}<br>
+              Kondisi Kematian         : ${kondisi}<br>
+              <span class="text-rose-600 font-bold">⚠️ Tunjangan Orang Tua HANYA berlaku untuk Gugur/Tewas atau Pahlawan.</span><br>
+              -------------------------------------<br>
+              <strong>TOTAL TUNJANGAN ORANG TUA: Rp 0 / bulan</strong>
+            `;
+          } else {
+            breakdownEl.innerHTML = `
+              <strong>Rincian Perhitungan Tunjangan Orang Tua (PP No. 36/1968)</strong><br>
+              -------------------------------------<br>
+              Gaji Pokok Terakhir (GPT): ${formatRupiah(gpt)}<br>
+              Kondisi Kematian         : ${kondisi}<br>
+              Persentase               : 25% × GPT<br>
+              -------------------------------------<br>
+              <strong>TOTAL TUNJANGAN ORANG TUA: ${formatRupiah(computedVal)} / bulan</strong>
+            `;
+          }
           breakdownEl.classList.remove('hidden');
         }
         updateRingkasanKlaim();
@@ -5454,22 +6663,33 @@
         showToast("Kalkulasi Tunjangan Terbatas Selesai", "Tunjangan berhasil dihitung.", "success");
         updateRingkasanKlaim();
       } else if (type === "SKS") {
+        const tglSks = document.getElementById(`${cardId}-tanggal-sks`)?.value;
+        const reg = detectRegulasiCacat(tglSks || claimState?.tanggalKejadian);
+        if (reg === 'PP 67/1991') {
+          computedVal = 0;
+          inputBesar.value = formatRupiah(0);
+          showToast("Tidak Diproses di ASABRI", "Kejadian sebelum 1 Juli 2015 (PP 67/1991) tidak memperoleh SKS.", "warning");
+          updateRingkasanKlaim();
+          return;
+        }
         const isPerwira = (currentParticipant?.pangkat || "").toLowerCase().includes("mayor") || 
                           (currentParticipant?.pangkat || "").toLowerCase().includes("kolonel") ||
                           (currentParticipant?.pangkat || "").toLowerCase().includes("jenderal") ||
                           (currentParticipant?.pangkat || "").toLowerCase().includes("letnan") ||
-                          (currentParticipant?.pangkat || "").toLowerCase().includes("kapten");
-        const reg = claimState?.regulasi || 'PP 54/2020';
-        const params = REGULASI_PARAMS[reg];
-        computedVal = isPerwira ? params.SKS_PERWIRA : params.SKS_BINTARA;
+                          (currentParticipant?.pangkat || "").toLowerCase().includes("kapten") ||
+                          (currentParticipant?.pangkat || "").toLowerCase().includes("gol iii") ||
+                          (currentParticipant?.pangkat || "").toLowerCase().includes("gol iv");
+        const sksTable = SKS_JKm[reg] || SKS_JKm['PP 54/2020'];
+        computedVal = (sksTable && sksTable[isPerwira ? 'Perwira/Gol III & IV' : 'Tamtama/Bintara/PNS Gol I & II']) || 0;
         inputBesar.value = formatRupiah(computedVal);
         const breakdownEl = document.getElementById(`${cardId}-breakdown`);
         if (breakdownEl) {
           breakdownEl.innerHTML = `
-            <strong>Rincian Perhitungan SKS</strong><br>
+            <strong>Rincian Perhitungan SKS JKm</strong><br>
             -------------------------------------<br>
             Regulasi              : ${reg}<br>
-            Tanggal Kejadian      : ${formatIndoDate(document.getElementById(`${cardId}-tanggal-sks`).value)}<br>
+            Tanggal Kejadian      : ${tglSks ? formatIndoDate(tglSks) : '-'}<br>
+            Kategori Golongan     : ${isPerwira ? 'Perwira / PNS Gol III & IV' : 'Tamtama/Bintara / PNS Gol I & II'}<br>
             Pangkat / Golongan    : ${currentParticipant?.pangkat || '-'}<br>
             -------------------------------------<br>
             <strong>TOTAL SKS: ${formatRupiah(computedVal)}</strong>
@@ -5506,6 +6726,88 @@
           `;
           breakdownEl.classList.remove('hidden');
         }
+      } else if (type.startsWith("UKP")) {
+        let nominalUkp = 0;
+        let detailsUkp = "";
+
+        if (type === "UKP Tanpa Perubahan Data") {
+          const objek = document.getElementById(`${cardId}-ukp-objek`)?.value || "Pensiun Pokok";
+          const penerima = document.getElementById(`${cardId}-ukp-penerima`)?.value || "Peserta";
+          const periode = document.getElementById(`${cardId}-ukp-periode`)?.value || "Jan 2026 - Mar 2026";
+          nominalUkp = 10800000; // 3 bulan x 3.600.000
+          detailsUkp = `
+            <strong>Rincian UKP Tanpa Perubahan Data</strong><br>
+            -------------------------------------<br>
+            Objek UKP            : ${objek}<br>
+            Penerima             : ${penerima}<br>
+            Periode Dapem        : ${periode} (3 Bulan Bayar)<br>
+            Estimasi Penspok/Bln : ${formatRupiah(3600000)}<br>
+            -------------------------------------<br>
+            <strong>TOTAL NOMINAL UKP: ${formatRupiah(nominalUkp)}</strong>
+          `;
+        } else if (type === "UKP Dengan Perubahan Data") {
+          const sifat = document.getElementById(`${cardId}-ukp-sifat`)?.value || "Pensiun Warakawuri";
+          const tmtBaru = document.getElementById(`${cardId}-ukp-tmt-baru`)?.value || "2026-01-01";
+          const penspokBaruRaw = getNumericValue(`${cardId}-ukp-penspok-baru`) || 3750000;
+          const periode = document.getElementById(`${cardId}-ukp-periode`)?.value || "Jan 2026 - Mar 2026";
+          nominalUkp = penspokBaruRaw * 3;
+          detailsUkp = `
+            <strong>Rincian UKP Dengan Perubahan Data</strong><br>
+            -------------------------------------<br>
+            Sifat Pensiun Baru   : ${sifat}<br>
+            TMT Pensiun Baru     : ${formatIndoDate(tmtBaru)}<br>
+            Penspok Baru         : ${formatRupiah(penspokBaruRaw)} / bulan<br>
+            Periode Dapem        : ${periode}<br>
+            -------------------------------------<br>
+            <strong>TOTAL NOMINAL UKP: ${formatRupiah(nominalUkp)}</strong>
+          `;
+        } else if (type === "UKP Pembayaran Tunjangan Cacat") {
+          const noSkepCacat = document.getElementById(`${cardId}-no-skep-cacat`)?.value || "-";
+          const tglSkepCacat = document.getElementById(`${cardId}-tgl-skep-cacat`)?.value || "";
+          const tingkat = document.getElementById(`${cardId}-tingkat-cacat`)?.value || "III";
+          const golongan = document.getElementById(`${cardId}-golongan-cacat`)?.value || "C";
+          const penspokCacat = getNumericValue(`${cardId}-penspok-cacat`) || 4200000;
+          
+          let persen = 100;
+          if (tingkat === "III" && golongan === "C") persen = 100;
+          else if (tingkat === "III" && golongan === "B") persen = 75;
+          else if (tingkat === "III" && golongan === "A") persen = 40;
+
+          nominalUkp = Math.round((persen / 100) * penspokCacat);
+          detailsUkp = `
+            <strong>Rincian UKP Pembayaran Tunjangan Cacat</strong><br>
+            -------------------------------------<br>
+            No. SKEP Cacat       : ${noSkepCacat}<br>
+            Tgl. SKEP Cacat      : ${tglSkepCacat ? formatIndoDate(tglSkepCacat) : '-'}<br>
+            Tingkat / Golongan   : Tingkat ${tingkat} / Golongan ${golongan} (${persen}%)<br>
+            Gapok SK Cacat       : ${formatRupiah(penspokCacat)}<br>
+            -------------------------------------<br>
+            <strong>TOTAL TUNJANGAN CACAT (UKP): ${formatRupiah(nominalUkp)} / bulan</strong>
+          `;
+        } else if (type === "UKP Kelebihan Potongan Hutang") {
+          const periode = document.getElementById(`${cardId}-periode-hutang`)?.value || "Nov 2025 - Jan 2026";
+          nominalUkp = 4500000; // 3 x 1.500.000 kelebihan angsuran
+          detailsUkp = `
+            <strong>Rincian UKP Kelebihan Potongan Hutang</strong><br>
+            -------------------------------------<br>
+            Status Konfirmasi    : Verified Kantor Pusat (Program 1)<br>
+            Periode Kelebihan    : ${periode}<br>
+            Kelebihan Angsuran   : ${formatRupiah(1500000)} / bulan<br>
+            -------------------------------------<br>
+            <strong>TOTAL UKP POTONGAN HUTANG: ${formatRupiah(nominalUkp)}</strong>
+          `;
+        }
+
+        computedVal = nominalUkp;
+        inputBesar.value = formatRupiah(computedVal);
+
+        const breakdownEl = document.getElementById(`${cardId}-breakdown`);
+        if (breakdownEl) {
+          breakdownEl.innerHTML = detailsUkp;
+          breakdownEl.classList.remove('hidden');
+        }
+        showToast("Kalkulasi UKP Selesai", "Nominal UKP berhasil dihitung &amp; tergenerate.", "success");
+        updateRingkasanKlaim();
       } else if (type === "Cacat") {
         calculateCacatProduct(cardId);
         return;
@@ -5552,7 +6854,7 @@
         return;
       } else if (type === "Beasiswa JKK" || type === "Beasiswa JKm" || type === "BPA") {
         const reg = claimState?.regulasi || 'PP 54/2020';
-        const maxAnak = reg === "PP 102/2015" ? 1 : 2;
+        const maxAnak = getMaxAnakBeasiswa(reg);
         const childInput = document.getElementById(`${cardId}-jml-anak`);
         let count = childInput ? parseInt(childInput.value) || 0 : maxAnak;
         if (count > maxAnak) {
@@ -5561,26 +6863,31 @@
         }
 
         const jenjangEl = document.getElementById(`${cardId}-jenjang`);
-        const jenjang = jenjangEl ? jenjangEl.value : "SD";
+        const jenjang = jenjangEl ? jenjangEl.value : "HE";
         
-        let rate = 30000000;
-        let jenjangLabel = "SD/Sederajat";
-        if (jenjang === "SMP") { rate = 25000000; jenjangLabel = "SMP/Sederajat"; }
-        else if (jenjang === "SMA") { rate = 20000000; jenjangLabel = "SMA/Sederajat"; }
-        else if (jenjang === "HE") { rate = 15000000; jenjangLabel = "D3/S1/Sederajat"; }
+        const rate = NOMINAL_BEASISWA[jenjang] || NOMINAL_BEASISWA['SD'];
+        const JENJANG_LABELS = { 'SD': 'SD/Sederajat', 'SMP': 'SMP/Sederajat', 'SMA': 'SMA/Sederajat', 'HE': 'D3/S1/Perguruan Tinggi' };
+        const jenjangLabel = JENJANG_LABELS[jenjang] || jenjang;
+        const suratWajib = (jenjang === 'HE') ? 'Wajib (Kuliah/D3/S1)' : 'Tidak Diperlukan';
 
         computedVal = count * rate;
         inputBesar.value = formatRupiah(computedVal);
+
+        // Update nominal per anak display
+        const nominalPerAnakEl = document.getElementById(`${cardId}-nominal-per-anak`);
+        if (nominalPerAnakEl) nominalPerAnakEl.value = formatRupiah(rate);
 
         const breakdownEl = document.getElementById(`${cardId}-breakdown`);
         if (breakdownEl) {
           breakdownEl.innerHTML = `
             <strong>Rincian Perhitungan Beasiswa (${type})</strong><br>
             -------------------------------------<br>
-            Regulasi           : ${reg}<br>
-            Jenjang Pendidikan : ${jenjangLabel}<br>
-            Tarif per Anak     : ${formatRupiah(rate)}<br>
-            Jumlah Anak Berhak : ${count} anak<br>
+            Regulasi                : ${reg}<br>
+            Jenjang Pendidikan      : ${jenjangLabel}<br>
+            Nominal per Anak        : ${formatRupiah(rate)}<br>
+            Surat Ket. Sekolah      : ${suratWajib}<br>
+            Jumlah Anak Berhak      : ${count} anak<br>
+            Rumus: ${count} &times; ${formatRupiah(rate)}<br>
             -------------------------------------<br>
             <strong>TOTAL BEASISWA: ${formatRupiah(computedVal)}</strong>
           `;

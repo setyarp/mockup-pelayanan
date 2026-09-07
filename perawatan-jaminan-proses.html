@@ -592,8 +592,9 @@
           <td class="py-2.5 px-3 font-mono text-slate-650 font-bold">${item.sepaNum}</td>
           <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.sepaDate)}</td>
           <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 ${item.jaminan === 'Ya' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'} rounded font-bold text-[9px]">${item.jaminan}</span></td>
-          <td class="py-2.5 px-3 text-center">
-            <button onclick="showDetail(${item.id})" class="text-asabri-blue hover:text-asabri-blueDark font-bold"><i class="fas fa-edit"></i> Edit</button>
+          <td class="py-2.5 px-3 text-center flex items-center justify-center gap-2">
+            <a href="perawatan.html?id=${item.id}" class="text-asabri-blue hover:text-asabri-blueDark font-bold flex items-center gap-1 bg-blue-50 px-2 py-1 rounded border border-blue-200"><i class="fas fa-eye"></i> Detail</a>
+            <button onclick="showDetail(${item.id})" class="text-slate-600 hover:text-slate-800 font-bold flex items-center gap-1 bg-slate-100 px-2 py-1 rounded border border-slate-200"><i class="fas fa-edit"></i> Edit</button>
           </td>
         `;
         tbody.appendChild(tr);

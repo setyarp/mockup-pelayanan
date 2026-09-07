@@ -554,8 +554,9 @@
           <td class="py-2.5 px-3 font-mono text-slate-650 font-bold">${item.sepaNum}</td>
           <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.sepaDate)}</td>
           <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded font-bold text-[9px]">${item.jaminan}</span></td>
-          <td class="py-2.5 px-3 text-center">
-            <button onclick="openDetailModal(${item.id})" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-750 font-bold rounded-lg text-[9px]"><i class="fas fa-eye"></i> Lihat</button>
+          <td class="py-2.5 px-3 text-center flex items-center justify-center gap-1.5">
+            <a href="perawatan.html?id=${item.id}" class="px-2 py-1 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-asabri-blue font-bold rounded-lg text-[9px]"><i class="fas fa-file-invoice"></i> Detail Penuh</a>
+            <button onclick="openDetailModal(${item.id})" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-750 font-bold rounded-lg text-[9px]"><i class="fas fa-eye"></i> Modal</button>
           </td>
         `;
         tbody.appendChild(tr);

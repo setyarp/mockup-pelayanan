@@ -302,7 +302,8 @@
           <td class="py-2.5 px-3 font-mono text-slate-650 font-bold">${item.sepaNum}</td>
           <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.sepaDate)}</td>
           <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded font-bold text-[9px]">${item.jaminan}</span></td>
-          <td class="py-2.5 px-3 text-center">
+          <td class="py-2.5 px-3 text-center flex items-center justify-center gap-1.5">
+            <a href="perawatan.html?id=${item.id}" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-asabri-blue font-bold rounded-lg text-[9px] border border-slate-200"><i class="fas fa-eye"></i> Detail</a>
             <button onclick="startProcessing(${item.id})" class="px-2 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[9px]"><i class="fas fa-arrow-right"></i> Proses</button>
           </td>
         `;

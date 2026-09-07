@@ -271,53 +271,16 @@
           </div>
         </div>
 
-        <!-- B. DATA PENGAJU (READ-ONLY) -->
-        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center font-black text-xs">B</div>
-              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800" id="section-b-title">DATA PENGAJU (READ-ONLY)</h3>
-            </div>
-            <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 font-extrabold text-[10px] rounded-full uppercase" id="badge-tipe-pengaju">RS Provider</span>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]" id="lbl-pengaju-nama">Nama RS Provider / Pengaju</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="pengaju-nama">RS Siloam Semanggi</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">No. Telepon Pengaju</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold font-mono text-slate-700" id="pengaju-telp">0812-9988-7711</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Email</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold font-mono text-slate-700" id="pengaju-email">admisi@siloam-semanggi.co.id</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Nama Bank</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="pengaju-bank">BANK MANDIRI</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">No. Rekening</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-slate-800" id="pengaju-rekening">122-00-9988771-0</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Atas Nama (A.N)</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="pengaju-an">PT SILOAM INTERNATIONAL HOSPITALS TBK</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- C. DATA PESERTA (READ-ONLY) -->
+        <!-- B. DATA PESERTA (READ-ONLY) -->
         <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
           <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
-            <div class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center font-black text-xs">C</div>
+            <div class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center font-black text-xs">B</div>
             <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">DATA PESERTA (READ-ONLY)</h3>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-xs">
             <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">KPA</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold font-mono text-slate-800" id="peserta-ktpa">KPA-8899201992</div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">KTPA</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold font-mono text-slate-800" id="peserta-ktpa">KTPA-8899201992</div>
             </div>
             <div>
               <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">NRP / NIP</label>
@@ -327,50 +290,103 @@
               <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Nama Peserta</label>
               <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-extrabold text-slate-900" id="peserta-nama">KAPTEN INF BAMBANG KUSUMA</div>
             </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">UNOR</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="peserta-unor">KODAM JAYA</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">SATKER</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="peserta-satker">YONIF MEKANIS 201/JY</div>
+            </div>
           </div>
         </div>
 
-        <!-- D. DATA KWITANSI (READ-ONLY) -->
+        <!-- C. DATA RS & PERAWATAN (DARI PROVIDER - BUKAN DATA KWITANSI) -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center font-black text-xs">C</div>
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">DATA RS & PERAWATAN (DARI PROVIDER)</h3>
+            </div>
+            <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 font-extrabold text-[10px] rounded-full uppercase" id="badge-tipe-rs-status">RS Swasta (Ada Limit)</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Nama Provider / RS</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="prw-nama-rs">RS Siloam Semanggi</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Status Kepemilikan RS</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-700" id="prw-status-rs">RS Swasta</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Nama Pelapor</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-800" id="prw-nama-pelapor">Dr. Hendra (Admisi RS)</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">No. Telepon Pelapor</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-semibold text-slate-700" id="prw-telp-pelapor">0812-9988-7711</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tanggal Lapor Kejadian</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono text-slate-700" id="prw-tgl-lapor">04 Sep 2026, 08:30 WIB</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tanggal Mulai Rawat</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono text-slate-700" id="prw-tgl-mulai-rawat">04 Sep 2026</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tanggal Kejadian</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono text-slate-700" id="prw-tgl-kejadian">03 Sep 2026</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Jenis Kejadian</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-800" id="prw-jenis-kejadian">Kecelakaan Kerja Dinas</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Jenis Layanan</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-asabri-blue" id="prw-jenis-layanan">Rawat Inap</div>
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Kelas Perawatan</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-800" id="prw-kelas-rawat">Kelas I (Sesuai Hak Pangkat)</div>
+            </div>
+            <div class="col-span-2">
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Biaya Tarif Kamar Rawat Inap</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-emerald-700" id="prw-tarif-kamar">Rp 750.000 / Hari</div>
+            </div>
+            <div class="col-span-2">
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Kronologis Kejadian</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 text-slate-700 leading-relaxed italic" id="prw-kronologis">Peserta mengalami benturan saat latihan fisik persiapan tugas kedinasan.</div>
+            </div>
+            <div class="col-span-2">
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Diagnosa Kejadian</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-800 leading-relaxed" id="prw-diagnosa">Fraktur Clavicula Dextra (ICD-10: S42.0)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- D. DATA COB (JIKA ADA JASA RAHARJA) -->
         <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
           <div class="flex items-center justify-between border-b border-slate-100 pb-3">
             <div class="flex items-center gap-2">
               <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center font-black text-xs">D</div>
-              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">DATA KWITANSI (READ-ONLY)</h3>
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">DATA COB (CO-ORDINATION OF BENEFITS)</h3>
             </div>
-            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-bold uppercase"><i class="fas fa-receipt text-amber-600 mr-1"></i> Data Klaim</span>
+            <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 font-extrabold text-[10px] rounded-full uppercase" id="cob-status-badge">Terdeteksi COB Jasa Raharja</span>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-5 text-xs">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
             <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Jenis Layanan</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="kwitansi-jenis-layanan">Rawat Inap</div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Penjamin Pertama (Primary Insurer)</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="cob-penjamin-1">PT JASA RAHARJA (PERSERO)</div>
             </div>
             <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Nomor Kwitansi</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-slate-800" id="kwitansi-no">KW-RST/2026/09/00881</div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Plafon Penjamin Pertama</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-emerald-700" id="cob-plafon-1">Rp 20.000.000</div>
             </div>
             <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tanggal Kwitansi</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-semibold text-slate-700" id="kwitansi-tgl">04 Sep 2026</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tanggal Masuk Rawat</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-semibold text-slate-700" id="kwitansi-tgl-masuk">02 Sep 2026</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tanggal Keluar Rawat</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-semibold text-slate-700" id="kwitansi-tgl-keluar">04 Sep 2026</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Total Nilai Kwitansi</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-slate-800" id="kwitansi-total">Rp 4.500.000</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Biaya yang Diajukan</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-extrabold text-emerald-700" id="kwitansi-biaya-diajukan">Rp 4.500.000</div>
-            </div>
-            <div>
-              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Keterangan Tambahan</label>
-              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 text-slate-700 italic" id="kwitansi-ket">Klaim biaya perawatan darurat kecelakaan dinas</div>
+              <label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Status Penjamin Sekunder</label>
+              <div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-asabri-blue" id="cob-penjamin-2">ASABRI JKK (Penjamin Kedua)</div>
             </div>
           </div>
         </div>
@@ -606,13 +622,13 @@
             <!-- DATA PENGAJUAN WEBSITE (READ-ONLY) -->
             <div class="space-y-4">
               <div class="font-extrabold text-slate-800 uppercase tracking-wider text-[11px] flex items-center justify-between border-b border-slate-200 pb-2">
-                <span class="flex items-center gap-1.5"><i class="fas fa-file-lines text-asabri-blue"></i> Data Pengajuan Klaim dari Website (Read-only)</span>
+                <span class="flex items-center gap-1.5"><i class="fas fa-file-lines text-asabri-blue"></i> Data Pengajuan Jaminan Perawatan SJP (Read-only)</span>
                 <span id="tab1-badge-tipe-pengaju" class="px-2.5 py-0.5 bg-asabri-blue text-white rounded-full text-[10px] font-bold">Provider RS</span>
               </div>
 
               <!-- Grid 2 Kolom untuk Section A, B, C, D -->
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <!-- A. INFORMASI PENGAJUAN & C. DATA PESERTA -->
+                <!-- A. INFORMASI PENGAJUAN & B. DATA PESERTA -->
                 <div class="space-y-4">
                   <!-- A. INFORMASI PENGAJUAN -->
                   <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
@@ -622,60 +638,63 @@
                     <div class="grid grid-cols-2 gap-2 text-[11px]">
                       <div><span class="text-slate-400 block text-[10px]">No. Registrasi</span><span class="font-mono font-bold text-asabri-blue" id="tab1-full-noreg">-</span></div>
                       <div><span class="text-slate-400 block text-[10px]">Tgl Pengajuan</span><span class="font-mono text-slate-700" id="tab1-full-tgl">-</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">Nomor SJP</span><span class="font-mono text-slate-800 font-semibold" id="tab1-full-sjp">-</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">No. Surat Kronologis Satker</span><span class="font-mono text-slate-800 font-semibold" id="tab1-full-surat-kron">-</span></div>
                       <div><span class="text-slate-400 block text-[10px]">Status</span><span class="font-bold text-amber-700" id="tab1-full-status">-</span></div>
                       <div class="col-span-2"><span class="text-slate-400 block text-[10px]">Kantor Cabang</span><span class="font-semibold text-slate-800" id="tab1-full-kancab">KCU Jakarta</span></div>
                     </div>
                   </div>
 
-                  <!-- B. DATA PENGAJU -->
+                  <!-- B. DATA PESERTA -->
                   <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
-                    <div class="font-bold text-slate-800 text-[11px] border-b border-slate-200 pb-1.5 flex items-center justify-between">
-                      <span class="flex items-center gap-1.5"><i class="fas fa-user-shield text-asabri-blue"></i> B. DATA PENGAJU (PENAGIH)</span>
+                    <div class="font-bold text-slate-800 text-[11px] border-b border-slate-200 pb-1.5 flex items-center gap-1.5">
+                      <i class="fas fa-id-card text-asabri-blue"></i> B. DATA PESERTA (READ-ONLY)
                     </div>
                     <div class="grid grid-cols-2 gap-2 text-[11px]">
-                      <div class="col-span-2"><span class="text-slate-400 block text-[10px]" id="tab1-lbl-pengaju-nama">Nama RS / Peserta</span><span class="font-bold text-slate-900" id="tab1-full-pengaju-nama">-</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">No Telepon</span><span class="font-mono text-slate-700" id="tab1-full-pengaju-telp">0812-9900-1122</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">Email</span><span class="font-mono text-slate-700 truncate block" id="tab1-full-pengaju-email">-</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">Nama Bank</span><span class="font-semibold text-slate-800" id="tab1-full-pengaju-bank">Bank Mandiri</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">No Rekening</span><span class="font-mono font-bold text-slate-800" id="tab1-full-pengaju-rek">122-00-9988771-0</span></div>
-                      <div class="col-span-2"><span class="text-slate-400 block text-[10px]">Atas Nama (A.N)</span><span class="font-bold text-slate-800" id="tab1-full-pengaju-an">-</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">KTPA</span><span class="font-mono text-slate-800" id="tab1-full-peserta-ktpa">-</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">NRP / NIP</span><span class="font-mono text-slate-800" id="tab1-full-peserta-nrp">-</span></div>
+                      <div class="col-span-2"><span class="text-slate-400 block text-[10px]">Nama Peserta</span><span class="font-bold text-slate-900" id="tab1-full-peserta-nama">-</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">UNOR</span><span class="font-bold text-slate-800" id="tab1-full-peserta-unor">KODAM JAYA</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">SATKER</span><span class="font-bold text-slate-800" id="tab1-full-peserta-satker">YONIF MEKANIS 201/JY</span></div>
                     </div>
                   </div>
 
-                  <!-- C. DATA PESERTA -->
+                  <!-- C. DATA COB (CO-ORDINATION OF BENEFITS) -->
                   <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
-                    <div class="font-bold text-slate-800 text-[11px] border-b border-slate-200 pb-1.5 flex items-center gap-1.5">
-                      <i class="fas fa-id-card text-asabri-blue"></i> C. DATA PESERTA (READ-ONLY)
+                    <div class="font-bold text-slate-800 text-[11px] border-b border-slate-200 pb-1.5 flex items-center justify-between">
+                      <span class="flex items-center gap-1.5"><i class="fas fa-handshake-angle text-asabri-blue"></i> C. DATA COB JASA RAHARJA</span>
+                      <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[9px] font-bold rounded-full">Ada COB</span>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 text-[11px]">
-                      <div><span class="text-slate-400 block text-[10px]">KTPA</span><span class="font-mono text-slate-800" id="tab1-full-peserta-ktpa">-</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">NRP / NIP</span><span class="font-mono text-slate-800" id="tab1-full-peserta-nrp">-</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">Nama Peserta</span><span class="font-bold text-slate-900" id="tab1-full-peserta-nama">-</span></div>
+                    <div class="grid grid-cols-2 gap-2 text-[11px]">
+                      <div><span class="text-slate-400 block text-[10px]">Penjamin Utama</span><span class="font-bold text-slate-800">PT JASA RAHARJA</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">Plafon Utama</span><span class="font-mono font-bold text-emerald-700">Rp 20.000.000</span></div>
                     </div>
                   </div>
                 </div>
 
-                <!-- D. DATA KWITANSI -->
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 flex flex-col justify-between">
+                <!-- D. DATA RS & PERAWATAN (BUKAN DATA KWITANSI) -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
                   <div>
                     <div class="font-bold text-slate-800 text-[11px] border-b border-slate-200 pb-1.5 flex items-center gap-1.5">
-                      <i class="fas fa-receipt text-asabri-blue"></i> D. DATA KWITANSI PERAWATAN
+                      <i class="fas fa-hospital text-asabri-blue"></i> D. DATA RS & PERAWATAN (DARI PROVIDER)
                     </div>
                     <div class="grid grid-cols-2 gap-2 text-[11px] pt-2">
-                      <div><span class="text-slate-400 block text-[10px]">Jenis Layanan</span><span class="font-semibold text-slate-800" id="tab1-full-kwitansi-layanan">-</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">Nomor Kwitansi</span><span class="font-mono text-slate-800" id="tab1-full-kwitansi-no">-</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">Tanggal Kwitansi</span><span class="font-mono text-slate-700" id="tab1-full-kwitansi-tgl">2026-09-02</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">Tanggal Masuk</span><span class="font-mono text-slate-700" id="tab1-full-kwitansi-tglmasuk">2026-08-28</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">Tanggal Keluar</span><span class="font-mono text-slate-700" id="tab1-full-kwitansi-tglkeluar">2026-09-02</span></div>
-                      <div><span class="text-slate-400 block text-[10px]">Total Kwitansi</span><span class="font-mono font-bold text-slate-900" id="tab1-full-kwitansi-total">Rp 0</span></div>
-                      <div class="col-span-2 pt-1 border-t border-slate-200">
-                        <span class="text-slate-400 block text-[10px]">Biaya Diajukan</span>
-                        <span class="font-mono font-extrabold text-emerald-700 text-sm" id="tab1-full-kwitansi-diajukan">Rp 0</span>
+                      <div><span class="text-slate-400 block text-[10px]">Nama Provider / RS</span><span class="font-bold text-slate-900" id="tab1-full-prw-rs">RS Siloam Semanggi</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">Status RS</span><span class="font-semibold text-slate-800" id="tab1-full-prw-statusrs">RS Swasta (Ada Limit)</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">Nama Pelapor</span><span class="font-semibold text-slate-800" id="tab1-full-prw-pelapor">Dr. Hendra (Admisi RS)</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">No Telp Pelapor</span><span class="font-mono text-slate-700" id="tab1-full-prw-telp">0812-9988-7711</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">Tgl Lapor Kejadian</span><span class="font-mono text-slate-700" id="tab1-full-prw-tgllapor">04 Sep 2026</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">Tgl Mulai Rawat</span><span class="font-mono text-slate-700" id="tab1-full-prw-tglrawat">04 Sep 2026</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">Tgl Kejadian</span><span class="font-mono text-slate-700" id="tab1-full-prw-tglkejadian">03 Sep 2026</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">Jenis Layanan</span><span class="font-bold text-asabri-blue" id="tab1-full-prw-layanan">Rawat Inap</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">Kelas Perawatan</span><span class="font-semibold text-slate-800" id="tab1-full-prw-kelas">Kelas I</span></div>
+                      <div><span class="text-slate-400 block text-[10px]">Tarif Kamar / Hari</span><span class="font-mono font-bold text-emerald-700" id="tab1-full-prw-tarif">Rp 750.000</span></div>
+                      <div class="col-span-2 bg-white border border-slate-200 p-2.5 rounded-xl">
+                        <span class="text-slate-400 block text-[10px]">Diagnosa Kejadian</span>
+                        <span class="text-slate-800 font-bold text-[11px]" id="tab1-full-prw-diagnosa">Fraktur Clavicula Dextra (ICD-10: S42.0)</span>
                       </div>
                       <div class="col-span-2 bg-white border border-slate-200 p-2.5 rounded-xl">
-                        <span class="text-slate-400 block text-[10px]">Keterangan Pengajuan</span>
-                        <span class="text-slate-700 text-[11px] italic" id="tab1-full-kwitansi-ket">Pengajuan klaim perawatan akibat kecelakaan kerja saat bertugas.</span>
+                        <span class="text-slate-400 block text-[10px]">Kronologis Kejadian</span>
+                        <span class="text-slate-700 text-[11px] italic" id="tab1-full-prw-kronologis">Peserta mengalami benturan saat latihan fisik dinas.</span>
                       </div>
                     </div>
                   </div>
@@ -1593,71 +1612,35 @@
       return `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-slate-100 text-slate-800 border border-slate-200">${status}</span>`;
     }
 
-    function renderTabelPengajuan(dataList) {
+    // ----------------------------------------------------
+    // INDEPENDENT RENDER FUNCTIONS PER TAB CATEGORY
+    // ----------------------------------------------------
+    function renderTabJaminan(dataList) {
       const thead = document.getElementById("tabel-pengajuan-thead");
       const tbody = document.getElementById("tabel-pengajuan-tbody");
       if (!tbody) return;
 
-      document.getElementById("data-count-badge").innerText = `${dataList.length} Data`;
-      document.getElementById("count-pengajuan-total").innerText = dataList.length;
-
-      // Update Thead berdasarkan Tab Aktif
       if (thead) {
-        if (activeMainTab === "RST") {
-          thead.innerHTML = `
-            <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
-              <th class="py-3 px-3 text-center">No</th>
-              <th class="py-3 px-3 font-mono">No Registrasi</th>
-              <th class="py-3 px-3 font-mono">Tanggal Pengajuan</th>
-              <th class="py-3 px-3 font-mono">Nomor SJP</th>
-              <th class="py-3 px-3">Status</th>
-              <th class="py-3 px-3 font-mono">KTPA</th>
-              <th class="py-3 px-3 font-mono">NRP/NIP</th>
-              <th class="py-3 px-3">Nama Peserta</th>
-              <th class="py-3 px-3">Provider</th>
-              <th class="py-3 px-3 font-mono text-right">Jumlah yang Diajukan</th>
-              <th class="py-3 px-3 text-center">Aksi</th>
-            </tr>
-          `;
-        } else if (activeMainTab === "RMB") {
-          thead.innerHTML = `
-            <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
-              <th class="py-3 px-3 text-center">No</th>
-              <th class="py-3 px-3 font-mono">No Registrasi</th>
-              <th class="py-3 px-3">Status</th>
-              <th class="py-3 px-3 font-mono">Tgl Pengajuan</th>
-              <th class="py-3 px-3 font-mono">KPA</th>
-              <th class="py-3 px-3 font-mono">NRP/NIP</th>
-              <th class="py-3 px-3">Nama Peserta Pengaju</th>
-              <th class="py-3 px-3">Jenis Biaya/Layanan</th>
-              <th class="py-3 px-3">Faskes / Provider</th>
-              <th class="py-3 px-3 text-center">Aksi</th>
-            </tr>
-          `;
-        } else {
-          // Jaminan Perawatan
-          thead.innerHTML = `
-            <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
-              <th class="py-3 px-3 text-center">No</th>
-              <th class="py-3 px-3 font-mono">No REG</th>
-              <th class="py-3 px-3">Status</th>
-              <th class="py-3 px-3 font-mono">No Surat Kronologis Kejadian</th>
-              <th class="py-3 px-3 font-mono">Tgl Pengajuan</th>
-              <th class="py-3 px-3 font-mono">KPA</th>
-              <th class="py-3 px-3 font-mono">NRP/NIP</th>
-              <th class="py-3 px-3">Nama Peserta</th>
-              <th class="py-3 px-3">Jenis Layanan</th>
-              <th class="py-3 px-3">Provider RS</th>
-              <th class="py-3 px-3 text-center">Aksi</th>
-            </tr>
-          `;
-        }
+        thead.innerHTML = `
+          <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
+            <th class="py-3 px-3 text-center">No</th>
+            <th class="py-3 px-3 font-mono">No REG</th>
+            <th class="py-3 px-3">Status</th>
+            <th class="py-3 px-3 font-mono">No Surat Kronologis Kejadian</th>
+            <th class="py-3 px-3 font-mono">Tgl Pengajuan</th>
+            <th class="py-3 px-3 font-mono">KTPA</th>
+            <th class="py-3 px-3 font-mono">NRP/NIP</th>
+            <th class="py-3 px-3">Nama Peserta</th>
+            <th class="py-3 px-3">Jenis Layanan</th>
+            <th class="py-3 px-3">Provider</th>
+            <th class="py-3 px-3 text-center">Aksi</th>
+          </tr>
+        `;
       }
 
       tbody.innerHTML = "";
-
       if (dataList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="11" class="py-8 text-center text-slate-400 italic">Tidak ada data pengajuan yang sesuai</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="11" class="py-8 text-center text-slate-400 italic">Tidak ada data pengajuan Jaminan Perawatan yang sesuai</td></tr>`;
         return;
       }
 
@@ -1665,102 +1648,182 @@
         const tr = document.createElement("tr");
         tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
 
-        if (activeMainTab === "RST") {
-          // Render khusus Restitusi Perawatan
-          const badgeHtml = getRestitusiStatusBadge(item.status);
-          const nominalStr = item.jumlahDiajukan ? formatRupiah(item.jumlahDiajukan) : "Rp 0";
-
-          tr.innerHTML = `
-            <td class="py-3 px-3 text-center font-bold text-slate-500">${index + 1}</td>
-            <td class="py-3 px-3 font-bold font-mono text-asabri-blue">${item.noReg}</td>
-            <td class="py-3 px-3 font-mono text-slate-600">${item.tglPengajuan}</td>
-            <td class="py-3 px-3 font-mono text-slate-700 font-semibold">${item.noSjp || '-'}</td>
-            <td class="py-3 px-3">${badgeHtml}</td>
-            <td class="py-3 px-3 font-mono text-slate-600">${item.ktpa}</td>
-            <td class="py-3 px-3 font-mono text-slate-600">${item.nrpNip}</td>
-            <td class="py-3 px-3 font-bold text-slate-800">${item.namaPeserta}</td>
-            <td class="py-3 px-3 text-slate-700">${item.provider}</td>
-            <td class="py-3 px-3 font-mono font-bold text-right text-emerald-700">${nominalStr}</td>
-            <td class="py-3 px-3 text-center">
-              <div class="flex items-center justify-center gap-1.5">
-                <button onclick="bukaDetailPengajuan(${item.id})" class="px-2.5 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
-                  <i class="fas fa-file-invoice"></i> Detail
-                </button>
-                <button onclick="prosesPengajuan(${item.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
-                  <i class="fas fa-arrow-right"></i> Proses
-                </button>
-              </div>
-            </td>
-          `;
-        } else if (activeMainTab === "RMB") {
-          // Render khusus Reimburse Perawatan
-          let statusBadge = "";
-          if (item.status === "Baru") {
-            statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-blue-100 text-blue-800 border border-blue-200">Baru</span>`;
-          } else if (item.status === "Proses") {
-            statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-amber-100 text-amber-800 border border-amber-200">Proses</span>`;
-          } else if (item.status === "Selesai") {
-            statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200">Selesai</span>`;
-          }
-
-          tr.innerHTML = `
-            <td class="py-3 px-3 text-center font-bold text-slate-500">${index + 1}</td>
-            <td class="py-3 px-3 font-bold font-mono text-asabri-blue">${item.noReg}</td>
-            <td class="py-3 px-3">${statusBadge}</td>
-            <td class="py-3 px-3 font-mono text-slate-600">${item.tglPengajuan}</td>
-            <td class="py-3 px-3 font-mono text-slate-600">${item.ktpa}</td>
-            <td class="py-3 px-3 font-mono text-slate-600">${item.nrpNip}</td>
-            <td class="py-3 px-3 font-bold text-slate-800">${item.namaPeserta}</td>
-            <td class="py-3 px-3 font-semibold text-sky-700">${item.jenisLayanan}</td>
-            <td class="py-3 px-3 text-slate-700">${item.provider}</td>
-            <td class="py-3 px-3 text-center">
-              <div class="flex items-center justify-center gap-1.5">
-                <button onclick="bukaDetailPengajuan(${item.id})" class="px-2.5 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
-                  <i class="fas fa-file-invoice"></i> Detail
-                </button>
-                <button onclick="prosesPengajuan(${item.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
-                  <i class="fas fa-arrow-right"></i> Proses
-                </button>
-              </div>
-            </td>
-          `;
-        } else {
-          // Render standar Jaminan Perawatan
-          let statusBadge = "";
-          if (item.status === "Baru") {
-            statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-blue-100 text-blue-800 border border-blue-200">Baru</span>`;
-          } else if (item.status === "Proses") {
-            statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-amber-100 text-amber-800 border border-amber-200">Proses</span>`;
-          } else if (item.status === "Selesai") {
-            statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200">Selesai</span>`;
-          }
-
-          tr.innerHTML = `
-            <td class="py-3 px-3 text-center font-bold text-slate-500">${index + 1}</td>
-            <td class="py-3 px-3 font-bold font-mono text-asabri-blue">${item.noReg}</td>
-            <td class="py-3 px-3">${statusBadge}</td>
-            <td class="py-3 px-3 font-mono text-slate-700">${item.noSuratKronologis || '-'}</td>
-            <td class="py-3 px-3 font-mono text-slate-600">${item.tglPengajuan}</td>
-            <td class="py-3 px-3 font-mono text-slate-600">${item.ktpa}</td>
-            <td class="py-3 px-3 font-mono text-slate-600">${item.nrpNip}</td>
-            <td class="py-3 px-3 font-bold text-slate-800">${item.namaPeserta}</td>
-            <td class="py-3 px-3 font-semibold text-slate-700">${item.jenisLayanan}</td>
-            <td class="py-3 px-3 text-slate-700">${item.provider}</td>
-            <td class="py-3 px-3 text-center">
-              <div class="flex items-center justify-center gap-1.5">
-                <button onclick="bukaDetailPengajuan(${item.id})" class="px-2.5 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
-                  <i class="fas fa-file-invoice"></i> Detail
-                </button>
-                <button onclick="prosesPengajuan(${item.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
-                  <i class="fas fa-arrow-right"></i> Proses
-                </button>
-              </div>
-            </td>
-          `;
+        let statusBadge = "";
+        if (item.status === "Baru") {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-blue-100 text-blue-800 border border-blue-200">Baru</span>`;
+        } else if (item.status === "Proses") {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-amber-100 text-amber-800 border border-amber-200">Proses</span>`;
+        } else if (item.status === "Selesai") {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200">Selesai</span>`;
         }
 
+        tr.innerHTML = `
+          <td class="py-3 px-3 text-center font-bold text-slate-500">${index + 1}</td>
+          <td class="py-3 px-3 font-bold font-mono text-asabri-blue">${item.noReg}</td>
+          <td class="py-3 px-3">${statusBadge}</td>
+          <td class="py-3 px-3 font-mono text-slate-700">${item.noSuratKronologis || '-'}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.tglPengajuan}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.ktpa}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.nrpNip}</td>
+          <td class="py-3 px-3 font-bold text-slate-800">${item.namaPeserta}</td>
+          <td class="py-3 px-3 font-semibold text-slate-700">${item.jenisLayanan}</td>
+          <td class="py-3 px-3 text-slate-700">${item.provider}</td>
+          <td class="py-3 px-3 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button onclick="bukaDetailPengajuan(${item.id})" class="px-2.5 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
+                <i class="fas fa-file-invoice"></i> Detail
+              </button>
+              <button onclick="prosesPengajuan(${item.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
+                <i class="fas fa-arrow-right"></i> Proses
+              </button>
+            </div>
+          </td>
+        `;
         tbody.appendChild(tr);
       });
+    }
+
+    function renderTabRestitusi(dataList) {
+      const thead = document.getElementById("tabel-pengajuan-thead");
+      const tbody = document.getElementById("tabel-pengajuan-tbody");
+      if (!tbody) return;
+
+      if (thead) {
+        thead.innerHTML = `
+          <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
+            <th class="py-3 px-3 text-center">No</th>
+            <th class="py-3 px-3 font-mono">No Registrasi</th>
+            <th class="py-3 px-3 font-mono">Tanggal Pengajuan</th>
+            <th class="py-3 px-3 font-mono">Nomor SJP</th>
+            <th class="py-3 px-3">Status</th>
+            <th class="py-3 px-3 font-mono">KTA</th>
+            <th class="py-3 px-3 font-mono">NRP/NIP</th>
+            <th class="py-3 px-3">Nama Peserta</th>
+            <th class="py-3 px-3">Jenis Layanan</th>
+            <th class="py-3 px-3">Provider</th>
+            <th class="py-3 px-3 font-mono text-right">Jumlah yang Diajukan</th>
+            <th class="py-3 px-3 text-center">Aksi</th>
+          </tr>
+        `;
+      }
+
+      tbody.innerHTML = "";
+      if (dataList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="12" class="py-8 text-center text-slate-400 italic">Tidak ada data klaim Restitusi yang sesuai</td></tr>`;
+        return;
+      }
+
+      dataList.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
+        const badgeHtml = getRestitusiStatusBadge(item.status);
+        const nominalStr = item.jumlahDiajukan ? formatRupiah(item.jumlahDiajukan) : "Rp 0";
+        const jenisLayananStr = item.jenisLayanan || "Rawat Inap";
+
+        tr.innerHTML = `
+          <td class="py-3 px-3 text-center font-bold text-slate-500">${index + 1}</td>
+          <td class="py-3 px-3 font-bold font-mono text-asabri-blue">${item.noReg}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.tglPengajuan}</td>
+          <td class="py-3 px-3 font-mono text-slate-700 font-semibold">${item.noSjp || '-'}</td>
+          <td class="py-3 px-3">${badgeHtml}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.ktpa || item.kta || '-'}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.nrpNip}</td>
+          <td class="py-3 px-3 font-bold text-slate-800">${item.namaPeserta}</td>
+          <td class="py-3 px-3 font-bold text-asabri-blue">${jenisLayananStr}</td>
+          <td class="py-3 px-3 text-slate-700">${item.provider}</td>
+          <td class="py-3 px-3 font-mono font-bold text-right text-emerald-700">${nominalStr}</td>
+          <td class="py-3 px-3 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button onclick="bukaDetailPengajuan(${item.id})" class="px-2.5 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
+                <i class="fas fa-file-invoice"></i> Detail
+              </button>
+              <button onclick="prosesPengajuan(${item.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
+                <i class="fas fa-arrow-right"></i> Proses
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderTabReimburse(dataList) {
+      const thead = document.getElementById("tabel-pengajuan-thead");
+      const tbody = document.getElementById("tabel-pengajuan-tbody");
+      if (!tbody) return;
+
+      if (thead) {
+        thead.innerHTML = `
+          <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
+            <th class="py-3 px-3 text-center">No</th>
+            <th class="py-3 px-3 font-mono">No Registrasi</th>
+            <th class="py-3 px-3">Status</th>
+            <th class="py-3 px-3 font-mono">Tgl Pengajuan</th>
+            <th class="py-3 px-3 font-mono">KTPA</th>
+            <th class="py-3 px-3 font-mono">NRP/NIP</th>
+            <th class="py-3 px-3">Nama Peserta Pengaju</th>
+            <th class="py-3 px-3">Jenis Biaya/Layanan</th>
+            <th class="py-3 px-3">Faskes / Provider</th>
+            <th class="py-3 px-3 text-center">Aksi</th>
+          </tr>
+        `;
+      }
+
+      tbody.innerHTML = "";
+      if (dataList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="py-8 text-center text-slate-400 italic">Tidak ada data Reimburse yang sesuai</td></tr>`;
+        return;
+      }
+
+      dataList.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
+
+        let statusBadge = "";
+        if (item.status === "Baru") {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-blue-100 text-blue-800 border border-blue-200">Baru</span>`;
+        } else if (item.status === "Proses") {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-amber-100 text-amber-800 border border-amber-200">Proses</span>`;
+        } else if (item.status === "Selesai") {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200">Selesai</span>`;
+        }
+
+        tr.innerHTML = `
+          <td class="py-3 px-3 text-center font-bold text-slate-500">${index + 1}</td>
+          <td class="py-3 px-3 font-bold font-mono text-asabri-blue">${item.noReg}</td>
+          <td class="py-3 px-3">${statusBadge}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.tglPengajuan}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.ktpa}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.nrpNip}</td>
+          <td class="py-3 px-3 font-bold text-slate-800">${item.namaPeserta}</td>
+          <td class="py-3 px-3 font-semibold text-sky-700">${item.jenisLayanan}</td>
+          <td class="py-3 px-3 text-slate-700">${item.provider}</td>
+          <td class="py-3 px-3 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button onclick="bukaDetailPengajuan(${item.id})" class="px-2.5 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
+                <i class="fas fa-file-invoice"></i> Detail
+              </button>
+              <button onclick="prosesPengajuan(${item.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
+                <i class="fas fa-arrow-right"></i> Proses
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderTabelPengajuan(dataList) {
+      document.getElementById("data-count-badge").innerText = `${dataList.length} Data`;
+      document.getElementById("count-pengajuan-total").innerText = dataList.length;
+
+      if (activeMainTab === "JAM") {
+        renderTabJaminan(dataList);
+      } else if (activeMainTab === "RST") {
+        renderTabRestitusi(dataList);
+      } else if (activeMainTab === "RMB") {
+        renderTabReimburse(dataList);
+      }
     }
 
     function bukaDetailPengajuan(id) {
