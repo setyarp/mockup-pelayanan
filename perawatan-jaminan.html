@@ -1044,36 +1044,6 @@
       applyFilters();
     }
 
-      sessionStorage.setItem('status_verifikasi_kancab_jaminan', 'Ditolak');
-      sessionStorage.setItem('catatan_kancab_jaminan', txt);
-
-      tutupModalPenolakanKancab();
-
-      const namaUser = getNamaUserLogin();
-      const tglStr = getFormattedDateOnly();
-      const totalJam = getTotalJamProses();
-
-      document.getElementById('badge-verifikasi-kancab-container').className = "p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between";
-      document.getElementById('verifikasi-kancab-title').innerText = "❌ Diverifikasi dengan Catatan Penolakan oleh Kancab";
-      document.getElementById('verifikasi-kancab-sub').innerHTML = `
-        <div><b>Diverifikasi oleh:</b> ${namaUser}</div>
-        <div><b>Tanggal:</b> ${tglStr}</div>
-        <div><b>Total Jam Proses:</b> ${totalJam}</div>
-        <div><b>Status:</b> <span class="text-rose-700 font-bold">Ditolak</span></div>
-      `;
-      document.getElementById('section-catatan-penolakan').classList.remove('hidden');
-      document.getElementById('catatan-kancab-text').innerText = txt;
-      document.getElementById('catatan-kakancab-input').value = txt;
-
-      // Setup Preview Card SPJP
-      document.getElementById('doc-card-title').innerText = "DRAFT SURAT PENOLAKAN JAMINAN PERAWATAN (SPJP)";
-      document.getElementById('doc-card-no').innerText = "SPJP/JKK-PRW/2026/000891";
-      document.getElementById('btn-final-approval').className = "px-8 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2 text-sm";
-      document.getElementById('btn-final-approval').innerHTML = `<i class="fas fa-paper-plane"></i> TERBITKAN SPJP & SIMPAN KEPUTUSAN FINAL`;
-
-      switchProsesTab('tab-proses-3');
-    }
-
     function generateDokumenNumbers(item) {
       const urut = item.noUrut || '000891';
       const bln = item.bulanPengajuan || 'IX';
