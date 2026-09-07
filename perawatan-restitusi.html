@@ -145,9 +145,8 @@
                   <th class="py-3 px-3 font-mono">KTA</th>
                   <th class="py-3 px-3 font-mono">NRP/NIP</th>
                   <th class="py-3 px-3">Nama Peserta</th>
-                  <th class="py-3 px-3">Jenis Layanan</th>
                   <th class="py-3 px-3">Provider</th>
-                  <th class="py-3 px-3 font-mono text-right">Jumlah Diajukan</th>
+                  <th class="py-3 px-3 font-mono text-right">Jumlah yang Diajukan</th>
                   <th class="py-3 px-3 text-center">Aksi</th>
                 </tr>
               </thead>
@@ -805,10 +804,9 @@
           <td class="py-3 px-3 font-mono text-slate-600">${item.tglPengajuan}</td>
           <td class="py-3 px-3 font-mono font-semibold text-emerald-700">${item.sjpNo}</td>
           <td class="py-3 px-3">${statusBadge}</td>
-          <td class="py-3 px-3 font-mono text-slate-600">${item.ktpa}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.kta || item.ktpa}</td>
           <td class="py-3 px-3 font-mono text-slate-600">${item.nrpNip}</td>
           <td class="py-3 px-3 font-bold text-slate-800">${item.namaPeserta}</td>
-          <td class="py-3 px-3 font-bold text-asabri-blue">${item.jenisLayanan}</td>
           <td class="py-3 px-3 font-semibold text-slate-700">${item.provider}</td>
           <td class="py-3 px-3 font-mono font-bold text-slate-900 text-right">${formatRupiah(item.biayaDiajukan)}</td>
           <td class="py-3 px-3 text-center">
