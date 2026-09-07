@@ -15,6 +15,9 @@
   <!-- Sidebar Component -->
   <script src="sidebar.js"></script>
   <script src="shared.js?v=1.0.1"></script>
+  <!-- Document builders SJP/STJP (template HTML dipisah dari inline script) -->
+  <script src="surat-assets.js"></script>
+  <script src="perawatan-jaminan-doc.js"></script>
   <!-- html2pdf.js for direct PDF download -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -1060,379 +1063,79 @@
       applyFilters();
     }
 
-    function generateDokumenNumbers(item) {
-      const urut = item.noUrut || '000891';
-      const bln = item.bulanPengajuan || 'IX';
-      const thn = item.tahunPengajuan || '2026';
-      
-      const sjpNo = `${urut}/SJP/JKK-ASABRI/${bln}/${thn}`;
-      const spjpNo = `${urut}/SPJP/JKK-ASABRI/${bln}/${thn}`;
-      return { sjpNo, spjpNo };
+    // -----------------------------------------------------------------------
+    // PENOMORAN DOKUMEN
+    //   SJP  (disetujui) : [No Urut]/SJP/JKK-ASABRI/[Bulan]/[Tahun]
+    //   SPJP (ditolak)   : [No Urut]/SPJP/JKK-ASABRI/[Bulan]/[Tahun]
+    //   contoh           : 00001/SJP/JKK-ASABRI/09/2026
+    //
+    // No urut 5 digit, counter terpisah antara SJP dan SPJP, reset tiap tahun.
+    // Nomor yang sudah pernah terbit untuk satu pengajuan dipakai lagi (tidak
+    // menarik nomor baru setiap kali surat dibuka).
+    // -----------------------------------------------------------------------
+    const DOC_SEQ_KEY = 'asabri_jaminan_doc_seq';       // { "SJP-2026": 12 }
+    const DOC_TERBIT_KEY = 'asabri_jaminan_doc_terbit'; // { "SJP-2026-1": "00001" }
+
+    const BULAN_SINGKAT_ID = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun',
+      'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
+    const BULAN_ROMAWI = { I: 1, II: 2, III: 3, IV: 4, V: 5, VI: 6,
+      VII: 7, VIII: 8, IX: 9, X: 10, XI: 11, XII: 12 };
+
+    // Bulan/tahun surat diambil dari tanggal pengajuan ("04 Sep 2026" -> 09/2026),
+    // dengan bulanPengajuan romawi sebagai cadangan.
+    function getPeriodeDokumen(item) {
+      const m = /(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/.exec(item.tglPengajuan || '');
+      if (m) {
+        const idx = BULAN_SINGKAT_ID.indexOf(m[2].slice(0, 3).toLowerCase());
+        if (idx >= 0) return { bulan: String(idx + 1).padStart(2, '0'), tahun: m[3] };
+      }
+      const rom = BULAN_ROMAWI[(item.bulanPengajuan || '').toUpperCase()];
+      const now = new Date();
+      return {
+        bulan: String(rom || now.getMonth() + 1).padStart(2, '0'),
+        tahun: item.tahunPengajuan || String(now.getFullYear())
+      };
+    }
+
+    function bacaJson(key) {
+      try { return JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { return {}; }
+    }
+
+    function ambilNoUrutDokumen(jenis, tahun, idPengajuan) {
+      const terbit = bacaJson(DOC_TERBIT_KEY);
+      const kunci = `${jenis}-${tahun}-${idPengajuan}`;
+      if (terbit[kunci]) return terbit[kunci];
+
+      const seq = bacaJson(DOC_SEQ_KEY);
+      const kunciSeq = `${jenis}-${tahun}`;
+      const urut = String((seq[kunciSeq] || 0) + 1).padStart(5, '0');
+
+      seq[kunciSeq] = (seq[kunciSeq] || 0) + 1;
+      terbit[kunci] = urut;
+      localStorage.setItem(DOC_SEQ_KEY, JSON.stringify(seq));
+      localStorage.setItem(DOC_TERBIT_KEY, JSON.stringify(terbit));
+      return urut;
+    }
+
+    function getNomorDokumen(item, isSpjp) {
+      const jenis = isSpjp ? 'SPJP' : 'SJP';
+      const { bulan, tahun } = getPeriodeDokumen(item);
+      const urut = ambilNoUrutDokumen(jenis, tahun, item.id || item.noReg || '0');
+      return `${urut}/${jenis}/JKK-ASABRI/${bulan}/${tahun}`;
     }
 
     function getNamaKakancab() {
       return sessionStorage.getItem('kakancab_nama') || 'Drs. Supriyadi, M.M. (Kepala Kantor Cabang Utama)';
     }
 
-    function previewSuratOfficial(tipe) {
-      const item = selectedItem || listJaminanMaster[0];
-      const { sjpNo, spjpNo } = generateDokumenNumbers(item);
-      const isSpjp = (tipe === 'SPJP');
-
-      const modalTitle = isSpjp ? 'Preview Surat Penolakan Jaminan Perawatan (SPJP)' : 'Preview Surat Jaminan Perawatan (SJP)';
-      const docNo = isSpjp ? spjpNo : sjpNo;
-      const kakancabNama = getNamaKakancab();
-
-      let htmlContent = "";
-
-      if (!isSpjp) {
-        // --- TEMPLATE SURAT JAMINAN PERAWATAN (SJP) EXACT MATCH GAMBAR 2 ---
-        htmlContent = `
-          <div class="bg-white text-slate-900 p-10 rounded-xl border border-slate-300 shadow-xl space-y-6 text-[12px] font-sans leading-relaxed">
-            <!-- Header Logo & Title -->
-            <div class="flex items-center justify-between pb-2">
-              <div class="flex items-center gap-3">
-                <img src="logo-asabri-white.png" alt="Logo ASABRI" class="h-10 bg-asabri-blue p-1 rounded-lg">
-              </div>
-            </div>
-
-            <div class="text-center pt-2 pb-4">
-              <h2 class="font-extrabold text-lg tracking-wide text-slate-900 uppercase">SURAT JAMINAN PERAWATAN (SJP)</h2>
-            </div>
-
-            <p class="font-normal text-slate-800">PT ASABRI (Persero) menyatakan bahwa menjamin biaya perawatan Peserta ASABRI di bawah ini</p>
-
-            <!-- Key-Value Layout 2 Kolom Clean Tanpa Border Tabel -->
-            <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-[11px] font-medium text-slate-900 py-2">
-              <!-- Kolom Kiri -->
-              <div class="space-y-2">
-                <div class="flex"><span class="w-36 text-slate-800">Nomor SJP</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold text-slate-900">${docNo}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Tanggal Pengajuan</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglPengajuan}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">KTPA/NRP/NIP</span><span class="w-4 text-center">:</span><span class="flex-1">${item.ktpa}/${item.nrpNip}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Nama</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.namaPeserta}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Tanggal Lahir</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglLahir || '14 Mei 1988'}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Jenis Kelamin</span><span class="w-4 text-center">:</span><span class="flex-1">${item.jenisKelamin || 'Laki-Laki'}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Pangkat</span><span class="w-4 text-center">:</span><span class="flex-1">${item.pangkat || 'Kapten Inf'}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Kesatuan</span><span class="w-4 text-center">:</span><span class="flex-1">${item.kesatuan || 'Yonif Mekanis 201/JY'}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Unit Organisasi</span><span class="w-4 text-center">:</span><span class="flex-1">${item.UNOR}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">No Telepon</span><span class="w-4 text-center">:</span><span class="flex-1">${item.noTelp || '0812-9988-7711'}</span></div>
-              </div>
-
-              <!-- Kolom Kanan -->
-              <div class="space-y-2">
-                <div class="flex"><span class="w-36 text-slate-800">Provider</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.provider}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Tanggal Mulai Rawat</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglMulaiRawat}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Diagnosa</span><span class="w-4 text-center">:</span><span class="flex-1">${item.diagnosa}</span></div>
-                <div class="flex h-5"></div>
-                <div class="flex"><span class="w-36 text-slate-800">Periode Jaminan</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.periodeJaminan}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">COB</span><span class="w-4 text-center">:</span><span class="flex-1">${item.cob}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">SJP ke</span><span class="w-4 text-center">:</span><span class="flex-1">${item.sjpKe}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Jenis Rawat Saat Ini</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.jenisRawatSaatIni}</span></div>
-              </div>
-            </div>
-
-            <!-- Catatan Section Numbered List -->
-            <div class="space-y-1.5 pt-4 text-[11px] text-slate-900">
-              <span class="font-bold block">Catatan :</span>
-              <ol class="list-decimal pl-5 space-y-1.5 leading-relaxed text-slate-800">
-                <li>Tidak menjamin biaya pemeriksaan dan pengobatan Covid-19, obat mengandung Suplemen, Vitamin/Multivitamin, dan/atau mengandung herbal .</li>
-                <li>Bila ditemukan kasus kejadian kecelakaan dan/atau diagnosa penyakit yang termasuk dalam pengecualian program JKK dari hasil verifikasi pengajuan klaim, maka surat jaminan ini dapat dibatalkan.</li>
-                <li>Biaya rehabilitasi medis, ortosis dan/atau prostesis, penggantian gigi tiruan, dan ambulans dijamin sesuai batasan yang ditetapkan dalam peraturan yang berlaku.</li>
-              </ol>
-            </div>
-
-            <!-- Tanda Tangan Right Aligned (Match Gambar 2) -->
-            <div class="pt-10 flex justify-end">
-              <div class="text-center space-y-16 font-sans text-[11px] text-slate-900 pr-4">
-                <div>
-                  <p>Tanggal Bulan Tahun,</p>
-                  <p class="font-semibold">PT ASABRI (PERSERO)</p>
-                  <p class="font-semibold">Kepala Kantor Cabang .....</p>
-                </div>
-                <div>
-                  <p class="font-medium">(Nama Kepala Kantor Cabang)</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer Contact Info 3 Kolom (Match Gambar 2) -->
-            <div class="pt-12 border-t border-slate-200 flex items-end justify-between text-[10px] text-slate-700 font-sans">
-              <div>
-                <p class="font-semibold text-slate-900">PT ASABRI (Persero)</p>
-                <p>Jl. Mayjen Sutoyo No. 11 Jakarta 13630</p>
-              </div>
-              <div class="text-center">
-                <p>P: 021 8 094 140</p>
-                <p>F: 021 8 012 313</p>
-              </div>
-              <div class="flex flex-col items-end gap-1">
-                <p class="text-slate-900">asabri@asabri.co.id</p>
-                <div class="flex items-center gap-1 mt-1">
-                  <div class="w-8 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-sm"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      } else {
-        // --- TEMPLATE SURAT PENOLAKAN JAMINAN PERAWATAN (STJP) EXACT MATCH GAMBAR 2 ---
-        const alasanPenolakan = sessionStorage.getItem('catatan_kancab_jaminan') || item.dasarPenolakan;
-
-        htmlContent = `
-          <div class="bg-white text-slate-900 p-10 rounded-xl border border-slate-300 shadow-xl space-y-6 text-[12px] font-sans leading-relaxed">
-            <!-- Header Logo & Title -->
-            <div class="flex items-center justify-between pb-2">
-              <div class="flex items-center gap-3">
-                <img src="logo-asabri-white.png" alt="Logo ASABRI" class="h-10 bg-asabri-blue p-1 rounded-lg">
-              </div>
-            </div>
-
-            <div class="text-center pt-2 pb-4">
-              <h2 class="font-extrabold text-lg tracking-wide text-slate-900 uppercase">SURAT PENOLAKAN JAMINAN PERAWATAN (STJP)</h2>
-            </div>
-
-            <p class="font-normal text-slate-800">PT ASABRI (Persero) menyatakan bahwa tidak menjamin biaya perawatan Peserta ASABRI di bawah ini</p>
-
-            <!-- Key-Value Layout 2 Kolom Clean Tanpa Border Tabel -->
-            <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-[11px] font-medium text-slate-900 py-2">
-              <!-- Kolom Kiri -->
-              <div class="space-y-2">
-                <div class="flex"><span class="w-36 text-slate-800">Nomor STJP</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold text-rose-700">${docNo}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Tanggal Pengajuan</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglPengajuan}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">No. KTPA/NRP/NIP</span><span class="w-4 text-center">:</span><span class="flex-1">${item.ktpa}/${item.nrpNip}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Nama</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.namaPeserta}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Tanggal Lahir</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglLahir || '14 Mei 1988'}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Jenis Kelamin</span><span class="w-4 text-center">:</span><span class="flex-1">${item.jenisKelamin || 'Laki-Laki'}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Pangkat</span><span class="w-4 text-center">:</span><span class="flex-1">${item.pangkat || 'Kapten Inf'}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Kesatuan</span><span class="w-4 text-center">:</span><span class="flex-1">${item.kesatuan || 'Yonif Mekanis 201/JY'}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Unit Organisasi</span><span class="w-4 text-center">:</span><span class="flex-1">${item.UNOR}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">No. Telepon</span><span class="w-4 text-center">:</span><span class="flex-1">${item.noTelp || '0812-9988-7711'}</span></div>
-              </div>
-
-              <!-- Kolom Kanan -->
-              <div class="space-y-2">
-                <div class="flex"><span class="w-36 text-slate-800">Provider</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.provider}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">Alamat</span><span class="w-4 text-center">:</span><span class="flex-1">${item.alamatRs}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800">No. Telepon</span><span class="w-4 text-center">:</span><span class="flex-1">${item.telpRs}</span></div>
-                <div class="flex"><span class="w-36 text-slate-800 text-rose-900 font-bold">Dasar Penolakan</span><span class="w-4 text-center">:</span><span class="flex-1 font-bold text-rose-800 italic">${alasanPenolakan}</span></div>
-              </div>
-            </div>
-
-            <!-- Tanda Tangan Right Aligned (Match Gambar 2) -->
-            <div class="pt-14 flex justify-end">
-              <div class="text-center space-y-16 font-sans text-[11px] text-slate-900 pr-4">
-                <div>
-                  <p>Tanggal Bulan Tahun,</p>
-                  <p class="font-semibold">PT ASABRI (PERSERO)</p>
-                  <p class="font-semibold">Kepala Kantor Cabang .....</p>
-                </div>
-                <div>
-                  <p class="font-medium">(Nama Kepala Kantor Cabang)</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer Contact Info 3 Kolom (Match Gambar 2) -->
-            <div class="pt-12 border-t border-slate-200 flex items-end justify-between text-[10px] text-slate-700 font-sans">
-              <div>
-                <p class="font-semibold text-slate-900">PT ASABRI (Persero)</p>
-                <p>Jl. Mayjen Sutoyo No. 11 Jakarta 13630</p>
-              </div>
-              <div class="text-center">
-                <p>P: 021 8 094 140</p>
-                <p>F: 021 8 012 313</p>
-              </div>
-              <div class="flex flex-col items-end gap-1">
-                <p class="text-slate-900">asabri@asabri.co.id</p>
-                <div class="flex items-center gap-1 mt-1">
-                  <div class="w-8 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-sm"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      // Show Modal
-      document.getElementById('modal-doc-official-title').innerText = modalTitle;
-      document.getElementById('modal-doc-official-body').innerHTML = htmlContent;
-      document.getElementById('modal-doc-official').classList.remove('hidden');
-    }
-
     function tutupModalDocOfficial() {
       document.getElementById('modal-doc-official').classList.add('hidden');
-    }
-
-    function buildStandaloneDocHtml(item, isSpjp, docNo, kakancabNama) {
-      const alasanPenolakan = sessionStorage.getItem('catatan_kancab_jaminan') || item.dasarPenolakan || 'Tidak memenuhi kriteria kelayakan JKK.';
-      const titleText = isSpjp ? 'SURAT PENOLAKAN JAMINAN PERAWATAN (STJP)' : 'SURAT JAMINAN PERAWATAN (SJP)';
-
-      if (!isSpjp) {
-        return `
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="UTF-8">
-            <title>${docNo}</title>
-            <script src="https://cdn.tailwindcss.com"><\/script>
-            <style>
-              @page { size: A4; margin: 12mm; }
-              body { background: white; color: #0f172a; font-family: sans-serif; padding: 30px; }
-            </style>
-          </head>
-          <body>
-            <div style="max-width:800px; margin:0 auto; padding:30px; border:1px solid #cbd5e1; border-radius:12px;">
-              <div style="margin-bottom:20px;">
-                <div style="font-weight:900; font-size:20px; color:#0141A8;">ASABRI</div>
-              </div>
-
-              <div style="text-align:center; padding:16px 0;">
-                <h2 style="font-weight:800; font-size:18px; text-transform:uppercase;">${titleText}</h2>
-              </div>
-
-              <p style="font-size:12px; margin-bottom:20px;">PT ASABRI (Persero) menyatakan bahwa menjamin biaya perawatan Peserta ASABRI di bawah ini</p>
-
-              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:20px; line-height:1.8;">
-                <div style="width:48%;">
-                  <div style="display:flex;"><span style="width:140px;">Nomor SJP</span><span>: ${docNo}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Tanggal Pengajuan</span><span>: ${item.tglPengajuan}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">KTPA/NRP/NIP</span><span>: ${item.ktpa}/${item.nrpNip}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Nama</span><span>: ${item.namaPeserta}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Tanggal Lahir</span><span>: ${item.tglLahir || '14 Mei 1988'}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Jenis Kelamin</span><span>: ${item.jenisKelamin || 'Laki-Laki'}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Pangkat</span><span>: ${item.pangkat || 'Kapten Inf'}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Kesatuan</span><span>: ${item.kesatuan || 'Yonif Mekanis 201/JY'}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Unit Organisasi</span><span>: ${item.UNOR}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">No Telepon</span><span>: ${item.noTelp || '0812-9988-7711'}</span></div>
-                </div>
-                <div style="width:48%;">
-                  <div style="display:flex;"><span style="width:140px;">Provider</span><span>: ${item.provider}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Tanggal Mulai Rawat</span><span>: ${item.tglMulaiRawat}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Diagnosa</span><span>: ${item.diagnosa}</span></div>
-                  <div style="height:20px;"></div>
-                  <div style="display:flex;"><span style="width:140px;">Periode Jaminan</span><span>: ${item.periodeJaminan}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">COB</span><span>: ${item.cob}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">SJP ke</span><span>: ${item.sjpKe}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Jenis Rawat Saat Ini</span><span>: ${item.jenisRawatSaatIni}</span></div>
-                </div>
-              </div>
-
-              <div style="margin-top:20px; font-size:11px; line-height:1.5;">
-                <b>Catatan :</b>
-                <ol style="padding-left:20px; margin-top:6px;">
-                  <li>Tidak menjamin biaya pemeriksaan dan pengobatan Covid-19, obat mengandung Suplemen, Vitamin/Multivitamin, dan/atau mengandung herbal .</li>
-                  <li>Bila ditemukan kasus kejadian kecelakaan dan/atau diagnosa penyakit yang termasuk dalam pengecualian program JKK dari hasil verifikasi pengajuan klaim, maka surat jaminan ini dapat dibatalkan.</li>
-                  <li>Biaya rehabilitasi medis, ortosis dan/atau prostesis, penggantian gigi tiruan, dan ambulans dijamin sesuai batasan yang ditetapkan dalam peraturan yang berlaku.</li>
-                </ol>
-              </div>
-
-              <div style="margin-top:40px; display:flex; justify-content:flex-end;">
-                <div style="text-align:center; font-size:11px;">
-                  <p>Tanggal Bulan Tahun,</p>
-                  <p style="font-weight:bold;">PT ASABRI (PERSERO)</p>
-                  <p style="font-weight:bold; margin-bottom:60px;">Kepala Kantor Cabang .....</p>
-                  <p>(Nama Kepala Kantor Cabang)</p>
-                </div>
-              </div>
-
-              <div style="margin-top:40px; padding-top:16px; border-top:1px solid #cbd5e1; display:flex; justify-content:space-between; align-items:flex-end; font-size:10px; color:#475569;">
-                <div>
-                  <p style="font-weight:bold; color:#0f172a;">PT ASABRI (Persero)</p>
-                  <p>Jl. Mayjen Sutoyo No. 11 Jakarta 13630</p>
-                </div>
-                <div style="text-align:center;">
-                  <p>P: 021 8 094 140</p>
-                  <p>F: 021 8 012 313</p>
-                </div>
-                <div style="text-align:right;">
-                  <p>asabri@asabri.co.id</p>
-                </div>
-              </div>
-            </div>
-          </body>
-          </html>
-        `;
-      } else {
-        return `
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="UTF-8">
-            <title>${docNo}</title>
-            <script src="https://cdn.tailwindcss.com"><\/script>
-            <style>
-              @page { size: A4; margin: 12mm; }
-              body { background: white; color: #0f172a; font-family: sans-serif; padding: 30px; }
-            </style>
-          </head>
-          <body>
-            <div style="max-width:800px; margin:0 auto; padding:30px; border:1px solid #cbd5e1; border-radius:12px;">
-              <div style="margin-bottom:20px;">
-                <div style="font-weight:900; font-size:20px; color:#be123c;">ASABRI</div>
-              </div>
-
-              <div style="text-align:center; padding:16px 0;">
-                <h2 style="font-weight:800; font-size:18px; text-transform:uppercase; color:#be123c;">${titleText}</h2>
-              </div>
-
-              <p style="font-size:12px; margin-bottom:20px;">PT ASABRI (Persero) menyatakan bahwa tidak menjamin biaya perawatan Peserta ASABRI di bawah ini</p>
-
-              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:20px; line-height:1.8;">
-                <div style="width:48%;">
-                  <div style="display:flex;"><span style="width:140px;">Nomor STJP</span><span>: ${docNo}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Tanggal Pengajuan</span><span>: ${item.tglPengajuan}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">No. KTPA/NRP/NIP</span><span>: ${item.ktpa}/${item.nrpNip}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Nama</span><span>: ${item.namaPeserta}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Tanggal Lahir</span><span>: ${item.tglLahir || '14 Mei 1988'}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Jenis Kelamin</span><span>: ${item.jenisKelamin || 'Laki-Laki'}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Pangkat</span><span>: ${item.pangkat || 'Kapten Inf'}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Kesatuan</span><span>: ${item.kesatuan || 'Yonif Mekanis 201/JY'}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Unit Organisasi</span><span>: ${item.UNOR}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">No. Telepon</span><span>: ${item.noTelp || '0812-9988-7711'}</span></div>
-                </div>
-                <div style="width:48%;">
-                  <div style="display:flex;"><span style="width:140px;">Provider</span><span>: ${item.provider}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">Alamat</span><span>: ${item.alamatRs}</span></div>
-                  <div style="display:flex;"><span style="width:140px;">No. Telepon</span><span>: ${item.telpRs}</span></div>
-                  <div style="display:flex; color:#be123c; font-weight:bold;"><span style="width:140px;">Dasar Penolakan</span><span>: ${alasanPenolakan}</span></div>
-                </div>
-              </div>
-
-              <div style="margin-top:50px; display:flex; justify-content:flex-end;">
-                <div style="text-align:center; font-size:11px;">
-                  <p>Tanggal Bulan Tahun,</p>
-                  <p style="font-weight:bold;">PT ASABRI (PERSERO)</p>
-                  <p style="font-weight:bold; margin-bottom:60px;">Kepala Kantor Cabang .....</p>
-                  <p>(Nama Kepala Kantor Cabang)</p>
-                </div>
-              </div>
-
-              <div style="margin-top:40px; padding-top:16px; border-top:1px solid #cbd5e1; display:flex; justify-content:space-between; align-items:flex-end; font-size:10px; color:#475569;">
-                <div>
-                  <p style="font-weight:bold; color:#0f172a;">PT ASABRI (Persero)</p>
-                  <p>Jl. Mayjen Sutoyo No. 11 Jakarta 13630</p>
-                </div>
-                <div style="text-align:center;">
-                  <p>P: 021 8 094 140</p>
-                  <p>F: 021 8 012 313</p>
-                </div>
-                <div style="text-align:right;">
-                  <p>asabri@asabri.co.id</p>
-                </div>
-              </div>
-            </div>
-          </body>
-          </html>
-        `;
-      }
     }
 
     function downloadOfficialPdf() {
       const item = selectedItem || listJaminanMaster[0];
       const isSpjp = (sessionStorage.getItem('status_verifikasi_kancab_jaminan') === 'Ditolak');
-      const { sjpNo, spjpNo } = generateDokumenNumbers(item);
-
-      const rawDocNo = isSpjp ? spjpNo : sjpNo;
+      const rawDocNo = getNomorDokumen(item, isSpjp);
       const cleanDocNo = rawDocNo.replace(/\//g, '-');
       const ktaNo = item.ktpa;
       const kakancabNama = getNamaKakancab();
@@ -1442,20 +1145,22 @@
 
       // 1. Opsi Langsung A: html2pdf jika tersedia
       if (typeof html2pdf !== 'undefined') {
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = htmlFull;
-        document.body.appendChild(tempDiv);
+        // Sumbernya dioper sebagai string, bukan elemen yang kita tempel sendiri
+        // ke body: html2pdf sudah punya container tersembunyi untuk merender.
+        // Yang dioper hanya badan surat -- kalau dokumen utuh yang dipakai, blok
+        // <style>-nya (@page, aturan html/body/table) ikut aktif di halaman ini.
+        //
+        // margin dibiarkan 0: margin 1" halaman sudah jadi padding di dalam
+        // kotak suratnya. Kalau diisi di sini, html2pdf mengecilkan seluruh isi.
         const opt = {
-          margin:       [0.3, 0.3, 0.3, 0.3],
+          margin:       0,
           filename:     fileName,
           image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true },
-          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+          html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
-        html2pdf().set(opt).from(tempDiv).save().then(() => {
-          tempDiv.remove();
-        }).catch(err => {
-          tempDiv.remove();
+        const suratHtml = buildSuratBodyHtml(item, isSpjp, rawDocNo, kakancabNama);
+        html2pdf().set(opt).from(suratHtml, 'string').save().catch(err => {
           triggerFallbackBlobDownload(htmlFull, fileName);
         });
         return;
