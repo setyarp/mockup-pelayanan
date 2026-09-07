@@ -18,19 +18,24 @@ function renderSidebar(activePage) {
       href: '#',
       subMenu: [
         {
-          label: 'Jaminan Perawatan',
+          label: 'JAMINAN PERAWATAN',
           subMenu: [
-            { label: 'Pengajuan Baru', href: 'perawatan-jaminan-baru.html' },
-            { label: 'Proses Pengajuan', href: 'perawatan-jaminan-proses.html' },
-            { label: 'Riwayat Pengajuan Perawatan', href: 'perawatan-jaminan-riwayat.html' }
+            { label: 'Pengajuan Perawatan', href: 'perawatan-jaminan.html?sub=pengajuan' },
+            { label: 'Riwayat Pengajuan', href: 'perawatan-jaminan.html?sub=riwayat' }
           ]
         },
         {
-          label: 'Restitusi Perawatan',
+          label: 'KLAIM PERAWATAN',
           subMenu: [
-            { label: 'Pengajuan Baru', href: 'perawatan-restitusi-baru.html' },
-            { label: 'Proses Restitusi', href: 'perawatan-restitusi-proses.html' },
-            { label: 'Riwayat Pengajuan Restitusi', href: 'perawatan-restitusi-riwayat.html' }
+            { label: 'Pengajuan Restitusi', href: 'perawatan-restitusi.html?sub=pengajuan' },
+            { label: 'Riwayat Restitusi', href: 'perawatan-restitusi.html?sub=riwayat' }
+          ]
+        },
+        {
+          label: 'REIMBURSE PERAWATAN',
+          subMenu: [
+            { label: 'Pengajuan Reimburse', href: 'perawatan-reimburse.html?sub=pengajuan' },
+            { label: 'Riwayat Reimburse', href: 'perawatan-reimburse.html?sub=riwayat' }
           ]
         }
       ]
@@ -47,8 +52,11 @@ function renderSidebar(activePage) {
     }
   ];
 
+  const currentFullUrl = window.location.pathname.split('/').pop() + window.location.search;
+
   const subLink = (item) => {
-    const active = item.href === currentFilename ? ' active' : '';
+    const isCurrent = (item.href === currentFullUrl) || (item.href === currentFilename && !window.location.search);
+    const active = isCurrent ? ' active' : '';
     return `
             <a href="${item.href}" class="nav-sublink${active}">
               <span class="dot"></span>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASABRI - Klaim Restitusi Perawatan</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Sidebar Component -->
+  <script src="sidebar.js"></script>
+  <script src="shared.js?v=1.0.1"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asabri: { blue: '#0141A8', blueDark: '#01358C', gold: '#FFDE24', softBlue: '#F8FAFC', textDark: '#0F172A' }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans','ui-sans-serif','system-ui','sans-serif'],
+            mono: ['Plus Jakarta Sans','ui-sans-serif','system-ui','sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body class="flex flex-col h-screen overflow-hidden font-sans bg-slate-50 text-slate-800">
+
+  <!-- TOPBAR -->
+  <header class="app-topbar h-16 flex items-center justify-between px-6 z-50">
+    <div class="flex items-center gap-5">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center">
+          <img src="logo-asabri-white.png" alt="Logo ASABRI" class="h-10 w-auto shrink-0">
+        </div>
+        <div class="h-8 w-px bg-white/20"></div>
+        <button id="sidebar-toggle" class="p-2 rounded-lg text-white hover:bg-white/10 transition-colors text-base">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="flex flex-col ml-1">
+          <span class="brand-title">YANDU <b>NEXTGEN</b> ASABRI</span>
+          <span class="brand-sub">HIGH DENSITY MANAGEMENT SYSTEM</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="bg-blue-950/20 border border-blue-400/30 px-3 py-1.5 rounded-lg flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-semibold text-white tracking-wide mr-1">ROLE :</span>
+        <select id="role-switcher" onchange="changeRole()" class="bg-transparent text-white font-semibold text-xs border-0 outline-none cursor-pointer focus:ring-0">
+          <option value="Staf KANCAB" class="text-slate-800" selected>Staf KANCAB</option>
+          <option value="KAKANCAB" class="text-slate-800">KAKANCAB</option>
+        </select>
+      </div>
+      <div class="h-8 w-px bg-white/20"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 shrink-0 rounded-full bg-white/20 border border-white/60 text-white font-black flex items-center justify-center text-xs shadow-inner">SK</div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-white">SK | Staf Kancab Utama</span>
+          <span class="text-[9px] text-blue-200 leading-none font-mono">NIP. 19930708001</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+    <div id="sidebar"></div>
+    <script>
+      renderSidebar('perawatan');
+    </script>
+
+    <!-- CONTENT -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <!-- Breadcrumb & Header -->
+      <div class="bg-white border-b border-slate-200 px-8 py-3 flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+            <span>Perawatan JKK</span>
+            <span class="text-slate-400">/</span>
+            <span class="font-bold text-asabri-blue" id="breadcrumb-title">Klaim Restitusi Perawatan</span>
+          </div>
+          <!-- Sub Tab Toggle -->
+          <div class="bg-slate-100 p-1 rounded-xl flex items-center gap-1 text-[11px] font-bold">
+            <button onclick="switchSubTab('pengajuan')" id="btn-sub-pengajuan" class="px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all">
+              <i class="fas fa-paper-plane mr-1"></i> Pengajuan Aktif
+            </button>
+            <button onclick="switchSubTab('riwayat')" id="btn-sub-riwayat" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all">
+              <i class="fas fa-clock-rotate-left mr-1"></i> Riwayat Selesai
+            </button>
+          </div>
+        </div>
+
+        <!-- Single Tab Header Badge -->
+        <div class="flex items-center gap-2 border-t border-slate-100 pt-3">
+          <a href="perawatan-jaminan.html" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200">
+            <i class="fas fa-shield-heart"></i>
+            <span>Jaminan Perawatan (SJP)</span>
+          </a>
+          <a href="perawatan-restitusi.html" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-asabri-blue text-white shadow-sm border border-asabri-blue">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>Klaim Restitusi Perawatan</span>
+          </a>
+          <a href="perawatan-reimburse.html" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200">
+            <i class="fas fa-hand-holding-dollar"></i>
+            <span>Reimburse Perawatan</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- VIEW CONTAINER (TABEL) -->
+      <div id="view-tabel" class="flex-1 overflow-y-auto p-8 space-y-6">
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+          <h3 class="text-sm font-bold text-slate-800 mb-2"><i class="fas fa-info-circle text-asabri-blue mr-2"></i> Halaman Mandiri: Klaim Restitusi Perawatan</h3>
+          <p class="text-xs text-slate-500">Halaman ini khusus mengelola Pengajuan Restitusi Perawatan oleh RS Provider (Data Kwitansi, No Rekening, Alur 4 Tab Verifikasi).</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function switchSubTab(sub) {
+      const btnP = document.getElementById('btn-sub-pengajuan');
+      const btnR = document.getElementById('btn-sub-riwayat');
+      if (sub === 'pengajuan') {
+        btnP.className = "px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all";
+        btnR.className = "px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all";
+      } else {
+        btnR.className = "px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all";
+        btnP.className = "px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ASABRI - YANDU NG (Jaminan Perawatan)</title>
+  <title>ASABRI - Jaminan Perawatan JKK (SJP)</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome for Icons -->
@@ -12,7 +12,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <!-- Sidebar Component -->
+  <script src="sidebar.js"></script>
+  <script src="shared.js?v=1.0.1"></script>
+  <!-- html2pdf.js for direct PDF download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -29,27 +34,10 @@
     }
   </script>
   <style>
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-    .animate-fade-in {
-      animation: fadeIn 0.25s ease-out forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.97); }
-      to { opacity: 1; transform: scale(1); }
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
   </style>
   <link rel="stylesheet" href="theme.css">
 </head>
@@ -94,715 +82,699 @@
 
   <!-- MAIN CONTAINER -->
   <div class="flex flex-1 overflow-hidden">
-    <aside id="sidebar-nav" class="w-64 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 transition-all duration-300">
-      
-      <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
-        <p class="nav-section px-2.5 pt-1 pb-2">Menu Layanan</p>
-        <a href="index.html" class="nav-link">
-          <div class="flex items-center gap-2.5">
-            <i class="nav-ico fas fa-chart-pie"></i>
-            <span>1. Dashboard</span>
-          </div>
-        </a>
-        <a href="registrasi.html" class="nav-link">
-          <div class="flex items-center gap-2.5">
-            <i class="nav-ico fas fa-pen-to-square"></i>
-            <span>2. Pelayanan Registrasi Klaim Peserta</span>
-          </div>
-        </a>
-        <a href="data-peserta.html" class="nav-link">
-          <div class="flex items-center gap-2.5">
-            <i class="nav-ico fas fa-search"></i>
-            <span>3. Data Peserta</span>
-          </div>
-        </a>
-        <a href="riwayat.html" class="nav-link">
-          <div class="flex items-center gap-2.5">
-            <i class="nav-ico fas fa-clock-rotate-left"></i>
-            <span>4. Riwayat Transaksi Klaim</span>
-          </div>
-        </a>
-        <a href="kejadian.html" class="nav-link">
-          <div class="flex items-center gap-2.5">
-            <i class="nav-ico fas fa-file-invoice"></i>
-            <span>5. Pelayanan Klaim</span>
-          </div>
-        </a>
-        <!-- 6. Perawatan JKK Restructured -->
-        <div class="space-y-1">
-          <button type="button" onclick="toggleSidebarAccordion('submenu-perawatan','chevron-perawatan')" class="nav-link">
-            <div class="flex items-center gap-2.5">
-              <i class="nav-ico fas fa-hand-holding-medical"></i>
-              <span>6. Perawatan JKK</span>
-            </div>
-            <i id="chevron-perawatan" class="nav-chev fas fa-chevron-down"></i>
-          </button>
-          <div id="submenu-perawatan" class="nav-sub space-y-0.5">
-            <a href="perawatan-jaminan.html" class="nav-sublink">
-              <span class="dot"></span>
-              <i class="fas fa-notes-medical w-4 text-asabri-blue"></i>
-              <span>Jaminan Perawatan</span>
-            </a>
-            <a href="perawatan-restitusi.html" class="nav-sublink">
-              <span class="dot"></span>
-              <span>Restitusi Perawatan</span>
-            </a>
-          </div>
-        </div>
-      </nav>
-      <div class="sidebar-foot">ASABRI YANDU NG v1.2.0</div>
-    </aside>
+    <div id="sidebar"></div>
+    <script>
+      renderSidebar('perawatan');
+    </script>
 
     <!-- CONTENT -->
     <main class="flex-1 flex flex-col overflow-hidden">
-      <div class="bg-white border-b border-slate-200 px-8 py-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
-            <span>Perawatan JKK</span><span class="text-slate-400">/</span><span class="font-bold text-asabri-blue">Jaminan Perawatan</span>
-          </div>
+      <!-- Breadcrumb & Header Navigation -->
+      <div class="bg-white border-b border-slate-200 px-8 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-1 text-xs text-slate-500 font-medium">
+          <span>Perawatan JKK</span>
+          <span class="text-slate-400">/</span>
+          <span class="font-bold text-asabri-blue" id="breadcrumb-title">Pengajuan Jaminan Perawatan (SJP)</span>
         </div>
       </div>
 
-      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+      <!-- VIEW 1: TABEL PENGAJUAN (SUB-TAB 1 & 2) -->
+      <div id="view-tabel" class="flex-1 overflow-y-auto p-8 space-y-6">
+        <!-- Filter Card -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-end justify-between">
           <div class="flex flex-wrap gap-4 items-center">
             <div class="flex flex-col gap-1.5">
-              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Entitas</label>
-              <select id="filter-entitas" onchange="applyFilters()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue text-slate-700 min-w-[150px]">
-                <option value="Semua">Semua</option>
-                <option value="Provider">Provider</option>
-                <option value="Peserta">Peserta</option>
-                <option value="Kesatuan">Kesatuan</option>
-              </select>
-            </div>
-            <div class="flex flex-col gap-1.5">
               <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Status</label>
               <select id="filter-status" onchange="applyFilters()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-asabri-blue text-slate-700 min-w-[150px]">
-                <option value="Semua">Semua</option>
-                <option value="Pengajuan">Pengajuan</option>
-                <option value="Verifikasi Kancab">Verifikasi Kancab</option>
-                <option value="Persetujuan KAKANCAB">Persetujuan KAKANCAB</option>
-                <option value="SJP Terbit">SJP Terbit</option>
-                <option value="SJPP Terbit">SJPP Terbit</option>
+                <option value="Semua">Semua Status</option>
+                <option value="Baru">Baru</option>
+                <option value="Proses">Proses</option>
               </select>
             </div>
             <div class="flex flex-col gap-1.5">
-              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Cari Laporan</label>
-              <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Cari nomor, nama..." class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700 min-w-[200px]">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Cari Pengajuan</label>
+              <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Cari no reg, nama, NIP, no surat..." class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:border-asabri-blue text-slate-700 min-w-[240px]">
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <button onclick="openLaporanDrawer()" class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-plus"></i> Tambah Laporan</button>
-            <button onclick="showToast('Integrasi SEPA', 'Menghubungkan layanan antrean SEPA ASABRI...', 'info')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-network-wired"></i> SEPA</button>
-            <button onclick="showToast('Manajemen Jaminan', 'Membuka konsol jaminan...', 'info')" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-shield-halved"></i> Jaminan</button>
+            <span class="text-xs text-slate-500 font-medium">Total: <b id="count-total" class="text-asabri-blue">0</b> Pengajuan</span>
           </div>
         </div>
 
+        <!-- Tabel Container -->
         <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
           <div class="px-6 py-4 border-b border-slate-150 bg-slate-50 flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <i class="fas fa-clipboard-list text-asabri-blue"></i>
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Daftar Monitoring Jaminan Perawatan JKK</h3>
+              <i class="fas fa-shield-heart text-asabri-blue"></i>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700" id="table-title">Daftar Pengajuan Jaminan Perawatan (SJP)</h3>
             </div>
-            <span class="px-3 py-1 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-full font-bold text-[10px]" id="data-count-badge">0 Data Laporan</span>
+            <span class="px-3 py-1 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-full font-bold text-[10px]" id="data-count-badge">0 Data</span>
           </div>
 
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
               <thead>
-                <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-500 uppercase font-bold text-[9px]">
-                  <th class="py-2.5 px-3">Status</th>
-                  <th class="py-2.5 px-3">Jumlah Klaim</th>
-                  <th class="py-2.5 px-3">Nomor</th>
-                  <th class="py-2.5 px-3">COB</th>
-                  <th class="py-2.5 px-3 font-mono">KTPA</th>
-                  <th class="py-2.5 px-3 font-mono">NRP/NIP</th>
-                  <th class="py-2.5 px-3">Nama</th>
-                  <th class="py-2.5 px-3">Unor</th>
-                  <th class="py-2.5 px-3">Provider</th>
-                  <th class="py-2.5 px-3">Cabang ASABRI</th>
-                  <th class="py-2.5 px-3">Tgl Pengajuan</th>
-                  <th class="py-2.5 px-3">Tgl Kejadian</th>
-                  <th class="py-2.5 px-3">Tgl Rawat</th>
-                  <th class="py-2.5 px-3">Kejadian</th>
-                  <th class="py-2.5 px-3">Propinsi</th>
-                  <th class="py-2.5 px-3">Nomor SEPA</th>
-                  <th class="py-2.5 px-3 font-mono">Tgl SEPA</th>
-                  <th class="py-2.5 px-3">Jaminan</th>
-                  <th class="py-2.5 px-3 text-center">Aksi</th>
+                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
+                  <th class="py-3 px-3 text-center">No</th>
+                  <th class="py-3 px-3 font-mono">No REG</th>
+                  <th class="py-3 px-3">Status</th>
+                  <th class="py-3 px-3 font-mono">No Surat Kronologis Kejadian</th>
+                  <th class="py-3 px-3 font-mono">Tgl Pengajuan</th>
+                  <th class="py-3 px-3 font-mono">KTPA</th>
+                  <th class="py-3 px-3 font-mono">NRP/NIP</th>
+                  <th class="py-3 px-3">Nama Peserta</th>
+                  <th class="py-3 px-3">Jenis Layanan</th>
+                  <th class="py-3 px-3">Provider</th>
+                  <th class="py-3 px-3 text-center">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="monitoring-tbody" class="divide-y divide-slate-100 bg-white font-medium text-slate-700"></tbody>
+              <tbody id="tabel-tbody" class="divide-y divide-slate-100 bg-white font-medium text-slate-700">
+                <!-- Dynamic via JS -->
+              </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 2: HALAMAN DETAIL (READ-ONLY) -->
+      <div id="view-detail" class="flex-1 overflow-y-auto p-8 space-y-6 hidden">
+        <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <button onclick="showTabelView()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs flex items-center gap-2 shadow-sm transition-all">
+            <i class="fas fa-arrow-left"></i> Kembali ke Tabel Pengajuan
+          </button>
+          <span class="text-xs font-bold text-slate-500">Mode: Detail Jaminan Perawatan SJP (Read-Only)</span>
+        </div>
+
+        <!-- Banner Header -->
+        <div class="bg-gradient-to-r from-blue-900 via-asabri-blue to-blue-800 text-white rounded-3xl p-6 shadow-md flex flex-wrap items-center justify-between gap-4 border border-blue-700/50">
+          <div>
+            <div class="text-[10px] uppercase font-extrabold tracking-widest text-blue-200 mb-1">DETAIL JAMINAN PERAWATAN SJP</div>
+            <div class="flex items-center gap-3">
+              <h1 class="text-xl font-black font-mono tracking-tight" id="dt-noreg">REG/JAM/0123/IX/2026/00001</h1>
+              <span id="dt-status-badge" class="px-3 py-1 bg-amber-400 text-blue-950 font-extrabold text-xs rounded-full shadow-sm uppercase">Proses</span>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/15 text-right">
+            <div class="text-[9px] uppercase tracking-wider text-blue-200 font-bold">Status Kepemilikan RS</div>
+            <div class="text-xs font-black text-amber-300" id="dt-status-rs-badge">RS Swasta (Ada Limit)</div>
+          </div>
+        </div>
+
+        <!-- A. INFORMASI PENGAJUAN -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+            <div class="w-7 h-7 rounded-lg bg-blue-50 border border-blue-100 text-asabri-blue flex items-center justify-center font-black text-xs">A</div>
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">A. INFORMASI PENGAJUAN (READ-ONLY)</h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Status</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-amber-700" id="dt-status">Proses</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tgl Pengajuan</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono text-slate-700" id="dt-tgl-pengajuan">04 Sep 2026</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">No. Surat Kronologis Kejadian</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-asabri-blue" id="dt-no-surat">B/SRT-KRON/089/IX/2026</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">KTPA</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-slate-800" id="dt-ktpa">KTPA-8899201992</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">NRP / NIP</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-slate-800" id="dt-nrp">199203108821</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Nama Peserta</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-extrabold text-slate-900" id="dt-nama-peserta">KAPTEN INF BAMBANG KUSUMA</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Jenis Layanan</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-asabri-blue" id="dt-jenis-layanan">Rawat Inap</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Provider RS</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="dt-provider">RS Siloam Semanggi</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">UNOR</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="dt-unor">KODAM JAYA</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">SATKER</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="dt-satker">YONIF MEKANIS 201/JY</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Kantor Cabang</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-700" id="dt-kancab">KANCAB JAKARTA UTAMA (0123)</div></div>
+          </div>
+        </div>
+
+        <!-- B. DATA RS & PERAWATAN (READ-ONLY) -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center font-black text-xs">B</div>
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">B. DATA RS & PERAWATAN (DARI PROVIDER - BUKAN KWITANSI)</h3>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Nama Provider / RS</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800" id="dt-rs-nama">RS Siloam Semanggi</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Status Kepemilikan RS</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-700" id="dt-rs-status">RS Swasta</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Nama Pelapor</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-800" id="dt-pelapor-nama">Dr. Hendra (Admisi RS)</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">No. Telepon Pelapor</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono text-slate-700" id="dt-pelapor-telp">0812-9988-7711</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tanggal Lapor Kejadian</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono text-slate-700" id="dt-tgl-lapor">04 Sep 2026, 08:30 WIB</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tanggal Mulai Rawat</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono text-slate-700" id="dt-tgl-mulai-rawat">04 Sep 2026</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Tanggal Kejadian</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono text-slate-700" id="dt-tgl-kejadian">03 Sep 2026</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Jenis Kejadian</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-800" id="dt-jenis-kejadian">Kecelakaan Kerja Dinas</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Kelas Perawatan</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-800" id="dt-kelas-perawatan">Kelas I (Sesuai Hak Pangkat)</div></div>
+            <div class="col-span-3"><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Biaya Tarif Kamar Rawat Inap</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-emerald-700" id="dt-tarif-kamar">Rp 750.000 / Hari</div></div>
+            <div class="col-span-2"><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Kronologis Kejadian</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 text-slate-700 italic" id="dt-kronologis">Peserta mengalami benturan saat latihan fisik persiapan tugas kedinasan.</div></div>
+            <div class="col-span-2"><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Diagnosa Kejadian</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-semibold text-slate-800" id="dt-diagnosa">Fraktur Clavicula Dextra (ICD-10: S42.0)</div></div>
+          </div>
+        </div>
+
+        <!-- C. DATA COB (JASA RAHARJA) -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center font-black text-xs">C</div>
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">C. DATA COB (CO-ORDINATION OF BENEFITS)</h3>
+            </div>
+            <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-full">Ada COB Jasa Raharja</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Penjamin Utama</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-bold text-slate-800">PT JASA RAHARJA</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">No. Surat Jaminan COB</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-asabri-blue">JR/SJP-COB/2026/0891</div></div>
+            <div><label class="block text-slate-400 font-bold mb-1 uppercase text-[10px]">Plafon Penjaminan Utama</label><div class="p-3 bg-slate-50 rounded-2xl border border-slate-150 font-mono font-bold text-emerald-700">Rp 20.000.000</div></div>
+          </div>
+        </div>
+
+        <!-- D. PLAFON PERAWATAN (SISA PER JENIS LAYANAN) -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center font-black text-xs">D</div>
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">D. PLAFON PERAWATAN (SISA PER JENIS LAYANAN)</h3>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-[11px]">
+              <thead>
+                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
+                  <th class="py-2.5 px-4">Jenis Layanan</th>
+                  <th class="py-2.5 px-4 font-mono">Maksimal Plafon</th>
+                  <th class="py-2.5 px-4 font-mono">Sisa Plafon</th>
+                </tr>
+              </thead>
+              <tbody id="plafon-tbody" class="divide-y divide-slate-100 font-medium">
+                <!-- Dynamic via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- E. DOKUMEN UPLOAD (HANYA 4 DOKUMEN) -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+            <div class="w-7 h-7 rounded-lg bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center font-black text-xs">E</div>
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">E. DOKUMEN PERSYARATAN SJP (4 DOKUMEN)</h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="font-bold text-slate-800 block text-[11px]">1. Surat Kronologis Kejadian Satker</span>
+                <span class="text-[10px] text-slate-400 font-mono">PDF / Surat Resmi Satker</span>
+              </div>
+              <button onclick="previewDokumen('Surat Kronologis Kejadian Satker')" class="px-3 py-1.5 bg-asabri-blue text-white rounded-xl font-bold text-[10px] hover:bg-asabri-blueDark shadow-sm"><i class="fas fa-eye mr-1"></i> Preview</button>
+            </div>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="font-bold text-slate-800 block text-[11px]">2. Surat Pernyataan Kronologis Peserta</span>
+                <span class="text-[10px] text-slate-400 font-mono">PDF / Pernyataan Pelapor</span>
+              </div>
+              <button onclick="previewDokumen('Surat Pernyataan Kronologis Peserta')" class="px-3 py-1.5 bg-asabri-blue text-white rounded-xl font-bold text-[10px] hover:bg-asabri-blueDark shadow-sm"><i class="fas fa-eye mr-1"></i> Preview</button>
+            </div>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="font-bold text-slate-800 block text-[11px]">3. Fotokopi KTP / KTPA Peserta</span>
+                <span class="text-[10px] text-slate-400 font-mono">PDF / Scan Identitas</span>
+              </div>
+              <button onclick="previewDokumen('Fotokopi KTP / KTPA Peserta')" class="px-3 py-1.5 bg-asabri-blue text-white rounded-xl font-bold text-[10px] hover:bg-asabri-blueDark shadow-sm"><i class="fas fa-eye mr-1"></i> Preview</button>
+            </div>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="font-bold text-slate-800 block text-[11px]">4. Dokumen COB Jasa Raharja (Opsional)</span>
+                <span class="text-[10px] text-slate-400 font-mono">PDF / Jaminan Utama</span>
+              </div>
+              <button onclick="previewDokumen('Dokumen COB Jasa Raharja')" class="px-3 py-1.5 bg-asabri-blue text-white rounded-xl font-bold text-[10px] hover:bg-asabri-blueDark shadow-sm"><i class="fas fa-eye mr-1"></i> Preview</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- F. RIWAYAT SJP/SPJP -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center font-black text-xs">F</div>
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">F. RIWAYAT DOKUMEN SJP / SPJP TERBIT</h3>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-[11px]">
+              <thead>
+                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-500 uppercase font-extrabold text-[9px] tracking-wider">
+                  <th class="py-2.5 px-3">No</th>
+                  <th class="py-2.5 px-3 font-mono">Nomor SJP / SPJP</th>
+                  <th class="py-2.5 px-3 font-mono">Tgl Terbit</th>
+                  <th class="py-2.5 px-3 font-mono">Masa Berlaku s.d</th>
+                  <th class="py-2.5 px-3">Jenis Layanan</th>
+                </tr>
+              </thead>
+              <tbody id="riwayat-sjp-tbody" class="divide-y divide-slate-100">
+                <!-- Dynamic via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 3: HALAMAN PROSES (3 TAB) -->
+      <div id="view-proses" class="flex-1 overflow-y-auto p-8 space-y-6 hidden">
+        <!-- Top Action Navigation -->
+        <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <button onclick="showTabelView()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs flex items-center gap-2 shadow-sm transition-all">
+            <i class="fas fa-arrow-left"></i> Kembali ke Tabel Pengajuan
+          </button>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-mono font-bold text-asabri-blue" id="pr-noreg">REG/JAM/0123/IX/2026/00001</span>
+            <span class="px-3 py-1 bg-amber-400 text-blue-950 font-extrabold text-[10px] rounded-full uppercase" id="pr-status-badge">Proses</span>
+          </div>
+        </div>
+
+        <!-- 3 TAB ALUR PROSES VERIFIKASI JAMINAN -->
+        <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-2">
+          <button onclick="switchProsesTab('tab-proses-1')" id="btn-tab-proses-1" class="flex-1 min-w-[170px] py-2.5 px-3 rounded-xl text-xs font-bold text-asabri-blue bg-blue-50 border border-blue-200 flex items-center justify-center gap-1.5 transition-all shadow-sm">
+            <span class="w-5 h-5 rounded-full bg-asabri-blue text-white text-[10px] flex items-center justify-center font-bold">1</span>
+            <span>Data Pengajuan</span>
+          </button>
+          <button onclick="switchProsesTab('tab-proses-2')" id="btn-tab-proses-2" class="flex-1 min-w-[170px] py-2.5 px-3 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-50 border border-transparent flex items-center justify-center gap-1.5 transition-all">
+            <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 text-[10px] flex items-center justify-center font-bold">2</span>
+            <span>Dokumen & Verifikasi Kancab</span>
+          </button>
+          <button onclick="switchProsesTab('tab-proses-3')" id="btn-tab-proses-3" class="flex-1 min-w-[170px] py-2.5 px-3 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-50 border border-transparent flex items-center justify-center gap-1.5 transition-all">
+            <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 text-[10px] flex items-center justify-center font-bold">3</span>
+            <span>Approval KAKANCAB</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: DATA PENGAJUAN (READ-ONLY) -->
+        <div id="tab-proses-1" class="space-y-6">
+          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                <i class="fas fa-clipboard-check text-asabri-blue"></i> TAB 1 — DATA PENGAJUAN JAMINAN (READ-ONLY)
+              </h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <!-- Info A & B -->
+              <div class="space-y-4">
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                  <div class="font-bold text-slate-800 text-[11px] border-b border-slate-200 pb-1.5">A. INFORMASI PENGAJUAN</div>
+                  <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div><span class="text-slate-400 block text-[10px]">No. Registrasi</span><span class="font-mono font-bold text-asabri-blue" id="pr-t1-noreg">-</span></div>
+                    <div><span class="text-slate-400 block text-[10px]">Tgl Pengajuan</span><span class="font-mono text-slate-700" id="pr-t1-tgl">-</span></div>
+                    <div><span class="text-slate-400 block text-[10px]">No Surat Kronologis Satker</span><span class="font-mono font-semibold text-slate-800" id="pr-t1-surat">-</span></div>
+                    <div><span class="text-slate-400 block text-[10px]">Status</span><span class="font-bold text-amber-700" id="pr-t1-status">-</span></div>
+                  </div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                  <div class="font-bold text-slate-800 text-[11px] border-b border-slate-200 pb-1.5">B. DATA PESERTA</div>
+                  <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div><span class="text-slate-400 block text-[10px]">KTPA</span><span class="font-mono text-slate-800" id="pr-t1-ktpa">-</span></div>
+                    <div><span class="text-slate-400 block text-[10px]">NRP / NIP</span><span class="font-mono text-slate-800" id="pr-t1-nrp">-</span></div>
+                    <div class="col-span-2"><span class="text-slate-400 block text-[10px]">Nama Peserta</span><span class="font-bold text-slate-900" id="pr-t1-nama">-</span></div>
+                    <div><span class="text-slate-400 block text-[10px]">UNOR</span><span class="font-bold text-slate-800" id="pr-t1-unor">-</span></div>
+                    <div><span class="text-slate-400 block text-[10px]">SATKER</span><span class="font-bold text-slate-800" id="pr-t1-satker">-</span></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Info C & D -->
+              <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+                <div class="font-bold text-slate-800 text-[11px] border-b border-slate-200 pb-1.5">DATA RS & PERAWATAN PROVIDER</div>
+                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                  <div><span class="text-slate-400 block text-[10px]">Provider RS</span><span class="font-bold text-slate-900" id="pr-t1-rs">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">Status RS</span><span class="font-semibold text-slate-800" id="pr-t1-status-rs">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">Nama Pelapor</span><span class="font-semibold text-slate-800" id="pr-t1-pelapor">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">No Telp Pelapor</span><span class="font-mono text-slate-700" id="pr-t1-telp">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">Tgl Mulai Rawat</span><span class="font-mono text-slate-700" id="pr-t1-rawat">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">Jenis Layanan</span><span class="font-bold text-asabri-blue" id="pr-t1-layanan">-</span></div>
+                  <div class="col-span-2 bg-white border border-slate-200 p-2.5 rounded-xl">
+                    <span class="text-slate-400 block text-[10px]">Diagnosa Kejadian</span>
+                    <span class="text-slate-800 font-bold text-[11px]" id="pr-t1-diagnosa">-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex justify-end">
+              <button onclick="switchProsesTab('tab-proses-2')" class="px-5 py-2.5 bg-asabri-blue text-white rounded-xl font-bold text-xs hover:bg-asabri-blueDark transition-colors flex items-center gap-2">
+                Lanjut ke Tab 2: Dokumen & Verifikasi Kancab <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: DOKUMEN & VERIFIKASI KANCAB -->
+        <div id="tab-proses-2" class="space-y-6 hidden">
+          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                <i class="fas fa-file-check text-asabri-blue"></i> TAB 2 — DOKUMEN PERSYARATAN & VERIFIKASI KANCAB
+              </h3>
+            </div>
+
+            <!-- List 4 Dokumen Upload dengan Tombol Preview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+                <div>
+                  <span class="font-bold text-slate-800 block text-[11px]">1. Surat Kronologis Kejadian Satker</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Tersedia & Valid</span>
+                </div>
+                <button onclick="previewDokumen('Surat Kronologis Kejadian Satker')" class="px-3 py-1.5 bg-asabri-blue text-white rounded-xl font-bold text-[10px] hover:bg-asabri-blueDark shadow-sm"><i class="fas fa-eye mr-1"></i> Preview</button>
+              </div>
+              <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+                <div>
+                  <span class="font-bold text-slate-800 block text-[11px]">2. Surat Pernyataan Kronologis Peserta</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Tersedia & Valid</span>
+                </div>
+                <button onclick="previewDokumen('Surat Pernyataan Kronologis Peserta')" class="px-3 py-1.5 bg-asabri-blue text-white rounded-xl font-bold text-[10px] hover:bg-asabri-blueDark shadow-sm"><i class="fas fa-eye mr-1"></i> Preview</button>
+              </div>
+              <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+                <div>
+                  <span class="font-bold text-slate-800 block text-[11px]">3. Fotokopi KTP / KTPA Peserta</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Tersedia & Valid</span>
+                </div>
+                <button onclick="previewDokumen('Fotokopi KTP / KTPA Peserta')" class="px-3 py-1.5 bg-asabri-blue text-white rounded-xl font-bold text-[10px] hover:bg-asabri-blueDark shadow-sm"><i class="fas fa-eye mr-1"></i> Preview</button>
+              </div>
+              <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+                <div>
+                  <span class="font-bold text-slate-800 block text-[11px]">4. Dokumen COB Jasa Raharja (Opsional)</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Tersedia (Limit Rp 20 Jt)</span>
+                </div>
+                <button onclick="previewDokumen('Dokumen COB Jasa Raharja')" class="px-3 py-1.5 bg-asabri-blue text-white rounded-xl font-bold text-[10px] hover:bg-asabri-blueDark shadow-sm"><i class="fas fa-eye mr-1"></i> Preview</button>
+              </div>
+            </div>
+
+            <!-- Panel Tombol Aksi Verifikasi Kancab -->
+            <div class="pt-6 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-500">Hasil Keputusan Verifikasi Administrasi Kancab:</span>
+              <div class="flex items-center gap-3">
+                <button onclick="bukaModalPenolakanKancab()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs shadow-md transition-all flex items-center gap-2">
+                  <i class="fas fa-xmark-circle"></i> Tolak Pengajuan
+                </button>
+                <button onclick="setujuiVerifikasiKancab()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md transition-all flex items-center gap-2">
+                  <i class="fas fa-check-circle"></i> Setujui & Lanjut Tab 3
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: APPROVAL KAKANCAB -->
+        <div id="tab-proses-3" class="space-y-6 hidden">
+          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6">
+            <!-- Badge Status Verifikasi Kancab -->
+            <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between" id="badge-verifikasi-kancab-container">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg font-black"><i class="fas fa-check"></i></div>
+                <div>
+                  <h4 class="text-xs font-extrabold text-emerald-950 uppercase tracking-wide" id="verifikasi-kancab-title">✅ Sudah Diverifikasi oleh Kancab</h4>
+                  <p class="text-[11px] text-emerald-700 font-medium" id="verifikasi-kancab-sub">Diverifikasi oleh: Staf Kancab Utama | Tanggal: 07 Sep 2026 | Status: Disetujui</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section Catatan Penolakan (Hanya muncul jika Ditolak di Tab 2) -->
+            <div id="section-catatan-penolakan" class="space-y-4 hidden">
+              <div class="p-4 bg-rose-50 border border-rose-200 rounded-2xl space-y-2">
+                <span class="text-xs font-extrabold text-rose-900 uppercase block"><i class="fas fa-comment-dots text-rose-600 mr-1.5"></i> Catatan Penolakan Staf Kancab (Read-Only)</span>
+                <p class="text-xs text-rose-800 italic bg-white p-3 rounded-xl border border-rose-100" id="catatan-kancab-text">-</p>
+              </div>
+              <div class="space-y-1.5">
+                <label class="block text-xs font-extrabold text-slate-700 uppercase">Catatan Tambahan KAKANCAB (Opsional, Maks 1000 Karakter)</label>
+                <textarea id="catatan-kakancab-input" maxlength="1000" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-xs outline-none focus:border-asabri-blue text-slate-800" placeholder="Tambahkan catatan keputusan penolakan jika ada..."></textarea>
+              </div>
+            </div>
+
+            <!-- Card DATA PENGAJUAN (Scrollable Preview Card max-height 400px) -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider"><i class="fas fa-layer-group text-asabri-blue mr-1.5"></i> Ringkasan Data Pengajuan untuk Approval KAKANCAB</span>
+                <span class="text-[10px] text-slate-400 font-mono">Scroll untuk melihat selengkapnya</span>
+              </div>
+              <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 max-h-[400px] overflow-y-auto space-y-5 shadow-inner">
+                <!-- Data Peserta & RS -->
+                <div class="grid grid-cols-2 gap-4 text-xs bg-white p-4 rounded-xl border border-slate-200">
+                  <div><span class="text-slate-400 block text-[10px]">No. Registrasi</span><span class="font-mono font-bold text-asabri-blue" id="tab3-card-noreg">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">Nama Peserta</span><span class="font-bold text-slate-900" id="tab3-card-nama">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">KTPA</span><span class="font-mono text-slate-800" id="tab3-card-ktpa">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">NRP / NIP</span><span class="font-mono text-slate-800" id="tab3-card-nrp">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">Provider RS</span><span class="font-bold text-slate-800" id="tab3-card-rs">-</span></div>
+                  <div><span class="text-slate-400 block text-[10px]">Jenis Layanan</span><span class="font-bold text-asabri-blue" id="tab3-card-layanan">-</span></div>
+                </div>
+                <!-- 4 Dokumen -->
+                <div class="space-y-2">
+                  <span class="text-[11px] font-bold text-slate-700 block">Dokumen Persyaratan:</span>
+                  <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center"><span class="text-[11px]">1. Surat Kronologis Satker</span><button onclick="previewDokumen('Surat Kronologis Kejadian Satker')" class="text-asabri-blue font-bold text-[10px]">Preview</button></div>
+                    <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center"><span class="text-[11px]">2. Surat Pernyataan Kronologis</span><button onclick="previewDokumen('Surat Pernyataan Kronologis Peserta')" class="text-asabri-blue font-bold text-[10px]">Preview</button></div>
+                    <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center"><span class="text-[11px]">3. Fotokopi KTP / KTPA</span><button onclick="previewDokumen('Fotokopi KTP / KTPA Peserta')" class="text-asabri-blue font-bold text-[10px]">Preview</button></div>
+                    <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center"><span class="text-[11px]">4. Dokumen COB Jasa Raharja</span><button onclick="previewDokumen('Dokumen COB Jasa Raharja')" class="text-asabri-blue font-bold text-[10px]">Preview</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview Draft Dokumen Resmi (Auto-Detect SJP / SPJP) -->
+            <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white rounded-2xl p-6 border border-blue-800/50 space-y-4 shadow-lg">
+              <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-shield-halved text-amber-400 text-lg" id="doc-card-icon"></i>
+                  <span class="text-xs font-black tracking-wider uppercase" id="doc-card-title">DRAFT SURAT JAMINAN PELAYANAN (SJP)</span>
+                </div>
+                <span class="px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded-full font-bold text-[10px]" id="doc-card-badge">Siap Diterbitkan</span>
+              </div>
+              <div class="grid grid-cols-2 gap-4 text-xs">
+                <div><span class="text-slate-400 text-[10px] block font-semibold">Nomor Dokumen Official:</span><span class="font-mono font-bold text-amber-300" id="doc-card-no">SJP/JKK-PRW/2026/000891</span></div>
+                <div><span class="text-slate-400 text-[10px] block font-semibold">Tanggal Terbit:</span><span class="font-mono font-bold">07 Sep 2026</span></div>
+                <div><span class="text-slate-400 text-[10px] block font-semibold">Nama Peserta:</span><span class="font-bold text-blue-100" id="doc-card-peserta">KAPTEN INF BAMBANG KUSUMA</span></div>
+                <div><span class="text-slate-400 text-[10px] block font-semibold">Masa Berlaku s.d:</span><span class="font-bold text-emerald-400" id="doc-card-berlaku">16 Sep 2026 (+9 Hari Kalender)</span></div>
+              </div>
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+                <span class="text-[11px] text-slate-300 italic" id="doc-card-note">Email resmi akan dikirimkan otomatis ke provider RS setelah disetujui.</span>
+                <div class="flex items-center gap-2">
+                  <button onclick="previewSuratOfficial(sessionStorage.getItem('status_verifikasi_kancab_jaminan') === 'Ditolak' ? 'SPJP' : 'SJP')" class="px-4 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 shadow-sm border border-blue-400/40">
+                    <i class="fas fa-eye"></i> Preview Dokumen Official
+                  </button>
+                  <button onclick="downloadOfficialPdf()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 shadow-sm">
+                    <i class="fas fa-download"></i> Unduh File PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tombol Final Approval KAKANCAB -->
+            <div class="pt-6 border-t border-slate-100 flex justify-end">
+              <button onclick="finalApprovalKakancab()" id="btn-final-approval" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2 text-sm">
+                <i class="fas fa-paper-plane"></i> TERBITKAN SJP & SIMPAN KEPUTUSAN FINAL
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- MODAL DRAWER: Form Laporan Kejadian -->
-  <div id="laporan-modal" class="fixed inset-0 z-[110] flex items-center justify-end hidden bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
-    <div class="bg-white h-full w-full max-w-4xl shadow-2xl border-l border-slate-200 flex flex-col transform translate-x-full transition-transform duration-300 overflow-hidden" id="laporan-drawer">
-      <div class="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
-        <div>
-          <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2"><i class="fas fa-file-invoice text-asabri-blue"></i> Form Laporan Jaminan Perawatan JKK</h3>
-          <span class="text-[10px] text-slate-400 font-semibold" id="laporan-subtitle">Laporan Kejadian JKK</span>
-        </div>
-        <button onclick="closeLaporanDrawer()" class="text-slate-400 hover:text-slate-600 transition-colors"><i class="fas fa-xmark text-lg"></i></button>
+  <!-- MODAL PENOLAKAN KANCAB (WAJIB ALASAN, MANDATORY 1000 CHAR MAX) -->
+  <div id="modal-penolakan-kancab" class="fixed inset-0 z-[120] flex items-center justify-center hidden bg-slate-900/60 backdrop-blur-sm transition-all p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-5 border border-slate-200">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+          <i class="fas fa-triangle-exclamation text-rose-500"></i> Form Penolakan Verifikasi Kancab
+        </h3>
+        <button onclick="tutupModalPenolakanKancab()" class="text-slate-400 hover:text-slate-600"><i class="fas fa-xmark text-base"></i></button>
       </div>
-
-      <!-- Stepper UI -->
-      <div class="bg-slate-50 border-b border-slate-200 px-6 py-4">
-        <div class="flex items-center justify-between max-w-3xl mx-auto relative">
-          <div class="absolute top-4 left-[10%] right-[10%] h-0.5 bg-slate-200 -z-1">
-            <div class="h-full bg-asabri-blue transition-all duration-500" id="kejadian-stepper-line" style="width: 0%;"></div>
-          </div>
-          <div class="flex flex-col items-center relative z-10 text-[10px]">
-            <div class="w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1">1</div>
-            <span class="font-bold text-slate-700">Pengajuan</span>
-          </div>
-          <div class="flex flex-col items-center relative z-10 text-[10px]">
-            <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border-2 border-white shadow mb-1" id="k-step-2">2</div>
-            <span class="font-bold text-slate-500">Verif Kancab</span>
-          </div>
-          <div class="flex flex-col items-center relative z-10 text-[10px]">
-            <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border-2 border-white shadow mb-1" id="k-step-3">3</div>
-            <span class="font-bold text-slate-500">Persetujuan Kakancab</span>
-          </div>
-          <div class="flex flex-col items-center relative z-10 text-[10px]">
-            <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border-2 border-white shadow mb-1" id="k-step-4">4</div>
-            <span class="font-bold text-slate-500">SJP/SJPP Terbit</span>
-          </div>
-        </div>
+      <div class="space-y-2">
+        <label class="block text-xs font-bold text-slate-700">Alasan Penolakan Pengajuan Jaminan (Wajib Diisi, Maks 1000 Karakter) <span class="text-rose-500">*</span></label>
+        <textarea id="input-alasan-penolakan-kancab" maxlength="1000" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-xs outline-none focus:border-rose-500 text-slate-800" placeholder="Tuliskan alasan penolakan secara jelas..."></textarea>
+        <span class="text-[10px] text-rose-500 hidden font-bold block" id="err-alasan-penolakan">* Alasan penolakan tidak boleh kosong!</span>
       </div>
-
-      <div class="bg-white border-b border-slate-155 flex px-6">
-        <button onclick="switchLaporanTab('tab-laporan-kejadian')" id="btn-tab-laporan-kejadian" class="py-3 px-4 text-xs font-bold border-b-2 border-asabri-blue text-asabri-blue transition-all">Tab 1: Data Kejadian</button>
-        <button onclick="switchLaporanTab('tab-laporan-dokumen')" id="btn-tab-laporan-dokumen" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">Tab 2: Dokumen Persyaratan</button>
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-3">
+        <button onclick="tutupModalPenolakanKancab()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs">Batal</button>
+        <button onclick="simpanPenolakanKancab()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs shadow-md">Simpan & Lanjut Tab 3</button>
       </div>
-
-      <div class="flex-1 overflow-y-auto p-6 space-y-6">
-        <!-- Tab 1 -->
-        <div id="tab-laporan-kejadian" class="space-y-6 text-xs">
-          <div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 space-y-4">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wide">Data Profil & Kepesertaan (Read-Only / Auto-Fill):</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Provider</label>
-                <input type="text" id="lf-provider" readonly value="RS RSPAD Gatot Soebroto" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Nomor Kejadian</label>
-                <input type="text" id="lf-nomor-kejadian" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-mono font-bold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">NRP / NIP</label>
-                <input type="text" id="lf-nrp" readonly value="311200923211" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">NIK</label>
-                <input type="text" id="lf-nik" readonly value="3273120105910003" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Nama</label>
-                <input type="text" id="lf-nama" readonly value="Ahmad Fauzi" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Telepon</label>
-                <input type="text" id="lf-telepon" readonly value="0812-9831-2918" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">UNOR</label>
-                <input type="text" id="lf-unor" readonly value="TNI-AD" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Kesatuan</label>
-                <input type="text" id="lf-kesatuan" readonly value="Kodam Jaya" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Pangkat</label>
-                <input type="text" id="lf-pangkat" readonly value="Kolonel" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Cabang</label>
-                <input type="text" id="lf-cabang" readonly value="KANCAB JAKARTA" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Kelas Rawat</label>
-                <input type="text" id="lf-kelas" readonly value="Kelas VIP / I" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 font-semibold text-slate-600 outline-none">
-              </div>
-            </div>
-          </div>
-
-          <div class="space-y-4" id="laporan-inputs-container">
-            <h4 class="text-xs font-bold text-slate-700 border-b border-slate-150 pb-2"><i class="fas fa-pen-to-square text-asabri-blue mr-1.5"></i>Input Informasi Kejadian (Mandatory):</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Entitas Pelapor <span class="text-rose-500">*</span></label>
-                <select id="lf-entitas-pelapor" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-                  <option value="Provider">Provider</option>
-                  <option value="Peserta">Peserta</option>
-                  <option value="Kesatuan">Kesatuan</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Pelapor <span class="text-rose-500">*</span></label>
-                <input type="text" id="lf-pelapor" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">No Telepon Pelapor <span class="text-rose-500">*</span></label>
-                <input type="text" id="lf-pelapor-telp" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue font-mono">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Tanggal Lapor Kejadian <span class="text-rose-500">*</span></label>
-                <input type="date" id="lf-tgl-lapor" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Jenis Laka Kejadian <span class="text-rose-500">*</span></label>
-                <select id="lf-kejadian" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-                  <option value="Laka Kerja (Kecelakaan di Tempat Kerja)">Laka Kerja (Kecelakaan di Tempat Kerja)</option>
-                  <option value="Laka Kerja (Kecelakaan selain di Tempat Kerja)">Laka Kerja (Kecelakaan selain di Tempat Kerja)</option>
-                  <option value="Laka Kerja + Laka Lantas Tunggal">Laka Kerja + Laka Lantas Tunggal</option>
-                  <option value="Laka Kerja + Laka Lantas Ganda">Laka Kerja + Laka Lantas Ganda</option>
-                  <option value="Penyakit Akibat Kerja">Penyakit Akibat Kerja</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Tanggal Kejadian <span class="text-rose-500">*</span></label>
-                <input type="date" id="lf-tgl-kejadian" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Tanggal Mulai Rawat <span class="text-rose-500">*</span></label>
-                <input type="date" id="lf-tgl-rawat" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">COB Penanggung <span class="text-rose-500">*</span></label>
-                <select id="lf-cob" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-                  <option value="-">-</option>
-                  <option value="Jasa Raharja">Jasa Raharja</option>
-                  <option value="BPJS Kesehatan">BPJS Kesehatan</option>
-                  <option value="Asuransi Lain">Asuransi Lain</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Jenis Layanan <span class="text-rose-500">*</span></label>
-                <select id="lf-layanan" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-                  <option value="Rawat Inap">Rawat Inap</option>
-                  <option value="Rawat Jalan">Rawat Jalan</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-bold text-slate-500 mb-1">Propinsi Kejadian <span class="text-rose-500">*</span></label>
-                <input type="text" id="lf-provinsi" value="DKI Jakarta" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 font-semibold outline-none focus:border-asabri-blue">
-              </div>
-              <div class="sm:col-span-3">
-                <label class="block font-bold text-slate-500 mb-1">Catatan Kejadian (Rich Text) <span class="text-rose-500">*</span></label>
-                <textarea id="lf-catatan" class="w-full p-3 border border-slate-250 focus:border-asabri-blue rounded-xl bg-white resize-none h-20" placeholder="Tuliskan kronologis kejadian secara lengkap..."></textarea>
-              </div>
-              <div class="sm:col-span-3">
-                <label class="block font-bold text-slate-500 mb-1">Diagnosa Awal Kejadian (Rich Text) <span class="text-rose-500">*</span></label>
-                <textarea id="lf-diagnosa" class="w-full p-3 border border-slate-250 focus:border-asabri-blue rounded-xl bg-white resize-none h-20" placeholder="Tuliskan diagnosa awal medis..."></textarea>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section Verifikasi 3 Pilar (Role Staf KANCAB) -->
-          <div id="validasi-kelayakan-container" class="bg-white border border-slate-200 rounded-3xl p-5 space-y-4 hidden">
-            <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i class="fas fa-check-double text-emerald-600"></i> Validasi Kelayakan JKK (Staf KANCAB)</h4>
-            <div class="space-y-4 text-xs">
-              <div class="border-b border-slate-100 pb-3 space-y-2">
-                <div class="font-bold text-slate-700">1. Validasi Kepesertaan (KTA aktif?)</div>
-                <div class="flex items-center gap-4">
-                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
-                    <input type="radio" name="val-kepesertaan" id="val-kep-lolos" value="Lolos" checked class="w-4 h-4 text-asabri-blue">
-                    <span>Lolos</span>
-                  </label>
-                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
-                    <input type="radio" name="val-kepesertaan" id="val-kep-tidak" value="Tidak Lolos" class="w-4 h-4 text-asabri-blue">
-                    <span>Tidak Lolos</span>
-                  </label>
-                </div>
-                <input type="text" id="val-kepesertaan-catatan" placeholder="Catatan kepesertaan..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 outline-none focus:border-asabri-blue">
-              </div>
-
-              <div class="border-b border-slate-100 pb-3 space-y-2">
-                <div class="font-bold text-slate-700">2. Validasi Legalitas Dinas</div>
-                <div class="flex items-center gap-4">
-                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
-                    <input type="radio" name="val-legalitas" id="val-leg-lolos" value="Lolos" checked class="w-4 h-4 text-asabri-blue">
-                    <span>Lolos</span>
-                  </label>
-                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
-                    <input type="radio" name="val-legalitas" id="val-leg-tidak" value="Tidak Lolos" class="w-4 h-4 text-asabri-blue">
-                    <span>Tidak Lolos</span>
-                  </label>
-                </div>
-                <input type="text" id="val-legalitas-catatan" placeholder="Catatan legalitas..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 outline-none focus:border-asabri-blue">
-              </div>
-
-              <div class="border-b border-slate-100 pb-3 space-y-2">
-                <div class="font-bold text-slate-700">3. Validasi Medis (diagnosa sesuai JKK?)</div>
-                <div class="flex items-center gap-4">
-                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
-                    <input type="radio" name="val-medis" id="val-med-lolos" value="Lolos" checked class="w-4 h-4 text-asabri-blue">
-                    <span>Lolos</span>
-                  </label>
-                  <label class="flex items-center gap-1.5 cursor-pointer font-bold text-slate-700">
-                    <input type="radio" name="val-medis" id="val-med-tidak" value="Tidak Lolos" class="w-4 h-4 text-asabri-blue">
-                    <span>Tidak Lolos</span>
-                  </label>
-                </div>
-                <input type="text" id="val-medis-catatan" placeholder="Catatan medis..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 outline-none focus:border-asabri-blue">
-              </div>
-            </div>
-          </div>
-
-          <!-- Section Persetujuan (Role KAKANCAB) -->
-          <div id="kakancab-approval-container" class="bg-indigo-50 border border-indigo-150 rounded-3xl p-5 space-y-4 hidden">
-            <h4 class="text-xs font-bold text-indigo-900 flex items-center gap-1.5"><i class="fas fa-signature"></i> Persetujuan Verifikasi (KAKANCAB)</h4>
-            <div class="space-y-3 text-xs">
-              <div>
-                <span class="block font-bold text-slate-500 uppercase text-[9px] mb-1">Hasil Kelayakan Rekomendasi:</span>
-                <span class="font-extrabold text-sm text-slate-800" id="rekomendasi-lbl">Lolos</span>
-              </div>
-              <div class="space-y-1">
-                <label class="block font-bold text-slate-500">Catatan Persetujuan Kakancab:</label>
-                <textarea id="app-kakancab-catatan" placeholder="Tulis catatan persetujuan..." class="w-full p-2.5 bg-white border border-slate-200 rounded-xl focus:border-asabri-blue outline-none resize-none h-16"></textarea>
-              </div>
-              <div class="flex items-center gap-2" id="kakancab-approval-actions">
-                <!-- setuju/tolak buttons loaded here -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Log Riwayat -->
-          <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-3">
-            <h4 class="text-xs font-bold text-slate-800"><i class="fas fa-history text-slate-500"></i> Log Aktivitas Laporan</h4>
-            <div id="lf-logs" class="space-y-1.5 font-mono text-[10px] text-slate-500 max-h-32 overflow-y-auto divide-y divide-slate-100"></div>
-          </div>
-        </div>
-
-        <!-- Tab 2 -->
-        <div id="tab-laporan-dokumen" class="hidden space-y-4">
-          <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-3 text-xs">
-            <div class="flex items-center justify-between p-3.5 border border-slate-100 rounded-xl">
-              <span class="font-bold text-slate-700">1. Kartu Tanda Anggota (KTA) <span class="text-rose-500 font-bold">*</span></span>
-              <input type="file" id="ldoc-1" class="text-slate-500">
-            </div>
-            <div class="flex items-center justify-between p-3.5 border border-slate-100 rounded-xl">
-              <span class="font-bold text-slate-700">2. Laporan Kronologis Awal <span class="text-rose-500 font-bold">*</span></span>
-              <input type="file" id="ldoc-2" class="text-slate-500">
-            </div>
-            <div class="flex items-center justify-between p-3.5 border border-slate-100 rounded-xl">
-              <span class="font-bold text-slate-700">3. Bukti Kronologis dari Kesatuan <span class="text-rose-500 font-bold">*</span></span>
-              <input type="file" id="ldoc-3" class="text-slate-500">
-            </div>
-            <div class="flex items-center justify-between p-3.5 border border-slate-100 rounded-xl">
-              <span class="font-bold text-slate-700">4. Surat Keterangan Rawat Inap <span class="text-rose-500 font-bold">*</span></span>
-              <input type="file" id="ldoc-4" class="text-slate-500">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Buttons -->
-      <div class="px-6 py-4 border-t border-slate-150 bg-slate-50 flex items-center justify-between gap-3" id="drawer-footer-actions"></div>
     </div>
   </div>
 
-  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2"></div>
-
   <script>
-    function toggleSidebarAccordion(menuId, chevId) {
-      const menu = document.getElementById(menuId);
-      const chev = document.getElementById(chevId);
-      if (!menu || !chev) return;
-      if (menu.classList.contains('hidden')) {
-        menu.classList.remove('hidden');
-        chev.className = 'fas fa-chevron-down text-asabri-blue text-[10px] transition-transform duration-200';
-      } else {
-        menu.classList.add('hidden');
-        chev.className = 'fas fa-chevron-right text-slate-400 text-[10px] transition-transform duration-200';
-      }
-    }
-
-    function showToast(title, message, type = "success") {
-      const container = document.getElementById("toast-container");
-      if (!container) return;
-      const toast = document.createElement("div");
-      toast.className = "flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xl w-80 animate-fade-in text-xs";
-      let iconColor = "text-emerald-500";
-      let iconClass = "fa-circle-check";
-      if (type === "warning") {
-        iconColor = "text-amber-500";
-        iconClass = "fa-triangle-exclamation";
-      } else if (type === "error") {
-        iconColor = "text-rose-500";
-        iconClass = "fa-circle-xmark";
-      } else if (type === "info") {
-        iconColor = "text-asabri-blue";
-        iconClass = "fa-circle-info";
-      }
-      toast.innerHTML = `
-        <i class="fas ${iconClass} ${iconColor} text-base mt-0.5"></i>
-        <div class="flex-1">
-          <div class="font-bold text-slate-800">${title}</div>
-          <div class="text-slate-500 mt-0.5">${message}</div>
-        </div>
-        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
-          <i class="fas fa-xmark text-[10px]"></i>
-        </button>
-      `;
-      container.appendChild(toast);
-      setTimeout(() => { toast.remove(); }, 4000);
-    }
-
-    function formatIndoDate(dateStr) {
-      if (!dateStr || dateStr === "-") return '-';
-      const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return dateStr;
-      return d.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    }
-
-    // Reports Data with status workflows & SLA dates
-    let reportsData = [
+    // --- MASTER DATA PENGAJUAN JAMINAN PERAWATAN SJP (LENGKAP SPESIFIKASI TEMPLATE OFFICIAL) ---
+    const listJaminanMaster = [
       {
-        id: 501,
-        status: "Pengajuan",
-        tglPengajuan: new Date(Date.now() - 12 * 3600000).toISOString(), // 12 hours ago (SLA Yellow)
-        jumlahKlaim: 1,
-        nomor: "JKK-PRV/001-ASABRI/08/2026",
-        cob: "BPJS Kesehatan",
-        ktpa: "3273120105910003",
-        nrpNip: "311200923211",
-        nama: "Ahmad Fauzi",
-        unor: "TNI-AD",
-        provider: "RSPAD Gatot Soebroto",
-        cabang: "KANCAB JAKARTA",
-        tglKejadian: "2026-07-25",
-        tglRawat: "2026-07-26",
-        kejadian: "Laka Kerja (Kecelakaan di Tempat Kerja)",
-        provinsi: "DKI Jakarta",
-        sepaNum: "SEPA-98321",
-        sepaDate: "2026-07-26",
-        jaminan: "Ya",
-        source: "Provider",
-        catatanKejadian: "Terpeleset saat dinas pagi di hanggar.",
-        diagnosaKejadian: "Fraktur Tibia",
-        pelapor: "dr. Budianto",
-        logs: ["Laporan diterima — 20/08/2026, 10:00:12"]
+        id: 1,
+        noUrut: "000891",
+        noReg: "REG/JAM/0123/IX/2026/00001",
+        status: "Proses",
+        noSuratKronologis: "B/SRT-KRON/089/IX/2026",
+        tglPengajuan: "04 Sep 2026",
+        bulanPengajuan: "IX",
+        tahunPengajuan: "2026",
+        ktpa: "KTPA-8899201992",
+        nrpNip: "199203108821",
+        namaPeserta: "KAPTEN INF BAMBANG KUSUMA",
+        tglLahir: "14 Mei 1988",
+        jenisKelamin: "Laki-Laki",
+        pangkat: "Kapten Inf",
+        kesatuan: "Yonif Mekanis 201/JY",
+        UNOR: "KODAM JAYA",
+        SATKER: "YONIF MEKANIS 201/JY",
+        noTelp: "0812-9988-7711",
+        provider: "RS Siloam Semanggi",
+        alamatRs: "Jl. Garnisun No.1, Semanggi, Jakarta Selatan",
+        telpRs: "021-29962888",
+        statusRs: "RS Swasta (Ada Limit)",
+        tglMulaiRawat: "04 Sep 2026",
+        diagnosa: "Fraktur Clavicula Dextra (ICD-10: S42.0)",
+        periodeJaminan: "04 Sep 2026 s.d 13 Sep 2026 (9 Hari Kalender)",
+        cob: "PT Jasa Raharja (Plafon Rp 20.000.000)",
+        sjpKe: "1 (Pertama)",
+        jenisRawatSaatIni: "Rawat Inap Kelas I",
+        dasarPenolakan: "Dokumen kronologis kejadian dinas belum disahkan oleh Komandan Satuan Kerja pelapor."
       },
       {
-        id: 502,
-        status: "Verifikasi Kancab",
-        tglPengajuan: new Date(Date.now() - 36 * 3600000).toISOString(), // 36 hours ago (SLA Red)
-        jumlahKlaim: 1,
-        nomor: "JKK-RMB/002-ASABRI/08/2026",
-        cob: "-",
-        ktpa: "3578140902940004",
-        nrpNip: "3578140902940004",
-        nama: "Kartika Sari",
-        unor: "TNI-AU",
-        provider: "RS Sumber Waras",
-        cabang: "KANCAB BANDUNG",
-        tglKejadian: "2026-07-28",
-        tglRawat: "2026-07-28",
-        kejadian: "Laka Kerja + Laka Lantas Tunggal",
-        provinsi: "Jawa Barat",
-        sepaNum: "SEPA-09238",
-        sepaDate: "2026-07-28",
-        jaminan: "Ya",
-        source: "Peserta",
-        catatanKejadian: "Tabrakan tunggal saat berkendara dinas.",
-        diagnosaKejadian: "Luxatio Humeri",
-        pelapor: "Mayor Laut Suhartono",
-        logs: ["Laporan diterima — 19/08/2026, 11:15:00", "Verifikasi selesai oleh Staf — 19/08/2026, 13:22:15"]
-      },
-      {
-        id: 503,
-        status: "SJP Terbit",
-        tglPengajuan: new Date(Date.now() - 48 * 3600000).toISOString(),
-        jumlahKlaim: 1,
-        nomor: "JKK-KST/003-ASABRI/08/2026",
-        cob: "BPJS Kesehatan",
-        ktpa: "3171092801890001",
+        id: 2,
+        noUrut: "000892",
+        noReg: "REG/JAM/0123/IX/2026/00002",
+        status: "Proses",
+        noSuratKronologis: "B/SRT-KRON/092/IX/2026",
+        tglPengajuan: "06 Sep 2026",
+        bulanPengajuan: "IX",
+        tahunPengajuan: "2026",
+        ktpa: "KTPA-3171092801",
         nrpNip: "3171092801890001",
-        nama: "Wirata Atmaja",
-        unor: "TNI-AD",
-        provider: "RSPAD Gatot Soebroto",
-        cabang: "KANCAB SEMARANG",
-        tglKejadian: "2026-08-03",
-        tglRawat: "2026-08-04",
-        kejadian: "Laka Kerja (Kecelakaan selain di Tempat Kerja)",
-        provinsi: "Jawa Tengah",
-        sepaNum: "SEPA-88412",
-        sepaDate: "2026-08-04",
-        jaminan: "Ya",
-        source: "Kesatuan",
-        catatanKejadian: "Tertimpa tiang rambu saat pengawalan.",
-        diagnosaKejadian: "Fraktur Clavicula",
-        pelapor: "dr. Hendra",
-        sjpNumber: "SJP/SEMARANG/08/2026/0003",
-        logs: ["Laporan diterima — 18/08/2026, 12:00:00", "Verifikasi selesai oleh Staf — 18/08/2026, 13:00:00", "Disetujui oleh KAKANCAB — 18/08/2026, 14:00:00", "SJP diterbitkan — SJP/SEMARANG/08/2026/0003 — 18/08/2026, 14:05:00"]
-      },
-      {
-        id: 504,
-        status: "Persetujuan KAKANCAB",
-        tglPengajuan: new Date(Date.now() - 5 * 3600000).toISOString(), // 5 hours ago
-        jumlahKlaim: 1,
-        nomor: "JKK-PRV/004-ASABRI/08/2026",
-        cob: "-",
-        ktpa: "3374110304620002",
-        nrpNip: "3374110304620002",
-        nama: "Bambang Triyono",
-        unor: "POLRI",
+        namaPeserta: "WIRATA ATMAJA",
+        tglLahir: "28 Sep 1989",
+        jenisKelamin: "Laki-Laki",
+        pangkat: "Bripka",
+        kesatuan: "Korbrimob Polri",
+        UNOR: "MABES POLRI",
+        SATKER: "KORBRIMOB POLRI",
+        noTelp: "0813-1122-3344",
         provider: "RS Polri Kramat Jati",
-        cabang: "KANCAB JAKARTA",
-        tglKejadian: "2026-08-01",
-        tglRawat: "2026-08-01",
-        kejadian: "Penyakit Akibat Kerja",
-        provinsi: "DKI Jakarta",
-        sepaNum: "SEPA-12345",
-        sepaDate: "2026-08-01",
-        jaminan: "Ya",
-        source: "Provider",
-        catatanKejadian: "Paparan gas berlebih.",
-        diagnosaKejadian: "Pneumokoniosis",
-        pelapor: "Polda Metro",
-        logs: ["Laporan diterima — 20/08/2026, 09:00:00", "Verifikasi selesai oleh Staf — 20/08/2026, 11:30:00"]
-      },
-      {
-        id: 505,
-        status: "SJPP Terbit",
-        tglPengajuan: new Date(Date.now() - 72 * 3600000).toISOString(),
-        jumlahKlaim: 1,
-        nomor: "JKK-PRV/005-ASABRI/08/2026",
-        cob: "-",
-        ktpa: "3273120105910088",
-        nrpNip: "3273120105910088",
-        nama: "Siti Nurhaliza",
-        unor: "KEMHAN",
-        provider: "RS Fatmawati",
-        cabang: "KANCAB JAKARTA",
-        tglKejadian: "2026-08-06",
-        tglRawat: "2026-08-06",
-        kejadian: "Laka Kerja + Laka Lantas Ganda",
-        provinsi: "DKI Jakarta",
-        sepaNum: "SEPA-55421",
-        sepaDate: "2026-08-06",
-        jaminan: "Tidak",
-        source: "Provider",
-        catatanKejadian: "Bukan tugas dinas/surat tugas tidak sah.",
-        diagnosaKejadian: "Luka Robek",
-        pelapor: "RS Fatmawati",
-        sjpNumber: "SJPP/JAKARTA/08/2026/0005",
-        logs: ["Laporan diterima — 17/08/2026, 08:00:00", "Verifikasi selesai oleh Staf — 17/08/2026, 10:00:00", "Disetujui oleh KAKANCAB (Tolak Jaminan) — 17/08/2026, 12:00:00"]
+        alamatRs: "Jl. Raya Bogor KM 11, Kramat Jati, Jakarta Timur",
+        telpRs: "021-8093288",
+        statusRs: "RS Pemerintah (Unlimited)",
+        tglMulaiRawat: "06 Sep 2026",
+        diagnosa: "Contusio Cerebri / Trauma Kepala Ringan",
+        periodeJaminan: "06 Sep 2026 s.d 06 Okt 2026 (30 Hari Kalender)",
+        cob: "Tidak Ada",
+        sjpKe: "1 (Pertama)",
+        jenisRawatSaatIni: "Rehabilitasi Medis",
+        dasarPenolakan: "Masa berlaku laporan kejadian telah melampaui batas toleransi 3x24 jam."
       }
     ];
 
-    let currentReportObj = null;
+    const plafonMasterData = [
+      { layanan: "Rawat Inap", maks: "Unlimited", pakai: 0 },
+      { layanan: "Rawat Jalan", maks: "Unlimited", pakai: 0 },
+      { layanan: "Biaya Angkut Darat", maks: 2000000, pakai: 500000 },
+      { layanan: "Biaya Angkut Laut", maks: 2500000, pakai: 0 },
+      { layanan: "Biaya Angkut Udara", maks: 4000000, pakai: 1200000 },
+      { layanan: "Protese / Ortese", maks: 5000000, pakai: 800000 },
+      { layanan: "Rehabilitasi Medis", maks: 2600000, pakai: 400000 },
+      { layanan: "Penggantian Gigi Tiruan", maks: 3000000, pakai: 0 }
+    ];
 
-    const mappingKancab = {
-      'DKI Jakarta': 'KANCAB JAKARTA',
-      'Jawa Barat': 'KANCAB BANDUNG',
-      'Jawa Tengah': 'KANCAB SEMARANG',
-      'Jawa Timur': 'KANCAB SURABAYA',
-      'Sumatera Utara': 'KANCAB MEDAN',
-      'Sulawesi Selatan': 'KANCAB MAKASSAR',
-      'Kalimantan Selatan': 'KANCAB BANJARMASIN',
-    };
+    let activeSubTabState = "pengajuan";
+    let selectedItem = null;
 
-    function mappingWilayahKancab(propinsi) {
-      return mappingKancab[propinsi] || 'KANCAB PUSAT';
+    function initPage() {
+      applyFilters();
+      renderPlafonTabel();
     }
 
-    function calculateSLA(item) {
-      if (item.status === "SJP Terbit" || item.status === "SJPP Terbit" || item.status === "Selesai") {
-        return { label: "Selesai", bg: "bg-emerald-50 text-emerald-700 border border-emerald-200" };
-      }
+    function switchSubTab(sub) {
+      activeSubTabState = sub;
+      const btnP = document.getElementById('btn-sub-pengajuan');
+      const btnR = document.getElementById('btn-sub-riwayat');
+      const filterSelect = document.getElementById('filter-status');
 
-      const diffMs = Date.now() - new Date(item.tglPengajuan).getTime();
-      const diffHours = diffMs / 3600000;
-
-      if (diffHours <= 24) {
-        return { label: "≤ 24 Jam", bg: "bg-amber-50 text-amber-700 border border-amber-200" };
+      if (sub === 'pengajuan') {
+        btnP.className = "px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all";
+        btnR.className = "px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all";
+        document.getElementById('breadcrumb-title').innerText = "Pengajuan Jaminan Perawatan (SJP)";
+        document.getElementById('table-title').innerText = "Daftar Pengajuan Jaminan Perawatan (SJP)";
+        filterSelect.innerHTML = `<option value="Semua">Semua Status</option><option value="Baru">Baru</option><option value="Proses">Proses</option>`;
       } else {
-        return { label: "> 24 Jam", bg: "bg-rose-50 text-rose-700 border border-rose-200 font-bold animate-pulse" };
+        btnR.className = "px-3 py-1.5 rounded-lg bg-white text-asabri-blue shadow-sm transition-all";
+        btnP.className = "px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 transition-all";
+        document.getElementById('breadcrumb-title').innerText = "Riwayat Jaminan Perawatan Selesai";
+        document.getElementById('table-title').innerText = "Daftar Riwayat Jaminan Perawatan Selesai";
+        filterSelect.innerHTML = `<option value="Semua">Semua Status (Selesai)</option><option value="Selesai">Selesai</option>`;
       }
+
+      showTabelView();
+      applyFilters();
+    }
+
+    function showTabelView() {
+      document.getElementById('view-tabel').classList.remove('hidden');
+      document.getElementById('view-detail').classList.add('hidden');
+      document.getElementById('view-proses').classList.add('hidden');
     }
 
     function applyFilters() {
-      const entitas = document.getElementById("filter-entitas").value;
-      const status = document.getElementById("filter-status").value;
-      const search = document.getElementById("filter-search").value.toLowerCase();
+      const statusVal = document.getElementById('filter-status').value;
+      const searchVal = document.getElementById('filter-search').value.toLowerCase();
 
-      let filtered = reportsData;
+      let filtered = listJaminanMaster;
 
-      if (entitas !== "Semua") {
-        filtered = filtered.filter(item => item.source === entitas);
+      if (activeSubTabState === 'pengajuan') {
+        filtered = filtered.filter(item => item.status !== "Selesai");
+      } else {
+        filtered = filtered.filter(item => item.status === "Selesai");
       }
 
-      if (status !== "Semua") {
-        filtered = filtered.filter(item => item.status === status);
+      if (statusVal !== "Semua") {
+        filtered = filtered.filter(item => item.status === statusVal);
       }
 
-      if (search) {
-        filtered = filtered.filter(item => 
-          item.nomor.toLowerCase().includes(search) ||
-          item.nama.toLowerCase().includes(search) ||
-          item.nrpNip.toLowerCase().includes(search) ||
-          item.provider.toLowerCase().includes(search)
+      if (searchVal) {
+        filtered = filtered.filter(item =>
+          item.noReg.toLowerCase().includes(searchVal) ||
+          item.namaPeserta.toLowerCase().includes(searchVal) ||
+          item.nrpNip.toLowerCase().includes(searchVal) ||
+          item.noSuratKronologis.toLowerCase().includes(searchVal)
         );
       }
 
-      renderTable(filtered);
+      renderTabel(filtered);
     }
 
-    function renderTable(list) {
-      const tbody = document.getElementById("monitoring-tbody");
-      if (!tbody) return;
+    function renderTabel(data) {
+      const tbody = document.getElementById('tabel-tbody');
       tbody.innerHTML = "";
+      document.getElementById('count-total').innerText = data.length;
+      document.getElementById('data-count-badge').innerText = `${data.length} Data`;
+      document.getElementById('badge-count-JAM').innerText = listJaminanMaster.filter(d => d.status !== 'Selesai').length;
 
-      document.getElementById("data-count-badge").innerText = `${list.length} Data Laporan`;
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="20" class="py-8 text-center text-slate-400 italic">Tidak ada data</td></tr>`;
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" class="py-8 text-center text-slate-400 italic">Tidak ada data Jaminan Perawatan yang sesuai</td></tr>`;
         return;
       }
 
-      list.forEach(item => {
-        let badgeClass = "bg-rose-50 text-rose-750 border border-rose-200"; // Pengajuan
-        if (item.status === "Verifikasi Kancab") badgeClass = "bg-amber-50 text-amber-750 border border-amber-200";
-        else if (item.status === "Persetujuan KAKANCAB") badgeClass = "bg-blue-50 text-blue-750 border border-blue-200";
-        else if (item.status === "SJP Terbit") badgeClass = "bg-emerald-50 text-emerald-700 border border-emerald-200";
-        else if (item.status === "SJPP Terbit") badgeClass = "bg-slate-100 text-slate-500 border border-slate-350";
+      data.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
 
-        const sla = calculateSLA(item);
+        let statusBadge = "";
+        if (item.status === "Baru") {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-blue-100 text-blue-800 border border-blue-200">Baru</span>`;
+        } else if (item.status === "Proses") {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-amber-100 text-amber-800 border border-amber-200">Proses</span>`;
+        } else {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200">Selesai</span>`;
+        }
 
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-slate-50/50 transition-colors";
         tr.innerHTML = `
-          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full font-bold text-[9px] ${badgeClass}">${item.status}</span></td>
-          <td class="py-2.5 px-3 text-center font-bold text-slate-650">${item.jumlahKlaim}</td>
-          <td class="py-2.5 px-3 font-bold font-mono text-slate-800">${item.nomor}</td>
-          <td class="py-2.5 px-3 text-slate-500">${item.cob}</td>
-          <td class="py-2.5 px-3 font-mono text-slate-500">${item.ktpa}</td>
-          <td class="py-2.5 px-3 font-mono text-slate-500">${item.nrpNip}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-700">${item.nama}</td>
-          <td class="py-2.5 px-3 text-slate-500">${item.unor}</td>
-          <td class="py-2.5 px-3 font-semibold text-slate-700">${item.provider}</td>
-          <td class="py-2.5 px-3 text-indigo-950 font-bold">${item.cabang}</td>
-          <td class="py-2.5 px-3 font-mono text-slate-600">${formatIndoDate(item.tglPengajuan)}</td>
-          <td class="py-2.5 px-3 font-mono text-slate-600">${formatIndoDate(item.tglKejadian)}</td>
-          <td class="py-2.5 px-3 font-mono text-slate-600">${formatIndoDate(item.tglRawat)}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-700 leading-tight">${item.kejadian}</td>
-          <td class="py-2.5 px-3 text-slate-500">${item.provinsi}</td>
-          <td class="py-2.5 px-3 font-mono text-slate-650 font-bold">${item.sepaNum}</td>
-          <td class="py-2.5 px-3 font-mono text-slate-500">${formatIndoDate(item.sepaDate)}</td>
-          <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 ${item.jaminan === 'Ya' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'} rounded font-bold text-[9px]">${item.jaminan}</span></td>
-          <td class="py-2.5 px-3 text-center">
+          <td class="py-3 px-3 text-center font-bold text-slate-500">${index + 1}</td>
+          <td class="py-3 px-3 font-bold font-mono text-asabri-blue">${item.noReg}</td>
+          <td class="py-3 px-3">${statusBadge}</td>
+          <td class="py-3 px-3 font-mono text-slate-700">${item.noSuratKronologis}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.tglPengajuan}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.ktpa}</td>
+          <td class="py-3 px-3 font-mono text-slate-600">${item.nrpNip}</td>
+          <td class="py-3 px-3 font-bold text-slate-800">${item.namaPeserta}</td>
+          <td class="py-3 px-3 font-semibold text-slate-700">${item.jenisLayanan}</td>
+          <td class="py-3 px-3 text-slate-700">${item.provider}</td>
+          <td class="py-3 px-3 text-center">
             <div class="flex items-center justify-center gap-1.5">
-              <button onclick="showDetail(${item.id})" class="text-asabri-blue hover:text-asabri-blueDark font-bold" title="Detail / Ubah"><i class="fas fa-edit"></i> Edit</button>
+              <button onclick="bukaDetail(${item.id})" class="px-2.5 py-1 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
+                <i class="fas fa-file-invoice"></i> Detail
+              </button>
+              <button onclick="bukaProses(${item.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] shadow-sm transition-colors flex items-center gap-1">
+                <i class="fas fa-arrow-right"></i> Proses
+              </button>
             </div>
           </td>
         `;
@@ -810,348 +782,766 @@
       });
     }
 
-    function changeRole() {
-      if (currentReportObj) {
-        renderDrawerRoleActions();
-      }
-      showToast("Role Berubah", `Menu dipantau sebagai ${document.getElementById("role-switcher").value}`, "info");
-    }
-
-    function updateStepperUI(status) {
-      const line = document.getElementById("kejadian-stepper-line");
-      const steps = [
-        document.getElementById("k-step-2"),
-        document.getElementById("k-step-3"),
-        document.getElementById("k-step-4")
-      ];
-      
-      steps.forEach(s => {
-        s.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center border-2 border-white shadow mb-1";
-      });
-
-      if (status === "Pengajuan") {
-        line.style.width = "0%";
-      } else if (status === "Verifikasi Kancab") {
-        line.style.width = "33%";
-        steps[0].className = "w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1";
-      } else if (status === "Persetujuan KAKANCAB") {
-        line.style.width = "66%";
-        steps[0].className = "w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1";
-        steps[1].className = "w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1";
-      } else if (status === "SJP Terbit" || status === "SJPP Terbit") {
-        line.style.width = "100%";
-        steps.forEach(s => {
-          s.className = "w-8 h-8 rounded-full bg-asabri-blue text-white font-bold flex items-center justify-center border-2 border-white shadow mb-1";
-        });
-      }
-    }
-
-    function renderDrawerLogs() {
-      const logsEl = document.getElementById("lf-logs");
-      if (!logsEl || !currentReportObj) return;
-      logsEl.innerHTML = (currentReportObj.logs || []).map(l => `<div class="py-1">${l}</div>`).join('');
-    }
-
-    function addLogEntry(msg) {
-      if (!currentReportObj) return;
-      const ts = new Date().toLocaleString('id-ID');
-      currentReportObj.logs = currentReportObj.logs || [];
-      currentReportObj.logs.push(`${msg} — ${ts}`);
-      renderDrawerLogs();
-    }
-
-    function renderDrawerRoleActions() {
-      const role = document.getElementById("role-switcher").value;
-      const valContainer = document.getElementById("validasi-kelayakan-container");
-      const appContainer = document.getElementById("kakancab-approval-container");
-      const approvalBox = document.getElementById("kakancab-approval-actions");
-      const footerActions = document.getElementById("drawer-footer-actions");
-      
-      approvalBox.innerHTML = "";
-      footerActions.innerHTML = `<button type="button" onclick="closeLaporanDrawer()" class="px-5 py-2.5 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs">Tutup</button>`;
-
-      const isFinal = ["SJP Terbit", "SJPP Terbit"].includes(currentReportObj.status);
-      
-      if (isFinal) {
-        const isSjp = currentReportObj.status === "SJP Terbit";
-        footerActions.innerHTML += `
-          <button type="button" onclick="downloadDocument('${isSjp ? 'SJP' : 'SJPP'}')" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md"><i class="fas fa-download mr-1.5"></i> Download ${isSjp ? 'SJP' : 'SJPP'}</button>
-        `;
-        valContainer.classList.remove("hidden");
-        appContainer.classList.add("hidden");
-        // Disable validation inputs
-        document.getElementById("val-kep-lolos").disabled = true;
-        document.getElementById("val-kep-tidak").disabled = true;
-        document.getElementById("val-leg-lolos").disabled = true;
-        document.getElementById("val-leg-tidak").disabled = true;
-        document.getElementById("val-med-lolos").disabled = true;
-        document.getElementById("val-med-tidak").disabled = true;
-        document.getElementById("val-kepesertaan-catatan").disabled = true;
-        document.getElementById("val-legalitas-catatan").disabled = true;
-        document.getElementById("val-medis-catatan").disabled = true;
-        return;
-      }
-
-      // Re-enable validation inputs
-      document.getElementById("val-kep-lolos").disabled = false;
-      document.getElementById("val-kep-tidak").disabled = false;
-      document.getElementById("val-leg-lolos").disabled = false;
-      document.getElementById("val-leg-tidak").disabled = false;
-      document.getElementById("val-med-lolos").disabled = false;
-      document.getElementById("val-med-tidak").disabled = false;
-      document.getElementById("val-kepesertaan-catatan").disabled = false;
-      document.getElementById("val-legalitas-catatan").disabled = false;
-      document.getElementById("val-medis-catatan").disabled = false;
-
-      if (role === "Staf KANCAB") {
-        valContainer.classList.remove("hidden");
-        appContainer.classList.add("hidden");
-        footerActions.innerHTML += `
-          <button type="button" onclick="saveLaporanSubmission()" class="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs">Simpan Draft</button>
-          <button type="button" onclick="submitToKakancab()" class="px-6 py-2.5 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-md">Ajukan ke KAKANCAB</button>
-        `;
-      } else if (role === "KAKANCAB") {
-        valContainer.classList.remove("hidden");
-        appContainer.classList.remove("hidden");
-        
-        // Calculate status recommendation based on 3 pillars
-        const v1 = document.querySelector('input[name="val-kepesertaan"]:checked').value;
-        const v2 = document.querySelector('input[name="val-legalitas"]:checked').value;
-        const v3 = document.querySelector('input[name="val-medis"]:checked').value;
-        const semuaLolos = v1 === 'Lolos' && v2 === 'Lolos' && v3 === 'Lolos';
-        document.getElementById("rekomendasi-lbl").innerText = semuaLolos ? "Lolos (Rekomendasi SJP)" : "Ada yang Tidak Lolos (Rekomendasi SJPP)";
-        document.getElementById("rekomendasi-lbl").className = semuaLolos ? "font-extrabold text-sm text-emerald-600" : "font-extrabold text-sm text-rose-600";
-
-        approvalBox.innerHTML = `
-          <button type="button" onclick="kakancabApprovalAction(false)" class="px-4 py-2 bg-rose-600 hover:bg-rose-750 text-white font-bold rounded-xl text-xs shadow-sm"><i class="fas fa-circle-xmark mr-1"></i> Tolak</button>
-          <button type="button" onclick="kakancabApprovalAction(true)" class="px-5 py-2 bg-asabri-blue hover:bg-asabri-blueDark text-white font-bold rounded-xl text-xs shadow-md"><i class="fas fa-circle-check mr-1"></i> Setujui</button>
-        `;
-      }
-    }
-
-    function submitToKakancab() {
-      if (!currentReportObj) return;
-      currentReportObj.status = "Persetujuan KAKANCAB";
-      addLogEntry("Verifikasi selesai oleh Staf");
-      showToast("Diajukan", "Laporan diajukan ke Kakancab untuk approval akhir.", "success");
-      closeLaporanDrawer();
-      applyFilters();
-    }
-
-    function kakancabApprovalAction(approved) {
-      if (!currentReportObj) return;
-
-      if (!approved) {
-        currentReportObj.status = "Verifikasi Kancab";
-        addLogEntry("Ditolak oleh KAKANCAB (Dikembalikan ke Staf)");
-        showToast("Ditolak", "Berkas dikembalikan ke Staf Kancab.", "warning");
-      } else {
-        const v1 = document.querySelector('input[name="val-kepesertaan"]:checked').value;
-        const v2 = document.querySelector('input[name="val-legalitas"]:checked').value;
-        const v3 = document.querySelector('input[name="val-medis"]:checked').value;
-        const semuaLolos = v1 === 'Lolos' && v2 === 'Lolos' && v3 === 'Lolos';
-
-        const bulan = String(new Date().getMonth() + 1).padStart(2, '0');
-        const tahun = new Date().getFullYear();
-        const randNum = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
-        const kancabCode = (currentReportObj.cabang || 'KANCAB JAKARTA').replace('KANCAB ', '');
-
-        if (semuaLolos) {
-          currentReportObj.status = "SJP Terbit";
-          currentReportObj.sjpNumber = `SJP/${kancabCode}/${bulan}/${tahun}/${randNum}`;
-          currentReportObj.jaminan = "Ya";
-          addLogEntry("Disetujui oleh KAKANCAB");
-          addLogEntry(`SJP diterbitkan — ${currentReportObj.sjpNumber}`);
-          showToast("SJP Terbit", `Berkas SJP Diterbitkan: ${currentReportObj.sjpNumber}`, "success");
-        } else {
-          currentReportObj.status = "SJPP Terbit";
-          currentReportObj.sjpNumber = `SJPP/${kancabCode}/${bulan}/${tahun}/${randNum}`;
-          currentReportObj.jaminan = "Tidak";
-          addLogEntry("Disetujui (Ditolak Jaminan) oleh KAKANCAB");
-          addLogEntry(`SJPP diterbitkan (Dialihkan ke BPJS) — ${currentReportObj.sjpNumber}`);
-          showToast("SJPP Terbit", `Berkas SJPP Diterbitkan. Peserta dialihkan ke BPJS: ${currentReportObj.sjpNumber}`, "warning");
-        }
-      }
-      closeLaporanDrawer();
-      applyFilters();
-    }
-
-    function downloadDocument(type) {
-      alert(`[DOWNLOAD DOKUMEN]\nUnduh berkas ${type} resmi.\nNomor Dokumen: ${currentReportObj.sjpNumber}\nBerlaku: 30 Hari sejak diterbitkan.`);
-    }
-
-    function openLaporanDrawer(existingRow = null) {
-      const modal = document.getElementById("laporan-modal");
-      const drawer = document.getElementById("laporan-drawer");
-
-      if (existingRow) {
-        currentReportObj = existingRow;
-        document.getElementById("lf-nomor-kejadian").value = existingRow.nomor;
-        document.getElementById("lf-entitas-pelapor").value = existingRow.source || "Provider";
-        document.getElementById("lf-entitas-pelapor").disabled = true;
-        document.getElementById("lf-pelapor").value = existingRow.pelapor || "Faskes";
-        document.getElementById("lf-pelapor-telp").value = existingRow.telpPelapor || "0812-321-123";
-        document.getElementById("lf-tgl-lapor").value = existingRow.tglPengajuan.split("T")[0];
-        document.getElementById("lf-tgl-kejadian").value = existingRow.tglKejadian;
-        document.getElementById("lf-tgl-rawat").value = existingRow.tglRawat;
-        document.getElementById("lf-kejadian").value = existingRow.kejadian;
-        document.getElementById("lf-cob").value = existingRow.cob || "-";
-        document.getElementById("lf-layanan").value = existingRow.layanan || "Rawat Inap";
-        document.getElementById("lf-provinsi").value = existingRow.provinsi || "DKI Jakarta";
-        document.getElementById("lf-cabang").value = existingRow.cabang || "KANCAB JAKARTA";
-        document.getElementById("lf-catatan").value = existingRow.catatanKejadian || "";
-        document.getElementById("lf-diagnosa").value = existingRow.diagnosaKejadian || "";
-        document.getElementById("laporan-subtitle").innerText = `Ubah Laporan: ${existingRow.nomor}`;
-
-        updateStepperUI(existingRow.status);
-        renderDrawerLogs();
-        renderDrawerRoleActions();
-      } else {
-        document.getElementById("lf-nomor-kejadian").value = "[Otomatis]";
-        document.getElementById("lf-entitas-pelapor").value = "Provider";
-        document.getElementById("lf-entitas-pelapor").disabled = false;
-        document.getElementById("lf-pelapor").value = "";
-        document.getElementById("lf-pelapor-telp").value = "";
-        document.getElementById("lf-tgl-lapor").value = new Date().toISOString().substring(0, 10);
-        document.getElementById("lf-tgl-kejadian").value = "";
-        document.getElementById("lf-tgl-rawat").value = "";
-        document.getElementById("lf-provinsi").value = "DKI Jakarta";
-        document.getElementById("lf-cabang").value = "KANCAB JAKARTA";
-        document.getElementById("lf-catatan").value = "";
-        document.getElementById("lf-diagnosa").value = "";
-        document.getElementById("laporan-subtitle").innerText = "Tambah Laporan Baru";
-
-        currentReportObj = {
-          status: "Pengajuan",
-          tglPengajuan: new Date().toISOString(),
-          logs: ["Laporan diterima — " + new Date().toLocaleString('id-ID')]
-        };
-
-        updateStepperUI("Pengajuan");
-        renderDrawerLogs();
-        renderDrawerRoleActions();
-      }
-
-      modal.classList.remove("hidden");
-      setTimeout(() => { drawer.classList.remove("translate-x-full"); }, 50);
-      switchLaporanTab("tab-laporan-kejadian");
-    }
-
-    function closeLaporanDrawer() {
-      const modal = document.getElementById("laporan-modal");
-      const drawer = document.getElementById("laporan-drawer");
-      drawer.classList.add("translate-x-full");
-      setTimeout(() => { modal.classList.add("hidden"); }, 300);
-      currentReportObj = null;
-    }
-
-    function saveLaporanSubmission() {
-      const pelapor = document.getElementById("lf-pelapor").value;
-      const telp = document.getElementById("lf-pelapor-telp").value;
-      const tglLapor = document.getElementById("lf-tgl-lapor").value;
-      const tglKejadian = document.getElementById("lf-tgl-kejadian").value;
-      const tglRawat = document.getElementById("lf-tgl-rawat").value;
-      const kejadian = document.getElementById("lf-kejadian").value;
-      const catatan = document.getElementById("lf-catatan").value;
-      const diagnosa = document.getElementById("lf-diagnosa").value;
-      const entitasVal = document.getElementById("lf-entitas-pelapor").value;
-      const provVal = document.getElementById("lf-provinsi").value;
-      const cabangVal = mappingWilayahKancab(provVal);
-
-      if (!pelapor || !telp || !tglLapor || !tglKejadian || !tglRawat || !catatan || !diagnosa) {
-        showToast("Lengkapi Form", "Silahkan isi seluruh input mandatory.", "warning");
-        return;
-      }
-
-      let no = document.getElementById("lf-nomor-kejadian").value;
-      if (no === "[Otomatis]") {
-        const bulan = String(new Date().getMonth() + 1).padStart(2, '0');
-        const tahun = new Date().getFullYear();
-        const randNum = String(Math.floor(Math.random() * 999) + 1).padStart(3, '0');
-        
-        let prefix = "PRV";
-        if (entitasVal === "Peserta") prefix = "RMB";
-        else if (entitasVal === "Kesatuan") prefix = "KST";
-
-        no = `JKK-${prefix}/${randNum}-ASABRI/${bulan}/${tahun}`;
-      }
-
-      const existingIndex = reportsData.findIndex(r => r.nomor === no);
-      if (existingIndex !== -1) {
-        reportsData[existingIndex] = {
-          ...reportsData[existingIndex],
-          kejadian,
-          tglKejadian,
-          tglRawat,
-          catatanKejadian: catatan,
-          diagnosaKejadian: diagnosa,
-          pelapor,
-          provinsi: provVal,
-          cabang: cabangVal
-        };
-        showToast("Draft Diubah", "Draft Laporan JKK berhasil diperbarui.", "success");
-      } else {
-        reportsData.push({
-          id: Date.now(),
-          status: "Pengajuan",
-          tglPengajuan: new Date().toISOString(),
-          jumlahKlaim: 1,
-          nomor: no,
-          cob: document.getElementById("lf-cob").value,
-          ktpa: "3273120105910003",
-          nrpNip: "311200923211",
-          nama: "Ahmad Fauzi",
-          unor: "TNI-AD",
-          provider: "RS RSPAD Gatot Soebroto",
-          cabang: cabangVal,
-          tglKejadian,
-          tglRawat,
-          kejadian,
-          provinsi: provVal,
-          sepaNum: "SEPA-" + String(Math.floor(Math.random() * 90000)),
-          sepaDate: tglRawat,
-          jaminan: "Ya",
-          source: entitasVal,
-          sjpNumber: "",
-          catatanKejadian: catatan,
-          diagnosaKejadian: diagnosa,
-          pelapor,
-          logs: ["Laporan diterima — " + new Date().toLocaleString('id-ID')]
-        });
-        showToast("Laporan Disimpan", `Laporan JKK draft disimpan: ${no}`, "success");
-      }
-
-      closeLaporanDrawer();
-      applyFilters();
-    }
-
-    function switchLaporanTab(tabId) {
-      document.getElementById("tab-laporan-kejadian").classList.add("hidden");
-      document.getElementById("tab-laporan-dokumen").classList.add("hidden");
-      const btnIds = ["btn-tab-laporan-kejadian", "btn-tab-laporan-dokumen"];
-      btnIds.forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) {
-          btn.classList.remove("border-b-2", "border-asabri-blue", "text-asabri-blue");
-          btn.classList.add("border-transparent", "text-slate-400");
-        }
-      });
-      document.getElementById(tabId).classList.remove("hidden");
-      document.getElementById("btn-" + tabId).classList.add("border-b-2", "border-asabri-blue", "text-asabri-blue");
-    }
-
-    function showDetail(id) {
-      const item = reportsData.find(r => r.id === id);
-      if (item) openLaporanDrawer(item);
-    }
-
-    window.onload = function() {
-      applyFilters();
-      
-      document.getElementById("lf-provinsi").addEventListener("input", function() {
-        document.getElementById("lf-cabang").value = mappingWilayahKancab(this.value);
-      });
+    const PLAFON_MAKS = {
+      'Rawat Inap'          : Infinity,
+      'Rawat Jalan'         : Infinity,
+      'Biaya Angkut Darat'  : 2000000,
+      'Biaya Angkut Laut'   : 2500000,
+      'Biaya Angkut Udara'  : 4000000,
+      'Protese / Ortese'    : 5000000,
+      'Rehabilitasi Medis'  : 2600000,
+      'Gigi Tiruan'         : 3000000
     };
+
+    // Sample data riwayat SJP/SPJP dengan nilai biaya terpakai
+    const riwayatSJP = [
+      { jenisLayanan: 'Rawat Inap', biayaTerpakai: 15000000 },
+      { jenisLayanan: 'Biaya Angkut Darat', biayaTerpakai: 500000 },
+      { jenisLayanan: 'Biaya Angkut Udara', biayaTerpakai: 1200000 },
+      { jenisLayanan: 'Protese / Ortese', biayaTerpakai: 800000 },
+      { jenisLayanan: 'Rehabilitasi Medis', biayaTerpakai: 400000 }
+    ];
+
+    function hitungSisaPlafon(jenisLayanan) {
+      if (PLAFON_MAKS[jenisLayanan] === Infinity) {
+        return Infinity; // Unlimited
+      }
+      const totalTerpakai = riwayatSJP
+        .filter(r => r.jenisLayanan === jenisLayanan)
+        .reduce((sum, r) => sum + r.biayaTerpakai, 0);
+
+      return PLAFON_MAKS[jenisLayanan] - totalTerpakai;
+    }
+
+    function renderPlafonTabel() {
+      const tbody = document.getElementById('plafon-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      Object.keys(PLAFON_MAKS).forEach(jenis => {
+        const maks = PLAFON_MAKS[jenis];
+        const sisa = hitungSisaPlafon(jenis);
+
+        const maksStr = maks === Infinity ? "∞" : formatRupiah(maks);
+        const sisaStr = sisa === Infinity ? "∞" : formatRupiah(sisa);
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 border-b border-slate-100 transition-colors";
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-bold text-slate-800">${jenis}</td>
+          <td class="py-2.5 px-4 font-mono font-bold text-slate-600">${maksStr}</td>
+          <td class="py-2.5 px-4 font-mono font-bold text-emerald-700">${sisaStr}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function bukaDetail(id) {
+      selectedItem = listJaminanMaster.find(d => d.id === id) || listJaminanMaster[0];
+
+      document.getElementById('dt-noreg').innerText = selectedItem.noReg;
+      document.getElementById('dt-status').innerText = selectedItem.status;
+      document.getElementById('dt-tgl-pengajuan').innerText = selectedItem.tglPengajuan;
+      document.getElementById('dt-no-surat').innerText = selectedItem.noSuratKronologis;
+      document.getElementById('dt-ktpa').innerText = selectedItem.ktpa;
+      document.getElementById('dt-nrp').innerText = selectedItem.nrpNip;
+      document.getElementById('dt-nama-peserta').innerText = selectedItem.namaPeserta;
+      document.getElementById('dt-jenis-layanan').innerText = selectedItem.jenisLayanan;
+      document.getElementById('dt-provider').innerText = selectedItem.provider;
+      document.getElementById('dt-unor').innerText = selectedItem.UNOR;
+      document.getElementById('dt-satker').innerText = selectedItem.SATKER;
+      document.getElementById('dt-rs-nama').innerText = selectedItem.provider;
+      document.getElementById('dt-rs-status').innerText = selectedItem.statusRs;
+
+      renderRiwayatSjpTabel();
+
+      document.getElementById('view-tabel').classList.add('hidden');
+      document.getElementById('view-proses').classList.add('hidden');
+      document.getElementById('view-detail').classList.remove('hidden');
+    }
+
+    function renderRiwayatSjpTabel() {
+      const tbody = document.getElementById('riwayat-sjp-tbody');
+      tbody.innerHTML = `
+        <tr class="border-b border-slate-100">
+          <td class="py-2.5 px-3 font-bold">1</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-asabri-blue">SJP/JKK-PRW/2026/000891</td>
+          <td class="py-2.5 px-3 font-mono">07 Sep 2026</td>
+          <td class="py-2.5 px-3 font-mono text-emerald-700 font-bold">16 Sep 2026 (+9 Hari Kalender)</td>
+          <td class="py-2.5 px-3 font-semibold">Rawat Inap</td>
+        </tr>
+      `;
+    }
+
+    function bukaProses(id) {
+      selectedItem = listJaminanMaster.find(d => d.id === id) || listJaminanMaster[0];
+
+      // Update status data menjadi 'Proses' saat klik tombol [Proses] pertama kali
+      if (selectedItem.status === 'Baru') {
+        selectedItem.status = 'Proses';
+        applyFilters();
+      }
+
+      document.getElementById('pr-noreg').innerText = selectedItem.noReg;
+      document.getElementById('pr-status-badge').innerText = selectedItem.status;
+
+      // Tab 1 Populate (Read Only)
+      document.getElementById('pr-t1-noreg').innerText = selectedItem.noReg;
+      document.getElementById('pr-t1-tgl').innerText = selectedItem.tglPengajuan;
+      document.getElementById('pr-t1-surat').innerText = selectedItem.noSuratKronologis;
+      document.getElementById('pr-t1-status').innerText = selectedItem.status;
+      document.getElementById('pr-t1-ktpa').innerText = selectedItem.ktpa;
+      document.getElementById('pr-t1-nrp').innerText = selectedItem.nrpNip;
+      document.getElementById('pr-t1-nama').innerText = selectedItem.namaPeserta;
+      document.getElementById('pr-t1-unor').innerText = selectedItem.UNOR;
+      document.getElementById('pr-t1-satker').innerText = selectedItem.SATKER;
+      document.getElementById('pr-t1-rs').innerText = selectedItem.provider;
+      document.getElementById('pr-t1-status-rs').innerText = selectedItem.statusRs;
+      document.getElementById('pr-t1-layanan').innerText = selectedItem.jenisLayanan;
+      if (document.getElementById('pr-t1-pelapor')) document.getElementById('pr-t1-pelapor').innerText = selectedItem.pelapor || 'Dr. Hendra (Admisi RS)';
+      if (document.getElementById('pr-t1-telp')) document.getElementById('pr-t1-telp').innerText = selectedItem.noTelp || '0812-9988-7711';
+      if (document.getElementById('pr-t1-rawat')) document.getElementById('pr-t1-rawat').innerText = selectedItem.tglMulaiRawat;
+      if (document.getElementById('pr-t1-diagnosa')) document.getElementById('pr-t1-diagnosa').innerText = selectedItem.diagnosa;
+
+      // Tab 3 Card Populate
+      document.getElementById('tab3-card-noreg').innerText = selectedItem.noReg;
+      document.getElementById('tab3-card-nama').innerText = selectedItem.namaPeserta;
+      document.getElementById('tab3-card-ktpa').innerText = selectedItem.ktpa;
+      document.getElementById('tab3-card-nrp').innerText = selectedItem.nrpNip;
+      document.getElementById('tab3-card-rs').innerText = selectedItem.provider;
+      document.getElementById('tab3-card-layanan').innerText = selectedItem.jenisLayanan;
+      document.getElementById('doc-card-peserta').innerText = selectedItem.namaPeserta;
+
+      switchProsesTab('tab-proses-1');
+
+      document.getElementById('view-tabel').classList.add('hidden');
+      document.getElementById('view-detail').classList.add('hidden');
+      document.getElementById('view-proses').classList.remove('hidden');
+    }
+
+    function switchProsesTab(tabId) {
+      ['tab-proses-1', 'tab-proses-2', 'tab-proses-3'].forEach(id => {
+        document.getElementById(id).classList.toggle('hidden', id !== tabId);
+      });
+
+      ['tab-proses-1', 'tab-proses-2', 'tab-proses-3'].forEach(id => {
+        const btn = document.getElementById(`btn-${id}`);
+        if (id === tabId) {
+          btn.className = "flex-1 min-w-[170px] py-2.5 px-3 rounded-xl text-xs font-bold text-asabri-blue bg-blue-50 border border-blue-200 flex items-center justify-center gap-1.5 transition-all shadow-sm";
+        } else {
+          btn.className = "flex-1 min-w-[170px] py-2.5 px-3 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-50 border border-transparent flex items-center justify-center gap-1.5 transition-all";
+        }
+      });
+    }
+
+    function getFormattedDateOnly() {
+      const now = new Date();
+      return now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function getTotalJamProses() {
+      const now = new Date();
+      const jam = String(now.getHours() % 2).padStart(2, '0');
+      const menit = String(now.getMinutes()).padStart(2, '0');
+      const detik = String(now.getSeconds()).padStart(2, '0');
+      return `${jam} Jam : ${menit} Menit : ${detik} Detik`;
+    }
+
+    function getNamaUserLogin() {
+      const role = document.getElementById('role-switcher') ? document.getElementById('role-switcher').value : 'Staf KANCAB';
+      const savedUser = sessionStorage.getItem('currentUser_nama');
+      if (savedUser) return savedUser;
+      return role === 'KAKANCAB' ? 'Drs. Supriyadi (KAKANCAB Jakarta)' : 'SK | Staf Kancab Utama';
+    }
+
+    function setujuiVerifikasiKancab() {
+      sessionStorage.setItem('status_verifikasi_kancab_jaminan', 'Disetujui');
+      sessionStorage.removeItem('catatan_kancab_jaminan');
+
+      const namaUser = getNamaUserLogin();
+      const tglStr = getFormattedDateOnly();
+      const totalJam = getTotalJamProses();
+
+      document.getElementById('badge-verifikasi-kancab-container').className = "p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between";
+      document.getElementById('verifikasi-kancab-title').innerText = "✅ Sudah Diverifikasi oleh Kancab";
+      document.getElementById('verifikasi-kancab-sub').innerHTML = `
+        <div><b>Diverifikasi oleh:</b> ${namaUser}</div>
+        <div><b>Tanggal:</b> ${tglStr}</div>
+        <div><b>Total Jam Proses:</b> ${totalJam}</div>
+        <div><b>Status:</b> <span class="text-emerald-700 font-bold">Disetujui</span></div>
+      `;
+      document.getElementById('section-catatan-penolakan').classList.add('hidden');
+
+      // Setup Preview Card SJP
+      document.getElementById('doc-card-title').innerText = "DRAFT SURAT JAMINAN PELAYANAN (SJP)";
+      document.getElementById('doc-card-no').innerText = "SJP/JKK-PRW/2026/000891";
+      document.getElementById('btn-final-approval').className = "px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2 text-sm";
+      document.getElementById('btn-final-approval').innerHTML = `<i class="fas fa-paper-plane"></i> TERBITKAN SJP & SIMPAN KEPUTUSAN FINAL`;
+
+      switchProsesTab('tab-proses-3');
+    }
+
+    function bukaModalPenolakanKancab() {
+      document.getElementById('modal-penolakan-kancab').classList.remove('hidden');
+      document.getElementById('err-alasan-penolakan').classList.add('hidden');
+    }
+
+    function tutupModalPenolakanKancab() {
+      document.getElementById('modal-penolakan-kancab').classList.add('hidden');
+    }
+
+    function simpanPenolakanKancab() {
+      const txt = document.getElementById('input-alasan-penolakan-kancab').value.trim();
+      if (!txt) {
+        document.getElementById('err-alasan-penolakan').classList.remove('hidden');
+        return;
+      }
+
+      sessionStorage.setItem('status_verifikasi_kancab_jaminan', 'Ditolak');
+      sessionStorage.setItem('catatan_kancab_jaminan', txt);
+
+      tutupModalPenolakanKancab();
+
+      const namaUser = getNamaUserLogin();
+      const tglStr = getFormattedDateOnly();
+      const totalJam = getTotalJamProses();
+
+      document.getElementById('badge-verifikasi-kancab-container').className = "p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between";
+      document.getElementById('verifikasi-kancab-title').innerText = "❌ Diverifikasi dengan Catatan Penolakan oleh Kancab";
+      document.getElementById('verifikasi-kancab-sub').innerHTML = `
+        <div><b>Diverifikasi oleh:</b> ${namaUser}</div>
+        <div><b>Tanggal:</b> ${tglStr}</div>
+        <div><b>Total Jam Proses:</b> ${totalJam}</div>
+        <div><b>Status:</b> <span class="text-rose-700 font-bold">Ditolak</span></div>
+      `;
+      document.getElementById('section-catatan-penolakan').classList.remove('hidden');
+      document.getElementById('catatan-kancab-text').innerText = txt;
+      document.getElementById('catatan-kakancab-input').value = txt;
+
+      // Setup Preview Card SPJP
+      document.getElementById('doc-card-title').innerText = "DRAFT SURAT PENOLAKAN JAMINAN PERAWATAN (SPJP)";
+      document.getElementById('doc-card-no').innerText = "SPJP/JKK-PRW/2026/000891";
+      document.getElementById('btn-final-approval').className = "px-8 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2 text-sm";
+      document.getElementById('btn-final-approval').innerHTML = `<i class="fas fa-paper-plane"></i> TERBITKAN SPJP & SIMPAN KEPUTUSAN FINAL`;
+
+      switchProsesTab('tab-proses-3');
+    }
+
+    function finalApprovalKakancab() {
+      if (!selectedItem) return;
+      const isSpjp = (sessionStorage.getItem('status_verifikasi_kancab_jaminan') === 'Ditolak');
+      const docType = isSpjp ? 'SPJP' : 'SJP';
+
+      // 1. Update Status Pengajuan ke Selesai
+      selectedItem.status = 'Selesai';
+      selectedItem.tglSelesai = getFormattedDateOnly();
+
+      // 2. Tampilkan notifikasi email terkirim ke provider RS
+      alert(`[BERHASIL] Approval KAKANCAB telah disimpan!\n\n- Dokumen ${docType} Resmi Berhasil Diterbitkan.\n- Email pemberitahuan resmi dan salinan ${docType} telah dikirimkan secara otomatis ke Provider RS (${selectedItem.provider}).\n- Status pengajuan berubah menjadi "Selesai" dan dipindahkan ke Sub-tab Riwayat.`);
+
+      // 3. Kembali ke tampilan tabel & refresh pengajuan
+      showTabelView();
+      applyFilters();
+    }
+
+      sessionStorage.setItem('status_verifikasi_kancab_jaminan', 'Ditolak');
+      sessionStorage.setItem('catatan_kancab_jaminan', txt);
+
+      tutupModalPenolakanKancab();
+
+      const namaUser = getNamaUserLogin();
+      const tglStr = getFormattedDateOnly();
+      const totalJam = getTotalJamProses();
+
+      document.getElementById('badge-verifikasi-kancab-container').className = "p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between";
+      document.getElementById('verifikasi-kancab-title').innerText = "❌ Diverifikasi dengan Catatan Penolakan oleh Kancab";
+      document.getElementById('verifikasi-kancab-sub').innerHTML = `
+        <div><b>Diverifikasi oleh:</b> ${namaUser}</div>
+        <div><b>Tanggal:</b> ${tglStr}</div>
+        <div><b>Total Jam Proses:</b> ${totalJam}</div>
+        <div><b>Status:</b> <span class="text-rose-700 font-bold">Ditolak</span></div>
+      `;
+      document.getElementById('section-catatan-penolakan').classList.remove('hidden');
+      document.getElementById('catatan-kancab-text').innerText = txt;
+      document.getElementById('catatan-kakancab-input').value = txt;
+
+      // Setup Preview Card SPJP
+      document.getElementById('doc-card-title').innerText = "DRAFT SURAT PENOLAKAN JAMINAN PERAWATAN (SPJP)";
+      document.getElementById('doc-card-no').innerText = "SPJP/JKK-PRW/2026/000891";
+      document.getElementById('btn-final-approval').className = "px-8 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs shadow-lg transition-all flex items-center gap-2 text-sm";
+      document.getElementById('btn-final-approval').innerHTML = `<i class="fas fa-paper-plane"></i> TERBITKAN SPJP & SIMPAN KEPUTUSAN FINAL`;
+
+      switchProsesTab('tab-proses-3');
+    }
+
+    function generateDokumenNumbers(item) {
+      const urut = item.noUrut || '000891';
+      const bln = item.bulanPengajuan || 'IX';
+      const thn = item.tahunPengajuan || '2026';
+      
+      const sjpNo = `${urut}/SJP/JKK-ASABRI/${bln}/${thn}`;
+      const spjpNo = `${urut}/SPJP/JKK-ASABRI/${bln}/${thn}`;
+      return { sjpNo, spjpNo };
+    }
+
+    function getNamaKakancab() {
+      return sessionStorage.getItem('kakancab_nama') || 'Drs. Supriyadi, M.M. (Kepala Kantor Cabang Utama)';
+    }
+
+    function previewSuratOfficial(tipe) {
+      const item = selectedItem || listJaminanMaster[0];
+      const { sjpNo, spjpNo } = generateDokumenNumbers(item);
+      const isSpjp = (tipe === 'SPJP');
+
+      const modalTitle = isSpjp ? 'Preview Surat Penolakan Jaminan Perawatan (SPJP)' : 'Preview Surat Jaminan Perawatan (SJP)';
+      const docNo = isSpjp ? spjpNo : sjpNo;
+      const kakancabNama = getNamaKakancab();
+
+      let htmlContent = "";
+
+      if (!isSpjp) {
+        // --- TEMPLATE SURAT JAMINAN PERAWATAN (SJP) EXACT MATCH GAMBAR 2 ---
+        htmlContent = `
+          <div class="bg-white text-slate-900 p-10 rounded-xl border border-slate-300 shadow-xl space-y-6 text-[12px] font-sans leading-relaxed">
+            <!-- Header Logo & Title -->
+            <div class="flex items-center justify-between pb-2">
+              <div class="flex items-center gap-3">
+                <img src="logo-asabri-white.png" alt="Logo ASABRI" class="h-10 bg-asabri-blue p-1 rounded-lg">
+              </div>
+            </div>
+
+            <div class="text-center pt-2 pb-4">
+              <h2 class="font-extrabold text-lg tracking-wide text-slate-900 uppercase">SURAT JAMINAN PERAWATAN (SJP)</h2>
+            </div>
+
+            <p class="font-normal text-slate-800">PT ASABRI (Persero) menyatakan bahwa menjamin biaya perawatan Peserta ASABRI di bawah ini</p>
+
+            <!-- Key-Value Layout 2 Kolom Clean Tanpa Border Tabel -->
+            <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-[11px] font-medium text-slate-900 py-2">
+              <!-- Kolom Kiri -->
+              <div class="space-y-2">
+                <div class="flex"><span class="w-36 text-slate-800">Nomor SJP</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold text-slate-900">${docNo}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Tanggal Pengajuan</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglPengajuan}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">KTPA/NRP/NIP</span><span class="w-4 text-center">:</span><span class="flex-1">${item.ktpa}/${item.nrpNip}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Nama</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.namaPeserta}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Tanggal Lahir</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglLahir || '14 Mei 1988'}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Jenis Kelamin</span><span class="w-4 text-center">:</span><span class="flex-1">${item.jenisKelamin || 'Laki-Laki'}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Pangkat</span><span class="w-4 text-center">:</span><span class="flex-1">${item.pangkat || 'Kapten Inf'}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Kesatuan</span><span class="w-4 text-center">:</span><span class="flex-1">${item.kesatuan || 'Yonif Mekanis 201/JY'}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Unit Organisasi</span><span class="w-4 text-center">:</span><span class="flex-1">${item.UNOR}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">No Telepon</span><span class="w-4 text-center">:</span><span class="flex-1">${item.noTelp || '0812-9988-7711'}</span></div>
+              </div>
+
+              <!-- Kolom Kanan -->
+              <div class="space-y-2">
+                <div class="flex"><span class="w-36 text-slate-800">Provider</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.provider}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Tanggal Mulai Rawat</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglMulaiRawat}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Diagnosa</span><span class="w-4 text-center">:</span><span class="flex-1">${item.diagnosa}</span></div>
+                <div class="flex h-5"></div>
+                <div class="flex"><span class="w-36 text-slate-800">Periode Jaminan</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.periodeJaminan}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">COB</span><span class="w-4 text-center">:</span><span class="flex-1">${item.cob}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">SJP ke</span><span class="w-4 text-center">:</span><span class="flex-1">${item.sjpKe}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Jenis Rawat Saat Ini</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.jenisRawatSaatIni}</span></div>
+              </div>
+            </div>
+
+            <!-- Catatan Section Numbered List -->
+            <div class="space-y-1.5 pt-4 text-[11px] text-slate-900">
+              <span class="font-bold block">Catatan :</span>
+              <ol class="list-decimal pl-5 space-y-1.5 leading-relaxed text-slate-800">
+                <li>Tidak menjamin biaya pemeriksaan dan pengobatan Covid-19, obat mengandung Suplemen, Vitamin/Multivitamin, dan/atau mengandung herbal .</li>
+                <li>Bila ditemukan kasus kejadian kecelakaan dan/atau diagnosa penyakit yang termasuk dalam pengecualian program JKK dari hasil verifikasi pengajuan klaim, maka surat jaminan ini dapat dibatalkan.</li>
+                <li>Biaya rehabilitasi medis, ortosis dan/atau prostesis, penggantian gigi tiruan, dan ambulans dijamin sesuai batasan yang ditetapkan dalam peraturan yang berlaku.</li>
+              </ol>
+            </div>
+
+            <!-- Tanda Tangan Right Aligned (Match Gambar 2) -->
+            <div class="pt-10 flex justify-end">
+              <div class="text-center space-y-16 font-sans text-[11px] text-slate-900 pr-4">
+                <div>
+                  <p>Tanggal Bulan Tahun,</p>
+                  <p class="font-semibold">PT ASABRI (PERSERO)</p>
+                  <p class="font-semibold">Kepala Kantor Cabang .....</p>
+                </div>
+                <div>
+                  <p class="font-medium">(Nama Kepala Kantor Cabang)</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Contact Info 3 Kolom (Match Gambar 2) -->
+            <div class="pt-12 border-t border-slate-200 flex items-end justify-between text-[10px] text-slate-700 font-sans">
+              <div>
+                <p class="font-semibold text-slate-900">PT ASABRI (Persero)</p>
+                <p>Jl. Mayjen Sutoyo No. 11 Jakarta 13630</p>
+              </div>
+              <div class="text-center">
+                <p>P: 021 8 094 140</p>
+                <p>F: 021 8 012 313</p>
+              </div>
+              <div class="flex flex-col items-end gap-1">
+                <p class="text-slate-900">asabri@asabri.co.id</p>
+                <div class="flex items-center gap-1 mt-1">
+                  <div class="w-8 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-sm"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        // --- TEMPLATE SURAT PENOLAKAN JAMINAN PERAWATAN (STJP) EXACT MATCH GAMBAR 2 ---
+        const alasanPenolakan = sessionStorage.getItem('catatan_kancab_jaminan') || item.dasarPenolakan;
+
+        htmlContent = `
+          <div class="bg-white text-slate-900 p-10 rounded-xl border border-slate-300 shadow-xl space-y-6 text-[12px] font-sans leading-relaxed">
+            <!-- Header Logo & Title -->
+            <div class="flex items-center justify-between pb-2">
+              <div class="flex items-center gap-3">
+                <img src="logo-asabri-white.png" alt="Logo ASABRI" class="h-10 bg-asabri-blue p-1 rounded-lg">
+              </div>
+            </div>
+
+            <div class="text-center pt-2 pb-4">
+              <h2 class="font-extrabold text-lg tracking-wide text-slate-900 uppercase">SURAT PENOLAKAN JAMINAN PERAWATAN (STJP)</h2>
+            </div>
+
+            <p class="font-normal text-slate-800">PT ASABRI (Persero) menyatakan bahwa tidak menjamin biaya perawatan Peserta ASABRI di bawah ini</p>
+
+            <!-- Key-Value Layout 2 Kolom Clean Tanpa Border Tabel -->
+            <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-[11px] font-medium text-slate-900 py-2">
+              <!-- Kolom Kiri -->
+              <div class="space-y-2">
+                <div class="flex"><span class="w-36 text-slate-800">Nomor STJP</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold text-rose-700">${docNo}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Tanggal Pengajuan</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglPengajuan}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">No. KTPA/NRP/NIP</span><span class="w-4 text-center">:</span><span class="flex-1">${item.ktpa}/${item.nrpNip}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Nama</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.namaPeserta}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Tanggal Lahir</span><span class="w-4 text-center">:</span><span class="flex-1">${item.tglLahir || '14 Mei 1988'}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Jenis Kelamin</span><span class="w-4 text-center">:</span><span class="flex-1">${item.jenisKelamin || 'Laki-Laki'}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Pangkat</span><span class="w-4 text-center">:</span><span class="flex-1">${item.pangkat || 'Kapten Inf'}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Kesatuan</span><span class="w-4 text-center">:</span><span class="flex-1">${item.kesatuan || 'Yonif Mekanis 201/JY'}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Unit Organisasi</span><span class="w-4 text-center">:</span><span class="flex-1">${item.UNOR}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">No. Telepon</span><span class="w-4 text-center">:</span><span class="flex-1">${item.noTelp || '0812-9988-7711'}</span></div>
+              </div>
+
+              <!-- Kolom Kanan -->
+              <div class="space-y-2">
+                <div class="flex"><span class="w-36 text-slate-800">Provider</span><span class="w-4 text-center">:</span><span class="flex-1 font-semibold">${item.provider}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">Alamat</span><span class="w-4 text-center">:</span><span class="flex-1">${item.alamatRs}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800">No. Telepon</span><span class="w-4 text-center">:</span><span class="flex-1">${item.telpRs}</span></div>
+                <div class="flex"><span class="w-36 text-slate-800 text-rose-900 font-bold">Dasar Penolakan</span><span class="w-4 text-center">:</span><span class="flex-1 font-bold text-rose-800 italic">${alasanPenolakan}</span></div>
+              </div>
+            </div>
+
+            <!-- Tanda Tangan Right Aligned (Match Gambar 2) -->
+            <div class="pt-14 flex justify-end">
+              <div class="text-center space-y-16 font-sans text-[11px] text-slate-900 pr-4">
+                <div>
+                  <p>Tanggal Bulan Tahun,</p>
+                  <p class="font-semibold">PT ASABRI (PERSERO)</p>
+                  <p class="font-semibold">Kepala Kantor Cabang .....</p>
+                </div>
+                <div>
+                  <p class="font-medium">(Nama Kepala Kantor Cabang)</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Contact Info 3 Kolom (Match Gambar 2) -->
+            <div class="pt-12 border-t border-slate-200 flex items-end justify-between text-[10px] text-slate-700 font-sans">
+              <div>
+                <p class="font-semibold text-slate-900">PT ASABRI (Persero)</p>
+                <p>Jl. Mayjen Sutoyo No. 11 Jakarta 13630</p>
+              </div>
+              <div class="text-center">
+                <p>P: 021 8 094 140</p>
+                <p>F: 021 8 012 313</p>
+              </div>
+              <div class="flex flex-col items-end gap-1">
+                <p class="text-slate-900">asabri@asabri.co.id</p>
+                <div class="flex items-center gap-1 mt-1">
+                  <div class="w-8 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-sm"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Show Modal
+      document.getElementById('modal-doc-official-title').innerText = modalTitle;
+      document.getElementById('modal-doc-official-body').innerHTML = htmlContent;
+      document.getElementById('modal-doc-official').classList.remove('hidden');
+    }
+
+    function tutupModalDocOfficial() {
+      document.getElementById('modal-doc-official').classList.add('hidden');
+    }
+
+    function buildStandaloneDocHtml(item, isSpjp, docNo, kakancabNama) {
+      const alasanPenolakan = sessionStorage.getItem('catatan_kancab_jaminan') || item.dasarPenolakan || 'Tidak memenuhi kriteria kelayakan JKK.';
+      const titleText = isSpjp ? 'SURAT PENOLAKAN JAMINAN PERAWATAN (STJP)' : 'SURAT JAMINAN PERAWATAN (SJP)';
+
+      if (!isSpjp) {
+        return `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>${docNo}</title>
+            <script src="https://cdn.tailwindcss.com"><\/script>
+            <style>
+              @page { size: A4; margin: 12mm; }
+              body { background: white; color: #0f172a; font-family: sans-serif; padding: 30px; }
+            </style>
+          </head>
+          <body>
+            <div style="max-width:800px; margin:0 auto; padding:30px; border:1px solid #cbd5e1; border-radius:12px;">
+              <div style="margin-bottom:20px;">
+                <div style="font-weight:900; font-size:20px; color:#0141A8;">ASABRI</div>
+              </div>
+
+              <div style="text-align:center; padding:16px 0;">
+                <h2 style="font-weight:800; font-size:18px; text-transform:uppercase;">${titleText}</h2>
+              </div>
+
+              <p style="font-size:12px; margin-bottom:20px;">PT ASABRI (Persero) menyatakan bahwa menjamin biaya perawatan Peserta ASABRI di bawah ini</p>
+
+              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:20px; line-height:1.8;">
+                <div style="width:48%;">
+                  <div style="display:flex;"><span style="width:140px;">Nomor SJP</span><span>: ${docNo}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Tanggal Pengajuan</span><span>: ${item.tglPengajuan}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">KTPA/NRP/NIP</span><span>: ${item.ktpa}/${item.nrpNip}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Nama</span><span>: ${item.namaPeserta}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Tanggal Lahir</span><span>: ${item.tglLahir || '14 Mei 1988'}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Jenis Kelamin</span><span>: ${item.jenisKelamin || 'Laki-Laki'}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Pangkat</span><span>: ${item.pangkat || 'Kapten Inf'}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Kesatuan</span><span>: ${item.kesatuan || 'Yonif Mekanis 201/JY'}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Unit Organisasi</span><span>: ${item.UNOR}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">No Telepon</span><span>: ${item.noTelp || '0812-9988-7711'}</span></div>
+                </div>
+                <div style="width:48%;">
+                  <div style="display:flex;"><span style="width:140px;">Provider</span><span>: ${item.provider}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Tanggal Mulai Rawat</span><span>: ${item.tglMulaiRawat}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Diagnosa</span><span>: ${item.diagnosa}</span></div>
+                  <div style="height:20px;"></div>
+                  <div style="display:flex;"><span style="width:140px;">Periode Jaminan</span><span>: ${item.periodeJaminan}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">COB</span><span>: ${item.cob}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">SJP ke</span><span>: ${item.sjpKe}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Jenis Rawat Saat Ini</span><span>: ${item.jenisRawatSaatIni}</span></div>
+                </div>
+              </div>
+
+              <div style="margin-top:20px; font-size:11px; line-height:1.5;">
+                <b>Catatan :</b>
+                <ol style="padding-left:20px; margin-top:6px;">
+                  <li>Tidak menjamin biaya pemeriksaan dan pengobatan Covid-19, obat mengandung Suplemen, Vitamin/Multivitamin, dan/atau mengandung herbal .</li>
+                  <li>Bila ditemukan kasus kejadian kecelakaan dan/atau diagnosa penyakit yang termasuk dalam pengecualian program JKK dari hasil verifikasi pengajuan klaim, maka surat jaminan ini dapat dibatalkan.</li>
+                  <li>Biaya rehabilitasi medis, ortosis dan/atau prostesis, penggantian gigi tiruan, dan ambulans dijamin sesuai batasan yang ditetapkan dalam peraturan yang berlaku.</li>
+                </ol>
+              </div>
+
+              <div style="margin-top:40px; display:flex; justify-content:flex-end;">
+                <div style="text-align:center; font-size:11px;">
+                  <p>Tanggal Bulan Tahun,</p>
+                  <p style="font-weight:bold;">PT ASABRI (PERSERO)</p>
+                  <p style="font-weight:bold; margin-bottom:60px;">Kepala Kantor Cabang .....</p>
+                  <p>(Nama Kepala Kantor Cabang)</p>
+                </div>
+              </div>
+
+              <div style="margin-top:40px; padding-top:16px; border-top:1px solid #cbd5e1; display:flex; justify-content:space-between; align-items:flex-end; font-size:10px; color:#475569;">
+                <div>
+                  <p style="font-weight:bold; color:#0f172a;">PT ASABRI (Persero)</p>
+                  <p>Jl. Mayjen Sutoyo No. 11 Jakarta 13630</p>
+                </div>
+                <div style="text-align:center;">
+                  <p>P: 021 8 094 140</p>
+                  <p>F: 021 8 012 313</p>
+                </div>
+                <div style="text-align:right;">
+                  <p>asabri@asabri.co.id</p>
+                </div>
+              </div>
+            </div>
+          </body>
+          </html>
+        `;
+      } else {
+        return `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>${docNo}</title>
+            <script src="https://cdn.tailwindcss.com"><\/script>
+            <style>
+              @page { size: A4; margin: 12mm; }
+              body { background: white; color: #0f172a; font-family: sans-serif; padding: 30px; }
+            </style>
+          </head>
+          <body>
+            <div style="max-width:800px; margin:0 auto; padding:30px; border:1px solid #cbd5e1; border-radius:12px;">
+              <div style="margin-bottom:20px;">
+                <div style="font-weight:900; font-size:20px; color:#be123c;">ASABRI</div>
+              </div>
+
+              <div style="text-align:center; padding:16px 0;">
+                <h2 style="font-weight:800; font-size:18px; text-transform:uppercase; color:#be123c;">${titleText}</h2>
+              </div>
+
+              <p style="font-size:12px; margin-bottom:20px;">PT ASABRI (Persero) menyatakan bahwa tidak menjamin biaya perawatan Peserta ASABRI di bawah ini</p>
+
+              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:20px; line-height:1.8;">
+                <div style="width:48%;">
+                  <div style="display:flex;"><span style="width:140px;">Nomor STJP</span><span>: ${docNo}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Tanggal Pengajuan</span><span>: ${item.tglPengajuan}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">No. KTPA/NRP/NIP</span><span>: ${item.ktpa}/${item.nrpNip}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Nama</span><span>: ${item.namaPeserta}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Tanggal Lahir</span><span>: ${item.tglLahir || '14 Mei 1988'}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Jenis Kelamin</span><span>: ${item.jenisKelamin || 'Laki-Laki'}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Pangkat</span><span>: ${item.pangkat || 'Kapten Inf'}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Kesatuan</span><span>: ${item.kesatuan || 'Yonif Mekanis 201/JY'}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Unit Organisasi</span><span>: ${item.UNOR}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">No. Telepon</span><span>: ${item.noTelp || '0812-9988-7711'}</span></div>
+                </div>
+                <div style="width:48%;">
+                  <div style="display:flex;"><span style="width:140px;">Provider</span><span>: ${item.provider}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">Alamat</span><span>: ${item.alamatRs}</span></div>
+                  <div style="display:flex;"><span style="width:140px;">No. Telepon</span><span>: ${item.telpRs}</span></div>
+                  <div style="display:flex; color:#be123c; font-weight:bold;"><span style="width:140px;">Dasar Penolakan</span><span>: ${alasanPenolakan}</span></div>
+                </div>
+              </div>
+
+              <div style="margin-top:50px; display:flex; justify-content:flex-end;">
+                <div style="text-align:center; font-size:11px;">
+                  <p>Tanggal Bulan Tahun,</p>
+                  <p style="font-weight:bold;">PT ASABRI (PERSERO)</p>
+                  <p style="font-weight:bold; margin-bottom:60px;">Kepala Kantor Cabang .....</p>
+                  <p>(Nama Kepala Kantor Cabang)</p>
+                </div>
+              </div>
+
+              <div style="margin-top:40px; padding-top:16px; border-top:1px solid #cbd5e1; display:flex; justify-content:space-between; align-items:flex-end; font-size:10px; color:#475569;">
+                <div>
+                  <p style="font-weight:bold; color:#0f172a;">PT ASABRI (Persero)</p>
+                  <p>Jl. Mayjen Sutoyo No. 11 Jakarta 13630</p>
+                </div>
+                <div style="text-align:center;">
+                  <p>P: 021 8 094 140</p>
+                  <p>F: 021 8 012 313</p>
+                </div>
+                <div style="text-align:right;">
+                  <p>asabri@asabri.co.id</p>
+                </div>
+              </div>
+            </div>
+          </body>
+          </html>
+        `;
+      }
+    }
+
+    function downloadOfficialPdf() {
+      const item = selectedItem || listJaminanMaster[0];
+      const isSpjp = (sessionStorage.getItem('status_verifikasi_kancab_jaminan') === 'Ditolak');
+      const { sjpNo, spjpNo } = generateDokumenNumbers(item);
+
+      const rawDocNo = isSpjp ? spjpNo : sjpNo;
+      const cleanDocNo = rawDocNo.replace(/\//g, '-');
+      const ktaNo = item.ktpa;
+      const kakancabNama = getNamaKakancab();
+
+      const fileName = `${cleanDocNo}_${ktaNo}.pdf`;
+      const htmlFull = buildStandaloneDocHtml(item, isSpjp, rawDocNo, kakancabNama);
+
+      // 1. Opsi Langsung A: html2pdf jika tersedia
+      if (typeof html2pdf !== 'undefined') {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlFull;
+        document.body.appendChild(tempDiv);
+        const opt = {
+          margin:       [0.3, 0.3, 0.3, 0.3],
+          filename:     fileName,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true },
+          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(tempDiv).save().then(() => {
+          tempDiv.remove();
+        }).catch(err => {
+          tempDiv.remove();
+          triggerFallbackBlobDownload(htmlFull, fileName);
+        });
+        return;
+      }
+
+      // 2. Opsi B: Direct Blob Download (.html / .pdf trigger)
+      triggerFallbackBlobDownload(htmlFull, fileName);
+    }
+
+    function triggerFallbackBlobDownload(htmlContent, fileName) {
+      // Buat file Blob dan trigger download otomatis oleh browser
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName.replace('.pdf', '.html');
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 200);
+
+      // Juga panggil Print Dialog untuk Save As PDF
+      const printWin = window.open('', '_blank', 'width=850,height=950');
+      if (printWin) {
+        printWin.document.write(htmlContent);
+        printWin.document.close();
+        printWin.focus();
+        setTimeout(() => {
+          printWin.print();
+        }, 500);
+      }
+    }
+
+    function previewDokumen(namaDoc) {
+      alert(`Membuka preview dokumen persyaratan: ${namaDoc}`);
+    }
+
+    function downloadDraftPdf() {
+      downloadOfficialPdf();
+    }
+
+    // Auto initialize page
+    window.onload = initPage;
   </script>
+
+  <!-- MODAL OFFICIAL DOCUMENT PREVIEW (SJP & SPJP) -->
+  <div id="modal-doc-official" class="fixed inset-0 z-[150] flex items-center justify-center hidden bg-slate-900/70 backdrop-blur-md transition-all p-4 overflow-y-auto">
+    <div class="bg-slate-100 rounded-3xl p-6 max-w-3xl w-full shadow-2xl space-y-5 border border-slate-300 my-8">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <h3 class="text-sm font-extrabold text-slate-800 flex items-center gap-2" id="modal-doc-official-title">
+          <i class="fas fa-file-pdf text-asabri-blue"></i> Preview Dokumen Official
+        </h3>
+        <button onclick="tutupModalDocOfficial()" class="text-slate-400 hover:text-slate-600"><i class="fas fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- Container PDF Paper Preview -->
+      <div id="modal-doc-official-body" class="max-h-[70vh] overflow-y-auto rounded-2xl shadow-inner">
+        <!-- Rendered via JS -->
+      </div>
+
+      <div class="pt-3 border-t border-slate-200 flex items-center justify-between">
+        <button onclick="tutupModalDocOfficial()" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs">
+          Tutup
+        </button>
+        <button onclick="downloadOfficialPdf()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md flex items-center gap-2">
+          <i class="fas fa-download"></i> Unduh File PDF
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
+
